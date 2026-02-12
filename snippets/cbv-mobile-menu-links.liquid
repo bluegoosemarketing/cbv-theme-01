@@ -1,50 +1,137 @@
 {%- liquid
-  assign menu_title_upcase = link.title | strip | upcase
-  assign is_scents_menu = false
-  if menu_title_upcase == 'SCENTS'
-    assign is_scents_menu = true
+  assign menu_title = menu_title | default: link.title | strip
+  assign menu_title_upcase = menu_title | upcase
+
+  assign scents_search_label = section.settings.scents_search_label | default: 'Search all scents'
+  assign scents_search_href = '#'
+  if section.settings.scents_search_link != blank
+    assign scents_search_href = section.settings.scents_search_link
   endif
 -%}
 
 <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
-  {%- if is_scents_menu and section.settings.scents_search_link != blank -%}
-    <li>
-      <a href="{{ section.settings.scents_search_link }}" class="menu-drawer__menu-item menu-drawer__menu-item--search link link--text list-menu__item focus-inset">
-        {{ section.settings.scents_search_label | escape }}
-      </a>
-    </li>
-  {%- endif -%}
-
-  {%- for childlink in link.links -%}
-    <li>
-      {%- if childlink.links == blank -%}
-        <a href="{{ childlink.url }}" class="menu-drawer__menu-item link link--text list-menu__item focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
-          {{ childlink.title | escape }}
-        </a>
-      {%- else -%}
-        <details id="Details-menu-drawer-submenu-{{ menu_index }}-{{ forloop.index }}">
+  {%- case menu_title_upcase -%}
+    {%- when 'SHOP' -%}
+      <li>
+        <details id="Details-menu-drawer-submenu-{{ menu_index }}-1">
           <summary class="menu-drawer__menu-item link link--text list-menu__item focus-inset">
-            {{ childlink.title | escape }}
+            Candles
             {% render 'icon-arrow' %}
             {% render 'icon-caret' %}
           </summary>
-          <div id="childlink-{{ childlink.handle | escape }}" class="menu-drawer__submenu has-submenu motion-reduce">
+          <div id="childlink-candles" class="menu-drawer__submenu has-submenu motion-reduce">
             <button class="menu-drawer-close-button link link--text focus-inset" aria-expanded="true">
               {% render 'icon-arrow' %}
-              {{ childlink.title | escape }}
+              Candles
             </button>
             <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
-              {%- for grandchildlink in childlink.links -%}
-                <li>
-                  <a href="{{ grandchildlink.url }}" class="menu-drawer__menu-item link link--text list-menu__item focus-inset{% if grandchildlink.current %} menu-drawer__menu-item--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
-                    {{ grandchildlink.title | escape }}
-                  </a>
-                </li>
-              {%- endfor -%}
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Best Sellers</a></li>
+              <li><p class="menu-drawer__menu-item link link--text list-menu__item">Shop by Size</p></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">18 oz</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">30 oz</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">70 oz</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">15 oz Wickless</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Build Your Own</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Seasonal</a></li>
             </ul>
           </div>
         </details>
-      {%- endif -%}
-    </li>
-  {%- endfor -%}
+      </li>
+      <li>
+        <details id="Details-menu-drawer-submenu-{{ menu_index }}-2">
+          <summary class="menu-drawer__menu-item link link--text list-menu__item focus-inset">
+            Wax Melts
+            {% render 'icon-arrow' %}
+            {% render 'icon-caret' %}
+          </summary>
+          <div id="childlink-wax-melts" class="menu-drawer__submenu has-submenu motion-reduce">
+            <button class="menu-drawer-close-button link link--text focus-inset" aria-expanded="true">
+              {% render 'icon-arrow' %}
+              Wax Melts
+            </button>
+            <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Break-Away Melts</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Cube Melts</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Build Your Own Melts</a></li>
+            </ul>
+          </div>
+        </details>
+      </li>
+      <li>
+        <details id="Details-menu-drawer-submenu-{{ menu_index }}-3">
+          <summary class="menu-drawer__menu-item link link--text list-menu__item focus-inset">
+            Scent Shots
+            {% render 'icon-arrow' %}
+            {% render 'icon-caret' %}
+          </summary>
+          <div id="childlink-scent-shots" class="menu-drawer__submenu has-submenu motion-reduce">
+            <button class="menu-drawer-close-button link link--text focus-inset" aria-expanded="true">
+              {% render 'icon-arrow' %}
+              Scent Shots
+            </button>
+            <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Shop All</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">3-Packs</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">6-Packs</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Build Your Own Pack</a></li>
+            </ul>
+          </div>
+        </details>
+      </li>
+      <li>
+        <details id="Details-menu-drawer-submenu-{{ menu_index }}-4">
+          <summary class="menu-drawer__menu-item link link--text list-menu__item focus-inset">
+            Gifts &amp; Specials
+            {% render 'icon-arrow' %}
+            {% render 'icon-caret' %}
+          </summary>
+          <div id="childlink-gifts-specials" class="menu-drawer__submenu has-submenu motion-reduce">
+            <button class="menu-drawer-close-button link link--text focus-inset" aria-expanded="true">
+              {% render 'icon-arrow' %}
+              Gifts &amp; Specials
+            </button>
+            <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Sampler Packs</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Gift Cards</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Limited Drops</a></li>
+            </ul>
+          </div>
+        </details>
+      </li>
+
+    {%- when 'SCENTS' -%}
+      <li>
+        <a href="{{ scents_search_href }}" class="menu-drawer__menu-item menu-drawer__menu-item--search link link--text list-menu__item focus-inset">{{ scents_search_label | escape }}</a>
+      </li>
+      {%- assign scent_links = 'Bakery/Gourmand|Christmas|Clean|Customer Creations|Earthy|Fall|Floral|Fruity|House Blends|Lush Dupes|Luxury Spa & Hotel|Perfume & Cologne|Tropical|Best Sellers|All Scents (A–Z)|Search' | split: '|' -%}
+      {%- for scent_link in scent_links -%}
+        <li>
+          <a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ scent_link }}</a>
+        </li>
+      {%- endfor -%}
+
+    {%- when 'BUNDLES' -%}
+      {%- assign bundles_links = 'Sampler Packs|Build Your Own Scent Shot Pack|Build Your Own Melt Pack|Category Boxes' | split: '|' -%}
+      {%- for bundles_link in bundles_links -%}
+        <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ bundles_link }}</a></li>
+      {%- endfor -%}
+
+    {%- when 'SUBSCRIBE & SAVE' -%}
+      {%- assign subscribe_links = 'Subscribe & Save Overview|Subscription Bundles|Manage Subscription' | split: '|' -%}
+      {%- for subscribe_link in subscribe_links -%}
+        <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ subscribe_link }}</a></li>
+      {%- endfor -%}
+
+    {%- when 'BEST SELLERS' -%}
+      {%- assign best_sellers_links = 'Best Sellers (All)|Best Selling Candles|Best Selling Scent Shots|Best Selling Melts' | split: '|' -%}
+      {%- for best_sellers_link in best_sellers_links -%}
+        <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ best_sellers_link }}</a></li>
+      {%- endfor -%}
+
+    {%- when 'SEASONAL' -%}
+      {%- assign seasonal_links = 'Seasonal Shop|Fall|Christmas|Limited Drops' | split: '|' -%}
+      {%- for seasonal_link in seasonal_links -%}
+        <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ seasonal_link }}</a></li>
+      {%- endfor -%}
+  {%- endcase -%}
 </ul>

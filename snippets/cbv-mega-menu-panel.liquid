@@ -1,5 +1,5 @@
 {%- liquid
-  assign menu_title = link.title | strip
+  assign menu_title = menu_title | default: link.title | strip
   assign menu_title_upcase = menu_title | upcase
 
   assign is_shop_menu = false
@@ -40,24 +40,86 @@
         <p class="cbv-mega-menu__eyebrow">{{ eyebrow_text }}</p>
       {%- endif -%}
       <ul class="cbv-mega-menu__columns" role="list">
-        {%- for childlink in link.links -%}
-          <li class="cbv-mega-menu__column{% if childlink.links == blank %} cbv-mega-menu__column--compact{% endif %}">
-            <a href="{{ childlink.url }}" class="mega-menu__link mega-menu__link--level-2 heading-bold link{% if childlink.current %} mega-menu__link--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
-              <span>{{ childlink.title | escape }}</span>
-            </a>
-            {%- if childlink.links != blank -%}
+        {%- case menu_title_upcase -%}
+          {%- when 'SHOP' -%}
+            <li class="cbv-mega-menu__column">
+              <a href="#" class="mega-menu__link mega-menu__link--level-2 heading-bold link"><span>Candles</span></a>
               <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
-                {%- for grandchildlink in childlink.links -%}
-                  <li>
-                    <a href="{{ grandchildlink.url }}" class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
-                      <span>{{ grandchildlink.title | escape }}</span>
-                    </a>
-                  </li>
-                {%- endfor -%}
+                <li><a href="#" class="mega-menu__link link"><span>Best Sellers</span></a></li>
+                <li>
+                  <p class="mega-menu__link mega-menu__link--level-2 heading-bold"><span>Shop by Size</span></p>
+                  <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
+                    <li><a href="#" class="mega-menu__link link"><span>18 oz</span></a></li>
+                    <li><a href="#" class="mega-menu__link link"><span>30 oz</span></a></li>
+                    <li><a href="#" class="mega-menu__link link"><span>70 oz</span></a></li>
+                    <li><a href="#" class="mega-menu__link link"><span>15 oz Wickless</span></a></li>
+                  </ul>
+                </li>
+                <li><a href="#" class="mega-menu__link link"><span>Build Your Own</span></a></li>
+                <li><a href="#" class="mega-menu__link link"><span>Seasonal</span></a></li>
               </ul>
-            {%- endif -%}
-          </li>
-        {%- endfor -%}
+            </li>
+            <li class="cbv-mega-menu__column">
+              <a href="#" class="mega-menu__link mega-menu__link--level-2 heading-bold link"><span>Wax Melts</span></a>
+              <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
+                <li><a href="#" class="mega-menu__link link"><span>Break-Away Melts</span></a></li>
+                <li><a href="#" class="mega-menu__link link"><span>Cube Melts</span></a></li>
+                <li><a href="#" class="mega-menu__link link"><span>Build Your Own Melts</span></a></li>
+              </ul>
+            </li>
+            <li class="cbv-mega-menu__column">
+              <a href="#" class="mega-menu__link mega-menu__link--level-2 heading-bold link"><span>Scent Shots</span></a>
+              <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
+                <li><a href="#" class="mega-menu__link link"><span>Shop All</span></a></li>
+                <li><a href="#" class="mega-menu__link link"><span>3-Packs</span></a></li>
+                <li><a href="#" class="mega-menu__link link"><span>6-Packs</span></a></li>
+                <li><a href="#" class="mega-menu__link link"><span>Build Your Own Pack</span></a></li>
+              </ul>
+            </li>
+            <li class="cbv-mega-menu__column">
+              <a href="#" class="mega-menu__link mega-menu__link--level-2 heading-bold link"><span>Gifts &amp; Specials</span></a>
+              <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
+                <li><a href="#" class="mega-menu__link link"><span>Sampler Packs</span></a></li>
+                <li><a href="#" class="mega-menu__link link"><span>Gift Cards</span></a></li>
+                <li><a href="#" class="mega-menu__link link"><span>Limited Drops</span></a></li>
+              </ul>
+            </li>
+          {%- when 'SCENTS' -%}
+            {%- assign scent_links = 'Bakery/Gourmand|Christmas|Clean|Customer Creations|Earthy|Fall|Floral|Fruity|House Blends|Lush Dupes|Luxury Spa & Hotel|Perfume & Cologne|Tropical|Best Sellers|All Scents (A–Z)|Search' | split: '|' -%}
+            {%- for scent_link in scent_links -%}
+              <li class="cbv-mega-menu__column cbv-mega-menu__column--compact">
+                <a href="#" class="mega-menu__link mega-menu__link--level-2 heading-bold link"><span>{{ scent_link }}</span></a>
+              </li>
+            {%- endfor -%}
+          {%- when 'BUNDLES' -%}
+            {%- assign bundles_links = 'Sampler Packs|Build Your Own Scent Shot Pack|Build Your Own Melt Pack|Category Boxes' | split: '|' -%}
+            {%- for bundles_link in bundles_links -%}
+              <li class="cbv-mega-menu__column cbv-mega-menu__column--compact">
+                <a href="#" class="mega-menu__link mega-menu__link--level-2 heading-bold link"><span>{{ bundles_link }}</span></a>
+              </li>
+            {%- endfor -%}
+          {%- when 'SUBSCRIBE & SAVE' -%}
+            {%- assign subscribe_links = 'Subscribe & Save Overview|Subscription Bundles|Manage Subscription' | split: '|' -%}
+            {%- for subscribe_link in subscribe_links -%}
+              <li class="cbv-mega-menu__column cbv-mega-menu__column--compact">
+                <a href="#" class="mega-menu__link mega-menu__link--level-2 heading-bold link"><span>{{ subscribe_link }}</span></a>
+              </li>
+            {%- endfor -%}
+          {%- when 'BEST SELLERS' -%}
+            {%- assign best_sellers_links = 'Best Sellers (All)|Best Selling Candles|Best Selling Scent Shots|Best Selling Melts' | split: '|' -%}
+            {%- for best_sellers_link in best_sellers_links -%}
+              <li class="cbv-mega-menu__column cbv-mega-menu__column--compact">
+                <a href="#" class="mega-menu__link mega-menu__link--level-2 heading-bold link"><span>{{ best_sellers_link }}</span></a>
+              </li>
+            {%- endfor -%}
+          {%- when 'SEASONAL' -%}
+            {%- assign seasonal_links = 'Seasonal Shop|Fall|Christmas|Limited Drops' | split: '|' -%}
+            {%- for seasonal_link in seasonal_links -%}
+              <li class="cbv-mega-menu__column cbv-mega-menu__column--compact">
+                <a href="#" class="mega-menu__link mega-menu__link--level-2 heading-bold link"><span>{{ seasonal_link }}</span></a>
+              </li>
+            {%- endfor -%}
+        {%- endcase -%}
       </ul>
     </div>
 
