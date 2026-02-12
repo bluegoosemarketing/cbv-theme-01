@@ -1,0 +1,97 @@
+{% comment %}
+  Renders product variant-picker
+
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - product_form_id: {String} Id of the product form to which the variant picker is associated.
+  - update_url: {Boolean} whether or not to update url when changing variants. If false, the url isn't updated. Default: true (optional).
+  Usage:
+  {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+{% endcomment %}
+
+{%- unless product.has_only_default_variant -%}
+  {%- assign should_update_url = update_url | default: true -%}
+  {%- assign name_suffix = '-' | append: section.id | append: '-' | append: block.id -%}
+
+  {%- if block.settings.picker_type != 'dropdown' -%}
+    <!-- RADIOS / SWATCHES -->
+    <variant-radios
+      id="variant-radios-{{ section.id }}-{{ block.id }}"
+      class="no-js-hidden"
+      data-section="{{ section.id }}"
+      data-url="{{ product.url }}"
+      {% if should_update_url == false %} data-update-url="false"{% endif %}
+      {{ block.shopify_attributes }}
+    >
+      {%- for option in product.options_with_values -%}
+        <fieldset class="js product-form-input" data-option-index="{{ forloop.index0 }}">
+          <legend class="form-label">
+            {{ option.name }}:
+            <span data-selected-swatch-value="options[{{ option.name | escape }}]{{ name_suffix }}">
+              {{- option.selected_value -}}
+            </span>
+          </legend>
+
+          {% render 'product-variant-options',
+            product: product,
+            option: option,
+            block: block,
+            product_form_id: product_form_id,
+            name_suffix: name_suffix
+          %}
+        </fieldset>
+      {%- endfor -%}
+    </variant-radios>
+
+  {%- else -%}
+    <variant-selects
+      id="variant-selects-{{ section.id }}-{{ block.id }}"
+      class="no-js-hidden"
+      data-section="{{ section.id }}"
+      data-url="{{ product.url }}"
+      {% if should_update_url == false %} data-update-url="false"{% endif %}
+      {{ block.shopify_attributes }}
+    >
+      {%- for option in product.options_with_values -%}
+        <div class="product-form-input product-form-input--dropdown" data-option-index="{{ forloop.index0 }}">
+          <label class="form-label" for="Option-{{ section.id }}-{{ block.id }}-{{ forloop.index0 }}">
+            {{ option.name }}
+          </label>
+
+          <div class="select">
+            {%- liquid assign swatch_count = option.values | map: 'swatch' | compact | size -%}
+            {%- if block.settings.swatch_shape != 'none' and swatch_count > 0 -%}
+              <span
+                class="dropdown-swatch"
+                data-selected-dropdown-swatch="options[{{ option.name | escape }}]{{ name_suffix }}"
+              >
+                {%- assign selected_obj = option.values | where: 'selected', true | first -%}
+                {%- if selected_obj and selected_obj.swatch -%}
+                  {% render 'swatch', swatch: selected_obj.swatch, shape: block.settings.swatch_shape %}
+                {%- endif -%}
+              </span>
+            {%- endif -%}
+
+            <select
+              id="Option-{{ section.id }}-{{ block.id }}-{{ forloop.index0 }}"
+              class="select__select"
+              name="options[{{ option.name | escape }}]{{ name_suffix }}"
+              form="{{ product_form_id }}"
+            >
+              {% render 'product-variant-options',
+                product: product,
+                option: option,
+                block: block,
+                product_form_id: product_form_id,
+                name_suffix: name_suffix
+              %}
+            </select>
+
+            {% render 'icon-caret' %}
+          </div>
+        </div>
+      {%- endfor -%}
+    </variant-selects>
+  {%- endif -%}
+{%- endunless -%}

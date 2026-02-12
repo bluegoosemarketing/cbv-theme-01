@@ -1,0 +1,111 @@
+{% comment %}
+  Renders product variant options
+
+  Accepts:
+  - product: {Object} product object.
+  - option: {Object} current product_option object.
+  - block: {Object} block object.
+  - picker_type: {String} type of picker to display
+  - name_suffix: {String} optional suffix for input/select name to namespace per block (e.g. "-{{ section.id }}-{{ block.id }}")
+
+  Usage:
+  {% render 'product-variant-options',
+    product: product,
+    option: option,
+    block: block,
+    product_form_id: product_form_id,
+    name_suffix: name_suffix
+  %}
+{% endcomment %}
+
+{%- liquid
+  assign product_form_id = product_form_id | default: 'product-form-' | append: section.id
+  assign ns = name_suffix | default: ''
+-%}
+
+{%- for value in option.values -%}
+  {%- liquid
+    assign is_selected  = value.selected
+    assign is_available = value.available
+
+    if value.swatch and value.swatch.image
+      assign image_url  = value.swatch.image | image_url: width: 50
+      assign swatch_css = 'url(' | append: image_url | append: ')'
+    elsif value.swatch and value.swatch.color
+      assign swatch_css = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+    else
+      assign swatch_css = null
+    endif
+
+    assign input_id = section.id | append: '-' | append: block.id | append: '-' | append: option.position | append: '-' | append: forloop.index0
+  -%}
+
+  {%- if block.settings.picker_type != 'dropdown' -%}
+    <input
+      type="radio"
+      id="{{ input_id }}"
+      name="options[{{ option.name | escape }}]{{ ns }}"
+      value="{{ value.name | escape }}"
+      form="{{ product_form_id }}"
+      data-option-value-id="{{ value.id }}"
+      {% if is_selected %}checked{% endif %}
+      {% unless is_available %}class="disabled" aria-disabled="true"{% endunless %}
+    >
+
+    {%- liquid assign swatch_count = option.values | map: 'swatch' | compact | size -%}
+    {% if block.settings.swatch_shape != 'none' and swatch_count > 0 %}
+      <label
+        class="color-swatch swatch-input__label{% if block.settings.swatch_shape == 'square' %} swatch-input__label--square{% endif %}"
+        for="{{ input_id }}"
+        data-option="{{ value.name }}"
+        title="{{ value.name }}"
+        tabindex="0"
+        {% unless is_available %}aria-disabled="true"{% endunless %}
+      >
+        {% render 'swatch', swatch: value.swatch, shape: block.settings.swatch_shape %}
+      </label>
+    {% else %}
+      <label class="variant-buttons{% unless is_available %} option-disabled{% endunless %}" for="{{ input_id }}">
+        {{ value.name }}
+        {% unless is_available %}
+          <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
+        {% endunless %}
+      </label>
+    {% endif %}
+
+  {%- else -%}
+    <option
+      value="{{ value.name | escape }}"
+      data-option-value-id="{{ value.id }}"
+      {% if is_selected %}selected="selected"{% endif %}
+      {% if swatch_css %}data-option-swatch-value="{{ swatch_css }}"{% endif %}
+      {%- unless is_available -%}
+        aria-disabled="true"
+        data-unavailable="true"
+        class="option-disabled"
+      {%- endunless -%}
+    >
+      {% unless is_available %}
+        {{- 'products.product.value_unavailable' | t: option_value: value.name -}}
+      {% else %}
+        {{- value.name -}}
+      {% endunless %}
+    </option>
+  {%- endif -%}
+{%- endfor -%}
+
+<script>
+  window.__swatchA11yBound = window.__swatchA11yBound || false;
+  if (!window.__swatchA11yBound) {
+    window.__swatchA11yBound = true;
+    document.addEventListener('keydown', function (e) {
+      if (e.key === ' ' || e.key === 'Enter' || e.keyCode === 32 || e.keyCode === 13) {
+        const el = document.activeElement;
+        if (el && el.classList && el.classList.contains('color-swatch')) {
+          e.preventDefault();
+          el.click();
+        }
+      }
+    });
+  }
+</script>

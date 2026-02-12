@@ -1,0 +1,690 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "text": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "column": "left",
+            "text": "<p>List essential product characteristics here</p>",
+            "text_style": "body",
+            "text_block_size": "small",
+            "show_text_background": true,
+            "margin_top": 0,
+            "color_scheme_1": "option-1",
+            "hide_quick_view": false
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "column": "left",
+            "heading_size": "large",
+            "margin_top": 0,
+            "hide_quick_view": false
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "column": "left",
+            "price_size": "small",
+            "margin_top": 0,
+            "hide_quick_view": false
+          }
+        },
+        "spacer": {
+          "type": "spacer",
+          "settings": {
+            "column": "left",
+            "margin_top": 0,
+            "hide_quick_view": false
+          }
+        },
+        "inventory": {
+          "type": "inventory",
+          "settings": {
+            "column": "left",
+            "inventory_threshold": 10,
+            "show_inventory_quantity": true,
+            "margin_top": 0,
+            "hide_quick_view": false
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "column": "left",
+            "margin_top": 0,
+            "hide_quick_view": false
+          }
+        },
+        "complementary": {
+          "type": "complementary",
+          "settings": {
+            "column": "left",
+            "block_heading": "Goes well with",
+            "product_list_limit": 10,
+            "image_ratio": "square",
+            "enable_quick_add": false,
+            "columns": "one",
+            "disable_arrow_mobile": true,
+            "color_scheme_1": "option-1",
+            "margin_top": 0,
+            "hide_quick_view": false
+          }
+        },
+        "delivery_estimator": {
+          "type": "delivery_estimator",
+          "settings": {
+            "column": "right",
+            "delivery_estimator_text": "Delivery between",
+            "earliest_delivery": "2",
+            "latest_delivery": "4",
+            "color_scheme_1": "option-1",
+            "margin_top": 0,
+            "hide_mobile": false,
+            "hide_desktop": false,
+            "hide_quick_view": true
+          }
+        },
+        "collapsible_tab_1": {
+          "type": "collapsible_tab",
+          "settings": {
+            "column": "right",
+            "heading": "Shipping & Returns",
+            "heading_size": "medium",
+            "heading_tag": "h4",
+            "icon": "truck",
+            "no_padding": true,
+            "image": "",
+            "content": "<p>If you’re looking to return or exchange your order for whatever reason, we're here to help! We offer <strong>free returns</strong> within <strong>30 days </strong>of purchase. You can return your product for<strong> store credit</strong>, <strong>a different product</strong>, or a <strong>refund </strong>to the original payment method.</p>",
+            "page": "",
+            "custom_liquid": "",
+            "open_first_collapsible_row": false,
+            "show_spacer": false,
+            "margin_top": 0,
+            "color_scheme_1": "option-2",
+            "hide_quick_view": true
+          }
+        },
+        "spacer_2": {
+          "type": "spacer",
+          "settings": {
+            "column": "right",
+            "margin_top": 0,
+            "hide_quick_view": true
+          }
+        },
+        "collapsible_tab_2": {
+          "type": "collapsible_tab",
+          "settings": {
+            "column": "right",
+            "heading": "24/7 Support",
+            "heading_size": "medium",
+            "heading_tag": "h4",
+            "icon": "headset",
+            "no_padding": true,
+            "image": "",
+            "content": "<p>You can reach out to us through our [contact channels, e.g., email form, contact page] with any feedback or questions you may have. We'll respond as soon as possible during our regular business hours.</p>",
+            "page": "",
+            "custom_liquid": "",
+            "open_first_collapsible_row": false,
+            "show_spacer": false,
+            "margin_top": 0,
+            "color_scheme_1": "option-2",
+            "hide_quick_view": true
+          }
+        },
+        "spacer_3": {
+          "type": "spacer",
+          "settings": {
+            "column": "right",
+            "margin_top": 0,
+            "hide_quick_view": true
+          }
+        },
+        "collapsible_tab_3": {
+          "type": "collapsible_tab",
+          "settings": {
+            "column": "right",
+            "heading": "Main Benefits",
+            "heading_size": "medium",
+            "heading_tag": "h4",
+            "icon": "headset",
+            "no_padding": true,
+            "image": "",
+            "content": "<p>Our Flux Protein-Rich, Plant-Based Food offers a variety of benefits. It’s packed with high-quality plant-based protein to support muscle growth and recovery, and it’s enriched with essential vitamins and minerals to boost your overall health. Plus, it's made from all-natural ingredients, free from artificial additives, and is easy to digest, making it a perfect addition to any balanced diet.</p>",
+            "page": "",
+            "custom_liquid": "",
+            "open_first_collapsible_row": false,
+            "show_spacer": false,
+            "margin_top": 0,
+            "color_scheme_1": "option-2",
+            "hide_quick_view": true
+          }
+        },
+        "text_1": {
+          "type": "text",
+          "settings": {
+            "column": "right",
+            "text": "<h3>⭐ Limited time offer ⭐ - 20% Sale</h3><p>Make this space work for you by spotlighting exclusive deals or time-sensitive discounts on your product. For instance: \"Hurry! Save 20% on this item for a limited time only!\" Inspire urgency by emphasizing how long the offer lasts, motivating customers to grab the deal before it’s too late.</p><p></p>",
+            "text_style": "body",
+            "text_block_size": "small",
+            "show_text_background": false,
+            "margin_top": 10,
+            "color_scheme_1": "option-2",
+            "hide_quick_view": true
+          }
+        },
+        "payment_enable": {
+          "type": "payment_enable",
+          "disabled": true,
+          "settings": {
+            "column": "right",
+            "margin_top": 0,
+            "hide_mobile": false,
+            "hide_desktop": false,
+            "hide_quick_view": false
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "column": "right",
+            "share_label": "Share",
+            "margin_top": 0,
+            "hide_quick_view": true
+          }
+        }
+      },
+      "block_order": [
+        "text",
+        "title",
+        "price",
+        "spacer",
+        "inventory",
+        "description",
+        "complementary",
+        "delivery_estimator",
+        "collapsible_tab_1",
+        "spacer_2",
+        "collapsible_tab_2",
+        "spacer_3",
+        "collapsible_tab_3",
+        "text_1",
+        "payment_enable",
+        "share"
+      ],
+      "settings": {
+        "enable_full_width": false,
+        "enable_sticky_info": true,
+        "product_gallery_width": 30,
+        "gallery_layout": "columns",
+        "media_position": "left",
+        "media_fit": "contain",
+        "thumbnail_size": "large",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "quantity_selector": 4,
+        "color_scheme": "option-2",
+        "in_stock_background_color": "#ffa680",
+        "in_stock_color": "#1d1d1d",
+        "under_gallery": "second",
+        "mobile_thumbnails": "hide",
+        "padding_top": 0,
+        "padding_bottom": 100,
+        "ignore_spacing": false
+      }
+    },
+    "quick_order_list": {
+      "type": "quick-order-list",
+      "settings": {
+        "show_image": true,
+        "show_sku": false,
+        "color_scheme": "option-1",
+        "color_scheme_1": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "tabs": {
+      "type": "tabs",
+      "blocks": {
+        "tab_1": {
+          "type": "tab",
+          "settings": {
+            "heading": "Product description",
+            "image": "",
+            "tab_image_width": 1000,
+            "hide_image": false,
+            "row_content": "<p>From protein powders to bars, chocolates, and supplements, our diverse range of vegan products caters to all your nutritional needs.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        },
+        "tab_2": {
+          "type": "tab",
+          "settings": {
+            "heading": "Nutritional Info",
+            "image": "",
+            "tab_image_width": 1000,
+            "hide_image": false,
+            "row_content": "<p>Energy: 210 kJ / 50 kcal, Fat: 2g (Saturates: 0.3g), Carbohydrate: 15g (Sugars: 6g), Fiber: 5g, Protein: 3g, Salt: 0g</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        },
+        "tab_3": {
+          "type": "tab",
+          "settings": {
+            "heading": "Shipping & Returns",
+            "image": "",
+            "tab_image_width": 1000,
+            "hide_image": false,
+            "row_content": "<h2>Returns policy</h2><ul><li>Dispatch: Within 24 Hours</li><li>Free shipping across all products on a minimum purchase of $50.</li><li>International delivery time - 7-10 business days</li><li>Cash on delivery might be available</li><li>Easy 30 days returns and exchanges</li></ul><h2>Shipping policy</h2><p>We offer standard and expedited shipping options at checkout. Standard shipping typically takes 3-7 business days, while expedited shipping arrives in 2-3 business days. Shipping costs are calculated based on the weight of the order and the selected shipping method. Free standard shipping is available on orders over $50.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "tab_1",
+        "tab_2",
+        "tab_3"
+      ],
+      "settings": {
+        "tabs_style": "style-2",
+        "full_width": true,
+        "color_scheme": "option-2",
+        "color_scheme_1": "option-1",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    },
+    "slick_slider": {
+      "type": "slick-slider",
+      "blocks": {
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "image": "",
+            "heading": "Cooking Workshop",
+            "caption": "Our workshops are designed to inspire and empower you to take control of your health and well-being through delicious, nutritious cooking.",
+            "button_label": "Book Now",
+            "link": "",
+            "show_link_button": false
+          }
+        },
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "image": "",
+            "heading": "Complete Nutrition",
+            "caption": "Power up your day. Your destination for delicious, organic cuisine sourced from the earth's bounty.",
+            "button_label": "Explore Meals",
+            "link": "",
+            "show_link_button": false
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "image": "",
+            "heading": "Flux Restaurant",
+            "caption": "Your destination for delicious, organic cuisine sourced from the earth's bounty. Indulge guilt-free in our plant-based menu crafted to nourish both body and soul.",
+            "button_label": "Find Us",
+            "link": "",
+            "show_link_button": false
+          }
+        }
+      },
+      "block_order": [
+        "slide_2",
+        "slide_1",
+        "slide_3"
+      ],
+      "settings": {
+        "auto_rotate": true,
+        "slider_interval": 4,
+        "full_width": false,
+        "image_opacity": 0.6,
+        "opacity_mobile": true,
+        "heading_size": 9,
+        "heading_tag": "h2",
+        "heading_style": "none",
+        "caption_size": 1.9,
+        "caption_style": "none",
+        "link_size": 1.8,
+        "color_scheme": "",
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "ignore_spacing": false
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "caption": "",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "heading": "Related Products",
+        "heading_size": "medium",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "products_to_show": 5,
+        "columns_desktop": 5,
+        "enable_desktop_slider": true,
+        "image_ratio": "square",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "color_scheme": "option-2",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "disable_arrow_mobile": true
+      }
+    },
+    "collapsible_content": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_1": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Are Flux products organic?",
+            "icon": "question_mark",
+            "row_content": "<p>Yes, all our products are crafted with organic ingredients, ensuring the highest quality and purity in every bite or scoop.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_2": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Are Flux plant-based products high in protein?",
+            "icon": "question_mark",
+            "row_content": "<p>Absolutely! Our vegan offerings are rich in plant-based proteins, carefully formulated to support muscle growth and recovery.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_3": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Do you offer a variety of plant-based options?",
+            "icon": "question_mark",
+            "row_content": "<p>Certainly! From protein powders to bars, chocolates, and supplements, our diverse range of vegan products caters to all your nutritional needs.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_4": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Are Flux products suitable for athletes?",
+            "icon": "check_mark",
+            "row_content": "<p>Absolutely! Our vegan products are designed to provide the essential nutrients and energy levels needed for athletes to perform at their best.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_5": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Are there any artificial additives or preservatives in Flux products?",
+            "icon": "check_mark",
+            "row_content": "<p>No, we pride ourselves on creating clean, wholesome products. You won't find any artificial additives or preservatives in our vegan offerings, ensuring a pure and nourishing experience.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_1",
+        "collapsible_row_2",
+        "collapsible_row_3",
+        "collapsible_row_4",
+        "collapsible_row_5"
+      ],
+      "settings": {
+        "caption": "",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "heading": "faq",
+        "heading_size": "medium",
+        "heading_style": "uppercase",
+        "heading_tag": "h2",
+        "heading_alignment": "center",
+        "open_first_collapsible_row": false,
+        "color_scheme": "option-1",
+        "color_scheme_1": "option-2",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "ignore_spacing": true,
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    },
+    "scrolling_text_1": {
+      "type": "scrolling-text",
+      "blocks": {
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>No Artificial Flavors. Pure Ingredients</p>",
+            "image_link": ""
+          }
+        },
+        "text_1": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "image": "",
+            "image_link": ""
+          }
+        },
+        "text_2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Sugar-Free. Low Carb. High Fiber. Nutrient Dense</p>",
+            "image_link": ""
+          }
+        },
+        "text_3": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "image": "",
+            "image_link": ""
+          }
+        },
+        "text_4": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Whole Foods. Allergen Friendly. Preservative Free</p>",
+            "image_link": ""
+          }
+        },
+        "text_5": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "image": "",
+            "image_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text",
+        "text_1",
+        "text_2",
+        "text_3",
+        "text_4",
+        "text_5"
+      ],
+      "settings": {
+        "scroll_direction": "ltc",
+        "enable_scroll_decoration": false,
+        "scroll_decoration": "diamond",
+        "scroll_speed": 70,
+        "scroll_height": 100,
+        "scroll_text_size": 2,
+        "enable_stencil_text": false,
+        "hover_stop": true,
+        "keep_small_mobile": false,
+        "border": false,
+        "enable_announcement_bar_desktop_sticky": false,
+        "enable_announcement_bar_mobile_sticky": false,
+        "ignore_spacing": false,
+        "color_scheme": "option-2",
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "column_1": {
+          "type": "column",
+          "settings": {
+            "rating": true,
+            "rating_stars": "5-star",
+            "text": "<p>Chocolate Cherry is a delightful blend that satisfies both my sweet cravings and my need for nutrition. The combination of rich chocolate and tangy cherry is perfectly balanced</p>",
+            "title": "Robin Doe",
+            "image": "",
+            "hide_image": false,
+            "product": ""
+          }
+        },
+        "column_2": {
+          "type": "column",
+          "settings": {
+            "rating": true,
+            "rating_stars": "4-star",
+            "text": "<p>Mac and Cheeze is a comforting and delicious plant-based alternative to the classic dish. Its creamy texture and cheesy flavor make it a winner for both vegans and non-vegans alike.</p>",
+            "title": "John Smith",
+            "image": "",
+            "hide_image": false,
+            "product": ""
+          }
+        },
+        "column_3": {
+          "type": "column",
+          "settings": {
+            "rating": true,
+            "rating_stars": "3-star",
+            "text": "<p>Beet Potato Chips are a delightful twist on a classic snack. These crispy chips offer a unique combination of earthy beet flavor and the familiar crunch of potato. Lightly seasoned & yummy.</p>",
+            "title": "Liz Lesley",
+            "image": "",
+            "hide_image": false,
+            "product": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_1",
+        "column_2",
+        "column_3"
+      ],
+      "settings": {
+        "title": "Testimonials",
+        "heading_size": "medium",
+        "heading_tag": "h2",
+        "caption": "",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "button_label": "",
+        "button_link": "",
+        "testimonials_style": "style-2",
+        "columns_desktop": 3,
+        "enable_desktop_slider": false,
+        "color_scheme": "option-1",
+        "color_scheme_1": "option-2",
+        "padding_top": 36,
+        "padding_bottom": 0,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "swipe_on_mobile": true,
+        "disable_arrow_mobile": true
+      }
+    },
+    "recently_viewed_products": {
+      "type": "recently-viewed-products",
+      "settings": {
+        "caption": "",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "heading": "Pick up where you left off",
+        "heading_size": "medium",
+        "heading_tag": "h2",
+        "color_scheme": "option-2",
+        "color_scheme_1": "option-1",
+        "padding_top": 36,
+        "padding_bottom": 48,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    },
+    "quick_info_bar": {
+      "type": "quick-info-bar",
+      "settings": {
+        "image-1": "",
+        "heading-1": "Free Shipping",
+        "caption-1": "For orders over $110",
+        "image-2": "",
+        "heading-2": "Money Guarantee",
+        "caption-2": "30 days for an exchange",
+        "image-3": "",
+        "heading-3": "Online Support",
+        "caption-3": "24 hours per day",
+        "image-4": "",
+        "heading-4": "Flexible Payment",
+        "caption-4": "Multiple Credit Cards",
+        "image_size": "small",
+        "add_border": false,
+        "full_width_background": false,
+        "color_scheme": "option-1",
+        "color_scheme_1": "option-2",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "ignore_spacing": true,
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "quick_order_list",
+    "tabs",
+    "slick_slider",
+    "related-products",
+    "collapsible_content",
+    "scrolling_text_1",
+    "testimonials",
+    "recently_viewed_products",
+    "quick_info_bar"
+  ]
+}

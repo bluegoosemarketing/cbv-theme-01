@@ -1,0 +1,124 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "popup": {
+      "type": "popup",
+      "disabled": true,
+      "settings": {
+        "enable_popup": true,
+        "popup_test": false,
+        "fadein": 4,
+        "popup_count": 1,
+        "trigger_link": true,
+        "layout": "style_3",
+        "image_width": 45,
+        "image_alt": "Alt text",
+        "popup_title": "Sign up for 20% off your first order!",
+        "header_font_size": 32,
+        "popup_message": "Join our newsletter to be the first to know about new arrivals, exclusive promotions, and online-only deals.",
+        "message_font_size": 14,
+        "submit_button_text": "Sign-up",
+        "success_message": "Success Message",
+        "show_social": true,
+        "enable_terms": true,
+        "terms_label": "<p>I agree to receive marketing emails</p>",
+        "terms_position": "position_above",
+        "subs_form": false,
+        "button_label": "",
+        "link": "",
+        "color_scheme": "option-1"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand_information": {
+          "type": "brand_information",
+          "settings": {
+            "brand_headline": "",
+            "brand_description": "<p>We are the new owners of <em>Candles by Victoria</em>, a name that holds so much love, trust, and warmth thanks to the incredible woman behind it all — Victoria. For 26 years, Victoria has poured her heart into every candle, creating a community that is more than just customers — it’s a family. Victoria formed a community of 58,000 loyal followers, filled thousands and thousands; it’s clear that her passion, integrity, and unmatched quality have left a lasting legacy on people. From our family to yours: thank you for giving us the chance to carry this beautiful flame forward. We can’t wait to walk this new chapter with you, honoring Victoria every step of the way. With warmth and gratitude,<br/>Nikki, Rikki, and Brooke.<br/>Candles By Victoria 1999–2025 — continuing the legacy</p>",
+            "brand_image": "shopify://shop_images/plain_candles_by_Victoria-2.svg",
+            "brand_image_width": 80,
+            "hide_image": false,
+            "newsletter_enable": true,
+            "show_social": true,
+            "social_icons_size": "small"
+          }
+        },
+        "footer-0": {
+          "type": "text",
+          "settings": {
+            "heading": "Our Shop",
+            "subtext": "<p>Edgewood, Texas</p><p>972-839-9806</p><p></p>"
+          }
+        },
+        "footer-1": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Quick links",
+            "menu": "footer-menu"
+          }
+        },
+        "footer-2": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/cbv_icon_c3d37101-baff-4da7-80f0-4cd658501384.png",
+            "image_width": 210,
+            "image_headline": "Hand poured with love. Home made from the heart.",
+            "image_description": "",
+            "button_label": "New Arrivals",
+            "button_link": "shopify://collections/candle-jars",
+            "open_new_tab_1": false,
+            "button_style_secondary": true,
+            "color_scheme_1": "option-2"
+          }
+        }
+      },
+      "block_order": [
+        "brand_information",
+        "footer-0",
+        "footer-1",
+        "footer-2"
+      ],
+      "settings": {
+        "enable_follow_on_shop": true,
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "payment_enable": true,
+        "show_powered_by_link": true,
+        "show_policy": true,
+        "enable_terms": false,
+        "terms_label": "<p>I agree to receive marketing emails</p>",
+        "back_to_top_desktop": true,
+        "back_to_top_bottom": 80,
+        "back_to_top_right": 4,
+        "back_to_top_mobile": true,
+        "centered_content": false,
+        "color_scheme": "option-1",
+        "footer_border": false,
+        "swipe_on_mobile": false,
+        "disable_arrow_mobile": true,
+        "margin_top": 0,
+        "margin_bottom": 80,
+        "make_columns_even": false,
+        "padding_top": 48,
+        "padding_bottom": 16,
+        "ignore_spacing": true
+      }
+    }
+  },
+  "order": [
+    "popup",
+    "footer"
+  ]
+}

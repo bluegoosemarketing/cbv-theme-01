@@ -1,0 +1,374 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "video_background": {
+      "type": "video-background",
+      "settings": {
+        "caption": "About us",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "heading": "Meet our Team",
+        "heading_size": "large",
+        "heading_tag": "h2",
+        "text": "<p>Passionate Experts Curating the Best in Flux, Protein, Vegan, and All-Natural Powders, Chocolates, and Snacks to Power Your Day!</p>",
+        "button_label": "Our Products",
+        "link": "",
+        "full_width_background": false,
+        "background_height": "small",
+        "box_align": "middle-left",
+        "text_align": "left",
+        "ignore_box": false,
+        "blur": 0,
+        "opacity": 0.5,
+        "color_scheme": "option-3",
+        "padding_top": 0,
+        "padding_bottom": 36,
+        "ignore_spacing": false
+      }
+    },
+    "multicolumn": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_1": {
+          "type": "column",
+          "settings": {
+            "image": "",
+            "hide_image": false,
+            "title": "Alexander Bennett",
+            "text": "<p>Our journey began with a simple mission: to redefine how we fuel our bodies. With a dedication to quality and a passion for health, we've crafted a collection of fuel options that not only nourish but delight the senses. Join us on this exciting adventure toward a healthier, more vibrant lifestyle!</p><p><strong>Email: </strong>alexander.bannett@email.com</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_2": {
+          "type": "column",
+          "settings": {
+            "image": "",
+            "hide_image": false,
+            "title": "Ava Johnson",
+            "text": "<p>As a health enthusiast and advocate for conscious consumption, I co-founded Flux to offer a better alternative in the world of fuel and snacks. With a team dedicated to sourcing the finest ingredients and crafting products that nourish both body and soul, we're excited to share our passion with you.</p><p><strong>Email: </strong>ava.johnson@email.com</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_3": {
+          "type": "column",
+          "settings": {
+            "image": "",
+            "hide_image": false,
+            "title": "Olivia Mitchell",
+            "text": "<p>Our team is committed to revolutionizing the way we snack and refuel, blending innovation with nature's goodness to create products that elevate both body and mind. With Flux, you're not just getting fuel – you're joining a movement towards a healthier, happier you.</p><p><strong>Email: </strong>olivia.mitchell@email.com</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_1",
+        "column_2",
+        "column_3"
+      ],
+      "settings": {
+        "enable_card_background": false,
+        "caption": "dedicated and passionate team",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "title": "Flux Founders",
+        "heading_size": "large",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "image_width": "full",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "option-1",
+        "color_scheme_1": "option-2",
+        "padding_top": 0,
+        "padding_bottom": 36,
+        "ignore_spacing": true,
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "disable_arrow_mobile": true
+      }
+    },
+    "banner_two_columns": {
+      "type": "banner-two-columns",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "caption": "Marketing",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium",
+            "heading": "Noah Parker",
+            "heading_size": "medium",
+            "heading_tag": "h2",
+            "subheading": "Our goal is simple: to spread the word about the incredible lineup of fuel, protein,  and all-natural products we offer. From crafting engaging campaigns to connecting with our amazing community, we're fueled by creativity and driven by a shared passion for wellness.",
+            "link_label": "",
+            "link": "",
+            "show_text_box": false,
+            "image_overlay_opacity": 90,
+            "color_scheme_1": ""
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "caption": "Marketing",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium",
+            "heading": "Harper Walker",
+            "heading_size": "medium",
+            "heading_tag": "h2",
+            "subheading": "From brainstorming exciting campaigns to engaging with our fantastic customers, we're all about spreading the word.",
+            "link_label": "",
+            "link": "",
+            "show_text_box": false,
+            "image_overlay_opacity": 90,
+            "color_scheme_1": ""
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "caption": "CEO",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium",
+            "heading": "Eva Doe",
+            "heading_size": "medium",
+            "heading_tag": "h2",
+            "subheading": " From crafting engaging campaigns to connecting with our amazing community",
+            "link_label": "",
+            "link": "",
+            "show_text_box": false,
+            "image_overlay_opacity": 60,
+            "color_scheme_1": "option-3"
+          }
+        },
+        "slide_4": {
+          "type": "slide",
+          "settings": {
+            "caption": "CEO & Marketing",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium",
+            "heading": "Family Flux",
+            "heading_size": "medium",
+            "heading_tag": "h2",
+            "subheading": "Our journey began with a simple mission: to redefine how we fuel our bodies. ",
+            "link_label": "",
+            "link": "",
+            "show_text_box": false,
+            "image_overlay_opacity": 60,
+            "color_scheme_1": "option-3"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2",
+        "slide_3",
+        "slide_4"
+      ],
+      "settings": {
+        "banner_layout": "grid_one",
+        "animate_slider": false,
+        "full_width": false,
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "ignore_spacing": true,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "swipe_on_mobile": false,
+        "disable_arrow_mobile": true
+      }
+    },
+    "rich_text": {
+      "type": "rich-text",
+      "blocks": {
+        "image": {
+          "type": "image",
+          "settings": {
+            "image": ""
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Our history</p>",
+            "heading_size": "large",
+            "heading_style": "default",
+            "heading_tag": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Embark on a journey through time with Flux, where passion, innovation, and a commitment to wellness converge. Discover how a simple idea blossomed into a thriving venture, driven by a shared vision to redefine fuel and snacks. </p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "image",
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "full_width": true,
+        "color_scheme": "option-2",
+        "padding_top": 76,
+        "padding_bottom": 0,
+        "ignore_spacing": false,
+        "mobile_content_alignment": "center"
+      }
+    },
+    "tabs": {
+      "type": "tabs",
+      "blocks": {
+        "tab_1": {
+          "type": "tab",
+          "settings": {
+            "heading": "2015",
+            "image": "",
+            "hide_image": false,
+            "row_content": "<h2>The Seed of Inspiration</h2><p>In 2015, fueled by a passion for health and sustainability, our journey began. A small group of visionaries came together with a shared dream: to create a line of fuel products that not only nourish the body but also respect the planet. With this seed of inspiration, our mission took root, setting the stage for the transformative years ahead.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        },
+        "tab_2": {
+          "type": "tab",
+          "settings": {
+            "heading": "2018",
+            "image": "",
+            "hide_image": false,
+            "row_content": "<h2>Growth and Innovation</h2><p>By 2018, our dedication to innovation and quality had propelled us forward. We expanded our product line to include protein-rich options, catering to the needs of fitness enthusiasts and health-conscious individuals alike. Embracing the growing demand for vegan alternatives, we embarked on a journey to craft delicious, plant-based options that defy expectations. </p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        },
+        "tab_3": {
+          "type": "tab",
+          "settings": {
+            "heading": "2022",
+            "image": "",
+            "hide_image": false,
+            "row_content": "<h2>Pioneering Sustainability</h2><p>In 2022, sustainability took center stage as we intensified our commitment to eco-conscious practices. Harnessing the power of nature, we introduced a range of all-natural powders sourced from the finest ingredients the earth has to offer. From organic superfoods to ethically sourced botanicals, each product was a testament to our unwavering dedication to purity and transparency. </p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        },
+        "tab_4": {
+          "type": "tab",
+          "settings": {
+            "heading": "2024",
+            "image": "",
+            "hide_image": false,
+            "row_content": "<h2> A Vision Realized</h2><p>Fast forward to 2024, and our vision has become a reality. With a diverse array of protein-rich, vegan, all-natural powders, and snacks, we've established ourselves as a leading force in the fuel industry. Our commitment to quality, sustainability, and innovation remains unwavering as we continue to evolve and grow. </p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "tab_1",
+        "tab_2",
+        "tab_3",
+        "tab_4"
+      ],
+      "settings": {
+        "tabs_style": "style-2",
+        "full_width": false,
+        "color_scheme": "option-2",
+        "padding_top": 16,
+        "padding_bottom": 76,
+        "ignore_spacing": true
+      }
+    },
+    "image_gallery": {
+      "type": "image-gallery",
+      "blocks": {
+        "text_1": {
+          "type": "text",
+          "settings": {
+            "image": ""
+          }
+        },
+        "text_2": {
+          "type": "text",
+          "settings": {
+            "image": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_1",
+        "text_2"
+      ],
+      "settings": {
+        "caption": "Follow us on socials",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "title": "@flux",
+        "heading_size": "medium",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "scroll_direction": "ltc",
+        "scroll_speed": 70,
+        "scroll_height": 600,
+        "hover_stop": true,
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "video_background",
+    "multicolumn",
+    "banner_two_columns",
+    "rich_text",
+    "tabs",
+    "image_gallery"
+  ]
+}

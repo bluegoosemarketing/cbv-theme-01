@@ -1,0 +1,192 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "comparison_slider": {
+      "type": "comparison-slider",
+      "settings": {
+        "caption": "",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "title": "",
+        "heading_size": "medium",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "image": "",
+        "image_2": "",
+        "animate_slider": true,
+        "height": 450,
+        "before_text": "Fitness Events",
+        "after_text": "Nutrition Events",
+        "disable_before_after": false,
+        "full_width": false,
+        "accessibility_info": "Compare Items",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "ignore_spacing": false,
+        "mobile_height": 450
+      }
+    },
+    "events_calendar": {
+      "type": "events-calendar",
+      "blocks": {
+        "event_1": {
+          "type": "event",
+          "settings": {
+            "event_date": 7,
+            "event_month": "Feb",
+            "hide_date": false,
+            "event_time": "Sunday, 12:30pm",
+            "event_price": "37",
+            "event_heading": "Fueling Your Fitness Journey",
+            "heading_size": "medium",
+            "heading_tag": "h2",
+            "event_description": "<p>In the realm of fitness, we often focus heavily on exercise routines and recovery strategies.</p>",
+            "event_location": "Sunset Meadow Park Pavilion, 456 Oak Avenue, Lakeside City, USA",
+            "link_label": "Book Now",
+            "link": ""
+          }
+        },
+        "event_2": {
+          "type": "event",
+          "settings": {
+            "event_date": 15,
+            "event_month": "Mar",
+            "hide_date": false,
+            "event_time": "Saturday, 7:30pm",
+            "event_price": "25",
+            "event_heading": "Flux Cooking Show",
+            "heading_size": "medium",
+            "heading_tag": "h2",
+            "event_description": "<p>Are you ready to embark on a culinary adventure unlike any other? </p>",
+            "event_location": "Riverside Park Amphitheater, 123 Main Street, Anytown, USA",
+            "link_label": "Book Now",
+            "link": ""
+          }
+        },
+        "event_3": {
+          "type": "event",
+          "settings": {
+            "event_date": 25,
+            "event_month": "Jun",
+            "hide_date": false,
+            "event_time": "Monday, 17:30pm",
+            "event_price": "20",
+            "event_heading": "Navigating the Path to Wellness with Flux",
+            "heading_size": "medium",
+            "heading_tag": "h2",
+            "event_description": "<p>Your Fuel journey begins with a commitment to nourishing your body.</p>",
+            "event_location": "Maple Grove Farm, 789 Harvest Lane, Orchardville, USA",
+            "link_label": "Book Now",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "event_1",
+        "event_2",
+        "event_3"
+      ],
+      "settings": {
+        "caption": "",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "heading_size": "medium",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 0,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    },
+    "rich_text": {
+      "type": "rich-text",
+      "blocks": {
+        "image": {
+          "type": "image",
+          "settings": {
+            "image": ""
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Subscribe to our newsletter today and unlock exclusive benefits!</p>",
+            "heading_size": "medium",
+            "heading_style": "default",
+            "heading_tag": "h2"
+          }
+        }
+      },
+      "block_order": [
+        "image",
+        "heading"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "full_width": true,
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 32,
+        "ignore_spacing": false,
+        "mobile_content_alignment": "center"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "blocks": {
+        "email_form": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "email_form"
+      ],
+      "settings": {
+        "full_width": true,
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "ignore_spacing": true
+      }
+    },
+    "separator": {
+      "type": "separator",
+      "settings": {
+        "margin_top_desktop": 36,
+        "margin_bottom_desktop": 0,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "comparison_slider",
+    "events_calendar",
+    "rich_text",
+    "newsletter",
+    "separator"
+  ]
+}

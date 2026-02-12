@@ -1,0 +1,142 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "comparison_slider": {
+      "type": "comparison-slider",
+      "settings": {
+        "caption": "",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "title": "",
+        "heading_size": "medium",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "image": "",
+        "image_2": "",
+        "animate_slider": false,
+        "height": 550,
+        "before_text": "Before",
+        "after_text": "After",
+        "disable_before_after": false,
+        "full_width": false,
+        "color_scheme": "",
+        "accessibility_info": "Compare Items",
+        "padding_top": 12,
+        "padding_bottom": 0,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_height": 450
+      }
+    },
+    "main": {
+      "type": "main-blog",
+      "settings": {
+        "layout": "grid-2",
+        "blog_style": "blog-style-one",
+        "show_image": true,
+        "image_height": "large",
+        "tags": true,
+        "tag_label": "Filter by Tag",
+        "tag_default": "All Posts",
+        "show_page_title": true,
+        "show_date": true,
+        "show_author": false,
+        "padding_top": 0,
+        "padding_bottom": 72
+      }
+    },
+    "featured-blog": {
+      "type": "featured-blog",
+      "settings": {
+        "caption": "Iris tips and tricks",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "heading": "Featured Articles",
+        "heading_size": "medium",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "blog": "",
+        "blog_style": "blog-style-one",
+        "post_limit": 3,
+        "columns_desktop": 3,
+        "color_scheme": "option-2",
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "show_excerpt": true,
+        "show_view_all": true,
+        "swipe_on_mobile": true,
+        "disable_arrow_mobile": true,
+        "padding_top": 32,
+        "padding_bottom": 72
+      }
+    },
+    "email-signup-banner": {
+      "type": "email-signup-banner",
+      "blocks": {
+        "caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "Get Latest News",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Subscribe to our Newsletter",
+            "heading_size": "medium",
+            "heading_style": "default",
+            "heading_tag": "h2"
+          }
+        },
+        "paragraph": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Don't miss out on this opportunity to stay in the loop. Sign up for our newsletter today!</p>",
+            "text_style": "body"
+          }
+        },
+        "email_form": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "caption",
+        "heading",
+        "paragraph",
+        "email_form"
+      ],
+      "settings": {
+        "image": "",
+        "image_2": "",
+        "newsletter_style": "style_one",
+        "layout": "image_first",
+        "full_width": true,
+        "color_scheme": "option-1",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    }
+  },
+  "order": [
+    "comparison_slider",
+    "main",
+    "featured-blog",
+    "email-signup-banner"
+  ]
+}

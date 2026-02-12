@@ -1,0 +1,395 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_with_featured_collection": {
+      "type": "image-banner-with-featured-collection",
+      "settings": {
+        "image": "shopify://shop_images/Thank_you_card_Front.jpg",
+        "hide_image": false,
+        "image_overlay_opacity": 0,
+        "image_height": 0,
+        "full_width_banner": false,
+        "adapt_to_image": true,
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "enable_collection": true,
+        "collection": "bake-shoppe",
+        "collection_style": "collection-one",
+        "products_to_show": 12,
+        "columns_desktop": 4,
+        "full_width": false,
+        "enable_desktop_slider": true,
+        "desktop_margin_top": 0,
+        "mobile_margin_top": 0,
+        "image_ratio": "square",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "enable_quick_add": true,
+        "enable_quick_buy": false,
+        "quick_add_position": "overlay",
+        "color_scheme": "option-4",
+        "color_scheme_1": "option-2",
+        "padding_top": 44,
+        "padding_bottom": 8,
+        "ignore_spacing": true,
+        "image_overlay_opacity_mobile": 50,
+        "image_height_mobile": 56,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "center",
+        "columns_mobile": "2",
+        "disable_quick_add": false,
+        "swipe_on_mobile": true,
+        "disable_arrow_mobile": true
+      }
+    },
+    "rich-text": {
+      "type": "rich-text",
+      "blocks": {
+        "image_mTeaAX": {
+          "type": "image",
+          "settings": {}
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p><em>Handcrafted candles, beautiful fragrances, & a scent throw that will fill the room in just one burn! </em></p>",
+            "heading_size": "medium",
+            "heading_style": "default",
+            "heading_tag": "h2",
+            "highlight_option": "underline-hand",
+            "word_animation_color": "#000000"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>One of a kind candle shop with OVER 300 Fragrances. </p>"
+          }
+        }
+      },
+      "block_order": [
+        "image_mTeaAX",
+        "heading",
+        "text"
+      ],
+      "disabled": true,
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "full_width": true,
+        "color_scheme": "option-1",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 36,
+        "mobile_content_alignment": "center"
+      }
+    },
+    "collection_tabs": {
+      "type": "collection-tabs",
+      "blocks": {
+        "collection_3": {
+          "type": "collection",
+          "settings": {
+            "collection": "scent-shot",
+            "tab_heading": "Scent Shots"
+          }
+        },
+        "collection_2": {
+          "type": "collection",
+          "settings": {
+            "collection": "candle-jars",
+            "tab_heading": "CANDLES"
+          }
+        },
+        "collection_1": {
+          "type": "collection",
+          "settings": {
+            "collection": "candle-sampler-packs",
+            "tab_heading": "SAMPLERS"
+          }
+        }
+      },
+      "block_order": [
+        "collection_3",
+        "collection_2",
+        "collection_1"
+      ],
+      "settings": {
+        "caption": "check out our",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "small",
+        "title": "SCENT SHOTS, BASIC CANDLES, & SAMPLER PACKS",
+        "heading_size": "medium",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "description": "",
+        "description_style": "body",
+        "collection_style": "collection-three",
+        "content_alignment": "center",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "enable_desktop_slider": false,
+        "image_ratio": "square",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "enable_quick_add": false,
+        "enable_quick_buy": false,
+        "quick_add_position": "default",
+        "color_scheme": "option-2",
+        "color_scheme_1": "",
+        "padding_top": 32,
+        "padding_bottom": 32,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "columns_mobile": "1",
+        "disable_quick_add": false,
+        "swipe_on_mobile": false
+      }
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_1": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "bake-shoppe"
+          }
+        },
+        "featured_collection_2": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "sweet-treats"
+          }
+        },
+        "featured_collection_6": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "cuties"
+          }
+        },
+        "featured_collection_4": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "cbv-body-home"
+          }
+        },
+        "featured_collection_cbAqJC": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "melts"
+          }
+        },
+        "featured_collection_3": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "candle-jars"
+          }
+        },
+        "featured_collection_5": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "scent-shot"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_1",
+        "featured_collection_2",
+        "featured_collection_6",
+        "featured_collection_4",
+        "featured_collection_cbAqJC",
+        "featured_collection_3",
+        "featured_collection_5"
+      ],
+      "settings": {
+        "title": "SHOP BY COLLECTION",
+        "heading_size": "medium",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "caption": "",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "small",
+        "enable_desktop_slider": true,
+        "collection_list_style": "collection-list-two",
+        "image_ratio": "portrait",
+        "columns_desktop": 4,
+        "color_scheme": "option-3",
+        "color_scheme_1": "option-1",
+        "padding_top": 28,
+        "padding_bottom": 28,
+        "ignore_spacing": true,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "disable_arrow_mobile": true
+      }
+    },
+    "promotion_cards": {
+      "type": "promotion-cards",
+      "blocks": {
+        "column_1": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/24kgoldcandle-600x600_cf2933a3-fccc-4130-b70d-1fe8488289aa.jpg",
+            "caption": "$16.50",
+            "title": "GOLD FLAKE",
+            "link_label": "Shop Here",
+            "link": "",
+            "open_new_tab_1": false
+          }
+        },
+        "column_2": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/18oz.honeycomb.jpg",
+            "caption": "$18.00",
+            "title": "Honeycomb",
+            "link_label": "Order Now",
+            "link": "shopify://products/18oz-honeycomb-candle",
+            "open_new_tab_1": false
+          }
+        },
+        "column_3": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/wickless.jpg",
+            "caption": "$18.00",
+            "title": "Wickless",
+            "link_label": "Shop Now",
+            "link": "shopify://products/18oz-wickless-cylinder-jar",
+            "open_new_tab_1": false
+          }
+        },
+        "column_4": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/16ozsquare.svg",
+            "caption": "$16.00",
+            "title": "Square",
+            "link_label": "Order Now",
+            "link": "shopify://products/16oz-square-candle",
+            "open_new_tab_1": false
+          }
+        }
+      },
+      "block_order": [
+        "column_1",
+        "column_2",
+        "column_3",
+        "column_4"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Top Picks",
+        "heading_size": "medium",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "caption": "Shop our most popular candles",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "promotion_cards_style": "promotion-cards-one",
+        "columns_desktop": 4,
+        "enable_desktop_slider": true,
+        "color_scheme": "option-1",
+        "color_scheme_1": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "ignore_spacing": false,
+        "columns_mobile": "1",
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "swipe_on_mobile": true,
+        "disable_arrow_mobile": true
+      }
+    },
+    "featured_collection_QDjE7a": {
+      "type": "featured-collection",
+      "blocks": {
+        "slide_zN7PiY": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/scentshots_06ee7bb0-d57b-41fa-842d-6a303639b28a.jpg",
+            "hide_image": false,
+            "caption": "Test any fragrance with",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "small",
+            "heading": "SCENT SHOTS",
+            "heading_size": "medium",
+            "heading_tag": "h2",
+            "subheading": "MELT IN YOUR WARMER",
+            "link_label": "",
+            "link": "shopify://collections/scent-shot",
+            "open_new_tab_1": false,
+            "show_text_box": false,
+            "image_overlay_opacity": 60,
+            "color_scheme_1": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_zN7PiY"
+      ],
+      "disabled": true,
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "collection": "scent-shot",
+        "caption": "test any fragrance with our",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "title": "scent shots",
+        "heading_size": "medium",
+        "heading_style": "uppercase",
+        "heading_tag": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection_style": "collection-three",
+        "products_to_show": 8,
+        "columns_desktop": 3,
+        "full_width": false,
+        "show_view_all": false,
+        "view_all_style": "link",
+        "enable_desktop_slider": false,
+        "image_ratio": "square",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "enable_quick_add": false,
+        "enable_quick_buy": true,
+        "quick_add_position": "default",
+        "color_scheme": "",
+        "color_scheme_1": "",
+        "padding_top": 12,
+        "padding_bottom": 0,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "columns_mobile": "1",
+        "disable_quick_add": false,
+        "swipe_on_mobile": false,
+        "disable_arrow_mobile": true
+      }
+    }
+  },
+  "order": [
+    "image_banner_with_featured_collection",
+    "rich-text",
+    "collection_tabs",
+    "collection_list",
+    "promotion_cards",
+    "featured_collection_QDjE7a"
+  ]
+}
