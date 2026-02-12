@@ -301,40 +301,7 @@
                                   {% render 'icon-arrow' %}
                                   {{ link.title | escape }}
                                 </button>
-                                <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
-                                  {%- for childlink in link.links -%}
-                                    <li>
-                                      {%- if childlink.links == blank -%}
-                                        <a href="{{ childlink.url }}" class="menu-drawer__menu-item link link--text list-menu__item focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
-                                          {{ childlink.title | escape }}
-                                        </a>
-                                      {%- else -%}
-                                        <details id="Details-menu-drawer-submenu-{{ forloop.index }}">
-                                          <summary class="menu-drawer__menu-item link link--text list-menu__item focus-inset">
-                                            {{ childlink.title | escape }}
-                                            {% render 'icon-arrow' %}
-                                            {% render 'icon-caret' %}
-                                          </summary>
-                                          <div id="childlink-{{ childlink.handle | escape }}" class="menu-drawer__submenu has-submenu motion-reduce">
-                                            <button class="menu-drawer-close-button link link--text focus-inset" aria-expanded="true">
-                                              {% render 'icon-arrow' %}
-                                              {{ childlink.title | escape }}
-                                            </button>
-                                            <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
-                                              {%- for grandchildlink in childlink.links -%}
-                                                <li>
-                                                  <a href="{{ grandchildlink.url }}" class="menu-drawer__menu-item link link--text list-menu__item focus-inset{% if grandchildlink.current %} menu-drawer__menu-item--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
-                                                    {{ grandchildlink.title | escape }}
-                                                  </a>
-                                                </li>
-                                              {%- endfor -%}
-                                            </ul>
-                                          </div>
-                                        </details>
-                                      {%- endif -%}
-                                    </li>
-                                  {%- endfor -%}
-                                </ul>
+                                {% render 'cbv-mobile-menu-links', link: link, menu_index: forloop.index, section: section %}
                               </div>
                             </div>
                           </details>
@@ -884,72 +851,7 @@
                           {% render 'icon-caret' %}
                         </div>
                       {%- endif -%}
-                      <div id="MegaMenu-Content-{{ forloop.index }}" class="navigation-submenu top mega-menu__content color-{{ section.settings.color_scheme }} gradient motion-reduce global-settings-popup {% if section.settings.all_items_mega != true %}{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}{% endif %}" tabindex="-1">
-                        <ul class="mega-menu__list page-width" role="list">
-                          {%- for childlink in link.links -%}
-                            <li>
-                              <a href="{{ childlink.url }}" class="mega-menu__link mega-menu__link--level-2 heading-bold link{% if childlink.current %} mega-menu__link--active{% endif %}"
-                                {% if childlink.current %} aria-current="page"{% endif %}
-                              >
-                                <span>{{ childlink.title | escape }}</span>
-                              </a>
-                              {%- if childlink.links != blank -%}
-                                <ul class="list-unstyled" role="list">
-                                  {%- for grandchildlink in childlink.links -%}
-                                    <li>
-                                      <a href="{{ grandchildlink.url }}" class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
-                                        <span>{{ grandchildlink.title | escape }}</span>
-                                      </a>
-                                    </li>
-                                  {%- endfor -%}
-                                </ul>
-                              {%- endif -%}
-                            </li>
-                          {%- endfor -%}
-                  
-                          {% comment %} Start Mega Menu Promotion {% endcomment %}
-                            {% for block in section.blocks %}
-                              {% case block.type %}
-                                {% when 'mega_promotion' %}                           
-                                  {% if block.settings.mega_promotion_item %}                                           
-                                    {% if link.title == block.settings.mega_promotion_item %}  
-                                      <div class="mega-menu-collection" {{ block.shopify_attributes }}>                                    
-                                      {%- if block.settings.mega_promotion_title != blank -%}
-                                            <p class="title heading-bold">{{ block.settings.mega_promotion_title }}</p>
-                                          {%- endif -%}                                    
-                                        <div class="mega-menu-collection-image">                                          
-                                          {%- if block.settings.mega_promotion_image != blank -%}
-                                            <a href="{{ block.settings.mega_promotion_link }}" class="title-link">
-                                              {{ block.settings.mega_promotion_image | image_url: width: 250 | image_tag: loading: 'lazy'}}
-                                            </a>
-                                          {%- else -%}
-                                            {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
-                                          {%- endif -%}
-                                         </div>
-
-                                        <div class="mega-menu-collection-text">
-                                          {%- if block.settings.mega_promotion_caption != blank -%}
-                                            <p class="caption-with-letter-spacing "{{ block.shopify_attributes }}>
-                                              {{ block.settings.mega_promotion_caption | escape }}
-                                            </p>
-                                          {%- endif -%}                                                                           
-                                        </div>
-
-                                        <div class="mega-menu-link link">
-                                          {%- if block.settings.mega_promotion_link_label != blank -%}
-                                            <a class="link animate-arrow" {% if block.settings.mega_promotion_link == blank %}role="link" aria-disabled="true"{% else %}href="{{ block.settings.mega_promotion_link }}"{% endif %}>{{ block.settings.mega_promotion_link_label | escape }}</a>
-                                          {%- endif -%}
-                                        </div>
-                        
-                                      </div>
-                                    {% endif %}                       
-                                  {% endif %}                    
-                                {% endcase %}
-                              {% endfor %}
-                           {% comment %} End Mega Menu Promotion {% endcomment %}
-                  
-                        </ul>
-                      </div>
+                      {% render 'cbv-mega-menu-panel', link: link, menu_index: forloop.index, section: section %}
                 {%- else -%}
                   
                 {% comment %} Start Mega Image Navigation {% endcomment %}
@@ -1945,6 +1847,33 @@ document.addEventListener('shopify:section:load', () => {
       "label": "t:sections.header.settings.all_items_mega.label",
       "info": "t:sections.header.settings.all_items_mega.info",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "CBV scent discovery"
+    },
+    {
+      "type": "text",
+      "id": "scents_search_heading",
+      "label": "Scent search heading",
+      "default": "Find your perfect scent"
+    },
+    {
+      "type": "text",
+      "id": "scents_search_copy",
+      "label": "Scent search helper text",
+      "default": "Browse the full library A–Z or jump straight to a fragrance family."
+    },
+    {
+      "type": "text",
+      "id": "scents_search_label",
+      "label": "Scent search CTA label",
+      "default": "Search all scents"
+    },
+    {
+      "type": "url",
+      "id": "scents_search_link",
+      "label": "Scent search link"
     },
     {
       "type": "checkbox",

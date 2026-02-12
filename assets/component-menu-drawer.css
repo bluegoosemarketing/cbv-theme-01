@@ -356,3 +356,9 @@
     line-height: 1;
   }
 }
+@media screen and (max-width: 990px) {
+  .menu-drawer__menu-item--search {
+    font-weight: 600;
+    border-bottom-style: dashed;
+  }
+}
