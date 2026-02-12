@@ -1,0 +1,103 @@
+{%- liquid
+  assign menu_title = link.title | strip
+  assign menu_title_upcase = menu_title | upcase
+
+  assign is_shop_menu = false
+  if menu_title_upcase == 'SHOP'
+    assign is_shop_menu = true
+  endif
+
+  assign is_scents_menu = false
+  if menu_title_upcase == 'SCENTS'
+    assign is_scents_menu = true
+  endif
+
+  assign eyebrow_text = ''
+  if is_shop_menu
+    assign eyebrow_text = 'Shop by format'
+  elsif is_scents_menu
+    assign eyebrow_text = 'Shop by scent'
+  endif
+
+  assign featured_block = blank
+  for nav_block in section.blocks
+    assign promo_item_upcase = nav_block.settings.mega_promotion_item | strip | upcase
+    if nav_block.type == 'mega_promotion' and promo_item_upcase == menu_title_upcase
+      assign featured_block = nav_block
+      break
+    endif
+  endfor
+-%}
+
+<div
+  id="MegaMenu-Content-{{ menu_index }}"
+  class="navigation-submenu top mega-menu__content cbv-mega-menu color-{{ section.settings.color_scheme }} gradient motion-reduce global-settings-popup"
+  tabindex="-1"
+>
+  <div class="cbv-mega-menu__inner page-width">
+    <div class="cbv-mega-menu__main">
+      {%- if eyebrow_text != blank -%}
+        <p class="cbv-mega-menu__eyebrow">{{ eyebrow_text }}</p>
+      {%- endif -%}
+      <ul class="cbv-mega-menu__columns" role="list">
+        {%- for childlink in link.links -%}
+          <li class="cbv-mega-menu__column{% if childlink.links == blank %} cbv-mega-menu__column--compact{% endif %}">
+            <a href="{{ childlink.url }}" class="mega-menu__link mega-menu__link--level-2 heading-bold link{% if childlink.current %} mega-menu__link--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
+              <span>{{ childlink.title | escape }}</span>
+            </a>
+            {%- if childlink.links != blank -%}
+              <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
+                {%- for grandchildlink in childlink.links -%}
+                  <li>
+                    <a href="{{ grandchildlink.url }}" class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
+                      <span>{{ grandchildlink.title | escape }}</span>
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <aside class="cbv-mega-menu__feature" aria-label="Featured">
+      {%- if is_scents_menu and section.settings.scents_search_link != blank -%}
+        <a href="{{ section.settings.scents_search_link }}" class="cbv-mega-menu__search-card link focus-inset">
+          <p class="cbv-mega-menu__search-title">{{ section.settings.scents_search_heading | escape }}</p>
+          {%- if section.settings.scents_search_copy != blank -%}
+            <p class="cbv-mega-menu__search-copy">{{ section.settings.scents_search_copy | escape }}</p>
+          {%- endif -%}
+          <span class="cbv-mega-menu__search-cta">{{ section.settings.scents_search_label | escape }}</span>
+        </a>
+      {%- endif -%}
+
+      {%- if featured_block != blank -%}
+        <div class="mega-menu-collection" {{ featured_block.shopify_attributes }}>
+          {%- if featured_block.settings.mega_promotion_title != blank -%}
+            <p class="title heading-bold">{{ featured_block.settings.mega_promotion_title }}</p>
+          {%- endif -%}
+          <div class="mega-menu-collection-image">
+            {%- if featured_block.settings.mega_promotion_image != blank -%}
+              <a href="{{ featured_block.settings.mega_promotion_link }}" class="title-link">
+                {{ featured_block.settings.mega_promotion_image | image_url: width: 300 | image_tag: loading: 'lazy' }}
+              </a>
+            {%- else -%}
+              {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          {%- if featured_block.settings.mega_promotion_caption != blank -%}
+            <div class="mega-menu-collection-text">
+              <p class="caption-with-letter-spacing">{{ featured_block.settings.mega_promotion_caption | escape }}</p>
+            </div>
+          {%- endif -%}
+          {%- if featured_block.settings.mega_promotion_link_label != blank -%}
+            <div class="mega-menu-link link">
+              <a class="link animate-arrow" {% if featured_block.settings.mega_promotion_link == blank %}role="link" aria-disabled="true"{% else %}href="{{ featured_block.settings.mega_promotion_link }}"{% endif %}>{{ featured_block.settings.mega_promotion_link_label | escape }}</a>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </aside>
+  </div>
+</div>
