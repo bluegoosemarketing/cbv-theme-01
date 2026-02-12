@@ -272,7 +272,7 @@
 {% endif %} {%- if section.settings.enable_fixed_header_type_all == true -%}enable-fixed-header-part--true {% if section.settings.enable_fixed_header_transparent == true %} transparent-fixed-header{% endif %}{% endif %}" data-aos="fade-up" data-aos-delay="350">
     <header class="header additional_links--{{ section.settings.disable_additional_links }} header--{{ section.settings.desktop_header_layout }} header--mobile-{{ section.settings.mobile_desktop_header_layout }} page-width{% if section.settings.menu != blank %} header--has-menu{% endif %} enable-item-highlight--{{ section.settings.enable_item_highlight }} {% if section.settings.header_icons_decoration == 'circle' %} header--icons-circle{% endif %} {% if section.settings.header_icons_decoration == 'line' %} header--icons-line{% endif %} {%- if section.settings.menu_type_desktop == 'drawer' -%}desktop-header-drawer{% endif %} {% if section.settings.show_search_icon == true %} header-two-row-alternative{% endif %}">
     {% comment %} Start Mobile Menu {% endcomment %}
-    {%- if section.settings.menu != blank -%}
+    {%- if section.settings.menu != blank or section.settings.menu_type_desktop == 'mega' -%}
       <header-drawer data-breakpoint="tablet">
         <details id="Details-menu-drawer-container" class="menu-drawer-container">
           <summary class="header__icon header__icon--menu header__icon--summary link focus-inset" aria-label="{{ 'sections.header.menu' | t }}">
@@ -286,72 +286,25 @@
               <div class="menu-drawer__navigation-container">
                 <nav class="menu-drawer__navigation">
                   <ul class="menu-drawer__menu has-submenu list-menu" role="list">
-                    {%- for link in section.settings.menu.links -%}
+                    {%- assign cbv_temp_top_level_items = 'SHOP|SCENTS|BUNDLES|SUBSCRIBE & SAVE|BEST SELLERS|SEASONAL' | split: '|' -%}
+                    {%- for menu_title in cbv_temp_top_level_items -%}
                       <li>
-                        {%- if link.links != blank -%}
-                          <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
-                            <summary class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.child_active %} menu-drawer__menu-item--active{% endif %}">
-                              {{ link.title | escape }}
-                              {% render 'icon-arrow' %}
-                              {% render 'icon-caret' %}
-                            </summary>
-                            <div id="link-{{ link.handle | escape }}" class="menu-drawer__submenu has-submenu motion-reduce" tabindex="-1">
-                              <div class="menu-drawer-inner-submenu">
-                                <button class="menu-drawer-close-button link link--text focus-inset" aria-expanded="true">
-                                  {% render 'icon-arrow' %}
-                                  {{ link.title | escape }}
-                                </button>
-                                {% render 'cbv-mobile-menu-links', link: link, menu_index: forloop.index, section: section %}
-                              </div>
+                        <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
+                          <summary class="menu-drawer__menu-item list-menu__item link link--text focus-inset">
+                            {{ menu_title }}
+                            {% render 'icon-arrow' %}
+                            {% render 'icon-caret' %}
+                          </summary>
+                          <div id="link-{{ menu_title | handleize }}" class="menu-drawer__submenu has-submenu motion-reduce" tabindex="-1">
+                            <div class="menu-drawer-inner-submenu">
+                              <button class="menu-drawer-close-button link link--text focus-inset" aria-expanded="true">
+                                {% render 'icon-arrow' %}
+                                {{ menu_title }}
+                              </button>
+                              {% render 'cbv-mobile-menu-links', menu_title: menu_title, menu_index: forloop.index, section: section %}
                             </div>
-                          </details>
-                        {%- else -%}
-                          
-                        {% comment %} Start Mega Image Navigation {% endcomment %}
-                          {% assign mega_image_menu_items = "" %}
-                          {% for block in section.blocks %}
-                            {% case block.type %}                      
-                              {% when 'mega_image_menu' %}                           
-                              {% if block.settings.mega_image_menu_item %}    
-                                {% assign mega_image_menu_items = mega_image_menu_items | append: block.settings.mega_image_menu_item | append: ',' %}
-                                {% if link.title == block.settings.mega_image_menu_item %}                     
-                                  <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
-                                    <summary class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.child_active %} menu-drawer__menu-item--active{% endif %}">
-                                      {{ link.title | escape }}
-                                      {% render 'icon-arrow' %}
-                                      {% render 'icon-caret' %}
-                                    </summary>
-                                    <div id="link-{{ link.handle | escape }}" class="menu-drawer__submenu has-submenu motion-reduce" tabindex="-1">
-                                      <div class="menu-drawer-inner-submenu">
-                                        <button class="menu-drawer-close-button link link--text focus-inset" aria-expanded="true">
-                                          {% render 'icon-arrow' %}
-                                          {{ link.title | escape }}
-                                        </button>
-                                        <ul class="mega-image-menu-mobile__list mega-image-columns-{{ block.settings.mega_image_columns }} page-width"> 
-                                          {% render 'mega-image-menu', block_settings: block.settings %}  
-                                        </ul>  
-                                      </div>
-                                    </div>
-                                  </details>                                                 
-                                  {% endif %}
-                                {% endif %}
-                              {% endcase %}
-                            {% endfor %}  
-                          {% if mega_image_menu_items.size == 0 %}
-                            <a href="{{ link.url }}" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.current %} menu-drawer__menu-item--active{% endif %}"{% if link.current %} aria-current="page"{% endif %}>
-                              {{ link.title | escape }}
-                            </a>  
-                            {% else %}
-                            {% for mega_image_menu_item in mega_image_menu_items %}
-                              {% unless mega_image_menu_item contains link.title %}                                                                               
-                                <a href="{{ link.url }}" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.current %} menu-drawer__menu-item--active{% endif %}"{% if link.current %} aria-current="page"{% endif %}>
-                                  {{ link.title | escape }}
-                                </a>  
-                              {% endunless %}                           
-                              {% endfor %}
-                            {% endif %}
-                          {% comment %} End Mega Image Navigation {% endcomment %}
-                          {%- endif -%}
+                          </div>
+                        </details>
                       </li>
                     {%- endfor -%}
                   </ul>
@@ -770,7 +723,7 @@
 
   {%- if section.settings.desktop_header_layout == 'centered-two-row'  -%}<div class="navigation-buttons">{%- endif -%}
   {% comment %} Start Desktop Navigation {% endcomment %}
-    {%- if section.settings.menu != blank -%}
+    {%- if section.settings.menu != blank or section.settings.menu_type_desktop == 'mega' -%}
       {% comment %} Start Dropdown Navigation {% endcomment %}
       {%- if section.settings.menu_type_desktop == 'dropdown' -%}
         <nav class="main-navigation">
@@ -837,60 +790,14 @@
       {%- else -%}
       <nav class="main-navigation-mega">
         <ul class="navigation-menu" role="list">
-            {%- for link in section.settings.menu.links -%}
+            {%- assign cbv_temp_top_level_items = 'SHOP|SCENTS|BUNDLES|SUBSCRIBE & SAVE|BEST SELLERS|SEASONAL' | split: '|' -%}
+            {%- for menu_title in cbv_temp_top_level_items -%}
               <li>
-                {%- if link.links != blank -%}
-                      {%- if section.settings.enable_links -%}
-                        <a href="{{ link.url }}" class="nav-menu-item list-menu__item link focus-inset">
-                          <span tabindex="0" {%- if link.child_active %} class="header__active-menu-item"{% endif %}>{{ link.title | escape }}</span>
-                          {% render 'icon-caret' %}
-                        </a>
-                      {%- else -%}
-                        <div class="nav-menu-item list-menu__item link focus-inset">
-                          <span tabindex="0" {%- if link.child_active %} class="header__active-menu-item"{% endif %}>{{ link.title | escape }}</span>
-                          {% render 'icon-caret' %}
-                        </div>
-                      {%- endif -%}
-                      {% render 'cbv-mega-menu-panel', link: link, menu_index: forloop.index, section: section %}
-                {%- else -%}
-                  
-                {% comment %} Start Mega Image Navigation {% endcomment %}
-                  {% assign mega_image_menu_items = "" %}
-                  {% for block in section.blocks %}
-                    {% case block.type %}                      
-                      {% when 'mega_image_menu' %}                         
-                      {% if block.settings.mega_image_menu_item %} 
-                        {% assign mega_image_menu_items = mega_image_menu_items | append: block.settings.mega_image_menu_item | append: ',' %}
-                        {% if link.title == block.settings.mega_image_menu_item %}  
-                          <div class="nav-menu-item list-menu__item link link--text focus-inset">
-                            <span tabindex="0" {%- if link.child_active %} class="header__active-menu-item"{% endif %}>{{ link.title | escape }}</span>
-                            {% render 'icon-caret' %}
-                          </div>
-                          <div class="navigation-submenu {{ section.settings.submenu_animation_position }} mega-menu__content color-{{ section.settings.color_scheme }} motion-reduce global-settings-popup {% if section.settings.all_items_mega != true %}{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}{% endif %}" tabindex="-1">                                         
-                            <ul class="mega-image-menu__list page-width"> 
-                              {% render 'mega-image-menu', block_settings: block.settings %}                              
-                            </ul>                                
-                          </div>                          
-                          {% endif %}
-                        {% endif %}
-                      {% endcase %}
-                    {% endfor %}
-                  {% if mega_image_menu_items.size == 0 %}
-                    <a href="{{ link.url }}" class="nav-menu-item list-menu__item link link--text focus-inset"{% if link.current %} aria-current="page"{% endif %}>
-                      <span {%- if link.current %} class="header__active-menu-item"{% endif %}>{{ link.title | escape }}</span>
-                    </a>
-                      {% else %}
-                    {% for mega_image_menu_item in mega_image_menu_items %}
-                      {% unless mega_image_menu_item contains link.title %}                                                                               
-                        <a href="{{ link.url }}" class="nav-menu-item list-menu__item link link--text focus-inset"{% if link.current %} aria-current="page"{% endif %}>
-                          <span {%- if link.current %} class="header__active-menu-item"{% endif %}>{{ link.title | escape }}</span>
-                        </a>
-                      {% endunless %}                           
-                      {% endfor %}
-                    {% endif %}
-                {% comment %} End Mega Image Navigation {% endcomment %}
-                  
-                {%- endif -%}
+                <div class="nav-menu-item list-menu__item link focus-inset">
+                  <span tabindex="0">{{ menu_title }}</span>
+                  {% render 'icon-caret' %}
+                </div>
+                {% render 'cbv-mega-menu-panel', menu_title: menu_title, menu_index: forloop.index, section: section %}
               </li>
             {%- endfor -%}
           </ul>
