@@ -25,7 +25,7 @@
   class="navigation-submenu top mega-menu__content cbv-mega-menu motion-reduce global-settings-popup"
   tabindex="-1"
 >
-  <div class="cbv-mega-menu__inner">
+  <div class="cbv-mega-menu__inner{% if is_shop_menu %} cbv-mega-menu__inner--shop{% endif %}">
     <div class="cbv-mega-menu__main">
       {%- if eyebrow_text != blank -%}
         <span class="cbv-mega-menu__eyebrow">{{ eyebrow_text }}</span>
@@ -122,13 +122,14 @@
         {%- endcase -%}
       </ul>
 
-      {%- if is_shop_menu -%}
-        <div class="cbv-mega-menu__shop-feature animate-fade-up" role="region" aria-label="Seasonal feature">
-          <h3 class="cbv-mega-menu__shop-feature-title">Hand Poured Seasonal Collection</h3>
-          <p class="cbv-mega-menu__shop-feature-copy">Warm, artisanal fragrances blended in small batches for the season. Discover rich notes crafted to bring comfort, character, and atmosphere to every room.</p>
-          <a href="#" class="cbv-mega-menu__shop-feature-button link focus-inset">Explore collection</a>
-        </div>
-      {%- endif -%}
     </div>
+
+    {%- if is_shop_menu -%}
+      <aside class="cbv-mega-menu__shop-feature animate-fade-up" role="region" aria-label="Seasonal feature">
+        <h3 class="cbv-mega-menu__shop-feature-title">Hand Poured Seasonal Collection</h3>
+        <p class="cbv-mega-menu__shop-feature-copy">Warm, artisanal fragrances blended in small batches for the season. Discover rich notes crafted to bring comfort, character, and atmosphere to every room.</p>
+        <a href="#" class="cbv-mega-menu__shop-feature-button link focus-inset">Explore collection</a>
+      </aside>
+    {%- endif -%}
   </div>
 </div>
