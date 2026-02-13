@@ -92,6 +92,7 @@
                 
                 <li><a href="#" class="mega-menu__link">Custom Pour</a></li>
                 <li><a href="#" class="mega-menu__link">Seasonal Collection <span class="cbv-menu-badge">New</span></a></li>
+                <li><a href="#" class="mega-menu__link">Limited Drops</a></li>
               </ul>
             </li>
             <li class="cbv-mega-menu__column animate-fade-up">
@@ -112,16 +113,20 @@
               </ul>
             </li>
             <li class="cbv-mega-menu__column animate-fade-up">
-              <a href="#" class="heading-bold link">Gifts &amp; Specials</a>
+              <a href="#" class="heading-bold link">Bundles</a>
               <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
                 <li><a href="#" class="mega-menu__link">Sampler Packs</a></li>
-                <li><a href="#" class="mega-menu__link">Gift Cards</a></li>
-                <li><a href="#" class="mega-menu__link">Limited Drops</a></li>
+                <li><a href="#" class="mega-menu__link">Build Your Own Scent Shot Pack</a></li>
+                <li><a href="#" class="mega-menu__link">Build Your Own Melt Pack</a></li>
+                <li><a href="#" class="mega-menu__link">Category Boxes</a></li>
               </ul>
+            </li>
+            <li class="cbv-mega-menu__column animate-fade-up">
+              <a href="#" class="heading-bold link">Gift Cards</a>
             </li>
 
           {%- when 'SCENTS' -%}
-            {%- assign scent_links = 'Bakery/Gourmand|Christmas|Clean|Customer Creations|Earthy|Fall|Floral|Fruity|House Blends|Lush Dupes|Luxury Spa|Perfume & Cologne|Tropical|Best Sellers|All Scents (A–Z)|Search' | split: '|' -%}
+            {%- assign scent_links = 'Bakery/Gourmand|Christmas|Clean|Customer Creations|Earthy|Fall|Floral|Fruity|House Blends|Lush Dupes|Luxury Spa|Perfume & Cologne|Tropical|All Scents (A–Z)|Search All Scents' | split: '|' -%}
             
             {%- for scent_link in scent_links -%}
               <li class="cbv-mega-menu__scent-item animate-fade-up">
@@ -130,49 +135,6 @@
                 </a>
               </li>
             {%- endfor -%}
-
-          {%- when 'BUNDLES' -%}
-            <li class="cbv-mega-menu__column animate-fade-up">
-               <a href="#" class="heading-bold link">Bundles</a>
-               <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
-                  <li><a href="#" class="mega-menu__link">Sampler Packs</a></li>
-                  <li><a href="#" class="mega-menu__link">Build Your Own Scent Shot Pack</a></li>
-                  <li><a href="#" class="mega-menu__link">Build Your Own Melt Pack</a></li>
-                  <li><a href="#" class="mega-menu__link">Category Boxes</a></li>
-               </ul>
-            </li>
-
-          {%- when 'SUBSCRIBE & SAVE' -%}
-             <li class="cbv-mega-menu__column animate-fade-up">
-               <a href="#" class="heading-bold link">Subscription</a>
-               <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
-                <li><a href="#" class="mega-menu__link">Program Overview</a></li>
-                <li><a href="#" class="mega-menu__link">Subscription Bundles</a></li>
-                <li><a href="#" class="mega-menu__link">Manage Subscription</a></li>
-               </ul>
-            </li>
-
-          {%- when 'BEST SELLERS' -%}
-             <li class="cbv-mega-menu__column animate-fade-up">
-               <a href="#" class="heading-bold link">Top Rated</a>
-               <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
-                <li><a href="#" class="mega-menu__link">Best Sellers (All)</a></li>
-                <li><a href="#" class="mega-menu__link">Best Selling Candles</a></li>
-                <li><a href="#" class="mega-menu__link">Best Selling Scent Shots</a></li>
-                <li><a href="#" class="mega-menu__link">Best Selling Melts</a></li>
-               </ul>
-            </li>
-
-          {%- when 'SEASONAL' -%}
-             <li class="cbv-mega-menu__column animate-fade-up">
-               <a href="#" class="heading-bold link">Currently Trending</a>
-               <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
-                <li><a href="#" class="mega-menu__link">Seasonal Shop</a></li>
-                <li><a href="#" class="mega-menu__link">Fall Collection</a></li>
-                <li><a href="#" class="mega-menu__link">Christmas Collection</a></li>
-                <li><a href="#" class="mega-menu__link">Limited Drops</a></li>
-               </ul>
-            </li>
         {%- endcase -%}
       </ul>
     </div>

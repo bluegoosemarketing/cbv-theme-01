@@ -286,25 +286,31 @@
               <div class="menu-drawer__navigation-container">
                 <nav class="menu-drawer__navigation">
                   <ul class="menu-drawer__menu has-submenu list-menu" role="list">
-                    {%- assign cbv_temp_top_level_items = 'SHOP|SCENTS|BUNDLES|SUBSCRIBE & SAVE|BEST SELLERS|SEASONAL' | split: '|' -%}
+                    {%- assign cbv_temp_top_level_items = 'SHOP|SCENTS|BEST SELLERS|SUBSCRIBE' | split: '|' -%}
                     {%- for menu_title in cbv_temp_top_level_items -%}
                       <li>
-                        <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
-                          <summary class="menu-drawer__menu-item list-menu__item link link--text focus-inset">
+                        {%- if menu_title == 'BEST SELLERS' -%}
+                          <a href="/collections/best-sellers" class="menu-drawer__menu-item list-menu__item link link--text focus-inset">
                             {{ menu_title }}
-                            {% render 'icon-arrow' %}
-                            {% render 'icon-caret' %}
-                          </summary>
-                          <div id="link-{{ menu_title | handleize }}" class="menu-drawer__submenu has-submenu motion-reduce" tabindex="-1">
-                            <div class="menu-drawer-inner-submenu">
-                              <button class="menu-drawer-close-button link link--text focus-inset" aria-expanded="true">
-                                {% render 'icon-arrow' %}
-                                {{ menu_title }}
-                              </button>
-                              {% render 'cbv-mobile-menu-links', menu_title: menu_title, menu_index: forloop.index, section: section %}
+                          </a>
+                        {%- else -%}
+                          <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
+                            <summary class="menu-drawer__menu-item list-menu__item link link--text focus-inset">
+                              {{ menu_title }}
+                              {% render 'icon-arrow' %}
+                              {% render 'icon-caret' %}
+                            </summary>
+                            <div id="link-{{ menu_title | handleize }}" class="menu-drawer__submenu has-submenu motion-reduce" tabindex="-1">
+                              <div class="menu-drawer-inner-submenu">
+                                <button class="menu-drawer-close-button link link--text focus-inset" aria-expanded="true">
+                                  {% render 'icon-arrow' %}
+                                  {{ menu_title }}
+                                </button>
+                                {% render 'cbv-mobile-menu-links', menu_title: menu_title, menu_index: forloop.index, section: section %}
+                              </div>
                             </div>
-                          </div>
-                        </details>
+                          </details>
+                        {%- endif -%}
                       </li>
                     {%- endfor -%}
                   </ul>
@@ -790,14 +796,30 @@
       {%- else -%}
       <nav class="main-navigation-mega">
         <ul class="navigation-menu" role="list">
-            {%- assign cbv_temp_top_level_items = 'SHOP|SCENTS|BUNDLES|SUBSCRIBE & SAVE|BEST SELLERS|SEASONAL' | split: '|' -%}
+            {%- assign cbv_temp_top_level_items = 'SHOP|SCENTS|BEST SELLERS|SUBSCRIBE' | split: '|' -%}
             {%- for menu_title in cbv_temp_top_level_items -%}
               <li>
-                <div class="nav-menu-item list-menu__item link focus-inset">
-                  <span tabindex="0">{{ menu_title }}</span>
-                  {% render 'icon-caret' %}
-                </div>
-                {% render 'cbv-mega-menu-panel', menu_title: menu_title, menu_index: forloop.index, section: section %}
+                {%- if menu_title == 'BEST SELLERS' -%}
+                  <a href="/collections/best-sellers" class="nav-menu-item list-menu__item link focus-inset">
+                    <span tabindex="0">{{ menu_title }}</span>
+                  </a>
+                {%- elsif menu_title == 'SUBSCRIBE' -%}
+                  <div class="nav-menu-item list-menu__item link focus-inset">
+                    <span tabindex="0">{{ menu_title }}</span>
+                    {% render 'icon-caret' %}
+                  </div>
+                  <ul class="navigation-submenu list-menu color-{{ section.settings.color_scheme }} gradient caption-large motion-reduce" role="list" tabindex="-1">
+                    <li><a href="#" class="nav-menu-item list-menu__item link link--text focus-inset caption-large">Program Overview</a></li>
+                    <li><a href="#" class="nav-menu-item list-menu__item link link--text focus-inset caption-large">Subscription Bundles</a></li>
+                    <li><a href="#" class="nav-menu-item list-menu__item link link--text focus-inset caption-large">Manage Subscription</a></li>
+                  </ul>
+                {%- else -%}
+                  <div class="nav-menu-item list-menu__item link focus-inset">
+                    <span tabindex="0">{{ menu_title }}</span>
+                    {% render 'icon-caret' %}
+                  </div>
+                  {% render 'cbv-mega-menu-panel', menu_title: menu_title, menu_index: forloop.index, section: section %}
+                {%- endif -%}
               </li>
             {%- endfor -%}
           </ul>
