@@ -24,6 +24,10 @@
   box-shadow: 0 18px 38px rgba(44, 42, 38, 0.1);
 }
 
+.cbv-mega-menu__content {
+  background-color: var(--cbv-surface);
+}
+
 .main-navigation-mega li:hover .mega-menu__content,
 .main-navigation-mega li:focus-within .mega-menu__content {
   opacity: 1;
@@ -35,6 +39,7 @@
   max-width: min(var(--page-width), 1360px);
   margin: 0 auto;
   padding: 5.2rem 5rem !important;
+  background-color: var(--cbv-surface);
 }
 
 .cbv-mega-menu__main {
@@ -49,6 +54,7 @@
   color: var(--cbv-sage-soft);
   margin-bottom: 2.6rem;
   display: block;
+  opacity: 0.7;
 }
 
 .cbv-mega-menu__columns {
@@ -60,9 +66,17 @@
   margin: 0;
 }
 
+.cbv-mega-menu__columns:not(.cbv-mega-menu__columns--scents) .cbv-mega-menu__column:not(:last-child) {
+  border-right: 1px solid var(--cbv-border);
+  padding-right: 3rem;
+  margin-right: 3rem;
+}
+
 .cbv-mega-menu__column > a.heading-bold {
   font-family: "Cormorant Garamond", var(--font-heading-family);
-  font-size: 2.4rem;
+  font-size: 2.6rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--cbv-sage);
   margin-bottom: 1.6rem;
   display: inline-block;
@@ -76,7 +90,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 1.4rem;
 }
 
 .cbv-mega-menu__sublist .mega-menu__link {
@@ -116,7 +130,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 0.7rem 0;
+  padding: 0.9rem 0;
   border-bottom: 1px solid var(--cbv-border);
   color: var(--cbv-ink);
   font-size: 1.35rem;
@@ -187,6 +201,7 @@
 .cbv-mega-menu__scent-tile:hover {
   background-color: var(--cbv-bg);
   color: var(--cbv-sage);
+  border-color: var(--cbv-sage-soft);
 }
 
 .cbv-mega-menu__shop-feature {
@@ -250,5 +265,11 @@
   .cbv-mega-menu__columns,
   .cbv-mega-menu__columns--scents {
     grid-template-columns: 1fr;
+  }
+
+  .cbv-mega-menu__columns:not(.cbv-mega-menu__columns--scents) .cbv-mega-menu__column:not(:last-child) {
+    border-right: 0;
+    padding-right: 0;
+    margin-right: 0;
   }
 }
