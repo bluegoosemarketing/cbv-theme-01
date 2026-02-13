@@ -34,10 +34,10 @@
 {% style %}
   {%- assign cbv_logo_width_desktop = settings.logo_width | times: 2.7 | round: 0 -%}
   {%- assign cbv_logo_width_mobile = settings.logo_width_mobile | times: 1.8 | round: 0 -%}
-  {%- assign cbv_header_padding_top_mobile = section.settings.padding_top | times: 0.5 | round: 0 | plus: 12 -%}
-  {%- assign cbv_header_padding_bottom_mobile = section.settings.padding_bottom | times: 0.5 | round: 0 | plus: 12 -%}
-  {%- assign cbv_header_padding_top_desktop = section.settings.padding_top | plus: 18 -%}
-  {%- assign cbv_header_padding_bottom_desktop = section.settings.padding_bottom | plus: 18 -%}
+  {%- assign cbv_header_padding_top_mobile = 18 -%}
+  {%- assign cbv_header_padding_bottom_mobile = 18 -%}
+  {%- assign cbv_header_padding_top_desktop = 18 -%}
+  {%- assign cbv_header_padding_bottom_desktop = 18 -%}
 
   header-drawer {
     justify-self: start;
