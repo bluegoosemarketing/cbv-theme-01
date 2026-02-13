@@ -3816,8 +3816,8 @@ html {
 
 .header-wrapper,
 .header-wrapper.gradient {
-  background: var(--cbv-surface);
-  border-bottom: 1px solid var(--cbv-border);
+  background: var(--cbv-surface) !important;
+  border-bottom: 1px solid var(--cbv-border) !important;
 }
 
 .header {
@@ -3843,6 +3843,7 @@ html {
 
 .nav-menu-item {
   padding: 1.6rem 1.25rem;
+  color: var(--cbv-ink) !important;
 }
 
 .navigation-menu .list-menu__item,
@@ -3851,7 +3852,7 @@ html {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 500;
-  color: var(--cbv-ink);
+  color: var(--cbv-ink) !important;
 }
 
 .navigation-menu .navigation-submenu .list-menu__item {
@@ -3863,7 +3864,7 @@ html {
   left: 0;
   bottom: -0.6rem;
   height: 2px;
-  background-color: var(--cbv-orange);
+  background-color: var(--cbv-orange) !important;
   transition: transform 0.28s ease;
   transform: scaleX(0);
   transform-origin: left center;
@@ -3872,7 +3873,11 @@ html {
 
 .nav-menu-item:hover,
 .nav-menu-item:focus-within {
-  color: var(--cbv-sage);
+  color: var(--cbv-sage) !important;
+}
+
+.navigation-menu .list-menu__item:hover {
+  color: var(--cbv-sage) !important;
 }
 
 .nav-menu-item:hover span::after,
@@ -3884,6 +3889,12 @@ html {
 .main-navigation .navigation-submenu li .nav-menu-item:focus-within {
   color: var(--cbv-sage-soft);
   transform: translateX(5px);
+}
+
+.navigation-submenu.cbv-mega-menu,
+.navigation-submenu.cbv-mega-menu * {
+  background-color: var(--cbv-surface) !important;
+  color: var(--cbv-ink) !important;
 }
 
 @media screen and (max-width: 990px) {
