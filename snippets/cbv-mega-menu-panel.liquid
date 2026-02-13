@@ -16,17 +16,8 @@
   if is_shop_menu
     assign eyebrow_text = 'Shop by format'
   elsif is_scents_menu
-    assign eyebrow_text = 'Explore our Fragrance Library'
+    assign eyebrow_text = 'Explore our fragrance library'
   endif
-
-  assign featured_block = blank
-  for nav_block in section.blocks
-    assign promo_item_upcase = nav_block.settings.mega_promotion_item | strip | upcase
-    if nav_block.type == 'mega_promotion' and promo_item_upcase == menu_title_upcase
-      assign featured_block = nav_block
-      break
-    endif
-  endfor
 -%}
 
 <div
@@ -35,7 +26,6 @@
   tabindex="-1"
 >
   <div class="cbv-mega-menu__inner">
-    
     <div class="cbv-mega-menu__main">
       {%- if eyebrow_text != blank -%}
         <span class="cbv-mega-menu__eyebrow">{{ eyebrow_text }}</span>
@@ -47,13 +37,11 @@
             <li class="cbv-mega-menu__column animate-fade-up">
               <a href="#" class="heading-bold link">Candles</a>
               <ul class="cbv-mega-menu__sublist list-unstyled" role="list">
-                
                 <li>
                   <a href="#" class="mega-menu__link heading-bold" style="font-weight: 600;">
                     Best Sellers <span class="cbv-menu-badge cbv-menu-badge--highlight">Hot</span>
                   </a>
                 </li>
-                
                 <li>
                   <span class="mega-menu__link--level-2">Shop by Size</span>
                   <ul class="cbv-spec-list list-unstyled" role="list">
@@ -75,7 +63,7 @@
                       <a href="#" class="mega-menu__link">
                         <span>30oz Victorian</span>
                         <span class="cbv-spec-meta">
-                           {% render 'icon-fire-small' %} 3-Wick
+                          {% render 'icon-fire-small' %} 3-Wick
                         </span>
                       </a>
                     </li>
@@ -83,13 +71,12 @@
                       <a href="#" class="mega-menu__link">
                         <span>70oz 5-Wick</span>
                         <span class="cbv-spec-meta">
-                           {% render 'icon-fire-small' %} 5-Wick
+                          {% render 'icon-fire-small' %} 5-Wick
                         </span>
                       </a>
                     </li>
                   </ul>
                 </li>
-                
                 <li><a href="#" class="mega-menu__link">Custom Pour</a></li>
                 <li><a href="#" class="mega-menu__link">Seasonal Collection <span class="cbv-menu-badge">New</span></a></li>
                 <li><a href="#" class="mega-menu__link">Limited Drops</a></li>
@@ -127,7 +114,6 @@
 
           {%- when 'SCENTS' -%}
             {%- assign scent_links = 'Bakery/Gourmand|Christmas|Clean|Customer Creations|Earthy|Fall|Floral|Fruity|House Blends|Lush Dupes|Luxury Spa|Perfume & Cologne|Tropical|All Scents (A–Z)|Search All Scents' | split: '|' -%}
-            
             {%- for scent_link in scent_links -%}
               <li class="cbv-mega-menu__scent-item animate-fade-up">
                 <a href="#" class="cbv-mega-menu__scent-tile">
@@ -137,53 +123,14 @@
             {%- endfor -%}
         {%- endcase -%}
       </ul>
-    </div>
 
-    <aside class="cbv-mega-menu__feature" aria-label="Featured">
-      <div class="cbv-mega-menu__feature-inner">
-      {%- if is_scents_menu and section.settings.scents_search_link != blank -%}
-        <a href="{{ section.settings.scents_search_link }}" class="cbv-mega-menu__search-card link focus-inset">
-          <p class="cbv-mega-menu__search-title">{{ section.settings.scents_search_heading | escape }}</p>
-          {%- if section.settings.scents_search_copy != blank -%}
-            <p class="cbv-mega-menu__search-copy">{{ section.settings.scents_search_copy | escape }}</p>
-          {%- endif -%}
-          <span class="cbv-mega-menu__search-cta">{{ section.settings.scents_search_label | escape }}</span>
-        </a>
-      {%- endif -%}
-
-      {%- if featured_block != blank -%}
-        <div class="mega-menu-collection animate-fade-up" {{ featured_block.shopify_attributes }}>
-          {%- if featured_block.settings.mega_promotion_image != blank -%}
-            <div class="mega-menu-collection-image">
-              <a href="{{ featured_block.settings.mega_promotion_link }}" class="title-link">
-                {{ featured_block.settings.mega_promotion_image | image_url: width: 400 | image_tag: loading: 'lazy' }}
-              </a>
-            </div>
-          {%- else -%}
-             <div class="mega-menu-collection-image">
-              {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
-            </div>
-          {%- endif -%}
-          
-          {%- if featured_block.settings.mega_promotion_title != blank -%}
-            <p class="title heading-bold">{{ featured_block.settings.mega_promotion_title }}</p>
-          {%- endif -%}
-
-          {%- if featured_block.settings.mega_promotion_caption != blank -%}
-            <div class="mega-menu-collection-text">
-              <p class="caption-with-letter-spacing">{{ featured_block.settings.mega_promotion_caption | escape }}</p>
-            </div>
-          {%- endif -%}
-          {%- if featured_block.settings.mega_promotion_link_label != blank -%}
-            <div class="mega-menu-link link">
-              <a class="link animate-arrow" {% if featured_block.settings.mega_promotion_link == blank %}role="link" aria-disabled="true"{% else %}href="{{ featured_block.settings.mega_promotion_link }}"{% endif %}>
-                {{ featured_block.settings.mega_promotion_link_label | escape }} <span class="icon-wrap">{% render 'icon-arrow' %}</span>
-              </a>
-            </div>
-          {%- endif -%}
+      {%- if is_shop_menu -%}
+        <div class="cbv-mega-menu__shop-feature animate-fade-up" role="region" aria-label="Seasonal feature">
+          <h3 class="cbv-mega-menu__shop-feature-title">Hand Poured Seasonal Collection</h3>
+          <p class="cbv-mega-menu__shop-feature-copy">Warm, artisanal fragrances blended in small batches for the season. Discover rich notes crafted to bring comfort, character, and atmosphere to every room.</p>
+          <a href="#" class="cbv-mega-menu__shop-feature-button link focus-inset">Explore collection</a>
         </div>
       {%- endif -%}
-      </div>
-    </aside>
+    </div>
   </div>
 </div>
