@@ -36,17 +36,11 @@
 }
 
 .cbv-mega-menu__inner {
+  display: block;
   max-width: min(var(--page-width), 1360px);
   margin: 0 auto;
   padding: 5.2rem 5rem !important;
   background-color: var(--cbv-surface);
-}
-
-.cbv-mega-menu__inner--shop {
-  display: grid;
-  grid-template-columns: 3fr 1.3fr;
-  gap: 4rem;
-  align-items: start;
 }
 
 .cbv-mega-menu__main {
@@ -211,44 +205,6 @@
   border-color: var(--cbv-sage-soft);
 }
 
-.cbv-mega-menu__shop-feature {
-  background-color: var(--cbv-bg);
-  border-left: none;
-  border-radius: 12px;
-  padding: 2.4rem;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.06);
-}
-
-.cbv-mega-menu__shop-feature-title {
-  margin: 0 0 1rem;
-  font-family: "Cormorant Garamond", var(--font-heading-family);
-  font-size: 2rem;
-  line-height: 1.15;
-  color: var(--cbv-sage);
-}
-
-.cbv-mega-menu__shop-feature-copy {
-  margin: 0 0 2rem;
-  max-width: 68rem;
-  font-size: 1.35rem;
-  line-height: 1.6;
-  color: var(--cbv-ink);
-}
-
-.cbv-mega-menu__shop-feature-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  background-color: var(--cbv-orange);
-  color: #fff;
-  border-radius: 6px;
-  padding: 0.8rem 1.4rem;
-  font-size: 1.1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 600;
-}
 
 @media screen and (max-width: 1280px) {
   .cbv-mega-menu__inner {
@@ -266,11 +222,6 @@
 
 
 @media screen and (max-width: 990px) {
-  .cbv-mega-menu__inner--shop {
-    grid-template-columns: 1fr;
-    gap: 2.4rem;
-  }
-
   .cbv-mega-menu__inner {
     padding: 3rem 2rem;
   }
