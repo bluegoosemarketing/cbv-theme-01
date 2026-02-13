@@ -27,12 +27,13 @@
             <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
               <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Best Sellers</a></li>
               <li><p class="menu-drawer__menu-item link link--text list-menu__item">Shop by Size</p></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">18 oz Large Jar</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">30 oz Victorian</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">70 oz 5-Wick</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">15 oz Wickless</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">18oz Large</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">30oz Victorian</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">70oz 5-Wick</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">15oz Wickless</a></li>
               <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Custom Pour</a></li>
               <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Seasonal Collection</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Limited Drops</a></li>
             </ul>
           </div>
         </details>
@@ -81,57 +82,40 @@
       <li>
         <details id="Details-menu-drawer-submenu-{{ menu_index }}-4">
           <summary class="menu-drawer__menu-item link link--text list-menu__item focus-inset">
-            Gifts &amp; Specials
+            Bundles
             {% render 'icon-arrow' %}
             {% render 'icon-caret' %}
           </summary>
-          <div id="childlink-gifts-specials" class="menu-drawer__submenu has-submenu motion-reduce">
+          <div id="childlink-bundles" class="menu-drawer__submenu has-submenu motion-reduce">
             <button class="menu-drawer-close-button link link--text focus-inset" aria-expanded="true">
               {% render 'icon-arrow' %}
-              Gifts &amp; Specials
+              Bundles
             </button>
             <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
               <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Sampler Packs</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Gift Cards</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Limited Drops</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Build Your Own Scent Shot Pack</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Build Your Own Melt Pack</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Category Boxes</a></li>
             </ul>
           </div>
         </details>
       </li>
+      <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Gift Cards</a></li>
 
     {%- when 'SCENTS' -%}
       <li>
         <a href="{{ scents_search_href }}" class="menu-drawer__menu-item menu-drawer__menu-item--search link link--text list-menu__item focus-inset">{{ scents_search_label | escape }}</a>
       </li>
-      {%- assign scent_links = 'Bakery/Gourmand|Christmas|Clean|Customer Creations|Earthy|Fall|Floral|Fruity|House Blends|Lush Dupes|Luxury Spa|Perfume/Cologne|Tropical|Best Sellers|All Scents (A–Z)|Search' | split: '|' -%}
+      {%- assign scent_links = 'Bakery/Gourmand|Christmas|Clean|Customer Creations|Earthy|Fall|Floral|Fruity|House Blends|Lush Dupes|Luxury Spa|Perfume & Cologne|Tropical|All Scents (A–Z)|Search All Scents' | split: '|' -%}
       {%- for scent_link in scent_links -%}
         <li>
           <a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ scent_link }}</a>
         </li>
       {%- endfor -%}
-
-    {%- when 'BUNDLES' -%}
-      {%- assign bundles_links = 'Sampler Packs|Build Your Own Scent Shot Pack|Build Your Own Melt Pack|Category Boxes' | split: '|' -%}
-      {%- for bundles_link in bundles_links -%}
-        <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ bundles_link }}</a></li>
-      {%- endfor -%}
-
-    {%- when 'SUBSCRIBE & SAVE' -%}
+    {%- when 'SUBSCRIBE' -%}
       {%- assign subscribe_links = 'Program Overview|Subscription Bundles|Manage Subscription' | split: '|' -%}
       {%- for subscribe_link in subscribe_links -%}
         <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ subscribe_link }}</a></li>
-      {%- endfor -%}
-
-    {%- when 'BEST SELLERS' -%}
-      {%- assign best_sellers_links = 'Best Sellers (All)|Best Selling Candles|Best Selling Scent Shots|Best Selling Melts' | split: '|' -%}
-      {%- for best_sellers_link in best_sellers_links -%}
-        <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ best_sellers_link }}</a></li>
-      {%- endfor -%}
-
-    {%- when 'SEASONAL' -%}
-      {%- assign seasonal_links = 'Seasonal Shop|Fall|Christmas|Limited Drops' | split: '|' -%}
-      {%- for seasonal_link in seasonal_links -%}
-        <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ seasonal_link }}</a></li>
       {%- endfor -%}
   {%- endcase -%}
 </ul>
