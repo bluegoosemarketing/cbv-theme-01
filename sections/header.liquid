@@ -34,10 +34,10 @@
 {% style %}
   {%- assign cbv_logo_width_desktop = settings.logo_width | times: 2.7 | round: 0 -%}
   {%- assign cbv_logo_width_mobile = settings.logo_width_mobile | times: 1.8 | round: 0 -%}
-  {%- assign cbv_header_padding_top_mobile = 18 -%}
-  {%- assign cbv_header_padding_bottom_mobile = 18 -%}
-  {%- assign cbv_header_padding_top_desktop = 18 -%}
-  {%- assign cbv_header_padding_bottom_desktop = 18 -%}
+  {%- assign cbv_header_padding_top_mobile = 12 -%}
+  {%- assign cbv_header_padding_bottom_mobile = 12 -%}
+  {%- assign cbv_header_padding_top_desktop = 12 -%}
+  {%- assign cbv_header_padding_bottom_desktop = 12 -%}
 
   header-drawer {
     justify-self: start;
@@ -107,9 +107,10 @@
   .navigation-menu {
     display: inline-flex;
     flex-wrap: wrap;
+    gap: 0.4rem;
     list-style: none;
     padding: 0;
-    margin: 0 0 0 -1rem;
+    margin: 0;
   }
 
   .navigation-submenu,
@@ -553,7 +554,7 @@
     {% comment %} End Mobile Menu {% endcomment %}
 
     {% comment %} Start Search for Centered Two Row Layout {% endcomment %}
-    {%- if section.settings.desktop_header_layout == 'centered-two-row' or section.settings.menu == blank -%}
+    {%- if section.settings.menu == blank -%}
 
       {%- if section.settings.show_search_icon == true -%}
         <details-modal class="header__search">
