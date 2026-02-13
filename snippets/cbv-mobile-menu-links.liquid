@@ -27,12 +27,12 @@
             <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
               <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Best Sellers</a></li>
               <li><p class="menu-drawer__menu-item link link--text list-menu__item">Shop by Size</p></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">18 oz</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">30 oz</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">70 oz</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">18 oz Large Jar</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">30 oz Victorian</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">70 oz 5-Wick</a></li>
               <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">15 oz Wickless</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Build Your Own</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Seasonal</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Custom Pour</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Seasonal Collection</a></li>
             </ul>
           </div>
         </details>
@@ -52,7 +52,7 @@
             <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
               <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Break-Away Melts</a></li>
               <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Cube Melts</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Build Your Own Melts</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Create Your Own</a></li>
             </ul>
           </div>
         </details>
@@ -71,9 +71,9 @@
             </button>
             <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
               <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Shop All</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">3-Packs</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">6-Packs</a></li>
-              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Build Your Own Pack</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">3-Pack Bundle</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">6-Pack Bundle</a></li>
+              <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Custom Pack</a></li>
             </ul>
           </div>
         </details>
@@ -103,7 +103,7 @@
       <li>
         <a href="{{ scents_search_href }}" class="menu-drawer__menu-item menu-drawer__menu-item--search link link--text list-menu__item focus-inset">{{ scents_search_label | escape }}</a>
       </li>
-      {%- assign scent_links = 'Bakery/Gourmand|Christmas|Clean|Customer Creations|Earthy|Fall|Floral|Fruity|House Blends|Lush Dupes|Luxury Spa & Hotel|Perfume & Cologne|Tropical|Best Sellers|All Scents (A–Z)|Search' | split: '|' -%}
+      {%- assign scent_links = 'Bakery/Gourmand|Christmas|Clean|Customer Creations|Earthy|Fall|Floral|Fruity|House Blends|Lush Dupes|Luxury Spa|Perfume/Cologne|Tropical|Best Sellers|All Scents (A–Z)|Search' | split: '|' -%}
       {%- for scent_link in scent_links -%}
         <li>
           <a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ scent_link }}</a>
@@ -117,7 +117,7 @@
       {%- endfor -%}
 
     {%- when 'SUBSCRIBE & SAVE' -%}
-      {%- assign subscribe_links = 'Subscribe & Save Overview|Subscription Bundles|Manage Subscription' | split: '|' -%}
+      {%- assign subscribe_links = 'Program Overview|Subscription Bundles|Manage Subscription' | split: '|' -%}
       {%- for subscribe_link in subscribe_links -%}
         <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ subscribe_link }}</a></li>
       {%- endfor -%}
