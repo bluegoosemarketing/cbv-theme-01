@@ -2641,10 +2641,11 @@ localization-form {
 }
 
 .header-wrapper.enable-fixed-header-part--true {
-  border-radius: var(--media-radius);
+  border-radius: 0;
+  box-shadow: none;
   position: absolute;
-  width: 98%;
-  margin: 1% auto;
+  width: 100%;
+  margin: 0;
   left: 0;
   right: 0;
 }
@@ -2732,6 +2733,10 @@ localization-form {
   display: block;
   position: relative;
   background-color: rgb(var(--color-background));
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  width: 100%;
 }
 
 .header-wrapper--border-bottom {
@@ -2743,9 +2748,9 @@ localization-form {
 }
 
 .header-wrapper.enable-fixed-header-part--true.transparent-fixed-header {
-  border-radius: none;
+  border-radius: 0;
   box-shadow: none;
-  margin: 1% auto;
+  margin: 0;
   left: 0;
   right: 0;
 }

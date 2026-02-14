@@ -5,17 +5,17 @@
     --cbv-hero-orange-hover: #bf5f2e;
     --cbv-hero-sage: var(--cbv-sage, #7f8e6b);
     background:
-      radial-gradient(circle at 85% 12%, rgba(255, 211, 160, 0.26), rgba(255, 211, 160, 0) 42%),
-      radial-gradient(circle at 10% 92%, rgba(255, 193, 143, 0.2), rgba(255, 193, 143, 0) 45%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.15)),
+      radial-gradient(circle at 85% 15%, rgba(255, 205, 150, 0.25), transparent 50%),
       var(--cbv-hero-bg);
-    padding: clamp(4rem, 8vw, 7rem) 1.5rem;
+    padding: clamp(6rem, 10vw, 10rem) 1.5rem;
   }
 
   .cbv-hero-v2-{{ section.id }} .cbv-hero__inner {
     max-width: 1240px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: 1.3fr 0.7fr;
     gap: clamp(2rem, 5vw, 4rem);
     align-items: center;
   }
@@ -33,8 +33,8 @@
   .cbv-hero-v2-{{ section.id }} .cbv-hero__headline {
     margin: 0 0 1.25rem;
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.3rem, 5vw, 4rem);
-    line-height: 1.05;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1.02;
     color: #2f2318;
   }
 
@@ -71,6 +71,9 @@
     background-color: var(--cbv-hero-orange);
     border: 1px solid var(--cbv-hero-orange);
     color: #fff;
+    min-height: 56px;
+    padding: 1rem 1.8rem;
+    font-size: 1rem;
   }
 
   .cbv-hero-v2-{{ section.id }} .cbv-hero__btn--primary:hover {
@@ -82,6 +85,7 @@
     background-color: transparent;
     border: 1px solid var(--cbv-hero-sage);
     color: var(--cbv-hero-sage);
+    min-height: 56px;
   }
 
   .cbv-hero-v2-{{ section.id }} .cbv-hero__btn--secondary:hover {
@@ -100,7 +104,7 @@
     display: block;
     width: 100%;
     height: 100%;
-    min-height: clamp(320px, 42vw, 620px);
+    min-height: clamp(420px, 55vw, 720px);
     object-fit: cover;
   }
 
