@@ -3324,7 +3324,7 @@ details[open] > .navigation-submenu {
   left: 50%;
   bottom: 0;
   width: 0;
-  height: 3px;
+  height: 4px;
   background-color: rgb(var(--color-base-background-accent-1), 0.4);
   transition: width 0.4s ease-in-out, left 0.4s ease-in-out;
 }
@@ -3857,7 +3857,7 @@ html {
 }
 
 .header {
-  column-gap: clamp(1.6rem, 3vw, 4.4rem);
+  column-gap: clamp(1.2rem, 2.4vw, 3rem);
 }
 
 .header__heading-link {
@@ -3884,9 +3884,9 @@ html {
 
 .navigation-menu .list-menu__item,
 .navigation-menu .nav-first-child.list-menu__item {
-  font-size: 1.6rem;
+  font-size: 1.65rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   font-weight: 600;
   color: var(--cbv-ink) !important;
 }
@@ -3899,7 +3899,7 @@ html {
 .nav-menu-item span::after {
   left: 0;
   bottom: -0.6rem;
-  height: 3px;
+  height: 4px;
   background-color: var(--cbv-orange) !important;
   transition: transform 0.28s ease;
   transform: scaleX(0);
