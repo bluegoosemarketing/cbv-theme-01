@@ -3844,114 +3844,311 @@ html {
      transform: scale(1) translateX(-50%); /* Grow to full size */
   }
 }
-/* CBV brand navigation system refinements */
+/* =========================================
+   CBV BRAND HEADER & NAVIGATION SYSTEM
+   ========================================= */
 :root {
-  --cbv-bg: #F3EEE6;
-  --cbv-surface: #FFFFFF;
-  --cbv-ink: #1F1D1A;
-  --cbv-sage: #4F6135;
-  --cbv-sage-soft: #7B8C63;
+  --cbv-bg: #F9F5F0;
+  --cbv-surface: rgba(255, 255, 255, 0.95);
+  --cbv-ink: #2C2621;
+  --cbv-sage: #5D6B45;
   --cbv-orange: #D87A2F;
-  --cbv-border: #E6DFD5;
+  --cbv-border: rgba(44, 38, 33, 0.08);
+  --layout-max-width: 1600px; /* Matching Hero alignment */
+  --layout-gutter: 5rem;
 }
 
 .shopify-section-header {
   position: sticky;
   top: 0;
   z-index: 30;
+  transition: transform 0.3s ease;
 }
 
 .header-wrapper,
 .header-wrapper.gradient {
-  background: rgba(255, 255, 255, 0.92) !important;
-  border-bottom: 1px solid rgba(88, 64, 40, 0.16) !important;
-  box-shadow: 0 16px 28px rgba(56, 40, 24, 0.08);
-  backdrop-filter: blur(8px);
+  background: var(--cbv-surface) !important;
+  border-bottom: 1px solid var(--cbv-border) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .header {
-  column-gap: clamp(1.2rem, 2.4vw, 3rem);
-  max-width: min(100vw, 1600px);
-  margin-inline: auto;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  /* Use !important to override theme clamp defaults if they conflict */
+  padding-left: var(--layout-gutter) !important;
+  padding-right: var(--layout-gutter) !important;
+  min-height: 90px;
+  display: flex; /* Restored Flexbox for compatibility */
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --- 1. Logo (Left) --- */
+.header__heading {
+  margin: 0;
+  flex-shrink: 0;
 }
 
 .header__heading-link {
-  padding: 0.9rem 1.2rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
 }
 
 .header__heading-logo {
-  min-width: min(100%, 260px);
+  width: clamp(160px, 14vw, 240px);
+  object-fit: contain;
 }
 
-.header__icons {
-  gap: 0.55rem;
+/* --- 2. Navigation (Center) --- */
+/* Target the specific wrapper classes from your header.liquid */
+.header__inline-menu {
+  flex-grow: 1;
+  text-align: center;
 }
 
-.header__icon,
-.header__icon:visited {
-  color: var(--cbv-ink);
+.navigation-menu {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2.5rem; /* Spacious premium feel */
+  justify-content: center;
 }
 
+/* Link Styling */
+.list-menu__item,
 .nav-menu-item {
-  padding: 1.45rem 1.45rem;
-  color: var(--cbv-ink) !important;
-}
-
-.navigation-menu .list-menu__item,
-.navigation-menu .nav-first-child.list-menu__item {
-  font-size: clamp(1.15rem, 1.1vw, 1.45rem);
+  font-family: var(--font-body-family);
+  font-size: 1.6rem !important; /* Restored request */
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 600;
   color: var(--cbv-ink) !important;
+  padding: 1.2rem 2.2rem; /* Added generous side spacing */
+  position: relative;
+  text-decoration: none;
+  background: transparent;
+  border: none;
 }
 
-.navigation-menu .navigation-submenu .list-menu__item {
-  text-transform: none;
-  letter-spacing: 0;
+.list-menu__item span,
+.nav-menu-item span {
+  position: relative;
+  display: inline-block;
 }
 
+/* Orange Underline Animation */
+.list-menu__item span::after,
 .nav-menu-item span::after {
+  content: '';
+  position: absolute;
   left: 0;
-  bottom: -0.58rem;
-  height: 4px;
+  bottom: -4px;
+  height: 2px;
   background-color: var(--cbv-orange) !important;
-  transition: transform 0.28s ease;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   transform: scaleX(0);
-  transform-origin: left center;
+  transform-origin: center right;
   width: 100%;
 }
 
-.nav-menu-item:hover,
-.nav-menu-item:focus-within {
-  color: var(--cbv-sage) !important;
-}
-
-.navigation-menu .list-menu__item:hover {
-  color: var(--cbv-sage) !important;
-}
-
-.nav-menu-item:hover span::after,
-.nav-menu-item:focus-within span::after {
+.list-menu__item:hover span::after,
+.list-menu__item[aria-expanded="true"] span::after,
+.nav-menu-item:hover span::after {
   transform: scaleX(1);
+  transform-origin: center left;
 }
 
-.main-navigation .navigation-submenu li .nav-menu-item:hover,
-.main-navigation .navigation-submenu li .nav-menu-item:focus-within {
-  color: var(--cbv-sage-soft);
-  transform: translateX(5px);
+.list-menu__item:hover {
+  color: var(--cbv-ink) !important;
 }
 
+/* --- 3. Icons (Right) --- */
+.header__icons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.header__icon {
+  color: var(--cbv-ink);
+  transition: transform 0.2s ease, color 0.2s ease;
+  width: 4.4rem;
+  height: 4.4rem;
+}
+
+.header__icon:hover {
+  transform: scale(1.05);
+  color: var(--cbv-orange);
+}
+
+/* --- Mega Menu Internal Styling --- */
+/* We style the contents, trusting the theme to handle visibility/position */
+
+.cbv-mega-menu {
+  background: #fff;
+  border-top: 1px solid var(--cbv-border);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+  padding: 3rem 0 4rem;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  margin-top: 15px; /* Push slightly down from header */
+}
+
+/* Ensure full width content inside */
+.cbv-mega-menu__inner {
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  padding: 0 var(--layout-gutter);
+}
+
+.cbv-mega-menu__eyebrow {
+  display: block;
+  font-family: var(--font-body-family);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--cbv-sage);
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+/* Columns Grid */
+.cbv-mega-menu__columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.cbv-mega-menu__columns--scents {
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+}
+
+/* Column Headers */
+.cbv-mega-menu__column > .link {
+  font-family: var(--font-heading-family);
+  font-size: 1.4rem;
+  color: var(--cbv-ink);
+  text-decoration: none;
+  margin-bottom: 1.25rem;
+  display: block;
+  font-weight: 500;
+}
+
+/* Standard Links */
+.mega-menu__link {
+  font-family: var(--font-body-family);
+  font-size: 1rem;
+  color: rgba(44, 38, 33, 0.8);
+  text-decoration: none;
+  display: block;
+  padding: 0.35rem 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.mega-menu__link:hover {
+  color: var(--cbv-orange);
+  transform: translateX(4px);
+}
+
+/* Level 2 Headers in Menu */
+.mega-menu__link--level-2 {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--cbv-ink);
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Meta / Subtext */
+.cbv-spec-meta {
+  display: block;
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 1px;
+}
+
+/* Badges */
+.cbv-menu-badge {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  background: var(--cbv-sage);
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 2px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.cbv-menu-badge--highlight {
+  background: var(--cbv-orange);
+}
+
+/* Scent Tiles */
+.cbv-mega-menu__scent-tile {
+  display: block;
+  padding: 0.75rem;
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: center;
+  color: var(--cbv-ink);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.cbv-mega-menu__scent-tile:hover {
+  background: var(--cbv-bg);
+  border-color: var(--cbv-orange);
+  color: var(--cbv-orange);
+}
+
+/* Animations */
+.animate-fade-up {
+  animation: fadeUp 0.4s ease forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.animate-fade-up:nth-child(1) { animation-delay: 0.05s; }
+.animate-fade-up:nth-child(2) { animation-delay: 0.1s; }
+.animate-fade-up:nth-child(3) { animation-delay: 0.15s; }
+.animate-fade-up:nth-child(4) { animation-delay: 0.2s; }
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Adjustments */
 @media screen and (max-width: 990px) {
+  :root {
+    --layout-gutter: 1.5rem;
+  }
+  
   .header {
-    column-gap: 1rem;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+    min-height: 70px;
   }
-
-  .header__heading-link {
-    padding: 0.82rem 0.75rem;
-  }
-
+  
   .header__heading-logo {
-    min-width: min(100%, 176px);
+    width: 140px;
+  }
+  
+  /* Standard theme class for hiding desktop nav on mobile */
+  .header__inline-menu {
+    display: none;
   }
 }

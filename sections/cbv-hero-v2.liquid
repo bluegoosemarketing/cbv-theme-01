@@ -1,293 +1,261 @@
 {%- style -%}
   .cbv-hero-v2-{{ section.id }} {
-    --cbv-hero-bg: var(--cbv-bg, #f8f2e7);
-    --cbv-hero-surface: rgba(255, 255, 255, 0.74);
-    --cbv-hero-ink: #2a1f15;
-    --cbv-hero-orange: var(--cbv-orange, #d5743f);
-    --cbv-hero-orange-hover: #bf5f2e;
-    --cbv-hero-sage: var(--cbv-sage, #7f8e6b);
-    --cbv-hero-border: rgba(86, 64, 42, 0.14);
+    /* Use the same variables as base.css for consistency */
+    --hero-bg: #F9F5F0;
+    --hero-ink: #2C2621;
+    --hero-accent: #D87A2F; /* The branded Orange */
+    --hero-sage: #5D6B45;
+    
+    /* Exact match to Header alignment */
+    --hero-max-width: 1600px; 
+    --hero-gutter-desktop: 5rem;
+    --hero-gutter-mobile: 2rem;
+
     position: relative;
-    overflow: clip;
-    background:
-      radial-gradient(circle at 7% 18%, rgba(255, 238, 206, 0.72), transparent 44%),
-      radial-gradient(circle at 82% 12%, rgba(226, 184, 135, 0.24), transparent 36%),
-      linear-gradient(140deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.16) 48%, rgba(252, 237, 215, 0.35)),
-      var(--cbv-hero-bg);
-    padding: clamp(5rem, 10vw, 8.5rem) clamp(1rem, 3vw, 3rem) clamp(4.8rem, 7vw, 7rem);
+    background-color: var(--hero-bg);
+    overflow: hidden;
+    color: var(--hero-ink);
   }
 
-  .cbv-hero-v2-{{ section.id }}::before,
-  .cbv-hero-v2-{{ section.id }}::after {
-    content: '';
-    position: absolute;
-    pointer-events: none;
-  }
-
+  /* Texture Overlay */
   .cbv-hero-v2-{{ section.id }}::before {
+    content: "";
+    position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(54, 37, 20, 0.11) 0, rgba(54, 37, 20, 0) 16%);
+    opacity: 0.3;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
   }
 
-  .cbv-hero-v2-{{ section.id }}::after {
-    right: clamp(-8rem, -3vw, -2rem);
-    top: clamp(8rem, 14vw, 12rem);
-    width: clamp(18rem, 34vw, 34rem);
-    height: clamp(18rem, 34vw, 34rem);
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(78, 97, 53, 0.2), rgba(78, 97, 53, 0));
-    opacity: 0.65;
-  }
-
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__inner {
+  /* Layout Container */
+  .cbv-hero__container {
     position: relative;
     z-index: 1;
-    width: min(100%, 1640px);
+    max-width: var(--hero-max-width);
     margin: 0 auto;
+    padding: 6rem var(--hero-gutter-desktop) 8rem; /* Top/Bottom padding, Left/Right gutter */
     display: grid;
-    grid-template-columns: minmax(0, 1.28fr) minmax(340px, 0.72fr);
-    gap: clamp(2rem, 3.6vw, 5rem);
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
     align-items: center;
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__content {
-    max-width: 760px;
-    background: linear-gradient(132deg, var(--cbv-hero-surface), rgba(255, 255, 255, 0.36));
-    border: 1px solid var(--cbv-hero-border);
-    border-radius: clamp(1.1rem, 1.7vw, 1.8rem);
-    padding: clamp(1.8rem, 3.3vw, 3rem) clamp(1.4rem, 2.8vw, 2.8rem);
-    box-shadow: 0 28px 52px rgba(71, 51, 31, 0.12);
-    backdrop-filter: blur(3px);
+  /* Content Alignment */
+  .cbv-hero__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Ensures left alignment match */
+    max-width: 720px; /* Constrains line length for readability */
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__eyebrow {
-    margin: 0 0 1.25rem;
-    font-family: Inter, sans-serif;
-    font-size: 0.78rem;
-    letter-spacing: 0.2em;
+  .cbv-hero__eyebrow {
+    font-family: var(--font-body-family);
+    font-size: 0.9rem;
     text-transform: uppercase;
-    font-weight: 600;
-    color: rgba(42, 31, 21, 0.72);
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    color: var(--hero-sage);
+    margin-bottom: 1.5rem;
+    display: inline-block;
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__headline {
-    margin: 0;
-    max-width: 16ch;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 5.8vw, 6.4rem);
-    letter-spacing: -0.015em;
-    line-height: 0.95;
-    color: var(--cbv-hero-ink);
-    text-wrap: balance;
+  .cbv-hero__headline {
+    font-family: var(--font-heading-family); /* Matches Brand Font */
+    font-weight: 500; /* Heavier/Established feel */
+    font-size: clamp(3.5rem, 5.5vw, 6.5rem);
+    line-height: 1.05;
+    margin: 0 0 2rem 0;
+    color: var(--hero-ink);
+    letter-spacing: -0.01em;
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__body {
-    max-width: 52ch;
-    margin: clamp(1.1rem, 2vw, 1.6rem) 0 0;
-    font-family: Inter, sans-serif;
-    font-size: clamp(1rem, 1.35vw, 1.24rem);
-    line-height: 1.75;
-    color: rgba(42, 31, 21, 0.86);
+  .cbv-hero__body {
+    font-family: var(--font-body-family);
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: rgba(44, 38, 33, 0.85);
+    margin-bottom: 3.5rem;
+    max-width: 90%;
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__actions {
+  /* Commanding Buttons */
+  .cbv-hero__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: clamp(1.7rem, 2.2vw, 2.3rem);
+    gap: 1.5rem;
+    width: 100%;
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__btn {
+  .cbv-hero__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 58px;
-    padding: 1rem 1.95rem;
-    border-radius: 999px;
-    font-family: Inter, sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    padding: 1.6rem 3.5rem; /* Large, confident touch targets */
+    font-family: var(--font-body-family);
+    font-size: 1.2rem; /* Larger text */
     text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
     text-decoration: none;
-    transition: transform 0.24s ease, box-shadow 0.24s ease, background-color 0.24s ease, color 0.24s ease, border-color 0.24s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-width: 220px; /* Ensure buttons have presence */
+    text-align: center;
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__btn--primary {
-    background-color: var(--cbv-hero-orange);
-    border: 1px solid var(--cbv-hero-orange);
+  .cbv-hero__btn--primary {
+    background-color: var(--hero-ink);
     color: #fff;
-    box-shadow: 0 16px 26px rgba(171, 92, 42, 0.28);
+    border: 1px solid var(--hero-ink);
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__btn--primary:hover {
-    background-color: var(--cbv-hero-orange-hover);
-    border-color: var(--cbv-hero-orange-hover);
+  .cbv-hero__btn--primary:hover {
+    background-color: var(--hero-accent);
+    border-color: var(--hero-accent);
     transform: translateY(-2px);
-    box-shadow: 0 22px 30px rgba(171, 92, 42, 0.32);
+    box-shadow: 0 12px 24px rgba(216, 122, 47, 0.25);
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__btn--secondary {
-    background-color: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(79, 97, 53, 0.7);
-    color: var(--cbv-hero-sage);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  .cbv-hero__btn--secondary {
+    background-color: transparent;
+    color: var(--hero-ink);
+    border: 1px solid rgba(44, 38, 33, 0.3);
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__btn--secondary:hover {
-    background: rgba(127, 142, 107, 0.12);
+  .cbv-hero__btn--secondary:hover {
+    border-color: var(--hero-ink);
+    background-color: rgba(44, 38, 33, 0.05);
     transform: translateY(-2px);
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__media-wrap {
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__media {
+  /* Visuals */
+  .cbv-hero__media-wrapper {
     position: relative;
-    width: min(100%, 620px);
-    border-radius: clamp(1rem, 1.8vw, 1.8rem);
-    overflow: hidden;
-    border: 1px solid rgba(113, 83, 52, 0.18);
-    box-shadow: 0 30px 54px rgba(61, 44, 27, 0.2);
-    background: rgba(255, 255, 255, 0.58);
-  }
-
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__media::after {
-    content: '';
-    position: absolute;
-    inset: auto 0 0;
-    height: 30%;
-    background: linear-gradient(180deg, rgba(31, 24, 18, 0), rgba(31, 24, 18, 0.2));
-    pointer-events: none;
-  }
-
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__media img,
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__placeholder {
-    display: block;
     width: 100%;
     height: 100%;
-    min-height: clamp(460px, 52vw, 760px);
+    display: flex;
+    justify-content: flex-end; /* Pushes image to the right alignment line */
+    align-items: center;
+  }
+
+  .cbv-hero__media {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1 / 1.1; /* Slightly taller than square */
+    background: #EAE4DC;
+    position: relative;
+    overflow: hidden;
+    /* Clean, sharp edges or subtle radius depending on preference. 
+       Premium usually implies subtle or none. 
+       Going with sharp for "Established" feel. */
+    border-radius: 4px; 
+    box-shadow: 20px 20px 0px rgba(44, 38, 33, 0.05); /* offset shadow block */
+  }
+
+  .cbv-hero__media img,
+  .cbv-hero__placeholder {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
   }
 
-  .cbv-hero-v2-{{ section.id }} .cbv-hero__placeholder {
-    background: linear-gradient(150deg, rgba(255, 216, 173, 0.42), rgba(246, 237, 226, 0.95));
+  .cbv-hero__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(44,38,33,0.3);
+    font-family: var(--font-heading-family);
+    font-size: 1.5rem;
   }
 
-  @media screen and (max-width: 1280px) {
-    .cbv-hero-v2-{{ section.id }} .cbv-hero__inner {
-      grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  /* Responsive Adjustments */
+  @media screen and (max-width: 1200px) {
+    .cbv-hero__container {
+      gap: 3rem;
+    }
+    .cbv-hero__headline {
+      font-size: 4rem;
     }
   }
 
   @media screen and (max-width: 989px) {
-    .cbv-hero-v2-{{ section.id }} {
-      padding-top: clamp(4.1rem, 13vw, 6rem);
-      padding-bottom: clamp(4rem, 11vw, 5.5rem);
-    }
-
-    .cbv-hero-v2-{{ section.id }} .cbv-hero__inner {
+    .cbv-hero__container {
       grid-template-columns: 1fr;
-      gap: clamp(1.8rem, 5vw, 3rem);
+      padding: 4rem var(--hero-gutter-mobile) 6rem;
+      gap: 4rem;
     }
 
-    .cbv-hero-v2-{{ section.id }} .cbv-hero__content {
-      order: 1;
-      max-width: none;
-    }
-
-    .cbv-hero-v2-{{ section.id }} .cbv-hero__media-wrap {
-      order: 2;
+    .cbv-hero__media-wrapper {
       justify-content: center;
     }
 
-    .cbv-hero-v2-{{ section.id }} .cbv-hero__headline {
-      max-width: none;
-      font-size: clamp(2.6rem, 10vw, 4.8rem);
-      line-height: 0.98;
+    .cbv-hero__media {
+      max-width: 100%;
+      aspect-ratio: 1/1;
+      box-shadow: 10px 10px 0px rgba(44, 38, 33, 0.05);
+    }
+    
+    .cbv-hero__content {
+      max-width: 100%;
     }
 
-    .cbv-hero-v2-{{ section.id }} .cbv-hero__media {
-      width: min(100%, 720px);
-    }
-  }
-
-  @media screen and (max-width: 749px) {
-    .cbv-hero-v2-{{ section.id }} {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-
-    .cbv-hero-v2-{{ section.id }} .cbv-hero__content {
-      padding: 1.45rem 1.1rem 1.6rem;
-      border-radius: 1rem;
-    }
-
-    .cbv-hero-v2-{{ section.id }} .cbv-hero__actions {
+    .cbv-hero__actions {
       flex-direction: column;
-      align-items: stretch;
     }
-
-    .cbv-hero-v2-{{ section.id }} .cbv-hero__btn {
+    
+    .cbv-hero__btn {
       width: 100%;
-      min-height: 54px;
-    }
-
-    .cbv-hero-v2-{{ section.id }} .cbv-hero__media img,
-    .cbv-hero-v2-{{ section.id }} .cbv-hero__placeholder {
-      min-height: clamp(340px, 100vw, 500px);
     }
   }
 {%- endstyle -%}
 
 <section class="cbv-hero-v2-{{ section.id }}">
-  <div class="cbv-hero__inner">
+  <div class="cbv-hero__container">
+    
     <div class="cbv-hero__content">
-      <p class="cbv-hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-      <h2 class="cbv-hero__headline">{{ section.settings.headline | escape }}</h2>
-      <p class="cbv-hero__body">{{ section.settings.body_text | escape }}</p>
-      <div class="cbv-hero__actions">
-        <a
-          {% if section.settings.primary_button_link != blank %}
-            href="{{ section.settings.primary_button_link }}"
-          {% else %}
-            role="link" aria-disabled="true"
-          {% endif %}
-          class="cbv-hero__btn cbv-hero__btn--primary"
-        >
-          {{ section.settings.primary_button_label | escape }}
-        </a>
-        <a
-          {% if section.settings.secondary_button_link != blank %}
-            href="{{ section.settings.secondary_button_link }}"
-          {% else %}
-            role="link" aria-disabled="true"
-          {% endif %}
-          class="cbv-hero__btn cbv-hero__btn--secondary"
-        >
-          {{ section.settings.secondary_button_label | escape }}
-        </a>
-      </div>
-    </div>
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="cbv-hero__eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      
+      <h2 class="cbv-hero__headline">
+        {{ section.settings.headline }}
+      </h2>
+      
+      {%- if section.settings.body_text != blank -%}
+        <div class="cbv-hero__body">
+          {{ section.settings.body_text }}
+        </div>
+      {%- endif -%}
 
-    <div class="cbv-hero__media-wrap">
-      <div class="cbv-hero__media">
-        {%- if section.settings.image != blank -%}
-          {{
-            section.settings.image
-            | image_url: width: 1800
-            | image_tag:
-              loading: 'lazy',
-              widths: '540, 720, 900, 1100, 1400, 1800',
-              sizes: '(max-width: 989px) 100vw, 50vw'
-          }}
-        {%- else -%}
-          <div class="cbv-hero__placeholder"></div>
+      <div class="cbv-hero__actions">
+        {%- if section.settings.primary_button_label != blank -%}
+          <a href="{{ section.settings.primary_button_link }}" class="cbv-hero__btn cbv-hero__btn--primary">
+            {{ section.settings.primary_button_label }}
+          </a>
+        {%- endif -%}
+        
+        {%- if section.settings.secondary_button_label != blank -%}
+          <a href="{{ section.settings.secondary_button_link }}" class="cbv-hero__btn cbv-hero__btn--secondary">
+            {{ section.settings.secondary_button_label }}
+          </a>
         {%- endif -%}
       </div>
     </div>
+
+    <div class="cbv-hero__media-wrapper">
+      <div class="cbv-hero__media">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', sizes: '(min-width: 990px) 50vw, 100vw', widths: '375, 550, 750, 1100, 1400' }}
+        {%- else -%}
+          <div class="cbv-hero__placeholder">
+            <span>Select Image</span>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -300,47 +268,47 @@
     {
       "type": "text",
       "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "Hand Poured Since 1999"
+      "label": "Eyebrow Text",
+      "default": "EST. 1999"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "headline",
       "label": "Headline",
-      "default": "Fragrance That Fills Every Room With Warmth"
+      "default": "Fragrance that fills the room with warmth."
     },
     {
       "type": "textarea",
       "id": "body_text",
-      "label": "Body text",
+      "label": "Body Text",
       "default": "Over 450 carefully blended scents crafted in small batches to bring comfort, character, and atmosphere into your home."
     },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Hero image"
+      "label": "Hero Image"
     },
     {
       "type": "text",
       "id": "primary_button_label",
-      "label": "Primary button label",
+      "label": "Primary Button Label",
       "default": "Shop Best Sellers"
     },
     {
       "type": "url",
       "id": "primary_button_link",
-      "label": "Primary button link"
+      "label": "Primary Button Link"
     },
     {
       "type": "text",
       "id": "secondary_button_label",
-      "label": "Secondary button label",
+      "label": "Secondary Button Label",
       "default": "Explore All Scents"
     },
     {
       "type": "url",
       "id": "secondary_button_link",
-      "label": "Secondary button link"
+      "label": "Secondary Button Link"
     }
   ],
   "presets": [
