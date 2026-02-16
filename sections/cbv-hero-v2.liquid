@@ -1,12 +1,10 @@
 {%- style -%}
   .cbv-hero-v2-{{ section.id }} {
-    /* Use the same variables as base.css for consistency */
-    --hero-bg: #F9F5F0;
-    --hero-ink: #2C2621;
-    --hero-accent: #D87A2F; /* The branded Orange */
-    --hero-sage: #5D6B45;
+    --hero-bg: #FFF8F0;
+    --hero-ink: #2D241E;
+    --hero-accent: #F26A44; 
+    --hero-sage: #6B5C53;
     
-    /* Exact match to Header alignment */
     --hero-max-width: 1600px; 
     --hero-gutter-desktop: 5rem;
     --hero-gutter-mobile: 2rem;
@@ -17,7 +15,6 @@
     color: var(--hero-ink);
   }
 
-  /* Texture Overlay */
   .cbv-hero-v2-{{ section.id }}::before {
     content: "";
     position: absolute;
@@ -28,63 +25,63 @@
     z-index: 0;
   }
 
-  /* Layout Container */
   .cbv-hero__container {
     position: relative;
     z-index: 1;
     max-width: var(--hero-max-width);
     margin: 0 auto;
-    padding: 6rem var(--hero-gutter-desktop) 8rem; /* Top/Bottom padding, Left/Right gutter */
+    padding: 4rem var(--hero-gutter-desktop) 6rem; /* Tighter vertical padding */
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 6rem;
     align-items: center;
   }
 
-  /* Content Alignment */
   .cbv-hero__content {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start; /* Ensures left alignment match */
-    max-width: 720px; /* Constrains line length for readability */
+    align-items: flex-start;
+    max-width: 720px; 
   }
 
   .cbv-hero__eyebrow {
-    font-family: var(--font-body-family);
-    font-size: 0.9rem;
+    font-family: 'Outfit', sans-serif !important;
+    background-color: #FFEBE5;
+    color: var(--hero-accent);
+    font-size: 1.4rem;
+    padding: 0.6rem 1.6rem;
+    border-radius: 99px;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em;
     font-weight: 700;
-    color: var(--hero-sage);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.6rem; /* Tighter */
     display: inline-block;
   }
 
   .cbv-hero__headline {
-    font-family: var(--font-heading-family); /* Matches Brand Font */
-    font-weight: 500; /* Heavier/Established feel */
-    font-size: clamp(3.5rem, 5.5vw, 6.5rem);
-    line-height: 1.05;
-    margin: 0 0 2rem 0;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 700;
+    font-size: clamp(4.5rem, 7vw, 7.2rem);
+    line-height: 1.05; /* Tighter line height */
+    margin: 0 0 1.6rem 0; /* Tighter */
     color: var(--hero-ink);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
   }
 
   .cbv-hero__body {
-    font-family: var(--font-body-family);
-    font-size: 1.25rem;
-    line-height: 1.7;
-    color: rgba(44, 38, 33, 0.85);
-    margin-bottom: 3.5rem;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 1.8rem;
+    line-height: 1.5;
+    color: var(--hero-sage);
+    margin-bottom: 3.2rem; /* Tighter to buttons */
     max-width: 90%;
   }
 
-  /* Commanding Buttons */
   .cbv-hero__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1rem;
     width: 100%;
   }
 
@@ -92,66 +89,75 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 1.6rem 3.5rem; /* Large, confident touch targets */
-    font-family: var(--font-body-family);
-    font-size: 1.2rem; /* Larger text */
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 700;
+    padding: 1.6rem 3.2rem; 
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.6rem; 
+    letter-spacing: 0.05em;
+    font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease;
     cursor: pointer;
-    min-width: 220px; /* Ensure buttons have presence */
+    min-width: 200px;
     text-align: center;
+    border-radius: 99px;
   }
 
   .cbv-hero__btn--primary {
-    background-color: var(--hero-ink);
+    background-color: var(--hero-accent);
     color: #fff;
-    border: 1px solid var(--hero-ink);
+    border: none;
+    box-shadow: 0 4px 15px rgba(242, 106, 68, 0.3);
   }
 
   .cbv-hero__btn--primary:hover {
-    background-color: var(--hero-accent);
-    border-color: var(--hero-accent);
+    background-color: #D9542F;
     transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(216, 122, 47, 0.25);
+    box-shadow: 0 6px 20px rgba(242, 106, 68, 0.4);
   }
 
   .cbv-hero__btn--secondary {
     background-color: transparent;
     color: var(--hero-ink);
-    border: 1px solid rgba(44, 38, 33, 0.3);
+    border: 2px solid #E6DDD5;
   }
 
   .cbv-hero__btn--secondary:hover {
-    border-color: var(--hero-ink);
-    background-color: rgba(44, 38, 33, 0.05);
+    border-color: var(--hero-accent);
+    color: var(--hero-accent);
     transform: translateY(-2px);
   }
 
-  /* Visuals */
   .cbv-hero__media-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: flex-end; /* Pushes image to the right alignment line */
+    justify-content: flex-end; 
     align-items: center;
+  }
+
+  .cbv-hero__media-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: -20px;
+    bottom: -20px;
+    background-color: #FFDECE; 
+    border-radius: 24px;
+    z-index: 0;
   }
 
   .cbv-hero__media {
     width: 100%;
     max-width: 100%;
-    aspect-ratio: 1 / 1.1; /* Slightly taller than square */
-    background: #EAE4DC;
+    aspect-ratio: 1 / 1.1;
+    background: #EFE8DF;
     position: relative;
     overflow: hidden;
-    /* Clean, sharp edges or subtle radius depending on preference. 
-       Premium usually implies subtle or none. 
-       Going with sharp for "Established" feel. */
-    border-radius: 4px; 
-    box-shadow: 20px 20px 0px rgba(44, 38, 33, 0.05); /* offset shadow block */
+    border-radius: 24px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+    z-index: 1;
   }
 
   .cbv-hero__media img,
@@ -165,18 +171,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(44,38,33,0.3);
-    font-family: var(--font-heading-family);
-    font-size: 1.5rem;
+    color: var(--hero-sage);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 1.6rem;
   }
 
-  /* Responsive Adjustments */
   @media screen and (max-width: 1200px) {
     .cbv-hero__container {
       gap: 3rem;
     }
     .cbv-hero__headline {
-      font-size: 4rem;
+      font-size: 3.5rem;
     }
   }
 
@@ -194,7 +200,6 @@
     .cbv-hero__media {
       max-width: 100%;
       aspect-ratio: 1/1;
-      box-shadow: 10px 10px 0px rgba(44, 38, 33, 0.05);
     }
     
     .cbv-hero__content {
