@@ -91,19 +91,25 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1.8rem;
 }
 
 .cbv-mega-menu__sublist .mega-menu__link {
-  font-size: 1.4rem;
+  font-family: var(--font-body-family);
+  font-size: 1.45rem;
+  line-height: 1.45;
   color: var(--cbv-ink) !important;
   text-decoration: none;
-  transition: color 0.24s ease, transform 0.24s ease;
-  display: inline-flex;
+  transition: color 0.24s ease, transform 0.24s ease, background-color 0.24s ease;
+  display: flex;
   align-items: center;
+  width: 100%;
+  padding: 0.35rem 0.4rem;
+  border-radius: 6px;
 }
 
 .cbv-mega-menu__sublist .mega-menu__link:hover {
+  background-color: var(--cbv-bg);
   color: var(--cbv-sage-soft) !important;
   transform: translateX(5px) !important;
 }
@@ -187,12 +193,14 @@
 }
 
 .cbv-mega-menu__scent-tile {
+  font-family: var(--font-body-family);
   display: block;
   text-align: left;
   padding: 1.25rem 1.35rem;
   border-radius: 8px;
   text-decoration: none;
   font-size: 1.35rem;
+  line-height: 1.35;
   color: var(--cbv-ink);
   border: 1px solid var(--cbv-border);
   background-color: var(--cbv-surface);
