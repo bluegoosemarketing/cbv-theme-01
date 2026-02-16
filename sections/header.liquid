@@ -301,10 +301,10 @@
               <div class="menu-drawer__navigation-container">
                 <nav class="menu-drawer__navigation">
                   <ul class="menu-drawer__menu has-submenu list-menu" role="list">
-                    {%- assign cbv_temp_top_level_items = 'SHOP|SCENTS|BEST SELLERS|SUBSCRIBE' | split: '|' -%}
+                    {%- assign cbv_temp_top_level_items = 'Shop|Scents|Best Sellers|Subscribe' | split: '|' -%}
                     {%- for menu_title in cbv_temp_top_level_items -%}
                       <li>
-                        {%- if menu_title == 'BEST SELLERS' -%}
+                        {%- if menu_title == 'Best Sellers' -%}
                           <a href="/collections/best-sellers" class="menu-drawer__menu-item list-menu__item link link--text focus-inset">
                             {{ menu_title }}
                           </a>
@@ -811,14 +811,14 @@
       {%- else -%}
       <nav class="main-navigation-mega">
         <ul class="navigation-menu" role="list">
-            {%- assign cbv_temp_top_level_items = 'SHOP|SCENTS|BEST SELLERS|SUBSCRIBE' | split: '|' -%}
+            {%- assign cbv_temp_top_level_items = 'Shop|Scents|Best Sellers|Subscribe' | split: '|' -%}
             {%- for menu_title in cbv_temp_top_level_items -%}
               <li>
-                {%- if menu_title == 'BEST SELLERS' -%}
+                {%- if menu_title == 'Best Sellers' -%}
                   <a href="/collections/best-sellers" class="nav-menu-item list-menu__item link focus-inset">
                     <span tabindex="0">{{ menu_title }}</span>
                   </a>
-                {%- elsif menu_title == 'SUBSCRIBE' -%}
+                {%- elsif menu_title == 'Subscribe' -%}
                   <div class="nav-menu-item list-menu__item link focus-inset">
                     <span tabindex="0">{{ menu_title }}</span>
                     {% render 'icon-caret' %}
