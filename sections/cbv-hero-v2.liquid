@@ -378,12 +378,16 @@
       </div>
 
       {%- assign trust_1 = section.settings.trust_item_1 | strip -%}
-      {%- assign trust_2 = section.settings.trust_item_2 | strip -%}
-      {%- assign trust_3 = section.settings.trust_item_3 | strip -%}
-      {%- assign show_trust_content = false -%}
-      {%- if section.settings.show_trust_bar and (trust_1 != blank or trust_2 != blank or trust_3 != blank) -%}
-        {%- assign show_trust_content = true -%}
-      {%- endif -%}
+{%- assign trust_2 = section.settings.trust_item_2 | strip -%}
+{%- assign trust_3 = section.settings.trust_item_3 | strip -%}
+{%- assign show_trust_content = false -%}
+
+{%- if section.settings.show_trust_bar -%}
+  {%- if trust_1 != blank or trust_2 != blank or trust_3 != blank -%}
+    {%- assign show_trust_content = true -%}
+  {%- endif -%}
+{%- endif -%}
+
       {%- assign show_scents = false -%}
       {%- if section.settings.show_scent_examples and section.settings.scent_examples != blank -%}
         {%- assign show_scents = true -%}
