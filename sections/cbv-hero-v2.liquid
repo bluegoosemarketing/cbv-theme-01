@@ -95,6 +95,59 @@
     width: 100%;
   }
 
+  .cbv-hero__trust {
+    margin-top: 1.8rem;
+    padding: 1.2rem 1.6rem;
+    border-radius: 14px;
+    background: #FFF1E8;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .cbv-hero__trust-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem 1.6rem;
+    align-items: center;
+  }
+
+  .cbv-hero__trust-item {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: var(--hero-ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    white-space: nowrap;
+  }
+
+  .cbv-hero__trust-item::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--hero-accent);
+    flex-shrink: 0;
+  }
+
+  .cbv-hero__scent-examples {
+    margin-top: 1.6rem;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 1.45rem;
+    line-height: 1.5;
+    color: var(--hero-sage);
+    max-width: 92%;
+  }
+
+  .cbv-hero__scent-examples strong {
+    color: var(--hero-ink);
+    font-weight: 600;
+  }
+
   .cbv-hero__btn {
     display: inline-flex;
     align-items: center;
@@ -235,12 +288,31 @@
       max-width: 100%;
     }
 
+    .cbv-hero__scent-examples {
+      max-width: 100%;
+    }
+
     .cbv-hero__actions {
       flex-direction: column;
     }
 
     .cbv-hero__btn {
       width: 100%;
+    }
+
+    .cbv-hero__trust {
+      margin-top: 1.5rem;
+      padding: 1.2rem 1.4rem;
+    }
+
+    .cbv-hero__trust-list {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.8rem;
+    }
+
+    .cbv-hero__trust-item {
+      white-space: normal;
     }
   }
 {%- endstyle -%}
@@ -276,6 +348,27 @@
           </a>
         {%- endif -%}
       </div>
+
+      {%- if section.settings.show_trust_bar -%}
+        {%- assign trust_1 = section.settings.trust_item_1 | strip -%}
+        {%- assign trust_2 = section.settings.trust_item_2 | strip -%}
+        {%- assign trust_3 = section.settings.trust_item_3 | strip -%}
+        {%- if trust_1 != blank or trust_2 != blank or trust_3 != blank -%}
+          <div class="cbv-hero__trust" aria-label="Trust highlights">
+            <ul class="cbv-hero__trust-list">
+              {%- if trust_1 != blank -%}<li class="cbv-hero__trust-item">{{ trust_1 }}</li>{%- endif -%}
+              {%- if trust_2 != blank -%}<li class="cbv-hero__trust-item">{{ trust_2 }}</li>{%- endif -%}
+              {%- if trust_3 != blank -%}<li class="cbv-hero__trust-item">{{ trust_3 }}</li>{%- endif -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if section.settings.show_scent_examples and section.settings.scent_examples != blank -%}
+        <p class="cbv-hero__scent-examples">
+          <strong>Scent examples:</strong> {{ section.settings.scent_examples }}
+        </p>
+      {%- endif -%}
     </div>
 
     <div class="cbv-hero__media-wrapper">
@@ -309,13 +402,13 @@
       "type": "textarea",
       "id": "headline",
       "label": "Headline",
-      "default": "Fragrance that fills the room with warmth."
+      "default": "The candle you can actually smell"
     },
     {
       "type": "textarea",
       "id": "body_text",
       "label": "Body Text",
-      "default": "Over 450 carefully blended scents crafted in small batches to bring comfort, character, and atmosphere into your home."
+      "default": "Hand poured in small batches since 1999, with over 450 scents designed to fill your home with fragrance you notice and love."
     },
     {
       "type": "image_picker",
@@ -343,6 +436,42 @@
       "type": "url",
       "id": "secondary_button_link",
       "label": "Secondary Button Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_bar",
+      "label": "Show trust highlights",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_item_1",
+      "label": "Trust highlight 1",
+      "default": "Loved for strong scent throw"
+    },
+    {
+      "type": "text",
+      "id": "trust_item_2",
+      "label": "Trust highlight 2",
+      "default": "450+ scents"
+    },
+    {
+      "type": "text",
+      "id": "trust_item_3",
+      "label": "Trust highlight 3",
+      "default": "Hand poured since 1999"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scent_examples",
+      "label": "Show scent examples",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "scent_examples",
+      "label": "Scent examples text",
+      "default": "Fresh Laundry, Banana Nut Bread, Beach Nights, Vanilla Sugar"
     }
   ],
   "presets": [
