@@ -1,0 +1,190 @@
+{{ 'section-cbv-builder-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'cbv-builder-product.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign product_form_id = 'cbv-builder-product-form-' | append: section.id
+  assign variant = product.selected_or_first_available_variant
+-%}
+
+<section class="cbv-builder color-{{ section.settings.color_scheme }} gradient" data-cbv-builder data-section-id="{{ section.id }}">
+  <div class="page-width section-{{ section.id }}-padding">
+    <div class="cbv-builder__grid">
+      <div class="cbv-builder__media">
+        {% if product.featured_media %}
+          {{
+            product.featured_media
+            | image_url: width: 1200
+            | image_tag:
+              loading: 'lazy',
+              widths: '400, 600, 900, 1200',
+              sizes: '(min-width: 990px) 50vw, 100vw',
+              class: 'cbv-builder__image'
+          }}
+        {% endif %}
+      </div>
+
+      <div class="cbv-builder__content">
+        <p class="cbv-builder__eyebrow">{{ section.settings.eyebrow }}</p>
+        <h1 class="cbv-builder__title">{{ product.title | escape }}</h1>
+        <div class="cbv-builder__price">{% render 'price', product: product, use_variant: true, show_badges: true, price_class: 'price--large' %}</div>
+        {% if product.description != blank %}
+          <div class="cbv-builder__description rte">{{ product.description }}</div>
+        {% endif %}
+
+        <product-form class="product-form" data-section-id="{{ section.id }}">
+          <div class="product-form__error-message-wrapper" role="alert" hidden>
+            <span class="product-form__error-message"></span>
+          </div>
+
+          {%- form 'product', product, id: product_form_id, class: 'form cbv-builder__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            <input type="hidden" name="id" value="{{ variant.id }}" class="product-variant-id" {% unless variant.available %}disabled{% endunless %}>
+
+            <div class="cbv-builder__group">
+              <label class="cbv-builder__label" for="CBVWaxColor-{{ section.id }}">Wax color <span aria-hidden="true">*</span></label>
+              <select id="CBVWaxColor-{{ section.id }}" class="cbv-builder__select" data-cbv-wax-select>
+                <option value="">Select wax color</option>
+                {%- for wax in shop.metaobjects.wax_color.values -%}
+                  {%- liquid
+                    assign wax_name = wax.name.value | default: wax.name
+                    assign wax_active = wax.is_active.value | default: wax.is_active
+                  -%}
+                  {%- if wax_name != blank and wax_active != false -%}
+                    <option value="{{ wax_name | escape }}">{{ wax_name }}</option>
+                  {%- endif -%}
+                {%- endfor -%}
+              </select>
+              <input type="hidden" name="properties[wax_color]" value="" data-cbv-prop-wax>
+            </div>
+
+            <div class="cbv-builder__group cbv-scent" data-cbv-scent-picker>
+              <label class="cbv-builder__label" for="CBVScent-{{ section.id }}">Scent <span aria-hidden="true">*</span></label>
+              <input
+                id="CBVScent-{{ section.id }}"
+                type="text"
+                class="cbv-builder__input"
+                placeholder="Search 800+ fragrances"
+                autocomplete="off"
+                role="combobox"
+                aria-expanded="false"
+                aria-autocomplete="list"
+                aria-controls="CBVScentResults-{{ section.id }}"
+                data-cbv-scent-input
+              >
+
+              <div class="cbv-scent__families" data-cbv-family-filters></div>
+
+              <div class="cbv-scent__suggested" data-cbv-suggested></div>
+
+              <div id="CBVScentResults-{{ section.id }}" class="cbv-scent__results" data-cbv-results hidden></div>
+
+              <input type="hidden" name="properties[scent_1]" value="" data-cbv-prop-scent>
+              <input type="hidden" name="properties[scent_family]" value="" data-cbv-prop-family>
+            </div>
+
+            <p class="cbv-builder__helper" data-cbv-helper>Choose a wax color and scent to continue.</p>
+
+            <div class="product-form__buttons">
+              <button
+                id="ProductSubmitButton-{{ section.id }}"
+                type="submit"
+                name="add"
+                class="product-form__submit button button--primary"
+                disabled
+                data-cbv-submit
+                data-cbv-variant-available="{{ variant.available }}"
+              >
+                <span>{% if variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+                <div class="loading-overlay-spinner hidden">
+                  <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                  </svg>
+                </div>
+              </button>
+            </div>
+          {%- endform -%}
+        </product-form>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-cbv-fragrance-data>
+    [
+      {%- assign first_entry = true -%}
+      {%- for fragrance in shop.metaobjects.fragrance.values -%}
+        {%- liquid
+          assign scent_name = fragrance.name.value | default: fragrance.name
+          assign scent_family = fragrance.scent_family.value | default: fragrance.scent_family
+          assign scent_active = fragrance.is_active.value | default: fragrance.is_active
+        -%}
+        {%- if scent_name != blank and scent_active != false -%}
+          {%- unless first_entry -%},{%- endunless -%}
+          {
+            "name": {{ scent_name | json }},
+            "family": {{ scent_family | default: 'Uncategorized' | json }},
+            "handle": {{ fragrance.handle | json }}
+          }
+          {%- assign first_entry = false -%}
+        {%- endif -%}
+      {%- endfor -%}
+    ]
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "CBV Builder product",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Customize your candle"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "option-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "CBV Builder product"
+    }
+  ]
+}
+{% endschema %}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
