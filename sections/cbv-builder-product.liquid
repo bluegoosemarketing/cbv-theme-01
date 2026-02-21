@@ -107,27 +107,35 @@
     </div>
   </div>
 
-  <script type="application/json" data-cbv-fragrance-data>
-    [
-      {%- assign first_entry = true -%}
-      {%- for fragrance in shop.metaobjects.fragrance.values -%}
-        {%- liquid
-          assign scent_name = fragrance.name.value | default: fragrance.name
-          assign scent_family = fragrance.scent_family.value | default: fragrance.scent_family
-          assign scent_active = fragrance.is_active.value | default: fragrance.is_active
-        -%}
-        {%- if scent_name != blank and scent_active != false -%}
-          {%- unless first_entry -%},{%- endunless -%}
-          {
-            "name": {{ scent_name | json }},
-            "family": {{ scent_family | default: 'Uncategorized' | json }},
-            "handle": {{ fragrance.handle | json }}
-          }
-          {%- assign first_entry = false -%}
-        {%- endif -%}
-      {%- endfor -%}
-    ]
-  </script>
+  {%- paginate shop.metaobjects.fragrance.values by 250 -%}
+    <script
+      type="application/json"
+      data-cbv-fragrance-data
+      data-cbv-fragrance-page="{{ paginate.current_page }}"
+      data-cbv-fragrance-pages="{{ paginate.pages }}"
+      data-cbv-fragrance-page-param="{{ paginate.page_param }}"
+    >
+      [
+        {%- assign first_entry = true -%}
+        {%- for fragrance in shop.metaobjects.fragrance.values -%}
+          {%- liquid
+            assign scent_name = fragrance.name.value | default: fragrance.name
+            assign scent_family = fragrance.scent_family.value | default: fragrance.scent_family
+            assign scent_active = fragrance.is_active.value | default: fragrance.is_active
+          -%}
+          {%- if scent_name != blank and scent_active != false -%}
+            {%- unless first_entry -%},{%- endunless -%}
+            {
+              "name": {{ scent_name | json }},
+              "family": {{ scent_family | default: 'Uncategorized' | json }},
+              "handle": {{ fragrance.handle | json }}
+            }
+            {%- assign first_entry = false -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    </script>
+  {%- endpaginate -%}
 </section>
 
 {% schema %}
