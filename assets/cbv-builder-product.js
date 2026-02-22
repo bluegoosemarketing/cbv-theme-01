@@ -1,6 +1,6 @@
 (() => {
   const RECENT_KEY = 'cbv-builder-recent-scent';
-  const MAX_RESULTS = 40;
+  const MAX_RESULTS = 300;
 
   function normalize(value) {
     return (value || '').toString().trim().toLowerCase();
@@ -8,6 +8,22 @@
 
   function normalizeFamily(value) {
     return (value || '').toString().trim() || 'Uncategorized';
+  }
+
+  function familyWithEmoji(family) {
+    const emojiMap = {
+      bakery: '🧁',
+      fruity: '🍓',
+      floral: '🌸',
+      clean: '🧼',
+      earthy: '🌿',
+      christmas: '🎄',
+      perfume: '💄'
+    };
+
+    const key = normalize(family);
+    const emoji = emojiMap[key];
+    return emoji ? `${emoji} ${family}` : family;
   }
 
   async function setupBuilder(builderEl) {
@@ -62,7 +78,6 @@
     }
 
     const scents = await loadAllScents(fragranceScript);
-
     if (!scents.length) return;
 
     const scentByHandle = new Map();
@@ -75,16 +90,18 @@
 
     const allScents = [...scentByHandle.values()].sort((a, b) => a.name.localeCompare(b.name));
 
-    const waxSelect = builderEl.querySelector('[data-cbv-wax-select]');
+    const waxInputs = builderEl.querySelectorAll('[data-cbv-wax-input]');
     const scentInput = builderEl.querySelector('[data-cbv-scent-input]');
     const resultsEl = builderEl.querySelector('[data-cbv-results]');
     const familyFiltersEl = builderEl.querySelector('[data-cbv-family-filters]');
-    const suggestedEl = builderEl.querySelector('[data-cbv-suggested]');
     const helperEl = builderEl.querySelector('[data-cbv-helper]');
     const submitBtn = builderEl.querySelector('[data-cbv-submit]');
     const waxProp = builderEl.querySelector('[data-cbv-prop-wax]');
     const scentProp = builderEl.querySelector('[data-cbv-prop-scent]');
     const familyProp = builderEl.querySelector('[data-cbv-prop-family]');
+    const noResultsEl = builderEl.querySelector('[data-cbv-no-results]');
+    const waxSelectionEl = builderEl.querySelector('[data-cbv-wax-selection]');
+    const scentSelectionEl = builderEl.querySelector('[data-cbv-scent-selection]');
     const variantAvailable = submitBtn.dataset.cbvVariantAvailable === 'true';
 
     let selectedFamily = 'All';
@@ -105,6 +122,11 @@
       });
     }
 
+    function updateSelectionsLabel() {
+      waxSelectionEl.textContent = waxProp.value ? `: ${waxProp.value}` : '';
+      scentSelectionEl.textContent = scentProp.value ? `: ${scentProp.value}` : '';
+    }
+
     function validate() {
       const hasWax = Boolean(waxProp.value);
       const hasScent = Boolean(scentProp.value);
@@ -112,10 +134,13 @@
 
       submitBtn.disabled = !ready;
       if (ready) {
-        helperEl.textContent = `Ready to add: ${waxProp.value} wax + ${scentProp.value}.`;
+        helperEl.textContent = `Great choices! Ready to add ${waxProp.value} wax + ${scentProp.value}.`;
         helperEl.classList.add('is-valid');
+      } else if (!hasWax) {
+        helperEl.textContent = 'Please select a wax color.';
+        helperEl.classList.remove('is-valid');
       } else {
-        helperEl.textContent = 'Choose a wax color and scent to continue.';
+        helperEl.textContent = 'Please select a scent.';
         helperEl.classList.remove('is-valid');
       }
     }
@@ -128,93 +153,36 @@
       }
     }
 
-    function renderBrowsableScents() {
-      const filteredByFamily = getFilteredScents();
-      
-      // LOGIC FIX:
-      // If a specific family is selected, show ALL of them.
-      // If 'All' is selected, limit to 80 to prevent DOM lag, but allow searching.
-      let scentsToDisplay = [];
-      
-      if (selectedFamily === 'All') {
-        scentsToDisplay = filteredByFamily.slice(0, 80);
-      } else {
-        // Show everything for specific families
-        scentsToDisplay = filteredByFamily;
-      }
-
-      suggestedEl.innerHTML = '';
-      
-      scentsToDisplay.forEach((scent) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'cbv-scent__suggestion';
-        btn.textContent = scent.name;
-        btn.addEventListener('click', () => selectScent(scent));
-        suggestedEl.appendChild(btn);
-      });
-
-      if (!scentsToDisplay.length) {
-        const empty = document.createElement('div');
-        empty.className = 'cbv-scent__family';
-        empty.textContent = 'No scents found in this category.';
-        suggestedEl.appendChild(empty);
-      }
-    }
-
     function selectScent(scent) {
       selectedScent = scent;
       scentInput.value = scent.name;
       scentProp.value = scent.name;
       familyProp.value = scent.family || '';
-      resultsEl.hidden = true;
-      scentInput.setAttribute('aria-expanded', 'false');
       saveRecent(scent);
-      renderBrowsableScents();
+      updateSelectionsLabel();
+      renderResults();
       validate();
     }
 
     function renderResults() {
       const query = normalize(scentInput.value);
-
       const filtered = getFilteredScents(query);
-
       const visible = filtered.slice(0, MAX_RESULTS);
       resultsEl.innerHTML = '';
 
-      if (!visible.length) {
-        const empty = document.createElement('div');
-        empty.className = 'cbv-scent__result';
-        empty.innerHTML = query
-          ? 'No fragrances found in this family. <button type="button" class="cbv-scent__clear" data-cbv-clear-search>Clear search</button>'
-          : 'No fragrances found in this family yet. Try another family.';
-        resultsEl.appendChild(empty);
-
-        const clearButton = resultsEl.querySelector('[data-cbv-clear-search]');
-        if (clearButton) {
-          clearButton.addEventListener('click', () => {
-            scentInput.value = '';
-            selectedScent = null;
-            scentProp.value = '';
-            familyProp.value = '';
-            renderResults();
-            validate();
-            scentInput.focus();
-          });
+      visible.forEach((scent) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'cbv-scent__result';
+        if (selectedScent && normalize(selectedScent.name) === normalize(scent.name)) {
+          button.classList.add('is-selected');
         }
-      } else {
-        visible.forEach((scent) => {
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.className = 'cbv-scent__result';
-          button.innerHTML = `<span>${scent.name}</span><span class="cbv-scent__family">${scent.family || 'Uncategorized'}</span>`;
-          button.addEventListener('click', () => selectScent(scent));
-          resultsEl.appendChild(button);
-        });
-      }
+        button.innerHTML = `<span>${scent.name}</span><span class="cbv-scent__family">${scent.family || 'Uncategorized'}</span>`;
+        button.addEventListener('click', () => selectScent(scent));
+        resultsEl.appendChild(button);
+      });
 
-      resultsEl.hidden = false;
-      scentInput.setAttribute('aria-expanded', 'true');
+      noResultsEl.hidden = visible.length > 0;
     }
 
     function renderFamilyFilters() {
@@ -223,62 +191,62 @@
         const chip = document.createElement('button');
         chip.type = 'button';
         chip.className = `cbv-scent__chip${family === selectedFamily ? ' is-active' : ''}`;
-        chip.textContent = family;
+        chip.textContent = family === 'All' ? 'All scents' : familyWithEmoji(family);
         chip.addEventListener('click', () => {
-          const previousFamily = selectedFamily;
           selectedFamily = family;
-
-          const familyChanged = previousFamily !== family;
-
-          if (familyChanged && scentInput.value) {
-            scentInput.value = '';
-          }
 
           if (selectedScent && family !== 'All' && normalize(selectedScent.family) !== normalize(family)) {
             selectedScent = null;
             scentProp.value = '';
             familyProp.value = '';
+            updateSelectionsLabel();
           }
 
           renderFamilyFilters();
-          renderBrowsableScents();
           renderResults();
           validate();
-
-          if (familyChanged && window.innerWidth < 750) {
-            // Optional: scroll suggested area into view on mobile
-            // suggestedEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
         });
         familyFiltersEl.appendChild(chip);
       });
     }
 
-    waxSelect.addEventListener('change', () => {
-      waxProp.value = waxSelect.value;
-      validate();
+    waxInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        waxProp.value = input.value;
+        updateSelectionsLabel();
+        validate();
+      });
     });
 
-    scentInput.addEventListener('focus', renderResults);
     scentInput.addEventListener('input', () => {
       if (selectedScent && normalize(scentInput.value) !== normalize(selectedScent.name)) {
         selectedScent = null;
         scentProp.value = '';
         familyProp.value = '';
+        updateSelectionsLabel();
       }
       renderResults();
       validate();
     });
 
-    document.addEventListener('click', (event) => {
-      if (!builderEl.contains(event.target)) {
-        resultsEl.hidden = true;
-        scentInput.setAttribute('aria-expanded', 'false');
+    try {
+      const recent = JSON.parse(localStorage.getItem(RECENT_KEY) || 'null');
+      if (recent?.name) {
+        const found = allScents.find((s) => normalize(s.name) === normalize(recent.name));
+        if (found) {
+          selectedScent = found;
+          scentInput.value = found.name;
+          scentProp.value = found.name;
+          familyProp.value = found.family || '';
+        }
       }
-    });
+    } catch (_error) {
+      // Ignore localStorage issues.
+    }
 
     renderFamilyFilters();
-    renderBrowsableScents();
+    updateSelectionsLabel();
+    renderResults();
     validate();
   }
 

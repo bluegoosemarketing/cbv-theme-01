@@ -45,24 +45,39 @@
             <input type="hidden" name="id" value="{{ variant.id }}" class="product-variant-id" {% unless variant.available %}disabled{% endunless %}>
 
             <div class="cbv-builder__group">
-              <label class="cbv-builder__label" for="CBVWaxColor-{{ section.id }}">Wax color <span aria-hidden="true">*</span></label>
-              <select id="CBVWaxColor-{{ section.id }}" class="cbv-builder__select" data-cbv-wax-select>
-                <option value="">Select wax color</option>
+              <label class="cbv-builder__label">1. Choose wax color <span class="cbv-builder__selection" data-cbv-wax-selection></span> <span aria-hidden="true">*</span></label>
+              <div class="cbv-builder__wax-options" data-cbv-wax-options>
                 {%- for wax in shop.metaobjects.wax_color.values -%}
                   {%- liquid
                     assign wax_name = wax.name.value | default: wax.name
                     assign wax_active = wax.is_active.value | default: wax.is_active
+                    assign wax_hex = wax.hex_code.value | default: wax.hex_code | default: wax.color_hex.value | default: wax.color_hex | default: wax.color.value | default: wax.color
                   -%}
                   {%- if wax_name != blank and wax_active != false -%}
-                    <option value="{{ wax_name | escape }}">{{ wax_name }}</option>
+                    <label class="cbv-builder__wax-item">
+                      <input
+                        type="radio"
+                        name="cbv_wax_color"
+                        value="{{ wax_name | escape }}"
+                        class="cbv-builder__wax-input"
+                        data-cbv-wax-input
+                        {% if wax_hex != blank %}data-cbv-wax-hex="{{ wax_hex | escape }}"{% endif %}
+                      >
+                      <span
+                        class="cbv-builder__wax-swatch"
+                        style="--cbv-wax-color: {{ wax_hex | default: '#f5f5f5' }};"
+                        title="{{ wax_name | escape }}"
+                      ></span>
+                      <span class="visually-hidden">{{ wax_name }}</span>
+                    </label>
                   {%- endif -%}
                 {%- endfor -%}
-              </select>
+              </div>
               <input type="hidden" name="properties[wax_color]" value="" data-cbv-prop-wax>
             </div>
 
             <div class="cbv-builder__group cbv-scent" data-cbv-scent-picker>
-              <label class="cbv-builder__label" for="CBVScent-{{ section.id }}">Scent <span aria-hidden="true">*</span></label>
+              <label class="cbv-builder__label" for="CBVScent-{{ section.id }}">2. Choose scent <span class="cbv-builder__selection" data-cbv-scent-selection></span> <span aria-hidden="true">*</span></label>
               
               <!-- Premium Search Wrapper -->
               <div class="cbv-search-wrapper">
@@ -86,9 +101,10 @@
 
               <div class="cbv-scent__families" data-cbv-family-filters></div>
 
-              <div class="cbv-scent__suggested" data-cbv-suggested></div>
-
-              <div id="CBVScentResults-{{ section.id }}" class="cbv-scent__results" data-cbv-results hidden></div>
+              <div class="cbv-scent__results-window">
+                <div id="CBVScentResults-{{ section.id }}" class="cbv-scent__results" data-cbv-results></div>
+                <p class="cbv-scent__empty" data-cbv-no-results hidden>No scents found matching your search.</p>
+              </div>
 
               <input type="hidden" name="properties[scent_1]" value="" data-cbv-prop-scent>
               <input type="hidden" name="properties[scent_family]" value="" data-cbv-prop-family>
