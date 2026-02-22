@@ -128,28 +128,24 @@
       }
     }
 
-    function renderSuggested() {
-      const suggestions = [];
+    function renderBrowsableScents() {
       const filteredByFamily = getFilteredScents();
-
-      try {
-        const recent = JSON.parse(localStorage.getItem(RECENT_KEY) || 'null');
-        if (recent?.name) {
-          const recentFamily = normalizeFamily(recent.family);
-          if (selectedFamily === 'All' || normalize(recentFamily) === normalize(selectedFamily)) {
-            suggestions.push({ ...recent, family: recentFamily });
-          }
-        }
-      } catch (_error) {
-        // no-op
+      
+      // LOGIC FIX:
+      // If a specific family is selected, show ALL of them.
+      // If 'All' is selected, limit to 80 to prevent DOM lag, but allow searching.
+      let scentsToDisplay = [];
+      
+      if (selectedFamily === 'All') {
+        scentsToDisplay = filteredByFamily.slice(0, 80);
+      } else {
+        // Show everything for specific families
+        scentsToDisplay = filteredByFamily;
       }
 
-      filteredByFamily.slice(0, 8).forEach((scent) => {
-        if (!suggestions.find((entry) => normalize(entry.name) === normalize(scent.name))) suggestions.push(scent);
-      });
-
       suggestedEl.innerHTML = '';
-      suggestions.slice(0, 8).forEach((scent) => {
+      
+      scentsToDisplay.forEach((scent) => {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'cbv-scent__suggestion';
@@ -158,10 +154,10 @@
         suggestedEl.appendChild(btn);
       });
 
-      if (!suggestions.length) {
+      if (!scentsToDisplay.length) {
         const empty = document.createElement('div');
         empty.className = 'cbv-scent__family';
-        empty.textContent = 'No scent suggestions in this category yet.';
+        empty.textContent = 'No scents found in this category.';
         suggestedEl.appendChild(empty);
       }
     }
@@ -174,7 +170,7 @@
       resultsEl.hidden = true;
       scentInput.setAttribute('aria-expanded', 'false');
       saveRecent(scent);
-      renderSuggested();
+      renderBrowsableScents();
       validate();
     }
 
@@ -245,11 +241,14 @@
           }
 
           renderFamilyFilters();
-          renderSuggested();
+          renderBrowsableScents();
           renderResults();
           validate();
 
-          if (familyChanged) scentInput.focus();
+          if (familyChanged && window.innerWidth < 750) {
+            // Optional: scroll suggested area into view on mobile
+            // suggestedEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
         });
         familyFiltersEl.appendChild(chip);
       });
@@ -279,7 +278,7 @@
     });
 
     renderFamilyFilters();
-    renderSuggested();
+    renderBrowsableScents();
     validate();
   }
 

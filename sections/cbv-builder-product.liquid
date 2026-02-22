@@ -9,20 +9,25 @@
 <section class="cbv-builder color-{{ section.settings.color_scheme }} gradient" data-cbv-builder data-section-id="{{ section.id }}">
   <div class="page-width section-{{ section.id }}-padding">
     <div class="cbv-builder__grid">
+      
+      <!-- Media Column -->
       <div class="cbv-builder__media">
         {% if product.featured_media %}
-          {{
-            product.featured_media
-            | image_url: width: 1200
-            | image_tag:
-              loading: 'lazy',
-              widths: '400, 600, 900, 1200',
-              sizes: '(min-width: 990px) 50vw, 100vw',
-              class: 'cbv-builder__image'
-          }}
+          <div class="cbv-builder__image-wrapper" style="--ratio-percent: {{ 1 | divided_by: product.featured_media.aspect_ratio | times: 100 }}%;">
+            {{
+              product.featured_media
+              | image_url: width: 1200
+              | image_tag:
+                loading: 'lazy',
+                widths: '400, 600, 900, 1200',
+                sizes: '(min-width: 990px) 50vw, 100vw',
+                class: 'cbv-builder__image'
+            }}
+          </div>
         {% endif %}
       </div>
 
+      <!-- Content Column -->
       <div class="cbv-builder__content">
         <p class="cbv-builder__eyebrow">{{ section.settings.eyebrow }}</p>
         <h1 class="cbv-builder__title">{{ product.title | escape }}</h1>
@@ -58,18 +63,26 @@
 
             <div class="cbv-builder__group cbv-scent" data-cbv-scent-picker>
               <label class="cbv-builder__label" for="CBVScent-{{ section.id }}">Scent <span aria-hidden="true">*</span></label>
-              <input
-                id="CBVScent-{{ section.id }}"
-                type="text"
-                class="cbv-builder__input"
-                placeholder="Search 800+ fragrances"
-                autocomplete="off"
-                role="combobox"
-                aria-expanded="false"
-                aria-autocomplete="list"
-                aria-controls="CBVScentResults-{{ section.id }}"
-                data-cbv-scent-input
-              >
+              
+              <!-- Premium Search Wrapper -->
+              <div class="cbv-search-wrapper">
+                <svg class="cbv-search-icon" aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input
+                  id="CBVScent-{{ section.id }}"
+                  type="text"
+                  class="cbv-builder__input"
+                  placeholder="Search 800+ fragrances..."
+                  autocomplete="off"
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-autocomplete="list"
+                  aria-controls="CBVScentResults-{{ section.id }}"
+                  data-cbv-scent-input
+                >
+              </div>
 
               <div class="cbv-scent__families" data-cbv-family-filters></div>
 
