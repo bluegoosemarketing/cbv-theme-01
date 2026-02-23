@@ -123,8 +123,8 @@
     }
 
     function updateSelectionsLabel() {
-      waxSelectionEl.textContent = waxProp.value ? `: ${waxProp.value}` : '';
-      scentSelectionEl.textContent = scentProp.value ? `: ${scentProp.value}` : '';
+      if (waxSelectionEl) waxSelectionEl.textContent = waxProp.value ? `: ${waxProp.value}` : '';
+      if (scentSelectionEl) scentSelectionEl.textContent = scentProp.value ? `: ${scentProp.value}` : '';
     }
 
     function validate() {
@@ -155,7 +155,9 @@
 
     function selectScent(scent) {
       selectedScent = scent;
-      scentInput.value = scent.name;
+      // CHANGE: We no longer auto-fill the search input with the full name
+      // scentInput.value = scent.name; 
+      
       scentProp.value = scent.name;
       familyProp.value = scent.family || '';
       saveRecent(scent);
@@ -182,7 +184,7 @@
         resultsEl.appendChild(button);
       });
 
-      noResultsEl.hidden = visible.length > 0;
+      if (noResultsEl) noResultsEl.hidden = visible.length > 0;
     }
 
     function renderFamilyFilters() {
@@ -235,7 +237,8 @@
         const found = allScents.find((s) => normalize(s.name) === normalize(recent.name));
         if (found) {
           selectedScent = found;
-          scentInput.value = found.name;
+          // CHANGE: Do not pre-fill input on load either, just select the item
+          // scentInput.value = found.name;
           scentProp.value = found.name;
           familyProp.value = found.family || '';
         }
