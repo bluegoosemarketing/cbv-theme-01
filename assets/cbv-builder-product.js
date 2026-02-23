@@ -1,5 +1,4 @@
 (() => {
-  // Removed caching constants and functions
   const MAX_RESULTS = 300;
 
   function normalize(value) {
@@ -20,7 +19,6 @@
       christmas: '🎄',
       perfume: '💄'
     };
-
     const key = normalize(family);
     const emoji = emojiMap[key];
     return emoji ? `${emoji} ${family}` : family;
@@ -50,7 +48,6 @@
       const requests = [];
       for (let page = 1; page <= totalPages; page += 1) {
         if (page === currentPage) continue;
-
         const url = new URL(window.location.href);
         url.searchParams.set('section_id', builderEl.dataset.sectionId || '');
         url.searchParams.set(pageParam, page);
@@ -73,7 +70,6 @@
           }
         })
       );
-
       return [...firstPage, ...loadedPages.flat()];
     }
 
@@ -90,23 +86,35 @@
 
     const allScents = [...scentByHandle.values()].sort((a, b) => a.name.localeCompare(b.name));
 
+    // Elements
     const waxInputs = builderEl.querySelectorAll('[data-cbv-wax-input]');
     const scentInput = builderEl.querySelector('[data-cbv-scent-input]');
     const resultsEl = builderEl.querySelector('[data-cbv-results]');
     const familyFiltersEl = builderEl.querySelector('[data-cbv-family-filters]');
-    const helperEl = builderEl.querySelector('[data-cbv-helper]');
     const submitBtn = builderEl.querySelector('[data-cbv-submit]');
+    const btnTitleEl = submitBtn.querySelector('.cbv-btn-title');
+    const btnPriceEl = submitBtn.querySelector('.cbv-btn-price');
     const waxProp = builderEl.querySelector('[data-cbv-prop-wax]');
     const scentProp = builderEl.querySelector('[data-cbv-prop-scent]');
     const familyProp = builderEl.querySelector('[data-cbv-prop-family]');
     const noResultsEl = builderEl.querySelector('[data-cbv-no-results]');
-    const waxSelectionEl = builderEl.querySelector('[data-cbv-wax-selection]');
-    const scentSelectionEl = builderEl.querySelector('[data-cbv-scent-selection]');
     const variantAvailable = submitBtn.dataset.cbvVariantAvailable === 'true';
 
-    // New: Grab container elements for green background logic
+    // Groups & Visuals
     const waxGroup = builderEl.querySelector('[data-cbv-step="wax"]');
     const scentGroup = builderEl.querySelector('[data-cbv-step="scent"]');
+    
+    // Ticket Elements
+    const ticketEl = builderEl.querySelector('[data-cbv-ticket]');
+    const ticketWaxEl = builderEl.querySelector('[data-cbv-ticket-wax]');
+    const ticketScentEl = builderEl.querySelector('[data-cbv-ticket-scent]');
+    const ticketSwatchEl = builderEl.querySelector('[data-cbv-ticket-swatch]');
+
+    // Subscription Elements
+    const purchaseOptions = builderEl.querySelectorAll('[data-cbv-option]');
+    const freqSelector = builderEl.querySelector('[data-cbv-frequency]');
+    const mainPriceEl = builderEl.querySelector('[data-cbv-main-price]');
+    let purchaseType = 'onetime';
 
     let selectedFamily = 'All';
     let selectedScent = null;
@@ -126,25 +134,31 @@
       });
     }
 
-    // New: Helper to toggle green background class
-    function updateSelectionsLabel() {
-      // 1. Wax
-      if (waxSelectionEl) {
-        waxSelectionEl.textContent = waxProp.value ? `${waxProp.value}` : '';
-        if (waxGroup) {
-          if (waxProp.value) waxGroup.classList.add('is-completed');
-          else waxGroup.classList.remove('is-completed');
-        }
-      }
+    function updateTicket() {
+      // 1. Update Hidden Inputs
+      const hasWax = Boolean(waxProp.value);
+      const hasScent = Boolean(scentProp.value);
       
-      // 2. Scent
-      if (scentSelectionEl) {
-        scentSelectionEl.textContent = scentProp.value ? `${scentProp.value}` : '';
-        if (scentGroup) {
-          if (scentProp.value) scentGroup.classList.add('is-completed');
-          else scentGroup.classList.remove('is-completed');
+      // 2. Visual Group Classes
+      if (waxGroup) hasWax ? waxGroup.classList.add('is-completed') : waxGroup.classList.remove('is-completed');
+      if (scentGroup) hasScent ? scentGroup.classList.add('is-completed') : scentGroup.classList.remove('is-completed');
+
+      // 3. Update Ticket UI
+      if (hasWax && hasScent) {
+        ticketEl.hidden = false;
+        ticketWaxEl.textContent = waxProp.value;
+        ticketScentEl.textContent = scentProp.value;
+        
+        // Find selected wax hex
+        const activeWaxInput = Array.from(waxInputs).find(i => i.checked);
+        if(activeWaxInput && ticketSwatchEl) {
+           ticketSwatchEl.style.backgroundColor = activeWaxInput.dataset.hex;
         }
+      } else {
+        ticketEl.hidden = true;
       }
+
+      validate();
     }
 
     function validate() {
@@ -153,27 +167,16 @@
       const ready = hasWax && hasScent && variantAvailable;
 
       submitBtn.disabled = !ready;
-      if (ready) {
-        helperEl.textContent = `Great choices! Ready to add ${waxProp.value} wax + ${scentProp.value} to cart.`;
-        helperEl.classList.add('is-valid');
-      } else if (!hasWax) {
-        helperEl.textContent = 'Please select a wax color.';
-        helperEl.classList.remove('is-valid');
-      } else {
-        helperEl.textContent = 'Please select a scent.';
-        helperEl.classList.remove('is-valid');
-      }
+      
+      // Button Text Update handled in Subscription Logic generally, but here we enable/disable
     }
 
     function selectScent(scent) {
       selectedScent = scent;
       scentProp.value = scent.name;
       familyProp.value = scent.family || '';
-      // Removed saveRecent(scent);
-      
-      updateSelectionsLabel();
+      updateTicket();
       renderResults();
-      validate();
     }
 
     function renderResults() {
@@ -211,22 +214,58 @@
             selectedScent = null;
             scentProp.value = '';
             familyProp.value = '';
-            updateSelectionsLabel();
+            updateTicket();
           }
 
           renderFamilyFilters();
           renderResults();
-          validate();
         });
         familyFiltersEl.appendChild(chip);
       });
     }
 
+    // --- SUBSCRIPTION LOGIC ---
+    function updatePricingUI() {
+      // Base Price logic (assuming raw price is in cents or standard money format)
+      // This is a simplified frontend visual update. Real cart logic relies on form data.
+      const basePrice = parseFloat(mainPriceEl.dataset.cbvMainPrice) / 100;
+      let finalPrice = basePrice;
+      
+      if (purchaseType === 'sub') {
+        finalPrice = basePrice * 0.9; // 10% off
+        freqSelector.hidden = false;
+        btnTitleEl.textContent = variantAvailable ? "Join The Club & Pour" : "Sold Out";
+      } else {
+        freqSelector.hidden = true;
+        btnTitleEl.textContent = variantAvailable ? "Pour My Candle" : "Sold Out";
+      }
+
+      const formatted = '$' + finalPrice.toFixed(2);
+      if(btnPriceEl) btnPriceEl.textContent = ` - ${formatted}`;
+    }
+
+    purchaseOptions.forEach(option => {
+      option.addEventListener('click', (e) => {
+        // Handle visual selection
+        purchaseOptions.forEach(o => o.classList.remove('is-selected'));
+        option.classList.add('is-selected');
+        
+        // Update state
+        purchaseType = option.dataset.cbvOption;
+        
+        // Find radio inside and check it
+        const radio = option.querySelector('input[type="radio"]');
+        if(radio) radio.checked = true;
+
+        updatePricingUI();
+      });
+    });
+
+    // --- EVENTS ---
     waxInputs.forEach((input) => {
       input.addEventListener('change', () => {
         waxProp.value = input.value;
-        updateSelectionsLabel();
-        validate();
+        updateTicket();
       });
     });
 
@@ -235,18 +274,15 @@
         selectedScent = null;
         scentProp.value = '';
         familyProp.value = '';
-        updateSelectionsLabel();
+        updateTicket();
       }
       renderResults();
-      validate();
     });
 
-    // Removed the "Load from Local Storage" logic block here
-
     renderFamilyFilters();
-    updateSelectionsLabel();
+    updateTicket();
     renderResults();
-    validate();
+    updatePricingUI(); // Set initial button state
   }
 
   function init() {

@@ -29,11 +29,25 @@
         {% endif %}
       </div>
 
-      <!-- Content Column (Title, Price, Form) -->
+      <!-- Content Column -->
       <div class="cbv-builder__content">
         <p class="cbv-builder__eyebrow">{{ section.settings.eyebrow }}</p>
         <h1 class="cbv-builder__title">{{ product.title | escape }}</h1>
-        <div class="cbv-builder__price">{% render 'price', product: product, use_variant: true, show_badges: true, price_class: 'price--large' %}</div>
+        
+        <!-- PRICE & RATINGS -->
+        <div class="cbv-builder__meta">
+          <div class="cbv-builder__price" data-cbv-main-price="{{ variant.price }}">{{ variant.price | money }}</div>
+          
+          <div class="cbv-reviews-badge">
+            <div class="cbv-stars">
+              {%- for i in (1..5) -%}
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              {%- endfor -%}
+            </div>
+            <span class="cbv-reviews-text">4.9/5 | <strong>15,000+ Poured</strong></span>
+          </div>
+        </div>
+
         {% if product.description != blank %}
           <div class="cbv-builder__description rte">{{ product.description }}</div>
         {% endif %}
@@ -56,7 +70,6 @@
                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
               </div>
-              <div class="cbv-builder__selection-display" data-cbv-wax-selection></div>
               
               <div class="cbv-builder__wax-options" data-cbv-wax-options>
                 {%- for wax in shop.metaobjects.wax_color.values -%}
@@ -74,6 +87,7 @@
                         value="{{ wax_name | escape }}"
                         class="cbv-builder__wax-input"
                         data-cbv-wax-input
+                        data-hex="{{ wax_hex }}"
                       >
                       <span
                         class="cbv-builder__wax-swatch"
@@ -98,9 +112,7 @@
                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
               </div>
-              <div class="cbv-builder__selection-display" data-cbv-scent-selection></div>
               
-              <!-- Search -->
               <div class="cbv-search-wrapper">
                 <svg class="cbv-search-icon" aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="11" cy="11" r="8"></circle>
@@ -110,7 +122,7 @@
                   id="CBVScent-{{ section.id }}"
                   type="text"
                   class="cbv-builder__input"
-                  placeholder="Search 800+ fragrances..."
+                  placeholder="Search for a memory (e.g. Banana Nut Bread)..."
                   autocomplete="off"
                   role="combobox"
                   aria-expanded="false"
@@ -120,10 +132,8 @@
                 >
               </div>
 
-              <!-- Categories -->
               <div class="cbv-scent__families" data-cbv-family-filters></div>
 
-              <!-- Results Window -->
               <div class="cbv-scent__results-window">
                 <div id="CBVScentResults-{{ section.id }}" class="cbv-scent__results" data-cbv-results></div>
                 <p class="cbv-scent__empty" data-cbv-no-results hidden>No scents found matching your search.</p>
@@ -133,20 +143,109 @@
               <input type="hidden" name="properties[scent_family]" value="" data-cbv-prop-family>
             </div>
 
-            <!-- Status & Button -->
-            <p class="cbv-builder__helper" data-cbv-helper>Choose a wax color and scent to continue.</p>
+            <!-- CONFIRMATION: THE POUR TICKET -->
+            <div class="cbv-pour-ticket" data-cbv-ticket hidden>
+              <div class="cbv-ticket-header">Your Custom Pour</div>
+              <div class="cbv-ticket-grid">
+                <div class="cbv-ticket-row">
+                  <span class="cbv-ticket-label">Wax Color</span>
+                  <div class="cbv-ticket-value">
+                    <span class="cbv-ticket-swatch" data-cbv-ticket-swatch></span>
+                    <span data-cbv-ticket-wax>--</span>
+                  </div>
+                </div>
+                <div class="cbv-ticket-row">
+                  <span class="cbv-ticket-label">Fragrance</span>
+                  <div class="cbv-ticket-value">
+                    <span data-cbv-ticket-scent>--</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
+            <!-- PURCHASE OPTIONS (FIXED LAYOUT) -->
+            <div class="cbv-purchase-options" data-cbv-purchase-options>
+              
+              <!-- Option 1: One Time Pour -->
+              <label class="cbv-option-card is-selected" data-cbv-option="onetime">
+                <input type="radio" name="purchase_type" value="onetime" checked class="visually-hidden">
+                
+                <div class="cbv-opt-layout">
+                  <!-- Radio Icon -->
+                  <div class="cbv-opt-radio">
+                    <svg class="cbv-icon-unchecked" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+                    <svg class="cbv-icon-checked" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><circle cx="12" cy="12" r="5"/></svg>
+                  </div>
+                  
+                  <!-- Text -->
+                  <div class="cbv-opt-content">
+                    <span class="cbv-opt-title">One-Time Pour</span>
+                  </div>
+
+                  <!-- Price -->
+                  <div class="cbv-opt-price">{{ variant.price | money }}</div>
+                </div>
+              </label>
+
+              <!-- Option 2: The Candle Club -->
+              <label class="cbv-option-card cbv-option-card--sub" data-cbv-option="sub">
+                <input type="radio" name="purchase_type" value="sub" class="visually-hidden">
+                
+                <div class="cbv-opt-layout">
+                  <!-- Radio Icon -->
+                  <div class="cbv-opt-radio">
+                    <svg class="cbv-icon-unchecked" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+                    <svg class="cbv-icon-checked" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><circle cx="12" cy="12" r="5"/></svg>
+                  </div>
+                  
+                  <!-- Text -->
+                  <div class="cbv-opt-content">
+                    <div class="cbv-opt-header">
+                      <span class="cbv-opt-title">The Candle Club</span>
+                      <span class="cbv-opt-badge">Save 10%</span>
+                    </div>
+                    <div class="cbv-opt-subtitle">Subscribe & save. Never run out.</div>
+                  </div>
+
+                  <!-- Price -->
+                  <div class="cbv-opt-price">
+                    <span class="cbv-old-price">{{ variant.price | money }}</span>
+                    <span class="cbv-new-price">{{ variant.price | times: 0.9 | money }}</span>
+                  </div>
+                </div>
+              </label>
+
+              <!-- Frequency Selector -->
+              <div class="cbv-frequency-selector" data-cbv-frequency hidden>
+                <div class="cbv-freq-inner">
+                  <span class="cbv-freq-label">Deliver every:</span>
+                  <select name="selling_plan" class="cbv-freq-select">
+                    <option value="monthly">30 Days (Most Popular)</option>
+                    <option value="bimonthly">60 Days</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- ADD TO CART -->
             <div class="product-form__buttons">
               <button
                 id="ProductSubmitButton-{{ section.id }}"
                 type="submit"
                 name="add"
-                class="product-form__submit button button--primary"
+                class="product-form__submit button button--primary cbv-grand-button"
                 disabled
                 data-cbv-submit
                 data-cbv-variant-available="{{ variant.available }}"
               >
-                <span>{% if variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+                <span class="cbv-btn-content">
+                  <span class="cbv-btn-title">
+                    {% if variant.available %}Pour My Candle{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
+                  </span>
+                  <span class="cbv-btn-price" data-cbv-btn-price> - {{ variant.price | money }}</span>
+                </span>
+                
                 <div class="loading-overlay-spinner hidden">
                   <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
                     <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
@@ -159,86 +258,71 @@
       </div> <!-- End Content Column -->
     </div> <!-- End Grid -->
     
-    <!-- SUPPORT CONTENT (Below the Fold) -->
+    <!-- SUPPORT CONTENT -->
     <div class="cbv-content-footer">
-      
-      <!-- TRUST BAR -->
-      <div class="cbv-trust-bar">
-        <div class="cbv-trust-item">
-          <img 
-            src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Hand-Poured-in-Texas.webp?v=1771854654" 
-            alt="Hand Poured in Texas"
-            loading="lazy"
-            width="80"
-            height="80"
-          >
-          <span>Hand Poured in Texas</span>
-        </div>
-        <div class="cbv-trust-item">
-          <img 
-            src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Premium-Wax.webp?v=1771854655" 
-            alt="Premium Wax Blend"
-            loading="lazy"
-            width="80"
-            height="80"
-          >
-          <span>Premium Wax Blend</span>
-        </div>
-        <div class="cbv-trust-item">
-          <img 
-            src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Scent-Throw.webp?v=1771854655" 
-            alt="Maximum Scent Throw"
-            loading="lazy"
-            width="80"
-            height="80"
-          >
-          <span>Maximum Scent Throw</span>
-        </div>
-        <div class="cbv-trust-item">
-          <img 
-            src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Made-to-Order.webp?v=1771854655" 
-            alt="Made to Order"
-            loading="lazy"
-            width="80"
-            height="80"
-          >
-          <span>Made to Order</span>
+      <div class="cbv-trust-bar-container">
+        <div class="cbv-trust-bar">
+          <div class="cbv-trust-item">
+            <img src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Hand-Poured-in-Texas.webp?v=1771854654" alt="Hand Poured in Texas" loading="lazy" width="80" height="80">
+            <span>Hand Poured in Texas</span>
+          </div>
+          <div class="cbv-trust-item">
+            <img src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Premium-Wax.webp?v=1771854655" alt="Premium Wax Blend" loading="lazy" width="80" height="80">
+            <span>Premium Wax Blend</span>
+          </div>
+          <div class="cbv-trust-item">
+            <img src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Scent-Throw.webp?v=1771854655" alt="Maximum Scent Throw" loading="lazy" width="80" height="80">
+            <span>Maximum Scent Throw</span>
+          </div>
+          <div class="cbv-trust-item">
+            <img src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Made-to-Order.webp?v=1771854655" alt="Made to Order" loading="lazy" width="80" height="80">
+            <span>Made to Order</span>
+          </div>
         </div>
       </div>
 
-      <!-- FAQ ACCORDIONS -->
-      <div class="cbv-accordions">
-        <details class="cbv-details" open>
-          <summary class="cbv-summary">
-            <span>Why Candles By Victoria?</span>
-            <svg class="cbv-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          </summary>
-          <div class="cbv-details__content">
-            <p>We don't just pour candles; we craft experiences. Every candle is double-scented for maximum "throw," ensuring your home is filled with fragrance from the first light to the last burn. Hand-poured in the USA using our proprietary safe-burning wax blend.</p>
+      <div class="cbv-footer-split">
+        <div class="cbv-footer-col cbv-footer-col--left">
+          <div class="cbv-accordions">
+            <details class="cbv-details" open>
+              <summary class="cbv-summary">
+                <span>Why Candles By Victoria?</span>
+                <svg class="cbv-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </summary>
+              <div class="cbv-details__content"><p>We don't just pour candles; we craft experiences. Every candle is double-scented for maximum "throw," ensuring your home is filled with fragrance from the first light to the last burn. Hand-poured in the USA using our proprietary safe-burning wax blend.</p></div>
+            </details>
+            <details class="cbv-details">
+              <summary class="cbv-summary">
+                <span>Shipping & Turnaround</span>
+                <svg class="cbv-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </summary>
+              <div class="cbv-details__content"><p>Because every candle is custom-made to your exact scent and color specifications, please allow 3-5 business days for creation before shipping. Good things are worth the wait!</p></div>
+            </details>
+            <details class="cbv-details">
+              <summary class="cbv-summary">
+                <span>Candle Care</span>
+                <svg class="cbv-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </summary>
+              <div class="cbv-details__content"><p>For the best burn, trim your wick to 1/4 inch before every lighting. Allow the wax pool to reach the edge of the jar during the first burn to prevent tunneling.</p></div>
+            </details>
           </div>
-        </details>
-        
-        <details class="cbv-details">
-          <summary class="cbv-summary">
-            <span>Shipping & Turnaround</span>
-            <svg class="cbv-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          </summary>
-          <div class="cbv-details__content">
-            <p>Because every candle is custom-made to your exact scent and color specifications, please allow 3-5 business days for creation before shipping. Good things are worth the wait!</p>
+        </div>
+        <div class="cbv-footer-col cbv-footer-col--right">
+          <div class="cbv-feature-card">
+            {%- if section.settings.feature_image != blank -%}
+              {{ section.settings.feature_image | image_url: width: 800 | image_tag: loading: 'lazy', class: 'cbv-feature-image' }}
+              <div class="cbv-feature-overlay"><span class="cbv-feature-badge">The CBV Difference</span></div>
+            {%- else -%}
+              <div class="cbv-feature-fallback">
+                <span class="cbv-feature-icon">✨</span>
+                <h3>The CBV Promise</h3>
+                <p>Every jar is poured by hand in Texas, double-scented, and cured to perfection. Experience the difference of true craftsmanship.</p>
+                <div class="cbv-signature">Victoria</div>
+              </div>
+            {%- endif -%}
           </div>
-        </details>
-
-         <details class="cbv-details">
-          <summary class="cbv-summary">
-            <span>Candle Care</span>
-            <svg class="cbv-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          </summary>
-          <div class="cbv-details__content">
-            <p>For the best burn, trim your wick to 1/4 inch before every lighting. Allow the wax pool to reach the edge of the jar during the first burn to prevent tunneling.</p>
-          </div>
-        </details>
+        </div>
       </div>
-      
     </div>
   </div>
 
@@ -277,44 +361,13 @@
 {
   "name": "CBV Builder product",
   "settings": [
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "Customize your candle"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "option-1"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "label": "Top padding",
-      "default": 32
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "label": "Bottom padding",
-      "default": 40
-    }
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Customize your candle" },
+    { "type": "image_picker", "id": "feature_image", "label": "Footer Feature Image" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "option-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Top padding", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Bottom padding", "default": 40 }
   ],
-  "presets": [
-    {
-      "name": "CBV Builder product"
-    }
-  ]
+  "presets": [{ "name": "CBV Builder product" }]
 }
 {% endschema %}
 
@@ -323,7 +376,6 @@
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
-
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
