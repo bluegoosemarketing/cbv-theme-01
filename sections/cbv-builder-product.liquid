@@ -8,6 +8,8 @@
 
 <section class="cbv-builder color-{{ section.settings.color_scheme }} gradient" data-cbv-builder data-section-id="{{ section.id }}">
   <div class="page-width section-{{ section.id }}-padding">
+    
+    <!-- HERO SECTION (Grid: Image + Builder) -->
     <div class="cbv-builder__grid">
       
       <!-- Media Column -->
@@ -27,7 +29,7 @@
         {% endif %}
       </div>
 
-      <!-- Content Column -->
+      <!-- Content Column (Title, Price, Form) -->
       <div class="cbv-builder__content">
         <p class="cbv-builder__eyebrow">{{ section.settings.eyebrow }}</p>
         <h1 class="cbv-builder__title">{{ product.title | escape }}</h1>
@@ -45,8 +47,16 @@
             <input type="hidden" name="id" value="{{ variant.id }}" class="product-variant-id" {% unless variant.available %}disabled{% endunless %}>
 
             <!-- STEP 1: WAX -->
-            <div class="cbv-builder__group">
-              <label class="cbv-builder__label">1. Choose wax color <span class="cbv-builder__selection" data-cbv-wax-selection></span></label>
+            <div class="cbv-builder__group" data-cbv-step="wax">
+              <div class="cbv-builder__group-header">
+                <label class="cbv-builder__label">
+                  <span class="cbv-step-num">1</span> Choose wax color
+                </label>
+                <div class="cbv-builder__status-icon">
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+              <div class="cbv-builder__selection-display" data-cbv-wax-selection></div>
               
               <div class="cbv-builder__wax-options" data-cbv-wax-options>
                 {%- for wax in shop.metaobjects.wax_color.values -%}
@@ -69,7 +79,7 @@
                         class="cbv-builder__wax-swatch"
                         style="--cbv-wax-color: {{ wax_hex }};"
                       ></span>
-                      <span class="visually-hidden">{{ wax_name }}</span>
+                      <span class="cbv-builder__wax-name visually-hidden">{{ wax_name }}</span>
                     </label>
                   {%- endif -%}
                 {%- endfor -%}
@@ -79,8 +89,16 @@
             </div>
 
             <!-- STEP 2: SCENT -->
-            <div class="cbv-builder__group cbv-scent" data-cbv-scent-picker>
-              <label class="cbv-builder__label" for="CBVScent-{{ section.id }}">2. Choose scent <span class="cbv-builder__selection" data-cbv-scent-selection></span></label>
+            <div class="cbv-builder__group cbv-scent" data-cbv-scent-picker data-cbv-step="scent">
+              <div class="cbv-builder__group-header">
+                <label class="cbv-builder__label" for="CBVScent-{{ section.id }}">
+                  <span class="cbv-step-num">2</span> Choose scent
+                </label>
+                <div class="cbv-builder__status-icon">
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+              <div class="cbv-builder__selection-display" data-cbv-scent-selection></div>
               
               <!-- Search -->
               <div class="cbv-search-wrapper">
@@ -102,7 +120,7 @@
                 >
               </div>
 
-              <!-- Categories (NOW WRAPPED, NOT SCROLLING) -->
+              <!-- Categories -->
               <div class="cbv-scent__families" data-cbv-family-filters></div>
 
               <!-- Results Window -->
@@ -138,7 +156,89 @@
             </div>
           {%- endform -%}
         </product-form>
+      </div> <!-- End Content Column -->
+    </div> <!-- End Grid -->
+    
+    <!-- SUPPORT CONTENT (Below the Fold) -->
+    <div class="cbv-content-footer">
+      
+      <!-- TRUST BAR -->
+      <div class="cbv-trust-bar">
+        <div class="cbv-trust-item">
+          <img 
+            src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Hand-Poured-in-Texas.webp?v=1771854654" 
+            alt="Hand Poured in Texas"
+            loading="lazy"
+            width="80"
+            height="80"
+          >
+          <span>Hand Poured in Texas</span>
+        </div>
+        <div class="cbv-trust-item">
+          <img 
+            src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Premium-Wax.webp?v=1771854655" 
+            alt="Premium Wax Blend"
+            loading="lazy"
+            width="80"
+            height="80"
+          >
+          <span>Premium Wax Blend</span>
+        </div>
+        <div class="cbv-trust-item">
+          <img 
+            src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Scent-Throw.webp?v=1771854655" 
+            alt="Maximum Scent Throw"
+            loading="lazy"
+            width="80"
+            height="80"
+          >
+          <span>Maximum Scent Throw</span>
+        </div>
+        <div class="cbv-trust-item">
+          <img 
+            src="https://cdn.shopify.com/s/files/1/0583/1019/7306/files/Made-to-Order.webp?v=1771854655" 
+            alt="Made to Order"
+            loading="lazy"
+            width="80"
+            height="80"
+          >
+          <span>Made to Order</span>
+        </div>
       </div>
+
+      <!-- FAQ ACCORDIONS -->
+      <div class="cbv-accordions">
+        <details class="cbv-details" open>
+          <summary class="cbv-summary">
+            <span>Why Candles By Victoria?</span>
+            <svg class="cbv-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </summary>
+          <div class="cbv-details__content">
+            <p>We don't just pour candles; we craft experiences. Every candle is double-scented for maximum "throw," ensuring your home is filled with fragrance from the first light to the last burn. Hand-poured in the USA using our proprietary safe-burning wax blend.</p>
+          </div>
+        </details>
+        
+        <details class="cbv-details">
+          <summary class="cbv-summary">
+            <span>Shipping & Turnaround</span>
+            <svg class="cbv-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </summary>
+          <div class="cbv-details__content">
+            <p>Because every candle is custom-made to your exact scent and color specifications, please allow 3-5 business days for creation before shipping. Good things are worth the wait!</p>
+          </div>
+        </details>
+
+         <details class="cbv-details">
+          <summary class="cbv-summary">
+            <span>Candle Care</span>
+            <svg class="cbv-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </summary>
+          <div class="cbv-details__content">
+            <p>For the best burn, trim your wick to 1/4 inch before every lighting. Allow the wax pool to reach the edge of the jar during the first burn to prevent tunneling.</p>
+          </div>
+        </details>
+      </div>
+      
     </div>
   </div>
 

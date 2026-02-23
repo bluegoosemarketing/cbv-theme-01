@@ -1,5 +1,5 @@
 (() => {
-  const RECENT_KEY = 'cbv-builder-recent-scent';
+  // Removed caching constants and functions
   const MAX_RESULTS = 300;
 
   function normalize(value) {
@@ -104,6 +104,10 @@
     const scentSelectionEl = builderEl.querySelector('[data-cbv-scent-selection]');
     const variantAvailable = submitBtn.dataset.cbvVariantAvailable === 'true';
 
+    // New: Grab container elements for green background logic
+    const waxGroup = builderEl.querySelector('[data-cbv-step="wax"]');
+    const scentGroup = builderEl.querySelector('[data-cbv-step="scent"]');
+
     let selectedFamily = 'All';
     let selectedScent = null;
 
@@ -122,9 +126,25 @@
       });
     }
 
+    // New: Helper to toggle green background class
     function updateSelectionsLabel() {
-      if (waxSelectionEl) waxSelectionEl.textContent = waxProp.value ? `: ${waxProp.value}` : '';
-      if (scentSelectionEl) scentSelectionEl.textContent = scentProp.value ? `: ${scentProp.value}` : '';
+      // 1. Wax
+      if (waxSelectionEl) {
+        waxSelectionEl.textContent = waxProp.value ? `${waxProp.value}` : '';
+        if (waxGroup) {
+          if (waxProp.value) waxGroup.classList.add('is-completed');
+          else waxGroup.classList.remove('is-completed');
+        }
+      }
+      
+      // 2. Scent
+      if (scentSelectionEl) {
+        scentSelectionEl.textContent = scentProp.value ? `${scentProp.value}` : '';
+        if (scentGroup) {
+          if (scentProp.value) scentGroup.classList.add('is-completed');
+          else scentGroup.classList.remove('is-completed');
+        }
+      }
     }
 
     function validate() {
@@ -134,7 +154,7 @@
 
       submitBtn.disabled = !ready;
       if (ready) {
-        helperEl.textContent = `Great choices! Ready to add ${waxProp.value} wax + ${scentProp.value}.`;
+        helperEl.textContent = `Great choices! Ready to add ${waxProp.value} wax + ${scentProp.value} to cart.`;
         helperEl.classList.add('is-valid');
       } else if (!hasWax) {
         helperEl.textContent = 'Please select a wax color.';
@@ -145,22 +165,12 @@
       }
     }
 
-    function saveRecent(scent) {
-      try {
-        localStorage.setItem(RECENT_KEY, JSON.stringify(scent));
-      } catch (_error) {
-        // Ignore localStorage issues.
-      }
-    }
-
     function selectScent(scent) {
       selectedScent = scent;
-      // CHANGE: We no longer auto-fill the search input with the full name
-      // scentInput.value = scent.name; 
-      
       scentProp.value = scent.name;
       familyProp.value = scent.family || '';
-      saveRecent(scent);
+      // Removed saveRecent(scent);
+      
       updateSelectionsLabel();
       renderResults();
       validate();
@@ -231,21 +241,7 @@
       validate();
     });
 
-    try {
-      const recent = JSON.parse(localStorage.getItem(RECENT_KEY) || 'null');
-      if (recent?.name) {
-        const found = allScents.find((s) => normalize(s.name) === normalize(recent.name));
-        if (found) {
-          selectedScent = found;
-          // CHANGE: Do not pre-fill input on load either, just select the item
-          // scentInput.value = found.name;
-          scentProp.value = found.name;
-          familyProp.value = found.family || '';
-        }
-      }
-    } catch (_error) {
-      // Ignore localStorage issues.
-    }
+    // Removed the "Load from Local Storage" logic block here
 
     renderFamilyFilters();
     updateSelectionsLabel();
