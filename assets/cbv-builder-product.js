@@ -24,6 +24,10 @@
     return emoji ? `${emoji} ${family}` : family;
   }
 
+  function formatMoney(cents) {
+    return '$' + (cents / 100).toFixed(2);
+  }
+
   async function setupBuilder(builderEl) {
     const fragranceScript = builderEl.querySelector('[data-cbv-fragrance-data]');
     if (!fragranceScript) return;
@@ -86,21 +90,26 @@
 
     const allScents = [...scentByHandle.values()].sort((a, b) => a.name.localeCompare(b.name));
 
-    // Elements
+    // --- DOM ELEMENTS ---
+    // Builder Inputs
     const waxInputs = builderEl.querySelectorAll('[data-cbv-wax-input]');
     const scentInput = builderEl.querySelector('[data-cbv-scent-input]');
     const resultsEl = builderEl.querySelector('[data-cbv-results]');
     const familyFiltersEl = builderEl.querySelector('[data-cbv-family-filters]');
-    const submitBtn = builderEl.querySelector('[data-cbv-submit]');
-    const btnTitleEl = submitBtn.querySelector('.cbv-btn-title');
-    const btnPriceEl = submitBtn.querySelector('.cbv-btn-price');
+    const noResultsEl = builderEl.querySelector('[data-cbv-no-results]');
+    
+    // Hidden Fields & State
     const waxProp = builderEl.querySelector('[data-cbv-prop-wax]');
     const scentProp = builderEl.querySelector('[data-cbv-prop-scent]');
     const familyProp = builderEl.querySelector('[data-cbv-prop-family]');
-    const noResultsEl = builderEl.querySelector('[data-cbv-no-results]');
+    
+    // Buttons & Display
+    const submitBtn = builderEl.querySelector('[data-cbv-submit]');
+    const btnTitleEl = submitBtn.querySelector('.cbv-btn-title');
+    const btnPriceEl = submitBtn.querySelector('.cbv-btn-price');
     const variantAvailable = submitBtn.dataset.cbvVariantAvailable === 'true';
 
-    // Groups & Visuals
+    // Visual Groups
     const waxGroup = builderEl.querySelector('[data-cbv-step="wax"]');
     const scentGroup = builderEl.querySelector('[data-cbv-step="scent"]');
     
@@ -110,12 +119,22 @@
     const ticketScentEl = builderEl.querySelector('[data-cbv-ticket-scent]');
     const ticketSwatchEl = builderEl.querySelector('[data-cbv-ticket-swatch]');
 
-    // Subscription Elements
+    // Jar Selector Elements
+    const jarInputs = builderEl.querySelectorAll('[data-cbv-jar-input]');
+    const variantIdInput = builderEl.querySelector('[data-cbv-variant-id]');
+    const mainImageEl = document.getElementById('CBV-Main-Image');
+
+    // Pricing & Subscription Elements
     const purchaseOptions = builderEl.querySelectorAll('[data-cbv-option]');
     const freqSelector = builderEl.querySelector('[data-cbv-frequency]');
-    const mainPriceEl = builderEl.querySelector('[data-cbv-main-price]');
-    let purchaseType = 'onetime';
+    const freqSelectInput = builderEl.querySelector('.cbv-freq-select'); 
+    const mainPriceEl = builderEl.querySelector('[data-cbv-price-display]');
+    const onetimePriceDisplay = builderEl.querySelector('[data-cbv-onetime-price]');
+    const subOldPriceDisplay = builderEl.querySelector('[data-cbv-sub-old]');
+    const subNewPriceDisplay = builderEl.querySelector('[data-cbv-sub-new]');
 
+    // State Variables
+    let purchaseType = 'onetime';
     let selectedFamily = 'All';
     let selectedScent = null;
 
@@ -123,6 +142,8 @@
       a.localeCompare(b)
     );
     families.unshift(families.splice(families.indexOf('All'), 1)[0]);
+
+    // --- CORE BUILDER FUNCTIONS ---
 
     function getFilteredScents(query = '') {
       return allScents.filter((scent) => {
@@ -135,21 +156,19 @@
     }
 
     function updateTicket() {
-      // 1. Update Hidden Inputs
       const hasWax = Boolean(waxProp.value);
       const hasScent = Boolean(scentProp.value);
       
-      // 2. Visual Group Classes
+      // Toggle Green Light Classes
       if (waxGroup) hasWax ? waxGroup.classList.add('is-completed') : waxGroup.classList.remove('is-completed');
       if (scentGroup) hasScent ? scentGroup.classList.add('is-completed') : scentGroup.classList.remove('is-completed');
 
-      // 3. Update Ticket UI
       if (hasWax && hasScent) {
         ticketEl.hidden = false;
         ticketWaxEl.textContent = waxProp.value;
         ticketScentEl.textContent = scentProp.value;
         
-        // Find selected wax hex
+        // Update Ticket Swatch Color
         const activeWaxInput = Array.from(waxInputs).find(i => i.checked);
         if(activeWaxInput && ticketSwatchEl) {
            ticketSwatchEl.style.backgroundColor = activeWaxInput.dataset.hex;
@@ -167,8 +186,6 @@
       const ready = hasWax && hasScent && variantAvailable;
 
       submitBtn.disabled = !ready;
-      
-      // Button Text Update handled in Subscription Logic generally, but here we enable/disable
     }
 
     function selectScent(scent) {
@@ -224,26 +241,47 @@
       });
     }
 
-    // --- SUBSCRIPTION LOGIC ---
+    // --- PRICING & SUBSCRIPTION LOGIC ---
+
     function updatePricingUI() {
-      // Base Price logic (assuming raw price is in cents or standard money format)
-      // This is a simplified frontend visual update. Real cart logic relies on form data.
-      const basePrice = parseFloat(mainPriceEl.dataset.cbvMainPrice) / 100;
-      let finalPrice = basePrice;
+      // Get base price from the main price element (updated by Jar Switcher)
+      const basePriceCents = parseFloat(mainPriceEl.dataset.cbvBasePrice);
+      
+      // Calculate Sub Price (10% off)
+      const subPriceCents = basePriceCents * 0.9;
+
+      // Update Option Card Text
+      if(onetimePriceDisplay) onetimePriceDisplay.textContent = formatMoney(basePriceCents);
+      if(subOldPriceDisplay) subOldPriceDisplay.textContent = formatMoney(basePriceCents);
+      if(subNewPriceDisplay) subNewPriceDisplay.textContent = formatMoney(subPriceCents);
+
+      // Determine Final Button Price
+      let finalPriceCents = basePriceCents;
       
       if (purchaseType === 'sub') {
-        finalPrice = basePrice * 0.9; // 10% off
+        finalPriceCents = subPriceCents;
         freqSelector.hidden = false;
+        
+        // ENABLE subscription input so it submits to Shopify
+        if(freqSelectInput) freqSelectInput.disabled = false;
+        
         btnTitleEl.textContent = variantAvailable ? "Join The Club & Pour" : "Sold Out";
       } else {
         freqSelector.hidden = true;
+        
+        // DISABLE subscription input so it DOES NOT submit (Fixes Add to Cart error)
+        if(freqSelectInput) freqSelectInput.disabled = true;
+        
         btnTitleEl.textContent = variantAvailable ? "Pour My Candle" : "Sold Out";
       }
 
-      const formatted = '$' + finalPrice.toFixed(2);
-      if(btnPriceEl) btnPriceEl.textContent = ` - ${formatted}`;
+      // Update Button Price Text
+      if(btnPriceEl) btnPriceEl.textContent = ` - ${formatMoney(finalPriceCents)}`;
     }
 
+    // --- EVENT LISTENERS ---
+
+    // 1. Subscription Toggles
     purchaseOptions.forEach(option => {
       option.addEventListener('click', (e) => {
         // Handle visual selection
@@ -261,7 +299,40 @@
       });
     });
 
-    // --- EVENTS ---
+    // 2. Jar Switcher Logic
+    if (jarInputs.length > 0) {
+      jarInputs.forEach(input => {
+        input.addEventListener('change', () => {
+          if (!input.checked) return;
+
+          // Visual Selection
+          builderEl.querySelectorAll('.cbv-jar-card').forEach(c => c.classList.remove('is-selected'));
+          input.closest('.cbv-jar-card').classList.add('is-selected');
+
+          // Update Hidden Form ID (Critical for adding correct item to cart)
+          if (variantIdInput) variantIdInput.value = input.value;
+
+          // Swap Main Image
+          const newImageSrc = input.dataset.imageSrc;
+          if (mainImageEl && newImageSrc) {
+            mainImageEl.src = newImageSrc;
+            mainImageEl.srcset = newImageSrc;
+          }
+
+          // Update Base Price Data
+          const newPriceCents = parseFloat(input.dataset.price);
+          if (mainPriceEl) {
+            mainPriceEl.dataset.cbvBasePrice = newPriceCents;
+            mainPriceEl.textContent = formatMoney(newPriceCents);
+          }
+          
+          // Recalculate Subscription Math
+          updatePricingUI(); 
+        });
+      });
+    }
+
+    // 3. Builder Inputs
     waxInputs.forEach((input) => {
       input.addEventListener('change', () => {
         waxProp.value = input.value;
@@ -279,10 +350,11 @@
       renderResults();
     });
 
+    // --- INITIALIZATION ---
     renderFamilyFilters();
     updateTicket();
     renderResults();
-    updatePricingUI(); // Set initial button state
+    updatePricingUI(); // Set initial state
   }
 
   function init() {

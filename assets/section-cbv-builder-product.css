@@ -704,3 +704,99 @@
     gap: 8rem;
   }
 }
+
+/* ... JAR BAR STYLES ... */
+
+/* --- THE JAR BAR --- */
+.cbv-jar-selector-group {
+  margin-bottom: 3rem;
+}
+
+.cbv-jar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 1.2rem;
+}
+
+.cbv-jar-card {
+  position: relative;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  cursor: pointer;
+  background: #fff;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.cbv-jar-card:hover {
+  border-color: #bbb;
+  transform: translateY(-2px);
+}
+
+.cbv-jar-card.is-selected {
+  border-color: var(--cbv-success-border);
+  box-shadow: 0 0 0 1px var(--cbv-success-border) inset;
+}
+
+.cbv-jar-image-wrap {
+  width: 100%;
+  height: 10rem;
+  background: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cbv-jar-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply; /* Helps transparent PNGs look nice */
+}
+
+.cbv-jar-info {
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cbv-jar-title {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.3rem;
+  line-height: 1.2;
+}
+
+.cbv-jar-upgrade {
+  font-size: 1.1rem;
+  color: #855a30; /* Bronze */
+  font-weight: 600;
+}
+
+.cbv-jar-included {
+  font-size: 1.1rem;
+  color: #999;
+}
+
+/* Ensure checkmark appears on selected jar */
+.cbv-jar-card.is-selected::after {
+  content: '✓';
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  background: var(--cbv-success-text);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}

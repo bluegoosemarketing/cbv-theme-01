@@ -3,7 +3,7 @@
 
 {%- liquid
   assign product_form_id = 'cbv-builder-product-form-' | append: section.id
-  assign variant = product.selected_or_first_available_variant
+  assign current_variant = product.selected_or_first_available_variant
 -%}
 
 <section class="cbv-builder color-{{ section.settings.color_scheme }} gradient" data-cbv-builder data-section-id="{{ section.id }}">
@@ -16,10 +16,12 @@
       <div class="cbv-builder__media">
         {% if product.featured_media %}
           <div class="cbv-builder__image-wrapper" style="--ratio-percent: {{ 1 | divided_by: product.featured_media.aspect_ratio | times: 100 }}%;">
+            <!-- Added ID for JS Image Swapping -->
             {{
               product.featured_media
               | image_url: width: 1200
               | image_tag:
+                id: 'CBV-Main-Image',
                 loading: 'lazy',
                 widths: '400, 600, 900, 1200',
                 sizes: '(min-width: 990px) 50vw, 100vw',
@@ -36,7 +38,8 @@
         
         <!-- PRICE & RATINGS -->
         <div class="cbv-builder__meta">
-          <div class="cbv-builder__price" data-cbv-main-price="{{ variant.price }}">{{ variant.price | money }}</div>
+          <!-- Price updates via JS -->
+          <div class="cbv-builder__price" data-cbv-price-display data-cbv-base-price="{{ current_variant.price }}">{{ current_variant.price | money }}</div>
           
           <div class="cbv-reviews-badge">
             <div class="cbv-stars">
@@ -58,7 +61,52 @@
           </div>
 
           {%- form 'product', product, id: product_form_id, class: 'form cbv-builder__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
-            <input type="hidden" name="id" value="{{ variant.id }}" class="product-variant-id" {% unless variant.available %}disabled{% endunless %}>
+            
+            <!-- Hidden Input for Variant ID (Updated by JS when Jar changes) -->
+            <input type="hidden" name="id" value="{{ current_variant.id }}" data-cbv-variant-id>
+
+            <!-- STEP 0: THE JAR BAR (Only shows if multiple jars exist) -->
+            {%- if product.variants.size > 1 -%}
+              <div class="cbv-builder__group cbv-jar-selector-group">
+                <div class="cbv-builder__group-header">
+                  <label class="cbv-builder__label">Pick Your Jar Style</label>
+                </div>
+                
+                <div class="cbv-jar-grid">
+                  {%- for variant in product.variants -%}
+                    <label class="cbv-jar-card {% if variant.id == current_variant.id %}is-selected{% endif %}">
+                      <input 
+                        type="radio" 
+                        name="cbv_jar_selection" 
+                        value="{{ variant.id }}" 
+                        class="visually-hidden" 
+                        {% if variant.id == current_variant.id %}checked{% endif %}
+                        data-cbv-jar-input
+                        data-price="{{ variant.price }}"
+                        data-image-src="{{ variant.featured_media | image_url: width: 1200 }}"
+                      >
+                      <div class="cbv-jar-image-wrap">
+                        {%- if variant.featured_media -%}
+                          {{ variant.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
+                        {%- else -%}
+                          {{ product.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
+                        {%- endif -%}
+                      </div>
+                      <div class="cbv-jar-info">
+                        <span class="cbv-jar-title">{{ variant.title }}</span>
+                        <!-- Logic to show +$2.00 or Included -->
+                        {% assign price_diff = variant.price | minus: product.price %}
+                        {% if price_diff > 0 %}
+                          <span class="cbv-jar-upgrade">+{{ price_diff | money }}</span>
+                        {% else %}
+                          <span class="cbv-jar-included">Included</span>
+                        {% endif %}
+                      </div>
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
 
             <!-- STEP 1: WAX -->
             <div class="cbv-builder__group" data-cbv-step="wax">
@@ -169,36 +217,26 @@
               <!-- Option 1: One Time Pour -->
               <label class="cbv-option-card is-selected" data-cbv-option="onetime">
                 <input type="radio" name="purchase_type" value="onetime" checked class="visually-hidden">
-                
                 <div class="cbv-opt-layout">
-                  <!-- Radio Icon -->
                   <div class="cbv-opt-radio">
                     <svg class="cbv-icon-unchecked" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
                     <svg class="cbv-icon-checked" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><circle cx="12" cy="12" r="5"/></svg>
                   </div>
-                  
-                  <!-- Text -->
                   <div class="cbv-opt-content">
                     <span class="cbv-opt-title">One-Time Pour</span>
                   </div>
-
-                  <!-- Price -->
-                  <div class="cbv-opt-price">{{ variant.price | money }}</div>
+                  <div class="cbv-opt-price" data-cbv-onetime-price>{{ current_variant.price | money }}</div>
                 </div>
               </label>
 
               <!-- Option 2: The Candle Club -->
               <label class="cbv-option-card cbv-option-card--sub" data-cbv-option="sub">
                 <input type="radio" name="purchase_type" value="sub" class="visually-hidden">
-                
                 <div class="cbv-opt-layout">
-                  <!-- Radio Icon -->
                   <div class="cbv-opt-radio">
                     <svg class="cbv-icon-unchecked" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
                     <svg class="cbv-icon-checked" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><circle cx="12" cy="12" r="5"/></svg>
                   </div>
-                  
-                  <!-- Text -->
                   <div class="cbv-opt-content">
                     <div class="cbv-opt-header">
                       <span class="cbv-opt-title">The Candle Club</span>
@@ -206,11 +244,9 @@
                     </div>
                     <div class="cbv-opt-subtitle">Subscribe & save. Never run out.</div>
                   </div>
-
-                  <!-- Price -->
                   <div class="cbv-opt-price">
-                    <span class="cbv-old-price">{{ variant.price | money }}</span>
-                    <span class="cbv-new-price">{{ variant.price | times: 0.9 | money }}</span>
+                    <span class="cbv-old-price" data-cbv-sub-old>{{ current_variant.price | money }}</span>
+                    <span class="cbv-new-price" data-cbv-sub-new>{{ current_variant.price | times: 0.9 | money }}</span>
                   </div>
                 </div>
               </label>
@@ -237,13 +273,13 @@
                 class="product-form__submit button button--primary cbv-grand-button"
                 disabled
                 data-cbv-submit
-                data-cbv-variant-available="{{ variant.available }}"
+                data-cbv-variant-available="{{ current_variant.available }}"
               >
                 <span class="cbv-btn-content">
                   <span class="cbv-btn-title">
-                    {% if variant.available %}Pour My Candle{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
+                    {% if current_variant.available %}Pour My Candle{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
                   </span>
-                  <span class="cbv-btn-price" data-cbv-btn-price> - {{ variant.price | money }}</span>
+                  <span class="cbv-btn-price" data-cbv-btn-price> - {{ current_variant.price | money }}</span>
                 </span>
                 
                 <div class="loading-overlay-spinner hidden">
@@ -361,13 +397,50 @@
 {
   "name": "CBV Builder product",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Customize your candle" },
-    { "type": "image_picker", "id": "feature_image", "label": "Footer Feature Image" },
-    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "option-1" },
-    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Top padding", "default": 32 },
-    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Bottom padding", "default": 40 }
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Customize your candle"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_image",
+      "label": "Footer Feature Image",
+      "info": "Appears to the right of the FAQs. Portrait or Square recommended."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "option-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 40
+    }
   ],
-  "presets": [{ "name": "CBV Builder product" }]
+  "presets": [
+    {
+      "name": "CBV Builder product"
+    }
+  ]
 }
 {% endschema %}
 
@@ -376,6 +449,7 @@
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
+
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
