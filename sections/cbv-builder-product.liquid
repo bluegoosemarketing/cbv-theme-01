@@ -9,14 +9,12 @@
 <section class="cbv-builder color-{{ section.settings.color_scheme }} gradient" data-cbv-builder data-section-id="{{ section.id }}">
   <div class="page-width section-{{ section.id }}-padding">
     
-    <!-- HERO SECTION (Grid: Image + Builder) -->
     <div class="cbv-builder__grid">
       
       <!-- Media Column -->
       <div class="cbv-builder__media">
         {% if product.featured_media %}
           <div class="cbv-builder__image-wrapper" style="--ratio-percent: {{ 1 | divided_by: product.featured_media.aspect_ratio | times: 100 }}%;">
-            <!-- Added ID for JS Image Swapping -->
             {{
               product.featured_media
               | image_url: width: 1200
@@ -36,15 +34,12 @@
         <p class="cbv-builder__eyebrow">{{ section.settings.eyebrow }}</p>
         <h1 class="cbv-builder__title">{{ product.title | escape }}</h1>
         
-        <!-- PRICE & RATINGS -->
         <div class="cbv-builder__meta">
-          <!-- Price updates via JS -->
           <div class="cbv-builder__price" data-cbv-price-display data-cbv-base-price="{{ current_variant.price }}">{{ current_variant.price | money }}</div>
-          
           <div class="cbv-reviews-badge">
             <div class="cbv-stars">
               {%- for i in (1..5) -%}
-                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
               {%- endfor -%}
             </div>
             <span class="cbv-reviews-text">4.9/5 | <strong>15,000+ Poured</strong></span>
@@ -61,140 +56,165 @@
           </div>
 
           {%- form 'product', product, id: product_form_id, class: 'form cbv-builder__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
-            
-            <!-- Hidden Input for Variant ID (Updated by JS when Jar changes) -->
             <input type="hidden" name="id" value="{{ current_variant.id }}" data-cbv-variant-id>
 
-            <!-- STEP 0: THE JAR BAR (Only shows if multiple jars exist) -->
+            <!-- STEP 1: THE JAR BAR -->
             {%- if product.variants.size > 1 -%}
-              <div class="cbv-builder__group cbv-jar-selector-group">
-                <div class="cbv-builder__group-header">
-                  <label class="cbv-builder__label">Pick Your Jar Style</label>
+              <div class="cbv-builder__group cbv-jar-bar" data-cbv-step="jar">
+                <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
+                  <label class="cbv-builder__label">
+                    <span class="cbv-step-num">1</span> 
+                    <span class="cbv-step-title" data-cbv-step-title="The Jar Bar">The Jar Bar</span>
+                  </label>
+                  <div class="cbv-builder__toggle-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </div>
                 </div>
                 
-                <div class="cbv-jar-grid">
-                  {%- for variant in product.variants -%}
-                    <label class="cbv-jar-card {% if variant.id == current_variant.id %}is-selected{% endif %}">
-                      <input 
-                        type="radio" 
-                        name="cbv_jar_selection" 
-                        value="{{ variant.id }}" 
-                        class="visually-hidden" 
-                        {% if variant.id == current_variant.id %}checked{% endif %}
-                        data-cbv-jar-input
-                        data-price="{{ variant.price }}"
-                        data-image-src="{{ variant.featured_media | image_url: width: 1200 }}"
-                      >
-                      <div class="cbv-jar-image-wrap">
-                        {%- if variant.featured_media -%}
-                          {{ variant.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
-                        {%- else -%}
-                          {{ product.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
-                        {%- endif -%}
-                      </div>
-                      <div class="cbv-jar-info">
-                        <span class="cbv-jar-title">{{ variant.title }}</span>
-                        <!-- Logic to show +$2.00 or Included -->
-                        {% assign price_diff = variant.price | minus: product.price %}
-                        {% if price_diff > 0 %}
-                          <span class="cbv-jar-upgrade">+{{ price_diff | money }}</span>
-                        {% else %}
-                          <span class="cbv-jar-included">Included</span>
-                        {% endif %}
-                      </div>
-                    </label>
-                  {%- endfor -%}
+                <div class="cbv-step-content">
+                  <div class="cbv-jar-grid">
+                    {%- for variant in product.variants -%}
+                      <label class="cbv-jar-card {% if variant.id == current_variant.id %}is-selected{% endif %}" data-cbv-jar-card>
+                        <input 
+                          type="radio" 
+                          name="cbv_jar_selection" 
+                          value="{{ variant.id }}" 
+                          class="visually-hidden" 
+                          {% if variant.id == current_variant.id %}checked{% endif %}
+                          data-cbv-jar-input
+                          data-price="{{ variant.price }}"
+                          data-image-src="{{ variant.featured_media | image_url: width: 1200 }}"
+                          data-title="{{ variant.title }}"
+                        >
+                        <div class="cbv-jar-image-wrap">
+                          {%- if variant.featured_media -%}
+                            {{ variant.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
+                          {%- else -%}
+                            {{ product.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
+                          {%- endif -%}
+                        </div>
+                        <div class="cbv-jar-info">
+                          <span class="cbv-jar-title">{{ variant.title }}</span>
+                          {% assign price_diff = variant.price | minus: product.price %}
+                          {% if price_diff > 0 %}
+                            <span class="cbv-jar-upgrade">+{{ price_diff | money }}</span>
+                          {% else %}
+                            <span class="cbv-jar-included">Included</span>
+                          {% endif %}
+                        </div>
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                  
+                  <button type="button" class="cbv-continue-btn" data-cbv-continue="wax">
+                    Next: Choose Wax Color &rarr;
+                  </button>
                 </div>
               </div>
             {%- endif -%}
 
-            <!-- STEP 1: WAX -->
-            <div class="cbv-builder__group" data-cbv-step="wax">
-              <div class="cbv-builder__group-header">
+            <!-- STEP 2: WAX -->
+            <div class="cbv-builder__group is-collapsed" data-cbv-step="wax">
+              <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
                 <label class="cbv-builder__label">
-                  <span class="cbv-step-num">1</span> Choose wax color
+                  <span class="cbv-step-num">{% if product.variants.size > 1 %}2{% else %}1{% endif %}</span> 
+                  <span class="cbv-step-title" data-cbv-step-title="Choose Wax Color">Choose Wax Color</span>
                 </label>
-                <div class="cbv-builder__status-icon">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div class="cbv-builder__toggle-icon">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
               </div>
               
-              <div class="cbv-builder__wax-options" data-cbv-wax-options>
-                {%- for wax in shop.metaobjects.wax_color.values -%}
-                  {%- liquid
-                    assign wax_name = wax.name.value | default: wax.name
-                    assign wax_active = wax.is_active.value | default: wax.is_active
-                    assign wax_hex = wax.color.value | default: wax.hex_code.value | default: wax.color_hex.value | default: wax.hex.value | default: '#f5f5f5'
-                  -%}
-                  
-                  {%- if wax_name != blank and wax_active != false -%}
-                    <label class="cbv-builder__wax-item" title="{{ wax_name | escape }}">
-                      <input
-                        type="radio"
-                        name="cbv_wax_color"
-                        value="{{ wax_name | escape }}"
-                        class="cbv-builder__wax-input"
-                        data-cbv-wax-input
-                        data-hex="{{ wax_hex }}"
-                      >
-                      <span
-                        class="cbv-builder__wax-swatch"
-                        style="--cbv-wax-color: {{ wax_hex }};"
-                      ></span>
-                      <span class="cbv-builder__wax-name visually-hidden">{{ wax_name }}</span>
-                    </label>
-                  {%- endif -%}
-                {%- endfor -%}
+              <div class="cbv-step-content">
+                <div class="cbv-builder__wax-options" data-cbv-wax-options>
+                  {%- for wax in shop.metaobjects.wax_color.values -%}
+                    {%- liquid
+                      assign wax_name = wax.name.value | default: wax.name
+                      assign wax_active = wax.is_active.value | default: wax.is_active
+                      assign wax_hex = wax.color.value | default: wax.hex_code.value | default: wax.color_hex.value | default: wax.hex.value | default: '#f5f5f5'
+                    -%}
+                    
+                    {%- if wax_name != blank and wax_active != false -%}
+                      <label class="cbv-builder__wax-item" title="{{ wax_name | escape }}">
+                        <input
+                          type="radio"
+                          name="cbv_wax_color"
+                          value="{{ wax_name | escape }}"
+                          class="cbv-builder__wax-input"
+                          data-cbv-wax-input
+                          data-hex="{{ wax_hex }}"
+                        >
+                        <span
+                          class="cbv-builder__wax-swatch"
+                          style="--cbv-wax-color: {{ wax_hex }};"
+                        ></span>
+                        <span class="cbv-builder__wax-name visually-hidden">{{ wax_name }}</span>
+                      </label>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+                <input type="hidden" name="properties[wax_color]" value="" data-cbv-prop-wax>
+                
+                <button type="button" class="cbv-continue-btn" data-cbv-continue="scent">
+                  Next: Choose Scent &rarr;
+                </button>
               </div>
-              
-              <input type="hidden" name="properties[wax_color]" value="" data-cbv-prop-wax>
             </div>
 
-            <!-- STEP 2: SCENT -->
-            <div class="cbv-builder__group cbv-scent" data-cbv-scent-picker data-cbv-step="scent">
-              <div class="cbv-builder__group-header">
+            <!-- STEP 3: SCENT -->
+            <div class="cbv-builder__group cbv-scent is-collapsed" data-cbv-scent-picker data-cbv-step="scent">
+              <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
                 <label class="cbv-builder__label" for="CBVScent-{{ section.id }}">
-                  <span class="cbv-step-num">2</span> Choose scent
+                  <span class="cbv-step-num">{% if product.variants.size > 1 %}3{% else %}2{% endif %}</span> 
+                  <span class="cbv-step-title" data-cbv-step-title="Choose Scent">Choose Scent</span>
                 </label>
-                <div class="cbv-builder__status-icon">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div class="cbv-builder__toggle-icon">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
               </div>
               
-              <div class="cbv-search-wrapper">
-                <svg class="cbv-search-icon" aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <input
-                  id="CBVScent-{{ section.id }}"
-                  type="text"
-                  class="cbv-builder__input"
-                  placeholder="Search for a memory (e.g. Banana Nut Bread)..."
-                  autocomplete="off"
-                  role="combobox"
-                  aria-expanded="false"
-                  aria-autocomplete="list"
-                  aria-controls="CBVScentResults-{{ section.id }}"
-                  data-cbv-scent-input
-                >
+              <div class="cbv-step-content">
+                <div class="cbv-search-wrapper">
+                  <svg class="cbv-search-icon" aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input
+                    id="CBVScent-{{ section.id }}"
+                    type="text"
+                    class="cbv-builder__input"
+                    placeholder="Search for a memory (e.g. Banana Nut Bread)..."
+                    autocomplete="off"
+                    role="combobox"
+                    aria-expanded="false"
+                    aria-autocomplete="list"
+                    aria-controls="CBVScentResults-{{ section.id }}"
+                    data-cbv-scent-input
+                  >
+                </div>
+
+                <div class="cbv-scent__families" data-cbv-family-filters></div>
+
+                <div class="cbv-scent__results-window">
+                  <div id="CBVScentResults-{{ section.id }}" class="cbv-scent__results" data-cbv-results></div>
+                  <p class="cbv-scent__empty" data-cbv-no-results hidden>No scents found matching your search.</p>
+                </div>
+
+                <input type="hidden" name="properties[scent_1]" value="" data-cbv-prop-scent>
+                <input type="hidden" name="properties[scent_family]" value="" data-cbv-prop-family>
               </div>
-
-              <div class="cbv-scent__families" data-cbv-family-filters></div>
-
-              <div class="cbv-scent__results-window">
-                <div id="CBVScentResults-{{ section.id }}" class="cbv-scent__results" data-cbv-results></div>
-                <p class="cbv-scent__empty" data-cbv-no-results hidden>No scents found matching your search.</p>
-              </div>
-
-              <input type="hidden" name="properties[scent_1]" value="" data-cbv-prop-scent>
-              <input type="hidden" name="properties[scent_family]" value="" data-cbv-prop-family>
             </div>
 
             <!-- CONFIRMATION: THE POUR TICKET -->
             <div class="cbv-pour-ticket" data-cbv-ticket hidden>
               <div class="cbv-ticket-header">Your Custom Pour</div>
               <div class="cbv-ticket-grid">
+                <div class="cbv-ticket-row">
+                  <span class="cbv-ticket-label">Jar Style</span>
+                  <div class="cbv-ticket-value">
+                    <span data-cbv-ticket-jar>{{ current_variant.title }}</span>
+                  </div>
+                </div>
                 <div class="cbv-ticket-row">
                   <span class="cbv-ticket-label">Wax Color</span>
                   <div class="cbv-ticket-value">
@@ -211,10 +231,8 @@
               </div>
             </div>
 
-            <!-- PURCHASE OPTIONS (FIXED LAYOUT) -->
+            <!-- PURCHASE OPTIONS -->
             <div class="cbv-purchase-options" data-cbv-purchase-options>
-              
-              <!-- Option 1: One Time Pour -->
               <label class="cbv-option-card is-selected" data-cbv-option="onetime">
                 <input type="radio" name="purchase_type" value="onetime" checked class="visually-hidden">
                 <div class="cbv-opt-layout">
@@ -229,7 +247,6 @@
                 </div>
               </label>
 
-              <!-- Option 2: The Candle Club -->
               <label class="cbv-option-card cbv-option-card--sub" data-cbv-option="sub">
                 <input type="radio" name="purchase_type" value="sub" class="visually-hidden">
                 <div class="cbv-opt-layout">
@@ -251,7 +268,6 @@
                 </div>
               </label>
 
-              <!-- Frequency Selector -->
               <div class="cbv-frequency-selector" data-cbv-frequency hidden>
                 <div class="cbv-freq-inner">
                   <span class="cbv-freq-label">Deliver every:</span>
@@ -261,7 +277,6 @@
                   </select>
                 </div>
               </div>
-
             </div>
 
             <!-- ADD TO CART -->
@@ -291,8 +306,8 @@
             </div>
           {%- endform -%}
         </product-form>
-      </div> <!-- End Content Column -->
-    </div> <!-- End Grid -->
+      </div>
+    </div>
     
     <!-- SUPPORT CONTENT -->
     <div class="cbv-content-footer">

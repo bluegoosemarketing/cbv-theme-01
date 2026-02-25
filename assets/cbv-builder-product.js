@@ -32,13 +32,10 @@
     const fragranceScript = builderEl.querySelector('[data-cbv-fragrance-data]');
     if (!fragranceScript) return;
 
+    // --- FRAGRANCE LOADING ---
     function parseFragrancePayload(scriptEl) {
-      try {
-        return JSON.parse(scriptEl.textContent || '[]');
-      } catch (error) {
-        console.error('CBV Builder: invalid fragrance data', error);
-        return [];
-      }
+      try { return JSON.parse(scriptEl.textContent || '[]'); } 
+      catch (error) { console.error('CBV Builder: invalid fragrance data', error); return []; }
     }
 
     async function loadAllScents(scriptEl) {
@@ -91,40 +88,35 @@
     const allScents = [...scentByHandle.values()].sort((a, b) => a.name.localeCompare(b.name));
 
     // --- DOM ELEMENTS ---
-    // Builder Inputs
+    const jarGroup = builderEl.querySelector('[data-cbv-step="jar"]');
+    const waxGroup = builderEl.querySelector('[data-cbv-step="wax"]');
+    const scentGroup = builderEl.querySelector('[data-cbv-step="scent"]');
+
+    const jarInputs = builderEl.querySelectorAll('[data-cbv-jar-input]');
+    const variantIdInput = builderEl.querySelector('[data-cbv-variant-id]');
+    const mainImageEl = document.getElementById('CBV-Main-Image');
+    
     const waxInputs = builderEl.querySelectorAll('[data-cbv-wax-input]');
+    const waxProp = builderEl.querySelector('[data-cbv-prop-wax]');
+    
     const scentInput = builderEl.querySelector('[data-cbv-scent-input]');
     const resultsEl = builderEl.querySelector('[data-cbv-results]');
     const familyFiltersEl = builderEl.querySelector('[data-cbv-family-filters]');
     const noResultsEl = builderEl.querySelector('[data-cbv-no-results]');
-    
-    // Hidden Fields & State
-    const waxProp = builderEl.querySelector('[data-cbv-prop-wax]');
     const scentProp = builderEl.querySelector('[data-cbv-prop-scent]');
     const familyProp = builderEl.querySelector('[data-cbv-prop-family]');
     
-    // Buttons & Display
+    const ticketEl = builderEl.querySelector('[data-cbv-ticket]');
+    const ticketJarEl = builderEl.querySelector('[data-cbv-ticket-jar]');
+    const ticketWaxEl = builderEl.querySelector('[data-cbv-ticket-wax]');
+    const ticketScentEl = builderEl.querySelector('[data-cbv-ticket-scent]');
+    const ticketSwatchEl = builderEl.querySelector('[data-cbv-ticket-swatch]');
+
     const submitBtn = builderEl.querySelector('[data-cbv-submit]');
     const btnTitleEl = submitBtn.querySelector('.cbv-btn-title');
     const btnPriceEl = submitBtn.querySelector('.cbv-btn-price');
     const variantAvailable = submitBtn.dataset.cbvVariantAvailable === 'true';
 
-    // Visual Groups
-    const waxGroup = builderEl.querySelector('[data-cbv-step="wax"]');
-    const scentGroup = builderEl.querySelector('[data-cbv-step="scent"]');
-    
-    // Ticket Elements
-    const ticketEl = builderEl.querySelector('[data-cbv-ticket]');
-    const ticketWaxEl = builderEl.querySelector('[data-cbv-ticket-wax]');
-    const ticketScentEl = builderEl.querySelector('[data-cbv-ticket-scent]');
-    const ticketSwatchEl = builderEl.querySelector('[data-cbv-ticket-swatch]');
-
-    // Jar Selector Elements
-    const jarInputs = builderEl.querySelectorAll('[data-cbv-jar-input]');
-    const variantIdInput = builderEl.querySelector('[data-cbv-variant-id]');
-    const mainImageEl = document.getElementById('CBV-Main-Image');
-
-    // Pricing & Subscription Elements
     const purchaseOptions = builderEl.querySelectorAll('[data-cbv-option]');
     const freqSelector = builderEl.querySelector('[data-cbv-frequency]');
     const freqSelectInput = builderEl.querySelector('.cbv-freq-select'); 
@@ -133,7 +125,9 @@
     const subOldPriceDisplay = builderEl.querySelector('[data-cbv-sub-old]');
     const subNewPriceDisplay = builderEl.querySelector('[data-cbv-sub-new]');
 
-    // State Variables
+    const groupHeaders = builderEl.querySelectorAll('[data-cbv-accordion-toggle]');
+    const continueBtns = builderEl.querySelectorAll('[data-cbv-continue]');
+
     let purchaseType = 'onetime';
     let selectedFamily = 'All';
     let selectedScent = null;
@@ -143,57 +137,93 @@
     );
     families.unshift(families.splice(families.indexOf('All'), 1)[0]);
 
-    // --- CORE BUILDER FUNCTIONS ---
+    // --- LOGIC ---
 
-    function getFilteredScents(query = '') {
-      return allScents.filter((scent) => {
-        const scentFamily = normalizeFamily(scent.family);
-        const matchesFamily = selectedFamily === 'All' || normalize(scentFamily) === normalize(selectedFamily);
-        if (!matchesFamily) return false;
-        if (!query) return true;
-        return normalize(scent.name).includes(query) || normalize(scentFamily).includes(query);
-      });
+    function toggleGroup(group) {
+      if (!group) return;
+      group.classList.toggle('is-collapsed');
+    }
+
+    function collapseGroup(group) {
+      if (group) group.classList.add('is-collapsed');
+    }
+
+    function expandGroup(group) {
+      if (group) group.classList.remove('is-collapsed');
+    }
+
+    function updateStepHeader(group, text) {
+      if (!group) return;
+      const titleSpan = group.querySelector('[data-cbv-step-title]');
+      if (!titleSpan) return;
+      let summary = group.querySelector('.cbv-selection-summary');
+      if (!summary) {
+        summary = document.createElement('div');
+        summary.className = 'cbv-selection-summary';
+        titleSpan.appendChild(summary);
+      }
+      summary.textContent = text;
     }
 
     function updateTicket() {
+      const hasJar = jarInputs.length > 0 ? Boolean(builderEl.querySelector('[data-cbv-jar-input]:checked')) : true;
       const hasWax = Boolean(waxProp.value);
       const hasScent = Boolean(scentProp.value);
       
-      // Toggle Green Light Classes
-      if (waxGroup) hasWax ? waxGroup.classList.add('is-completed') : waxGroup.classList.remove('is-completed');
-      if (scentGroup) hasScent ? scentGroup.classList.add('is-completed') : scentGroup.classList.remove('is-completed');
+      if(jarGroup) hasJar ? jarGroup.classList.add('is-completed') : jarGroup.classList.remove('is-completed');
+      if(waxGroup) hasWax ? waxGroup.classList.add('is-completed') : waxGroup.classList.remove('is-completed');
+      if(scentGroup) hasScent ? scentGroup.classList.add('is-completed') : scentGroup.classList.remove('is-completed');
 
-      if (hasWax && hasScent) {
-        ticketEl.hidden = false;
-        ticketWaxEl.textContent = waxProp.value;
-        ticketScentEl.textContent = scentProp.value;
-        
-        // Update Ticket Swatch Color
-        const activeWaxInput = Array.from(waxInputs).find(i => i.checked);
-        if(activeWaxInput && ticketSwatchEl) {
-           ticketSwatchEl.style.backgroundColor = activeWaxInput.dataset.hex;
-        }
-      } else {
-        ticketEl.hidden = true;
+      if (ticketWaxEl) ticketWaxEl.textContent = waxProp.value || '--';
+      if (ticketScentEl) ticketScentEl.textContent = scentProp.value || '--';
+      
+      if (ticketJarEl && jarInputs.length > 0) {
+          const activeJar = builderEl.querySelector('[data-cbv-jar-input]:checked');
+          if(activeJar) ticketJarEl.textContent = activeJar.dataset.title;
       }
 
-      validate();
+      const activeWaxInput = Array.from(waxInputs).find(i => i.checked);
+      if(activeWaxInput && ticketSwatchEl) {
+         ticketSwatchEl.style.backgroundColor = activeWaxInput.dataset.hex;
+      }
+
+      if (hasWax && hasScent) ticketEl.hidden = false;
+      else ticketEl.hidden = true;
+
+      const ready = hasJar && hasWax && hasScent && variantAvailable;
+      submitBtn.disabled = !ready;
     }
 
-    function validate() {
-      const hasWax = Boolean(waxProp.value);
-      const hasScent = Boolean(scentProp.value);
-      const ready = hasWax && hasScent && variantAvailable;
+    function updatePricingUI() {
+      const basePriceCents = parseFloat(mainPriceEl.dataset.cbvBasePrice);
+      const subPriceCents = basePriceCents * 0.9; 
 
-      submitBtn.disabled = !ready;
+      if(onetimePriceDisplay) onetimePriceDisplay.textContent = formatMoney(basePriceCents);
+      if(subOldPriceDisplay) subOldPriceDisplay.textContent = formatMoney(basePriceCents);
+      if(subNewPriceDisplay) subNewPriceDisplay.textContent = formatMoney(subPriceCents);
+
+      let finalPriceCents = basePriceCents;
+      if (purchaseType === 'sub') {
+        finalPriceCents = subPriceCents;
+        freqSelector.hidden = false;
+        if(freqSelectInput) freqSelectInput.disabled = false;
+        btnTitleEl.textContent = variantAvailable ? "Join The Club & Pour" : "Sold Out";
+      } else {
+        freqSelector.hidden = true;
+        if(freqSelectInput) freqSelectInput.disabled = true;
+        btnTitleEl.textContent = variantAvailable ? "Pour My Candle" : "Sold Out";
+      }
+      if(btnPriceEl) btnPriceEl.textContent = ` - ${formatMoney(finalPriceCents)}`;
     }
 
     function selectScent(scent) {
       selectedScent = scent;
       scentProp.value = scent.name;
       familyProp.value = scent.family || '';
+      
+      updateStepHeader(scentGroup, scent.name);
       updateTicket();
-      renderResults();
+      renderResults(); 
     }
 
     function renderResults() {
@@ -210,11 +240,23 @@
           button.classList.add('is-selected');
         }
         button.innerHTML = `<span>${scent.name}</span><span class="cbv-scent__family">${scent.family || 'Uncategorized'}</span>`;
+        
         button.addEventListener('click', () => selectScent(scent));
+        
         resultsEl.appendChild(button);
       });
 
       if (noResultsEl) noResultsEl.hidden = visible.length > 0;
+    }
+
+    function getFilteredScents(query = '') {
+      return allScents.filter((scent) => {
+        const scentFamily = normalizeFamily(scent.family);
+        const matchesFamily = selectedFamily === 'All' || normalize(scentFamily) === normalize(selectedFamily);
+        if (!matchesFamily) return false;
+        if (!query) return true;
+        return normalize(scent.name).includes(query) || normalize(scentFamily).includes(query);
+      });
     }
 
     function renderFamilyFilters() {
@@ -241,101 +283,97 @@
       });
     }
 
-    // --- PRICING & SUBSCRIPTION LOGIC ---
+    // --- LISTENERS ---
 
-    function updatePricingUI() {
-      // Get base price from the main price element (updated by Jar Switcher)
-      const basePriceCents = parseFloat(mainPriceEl.dataset.cbvBasePrice);
-      
-      // Calculate Sub Price (10% off)
-      const subPriceCents = basePriceCents * 0.9;
+    continueBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const nextStep = btn.dataset.cbvContinue;
+        const currentGroup = btn.closest('.cbv-builder__group');
+        collapseGroup(currentGroup);
+        const targetGroup = builderEl.querySelector(`[data-cbv-step="${nextStep}"]`);
+        expandGroup(targetGroup);
+      });
+    });
 
-      // Update Option Card Text
-      if(onetimePriceDisplay) onetimePriceDisplay.textContent = formatMoney(basePriceCents);
-      if(subOldPriceDisplay) subOldPriceDisplay.textContent = formatMoney(basePriceCents);
-      if(subNewPriceDisplay) subNewPriceDisplay.textContent = formatMoney(subPriceCents);
+    groupHeaders.forEach(header => {
+      header.addEventListener('click', () => {
+        const group = header.closest('.cbv-builder__group');
+        toggleGroup(group);
+      });
+    });
 
-      // Determine Final Button Price
-      let finalPriceCents = basePriceCents;
-      
-      if (purchaseType === 'sub') {
-        finalPriceCents = subPriceCents;
-        freqSelector.hidden = false;
-        
-        // ENABLE subscription input so it submits to Shopify
-        if(freqSelectInput) freqSelectInput.disabled = false;
-        
-        btnTitleEl.textContent = variantAvailable ? "Join The Club & Pour" : "Sold Out";
-      } else {
-        freqSelector.hidden = true;
-        
-        // DISABLE subscription input so it DOES NOT submit (Fixes Add to Cart error)
-        if(freqSelectInput) freqSelectInput.disabled = true;
-        
-        btnTitleEl.textContent = variantAvailable ? "Pour My Candle" : "Sold Out";
-      }
-
-      // Update Button Price Text
-      if(btnPriceEl) btnPriceEl.textContent = ` - ${formatMoney(finalPriceCents)}`;
-    }
-
-    // --- EVENT LISTENERS ---
-
-    // 1. Subscription Toggles
     purchaseOptions.forEach(option => {
-      option.addEventListener('click', (e) => {
-        // Handle visual selection
+      option.addEventListener('click', () => {
         purchaseOptions.forEach(o => o.classList.remove('is-selected'));
         option.classList.add('is-selected');
-        
-        // Update state
         purchaseType = option.dataset.cbvOption;
-        
-        // Find radio inside and check it
         const radio = option.querySelector('input[type="radio"]');
         if(radio) radio.checked = true;
-
         updatePricingUI();
       });
     });
 
-    // 2. Jar Switcher Logic
+    // Jar Logic
     if (jarInputs.length > 0) {
+      // 1. Changes
       jarInputs.forEach(input => {
         input.addEventListener('change', () => {
           if (!input.checked) return;
+          handleJarSelection(input);
+        });
+      });
 
-          // Visual Selection
+      // 2. Click-to-Confirm
+      const jarCards = builderEl.querySelectorAll('[data-cbv-jar-card]');
+      jarCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+          const input = card.querySelector('input');
+          if (input && input.checked) {
+             setTimeout(() => {
+                collapseGroup(jarGroup);
+                expandGroup(waxGroup);
+             }, 100);
+          }
+        });
+      });
+
+      function handleJarSelection(input) {
           builderEl.querySelectorAll('.cbv-jar-card').forEach(c => c.classList.remove('is-selected'));
           input.closest('.cbv-jar-card').classList.add('is-selected');
 
-          // Update Hidden Form ID (Critical for adding correct item to cart)
           if (variantIdInput) variantIdInput.value = input.value;
-
-          // Swap Main Image
           const newImageSrc = input.dataset.imageSrc;
           if (mainImageEl && newImageSrc) {
             mainImageEl.src = newImageSrc;
             mainImageEl.srcset = newImageSrc;
           }
-
-          // Update Base Price Data
           const newPriceCents = parseFloat(input.dataset.price);
           if (mainPriceEl) {
             mainPriceEl.dataset.cbvBasePrice = newPriceCents;
             mainPriceEl.textContent = formatMoney(newPriceCents);
           }
           
-          // Recalculate Subscription Math
+          updateStepHeader(jarGroup, input.dataset.title);
+          setTimeout(() => {
+            collapseGroup(jarGroup);
+            expandGroup(waxGroup);
+          }, 400);
+          updateTicket();
           updatePricingUI(); 
-        });
-      });
+      }
+
+      const checkedJar = builderEl.querySelector('[data-cbv-jar-input]:checked');
+      if(checkedJar) updateStepHeader(jarGroup, checkedJar.dataset.title);
     }
 
-    // 3. Builder Inputs
     waxInputs.forEach((input) => {
       input.addEventListener('change', () => {
         waxProp.value = input.value;
+        updateStepHeader(waxGroup, input.value);
+        setTimeout(() => {
+          collapseGroup(waxGroup);
+          expandGroup(scentGroup);
+        }, 400);
         updateTicket();
       });
     });
@@ -350,11 +388,15 @@
       renderResults();
     });
 
-    // --- INITIALIZATION ---
+    // --- INIT ---
     renderFamilyFilters();
     updateTicket();
-    renderResults();
-    updatePricingUI(); // Set initial state
+    
+    // Safety check: trigger input event to force render
+    scentInput.dispatchEvent(new Event('input'));
+    renderResults(); 
+    
+    updatePricingUI();
   }
 
   function init() {
