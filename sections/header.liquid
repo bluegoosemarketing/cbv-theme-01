@@ -1,11 +1,42 @@
+{%- comment -%}
+  IMPORTANT: Cart drawer markup is rendered in layout/theme.liquid when settings.cart_type == 'drawer'.
+  The theme relies on these CSS files (previously loaded by the legacy header) to keep #CartDrawer out of normal flow.
+{%- endcomment -%}
+
+{%- if settings.cart_type == "drawer" -%}
+  {{ 'component-cart.css' | asset_url | stylesheet_tag }}
+  {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
+  {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+  {{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  {{ 'component-totals.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{{ 'component-cart-items.css' | asset_url | stylesheet_tag }}
+<noscript>{{ 'component-cart-items.css' | asset_url | stylesheet_tag }}</noscript>
+
+{{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}
+<noscript>{{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}</noscript>
+
 {% style %}
   :root {
     --cbv-header-offset: 0px;
   }
 
   #MainContent {
-    padding-top: var(--cbv-header-offset);
-  }
+  padding-top: var(--cbv-header-offset);
+}
+
+/* Prevent double-spacing: many templates add their own top margin/padding on the first section */
+#MainContent > .shopify-section:first-child,
+#MainContent > .section:first-child {
+  margin-top: 0 !important;
+}
+
+/* Some templates wrap a .section inside the first .shopify-section */
+#MainContent > .shopify-section:first-child > .section:first-child {
+  margin-top: 0 !important;
+}
 
   .cbv-header-fixed-group {
     position: fixed;
