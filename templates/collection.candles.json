@@ -1,0 +1,72 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "format_grid": {
+      "type": "cbv-collection-format-grid",
+      "blocks": {
+        "format_12oz": {
+          "type": "format_card",
+          "settings": {
+            "format_size": "12oz Signature",
+            "description": "Perfect for kitchens, offices, and cozy corners.",
+            "link": ""
+          }
+        },
+        "format_18oz": {
+          "type": "format_card",
+          "settings": {
+            "format_size": "18oz Classic",
+            "description": "A fuller throw for larger gathering spaces.",
+            "link": ""
+          }
+        },
+        "format_30oz": {
+          "type": "format_card",
+          "settings": {
+            "format_size": "30oz Statement",
+            "description": "An elevated centerpiece for open-concept rooms.",
+            "link": ""
+          }
+        },
+        "format_70oz": {
+          "type": "format_card",
+          "settings": {
+            "format_size": "70oz Grande",
+            "description": "Our most luxurious vessel for unforgettable ambience.",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "format_12oz",
+        "format_18oz",
+        "format_30oz",
+        "format_70oz"
+      ],
+      "settings": {
+        "eyebrow": "Craft your candle",
+        "intro": "<p>Select your candle format, then enter the builder to customize scent and wax.</p>",
+        "default_cta_label": "Build Yours",
+        "color_scheme": "option-3",
+        "padding_top": 52,
+        "padding_bottom": 72,
+        "show_best_sellers": false,
+        "best_sellers_heading": "Loved right now",
+        "best_sellers_collection": "",
+        "best_sellers_limit": 4,
+        "best_sellers_cta_label": "Shop now"
+      }
+    }
+  },
+  "order": [
+    "format_grid"
+  ]
+}
