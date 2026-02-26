@@ -1,0 +1,284 @@
+{{ 'section-cbv-collection-format-grid.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign featured_collection = section.settings.best_sellers_collection
+  if featured_collection == blank
+    assign featured_collection = collection
+  endif
+-%}
+
+<section class="cbv-format-grid color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    <header class="cbv-format-grid__hero">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="cbv-format-grid__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 class="cbv-format-grid__title">{{ collection.title | escape }}</h1>
+      {%- if section.settings.intro != blank -%}
+        <div class="cbv-format-grid__intro rte">{{ section.settings.intro }}</div>
+      {%- elsif collection.description != blank -%}
+        <div class="cbv-format-grid__intro rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </header>
+
+    <div class="cbv-format-grid__cards" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign card_title = block.settings.title | default: block.settings.format_size
+          assign card_link = block.settings.link
+          assign card_cta = block.settings.cta_label | default: section.settings.default_cta_label
+          assign card_tag = 'div'
+          if card_link != blank
+            assign card_tag = 'a'
+          endif
+        -%}
+
+        <{{ card_tag }}
+          {% if card_link != blank %}href="{{ card_link }}"{% endif %}
+          class="cbv-format-card"
+          {{ block.shopify_attributes }}
+          role="listitem"
+        >
+          <div class="cbv-format-card__media">
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 900
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '280, 420, 560, 720, 900',
+                  sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                  class: 'cbv-format-card__image',
+                  alt: card_title
+              }}
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'cbv-format-card__placeholder' }}
+            {%- endif -%}
+          </div>
+
+          <div class="cbv-format-card__content">
+            <h2 class="cbv-format-card__title">{{ card_title | escape }}</h2>
+            {%- if block.settings.description != blank -%}
+              <p class="cbv-format-card__description">{{ block.settings.description }}</p>
+            {%- endif -%}
+            <span class="cbv-format-card__cta">{{ card_cta | escape }}</span>
+          </div>
+        </{{ card_tag }}>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_best_sellers and featured_collection != blank and featured_collection.products_count > 0 -%}
+      <div class="cbv-format-grid__best-sellers">
+        <div class="cbv-format-grid__best-sellers-header">
+          <h2>{{ section.settings.best_sellers_heading | escape }}</h2>
+        </div>
+
+        <div class="cbv-format-grid__best-sellers-list" role="list">
+          {%- for product in featured_collection.products limit: section.settings.best_sellers_limit -%}
+            <a href="{{ product.url }}" class="cbv-best-seller" role="listitem">
+              <div class="cbv-best-seller__media">
+                {%- if product.featured_media -%}
+                  {{
+                    product.featured_media
+                    | image_url: width: 600
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '160, 260, 360, 520, 600',
+                      sizes: '(min-width: 990px) 20vw, 45vw',
+                      class: 'cbv-best-seller__image',
+                      alt: product.title
+                  }}
+                {%- endif -%}
+              </div>
+              <div class="cbv-best-seller__content">
+                <h3>{{ product.title | escape }}</h3>
+                <p>{{ product.price | money }}</p>
+                <span>{{ section.settings.best_sellers_cta_label | escape }}</span>
+              </div>
+            </a>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CBV collection format grid",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Craft your candle"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Intro copy",
+      "default": "<p>Choose your vessel, then enter our candle builder to pour your scent memory.</p>"
+    },
+    {
+      "type": "text",
+      "id": "default_cta_label",
+      "label": "Default card CTA label",
+      "default": "Build Yours"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "option-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 72
+    },
+    {
+      "type": "header",
+      "content": "Best sellers"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_best_sellers",
+      "label": "Show best sellers",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "best_sellers_heading",
+      "label": "Best sellers heading",
+      "default": "Loved right now"
+    },
+    {
+      "type": "collection",
+      "id": "best_sellers_collection",
+      "label": "Collection source"
+    },
+    {
+      "type": "range",
+      "id": "best_sellers_limit",
+      "label": "Products to show",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "best_sellers_cta_label",
+      "label": "Best sellers CTA label",
+      "default": "Shop now"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "format_card",
+      "name": "Format card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "format_size",
+          "label": "Format size",
+          "default": "12oz Signature"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "A refined everyday pour with balanced throw and burn time."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Card link"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "CTA label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "CBV collection format grid",
+      "blocks": [
+        {
+          "type": "format_card",
+          "settings": {
+            "format_size": "12oz Signature",
+            "description": "Perfect for kitchens, offices, and cozy corners."
+          }
+        },
+        {
+          "type": "format_card",
+          "settings": {
+            "format_size": "18oz Classic",
+            "description": "A fuller throw for larger gathering spaces."
+          }
+        },
+        {
+          "type": "format_card",
+          "settings": {
+            "format_size": "30oz Statement",
+            "description": "An elevated centerpiece for open-concept rooms."
+          }
+        },
+        {
+          "type": "format_card",
+          "settings": {
+            "format_size": "70oz Grande",
+            "description": "Our most luxurious vessel for unforgettable ambience."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
