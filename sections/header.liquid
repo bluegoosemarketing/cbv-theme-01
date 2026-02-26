@@ -1,6 +1,5 @@
 {%- comment -%}
   IMPORTANT: Cart drawer markup is rendered in layout/theme.liquid when settings.cart_type == 'drawer'.
-  The theme relies on these CSS files (previously loaded by the legacy header) to keep #CartDrawer out of normal flow.
 {%- endcomment -%}
 
 {%- if settings.cart_type == "drawer" -%}
@@ -20,32 +19,53 @@
 
 {% style %}
   :root {
-    --cbv-header-offset: 0px;
+    /* --- ELITE COLOR PALETTE --- */
+    --cbv-header-offset: 180px; 
+    
+    /* COLORS */
+    --cbv-header-bg: #F2F0EB; 
+    --cbv-header-text: #1C1B1A; 
+    --cbv-header-accent: #3A4D3F; 
+    --cbv-announcement-bg: #2F3E35;
+    --cbv-announcement-text: #FDFBF7;
+    --cbv-body-bg: #FDFBF7;
+    --cbv-border-color: rgba(0,0,0,0.06);
+
+    /* ANIMATION PHYSICS */
+    --cbv-ease: cubic-bezier(0.19, 1, 0.22, 1);
+    --cbv-duration: 0.5s;
+    
+    /* DIMENSIONS */
+    --cbv-sticky-height: 60px; /* TIGHTER STICKY HEIGHT */
   }
 
   #MainContent {
-  padding-top: var(--cbv-header-offset);
-}
+    padding-top: var(--cbv-header-offset);
+  }
 
-/* Prevent double-spacing: many templates add their own top margin/padding on the first section */
-#MainContent > .shopify-section:first-child,
-#MainContent > .section:first-child {
-  margin-top: 0 !important;
-}
+  #MainContent > .shopify-section:first-child,
+  #MainContent > .section:first-child {
+    margin-top: 0 !important;
+  }
+  #MainContent > .shopify-section:first-child > .section:first-child {
+    margin-top: 0 !important;
+  }
 
-/* Some templates wrap a .section inside the first .shopify-section */
-#MainContent > .shopify-section:first-child > .section:first-child {
-  margin-top: 0 !important;
-}
-
+  /* --- FIXED HEADER GROUP --- */
+  /* This is the reference parent for the Mega Menu width */
   .cbv-header-fixed-group {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-    background: #fdfbf7;
+    background: var(--cbv-header-bg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.0);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .cbv-header-fixed-group.is-scrolled {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
   .shopify-section-header {
@@ -54,27 +74,45 @@
     z-index: 30;
   }
 
+  /* --- ANNOUNCEMENT BAR --- */
   .cbv-announcement {
-    background-color: #1f1c18;
-    color: #fdfbf7;
+    background-color: var(--cbv-announcement-bg);
+    color: var(--cbv-announcement-text);
     text-align: center;
     padding: 8px 20px;
     font-size: 11px;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    
+    /* Morph Logic */
+    height: 40px;
+    opacity: 1;
+    transition: all var(--cbv-duration) var(--cbv-ease);
+  }
+  
+  .cbv-header-fixed-group.is-scrolled .cbv-announcement {
+    height: 0;
+    padding: 0;
+    opacity: 0;
   }
 
+  /* --- HEADER CONTAINER --- */
   .cbv-header {
-    background-color: #fdfbf7;
-    border-bottom: 1px solid #e8e4dd;
+    background-color: transparent;
     padding: 0 40px;
-    position: relative;
+    /* Important: Static position allows Mega Menu to reference the Group parent for 100% width */
+    position: static; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: all var(--cbv-duration) var(--cbv-ease);
   }
 
+  /* --- TOP ROW GRID --- */
   .cbv-header-top {
     width: 100%;
     max-width: 1400px;
@@ -83,48 +121,133 @@
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     padding: 20px 0;
+    transition: padding var(--cbv-duration) var(--cbv-ease);
+  }
+  
+  .cbv-header-fixed-group.is-scrolled .cbv-header-top {
+    padding: 0;
+    height: var(--cbv-sticky-height); /* Lock height to 60px */
+    display: flex;
+    justify-content: space-between;
   }
 
-  .cbv-logo-container {
-    text-align: center;
-    line-height: 1;
-    display: block;
-    text-decoration: none;
+  /* --- LEFT COLUMN WRAPPER --- */
+  .cbv-header-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
   }
 
+  /* --- SEARCH BAR --- */
+  .cbv-search-bar {
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    padding: 8px 16px;
+    border-radius: 50px;
+    width: 240px;
+    border: 1px solid transparent;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    
+    /* Morph Logic */
+    opacity: 1;
+    max-width: 300px;
+    overflow: hidden;
+    transition: all var(--cbv-duration) var(--cbv-ease);
+  }
+
+  .cbv-search-bar:focus-within {
+    background: #FFFFFF;
+    border-color: var(--cbv-header-accent);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+
+  .cbv-search-input {
+    border: none;
+    background: transparent;
+    margin-left: 10px;
+    width: 100%;
+    outline: none;
+    font-size: 13px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--cbv-header-text);
+  }
+  
+  .cbv-search-input::placeholder { color: #999; }
+  .cbv-search-bar .cbv-icon { stroke: var(--cbv-header-text); }
+
+  /* SCROLLED: Hide Search */
+  .cbv-header-fixed-group.is-scrolled .cbv-search-bar {
+    width: 0;
+    max-width: 0;
+    padding: 0;
+    opacity: 0;
+    margin-right: 0;
+    border: 0;
+  }
+
+  /* --- LOGO STYLES (Shared) --- */
+  .cbv-logo-main, .cbv-logo-sub { display: block; line-height: 1; }
   .cbv-logo-main {
     font-family: "Georgia", "Times New Roman", serif;
     letter-spacing: -0.5px;
     text-transform: uppercase;
-    color: #1f1c18;
-    display: block;
+    color: var(--cbv-header-text);
   }
-
   .cbv-logo-sub {
     letter-spacing: 3px;
-    color: #8b5e3c;
+    color: var(--cbv-header-accent);
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 600;
+  }
+
+  /* --- MAIN LOGO (Center) --- */
+  .cbv-logo-center {
+    text-align: center;
     display: block;
-  }
-
-  .cbv-header-top .cbv-logo-main {
-    font-size: 32px;
-  }
-
-  .cbv-header-top .cbv-logo-sub {
-    font-size: 11px;
-    margin-top: 6px;
-  }
-
-  .cbv-logo-image {
-    max-width: 300px;
-    max-height: 72px;
-    width: auto;
+    text-decoration: none;
+    transition: all var(--cbv-duration) var(--cbv-ease);
+    opacity: 1;
+    transform: scale(1);
     height: auto;
-    margin: 0 auto;
+  }
+  .cbv-logo-center .cbv-logo-main { font-size: 32px; }
+  .cbv-logo-center .cbv-logo-sub { font-size: 11px; margin-top: 6px; }
+  .cbv-logo-center .cbv-logo-image { max-height: 72px; width: auto; }
+
+  /* SCROLLED: Hide Center Logo */
+  .cbv-header-fixed-group.is-scrolled .cbv-logo-center {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
   }
 
+  /* --- STICKY LOGO (Left) --- */
+  .cbv-logo-sticky {
+    display: block;
+    text-decoration: none;
+    text-align: left;
+    
+    /* Hidden by default */
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all var(--cbv-duration) var(--cbv-ease);
+  }
+  .cbv-logo-sticky .cbv-logo-main { font-size: 20px; }
+  .cbv-logo-sticky .cbv-logo-image { max-height: 32px; width: auto; } /* Smaller sticky logo */
+
+  /* SCROLLED: Show Sticky Logo */
+  .cbv-header-fixed-group.is-scrolled .cbv-logo-sticky {
+    opacity: 1;
+    width: auto;
+    overflow: visible;
+  }
+
+  /* --- ICONS (Right) --- */
   .cbv-icons {
     display: flex;
     justify-content: flex-end;
@@ -139,17 +262,26 @@
     display: inline-flex;
     align-items: center;
     text-decoration: none;
+    transition: color 0.2s;
   }
 
-  .cbv-icon-link:hover {
-    color: #8b5e3c;
+  .cbv-icon-link:hover { color: var(--cbv-header-accent); }
+
+  .cbv-icon {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   .cbv-cart-count {
     position: absolute;
     top: -6px;
     right: -8px;
-    background: #8b5e3c;
+    background: var(--cbv-header-accent);
     color: #fff;
     font-size: 10px;
     font-weight: 700;
@@ -161,36 +293,12 @@
     justify-content: center;
   }
 
-  .cbv-search-bar {
-    display: flex;
-    align-items: center;
-    background: #f0eee9;
-    padding: 8px 16px;
-    border-radius: 50px;
-    width: 240px;
-    transition: all 0.3s;
-    border: 1px solid transparent;
-  }
-
-  .cbv-search-bar:focus-within {
-    background: #fff;
-    border-color: #8b5e3c;
-  }
-
-  .cbv-search-input {
-    border: none;
-    background: transparent;
-    margin-left: 10px;
-    width: 100%;
-    outline: none;
-    font-size: 13px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #1f1c18;
-  }
-
+  /* --- NAVIGATION CONTAINER --- */
   .cbv-nav-container {
     width: 100%;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid var(--cbv-border-color);
+    position: static; /* Important for full width mega menu */
+    transition: all var(--cbv-duration) var(--cbv-ease);
   }
 
   .cbv-nav-list {
@@ -201,11 +309,13 @@
     margin: 0 auto;
     list-style: none;
     padding: 0;
+    position: static; /* Important */
   }
 
   .cbv-nav-item {
     padding: 18px 0;
-    position: static;
+    position: static; /* Important */
+    transition: padding var(--cbv-duration) var(--cbv-ease);
   }
 
   .cbv-nav-link {
@@ -213,11 +323,12 @@
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: 700;
-    color: #1f1c18;
+    color: var(--cbv-header-text);
     position: relative;
     padding-bottom: 4px;
     display: block;
     text-decoration: none;
+    transition: color 0.3s;
   }
 
   .cbv-nav-link::after {
@@ -227,48 +338,94 @@
     left: 0;
     width: 0;
     height: 2px;
-    background-color: #8b5e3c;
+    background-color: var(--cbv-header-accent);
     transition: width 0.3s ease;
   }
 
-  .cbv-nav-item:hover .cbv-nav-link {
-    color: #8b5e3c;
-  }
+  .cbv-nav-item:hover .cbv-nav-link { color: var(--cbv-header-accent); }
+  .cbv-nav-item:hover .cbv-nav-link::after { width: 100%; }
 
-  .cbv-nav-item:hover .cbv-nav-link::after {
+  /* --- SCROLLED NAV (Absolute Center without Transform) --- */
+  .cbv-header-fixed-group.is-scrolled .cbv-nav-container {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    border: none;
+    z-index: 10;
+    
+    /* Flex Center instead of Transform (Fixes Mega Menu Width Issue) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none; /* Allow clicks to pass through empty space to logo/icons */
+  }
+  
+  .cbv-header-fixed-group.is-scrolled .cbv-nav-item {
+    padding: 0; 
+    height: var(--cbv-sticky-height);
+    display: flex;
+    align-items: center;
+    pointer-events: auto; /* Re-enable clicks on links */
   }
 
+  /* Ensure Header Top (Logo/Icons) stays clickable above Nav Container */
+  .cbv-header-fixed-group.is-scrolled .cbv-header-top {
+    position: relative;
+    z-index: 20;
+    pointer-events: none; /* Allow click-through on wrapper */
+  }
+  .cbv-header-fixed-group.is-scrolled .cbv-header-left,
+  .cbv-header-fixed-group.is-scrolled .cbv-icons {
+    pointer-events: auto; /* Re-enable clicks on content */
+  }
+
+  /* ========================================= */
+  /*    MEGA MENU (Optimized for Both States)  */
+  /* ========================================= */
+
+  /* STANDARD STATE: Absolute to the Nav Container (which is 100% width) */
   .cbv-mega-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background: var(--cbv-bg-white);
-  border-top: 1px solid var(--cbv-border);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.08);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: all 0.25s ease;
-  z-index: 900;
-  pointer-events: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    border-top: 1px solid var(--cbv-border-color);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.06);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.25s ease;
+    z-index: 900;
+    pointer-events: none;
+    will-change: opacity, transform;
+  }
 
-  /* ✅ ADD THESE */
-  top: calc(100% - 1px);      /* removes 1px gap */
-  will-change: opacity, transform;
-}
+  /* SCROLLED STATE: Reset to Standard Absolute */
+  /* Because the container is now 100% width and has NO transform, 
+     we don't need position:fixed. Absolute 100% works perfectly. */
+  .cbv-header-fixed-group.is-scrolled .cbv-mega-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    transform: none !important;
+    border-top: 1px solid rgba(0,0,0,0.05);
+  }
 
-  /* ✅ Hover bridge: prevents dropdown from collapsing when moving cursor down */
-.cbv-mega-menu::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: -20px;      /* sits above the menu */
-  width: 100%;
-  height: 20px;    /* “bridge” height */
-  background: transparent;
-}
+  /* Bridge to keep menu open (Critical for sticky state) */
+  .cbv-mega-menu::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -40px; 
+    width: 100%;
+    height: 40px;
+    background: transparent;
+  }
 
   .cbv-nav-item:hover .cbv-mega-menu {
     opacity: 1;
@@ -285,19 +442,14 @@
     gap: 60px;
   }
 
-  .layout-shop {
-    grid-template-columns: 1fr 1fr 1fr 300px;
-  }
-
-  .layout-scents {
-    grid-template-columns: 1fr 320px;
-  }
+  .layout-shop { grid-template-columns: 1fr 1fr 1fr 300px; }
+  .layout-scents { grid-template-columns: 1fr 320px; }
 
   .cbv-col-title {
     font-family: "Georgia", "Times New Roman", serif;
     font-size: 18px;
     margin-bottom: 16px;
-    color: #8b5e3c;
+    color: var(--cbv-header-accent);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -311,22 +463,14 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 700;
-    color: #1f1c18;
+    color: var(--cbv-header-text);
     margin-top: 25px;
     margin-bottom: 12px;
     display: block;
   }
 
-  .cbv-menu-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .cbv-menu-links li {
-    margin-bottom: 8px;
-  }
-
+  .cbv-menu-links { list-style: none; padding: 0; margin: 0; }
+  .cbv-menu-links li { margin-bottom: 8px; }
   .cbv-menu-links a {
     font-size: 15px;
     color: #595550;
@@ -335,16 +479,12 @@
     transition: transform 0.2s;
     text-decoration: none;
   }
-
   .cbv-menu-links a:hover {
-    color: #8b5e3c;
+    color: var(--cbv-header-accent);
     transform: translateX(5px);
   }
 
-  .cbv-link-highlight {
-    color: #1f1c18 !important;
-    font-weight: 600;
-  }
+  .cbv-link-highlight { color: #1f1c18 !important; font-weight: 600; }
 
   .cbv-scent-grid {
     display: grid;
@@ -366,12 +506,11 @@
     transition: all 0.2s;
     text-decoration: none;
   }
-
   .cbv-scent-pill:hover {
-    border-color: #8b5e3c;
+    border-color: var(--cbv-header-accent);
     background: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    color: #8b5e3c;
+    color: var(--cbv-header-accent);
     transform: translateY(-2px);
   }
 
@@ -383,92 +522,50 @@
     width: 100%;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   }
-
   .cbv-featured-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s ease;
   }
-
-  .cbv-featured-card:hover .cbv-featured-img {
-    transform: scale(1.05);
-  }
-
+  .cbv-featured-card:hover .cbv-featured-img { transform: scale(1.05); }
   .cbv-featured-overlay {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    bottom: 0; left: 0; width: 100%;
     padding: 30px;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
     color: #fff;
     text-align: center;
   }
-
   .cbv-feat-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-    display: block;
-    opacity: 0.9;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 8px; display: block; opacity: 0.9;
   }
-
   .cbv-feat-title {
-    font-family: "Georgia", "Times New Roman", serif;
-    font-size: 26px;
-    margin-bottom: 15px;
+    font-family: "Georgia", "Times New Roman", serif; font-size: 26px; margin-bottom: 15px;
   }
-
   .cbv-btn-link {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-    padding-bottom: 4px;
-    display: inline-block;
+    font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+    font-weight: 700; border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    padding-bottom: 4px; display: inline-block;
   }
 
-  .cbv-mobile-header,
-  .cbv-mobile-drawer,
-  .cbv-mobile-overlay {
-    display: none;
-  }
-
-  .cbv-hamburger,
-  .cbv-drawer-close,
-  .cbv-mobile-link-head {
-    background: none;
-    border: 0;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-  }
-
-  .cbv-icon {
-    width: 22px;
-    height: 22px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  /* --- MOBILE STYLES --- */
+  .cbv-mobile-header, .cbv-mobile-drawer, .cbv-mobile-overlay { display: none; }
+  .cbv-hamburger, .cbv-drawer-close, .cbv-mobile-link-head {
+    background: none; border: 0; font: inherit; color: inherit; cursor: pointer;
   }
 
   @media (max-width: 1024px) {
-    .cbv-header-top,
-    .cbv-nav-container {
-      display: none;
-    }
-
+    .cbv-header-top, .cbv-nav-container { display: none; }
+    
     .cbv-header {
       padding: 0 20px;
       height: 70px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border-bottom-color: var(--cbv-border-color);
     }
 
     .cbv-mobile-header {
@@ -479,244 +576,126 @@
     }
 
     .cbv-hamburger {
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #595550;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--cbv-header-text);
     }
+    .cbv-hamburger .cbv-icon { width: 28px; height: 28px; }
 
-    .cbv-hamburger .cbv-icon {
-      width: 28px;
-      height: 28px;
+    /* MOBILE LOGO CONSTRAINT */
+    .cbv-mobile-logo {
+        flex: 1; display: flex; justify-content: center; overflow: hidden;
     }
-
-    .cbv-mobile-logo .cbv-logo-main {
-      font-size: 18px;
-    }
-
+    .cbv-mobile-logo .cbv-logo-main { font-size: 18px; color: var(--cbv-header-text); }
     .cbv-mobile-logo .cbv-logo-sub {
-      font-size: 8px;
-      margin-top: 2px;
-      letter-spacing: 2px;
+      font-size: 8px; margin-top: 2px; letter-spacing: 2px; color: var(--cbv-header-accent);
+    }
+    .cbv-mobile-logo .cbv-logo-image {
+        max-height: 40px; max-width: 180px; width: auto; object-fit: contain;
     }
 
-    .cbv-mobile-icons {
-      display: flex;
-      gap: 20px;
-    }
+    .cbv-mobile-icons { display: flex; gap: 20px; }
+    .cbv-mobile-icons .cbv-icon-link { color: var(--cbv-header-text); }
 
     .cbv-mobile-overlay {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(4px);
       z-index: 1001;
-      opacity: 0;
-      pointer-events: none;
+      opacity: 0; pointer-events: none;
       transition: opacity 0.3s ease;
     }
-
-    .cbv-mobile-overlay.is-active {
-      opacity: 1;
-      pointer-events: auto;
-      display: block;
-    }
+    .cbv-mobile-overlay.is-active { opacity: 1; pointer-events: auto; display: block; }
 
     .cbv-mobile-drawer {
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 90%;
-      max-width: 420px;
-      height: 100vh;
-      background: #fdfbf7;
-      z-index: 1002;
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0;
+      width: 90%; max-width: 420px; height: 100vh;
+      background: #fdfbf7; z-index: 1002;
       transform: translateX(-100%);
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
       overflow-y: auto;
     }
-
-    .cbv-mobile-drawer.is-open {
-      transform: translateX(0);
-    }
+    .cbv-mobile-drawer.is-open { transform: translateX(0); }
 
     .cbv-drawer-header {
       padding: 20px 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid #e8e4dd;
-      background: #fff;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      background: #fff; position: sticky; top: 0; z-index: 10;
     }
-
     .cbv-drawer-title {
-      font-family: "Georgia", "Times New Roman", serif;
-      font-size: 20px;
-      color: #8b5e3c;
+      font-family: "Georgia", "Times New Roman", serif; font-size: 20px; color: var(--cbv-header-accent);
     }
-
     .cbv-drawer-close {
-      font-size: 28px;
-      line-height: 1;
-      color: #595550;
-      padding: 5px;
+      font-size: 28px; line-height: 1; color: #595550; padding: 5px;
     }
-
-    .cbv-drawer-content {
-      padding: 0 25px 40px;
-    }
-
-    .cbv-mobile-search {
-      margin: 25px 0 20px;
-      position: relative;
-    }
-
+    .cbv-drawer-content { padding: 0 25px 40px; }
+    
+    .cbv-mobile-search { margin: 25px 0 20px; position: relative; }
     .cbv-mobile-search input {
-      width: 100%;
-      padding: 14px 14px 14px 45px;
-      border: 1px solid #e8e4dd;
-      border-radius: 8px;
-      font-size: 16px;
-      background: #fff;
-      color: #1f1c18;
+      width: 100%; padding: 14px 14px 14px 45px;
+      border: 1px solid #e8e4dd; border-radius: 8px;
+      font-size: 16px; background: #fff; color: #1f1c18;
     }
-
     .cbv-mobile-search .cbv-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #999;
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: #999; stroke: currentColor;
     }
 
-    .cbv-mobile-item {
-      border-bottom: 1px solid #e8e4dd;
-    }
-
+    .cbv-mobile-item { border-bottom: 1px solid #e8e4dd; }
     .cbv-mobile-link-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      padding: 20px 0;
-      font-family: "Georgia", "Times New Roman", serif;
-      font-size: 22px;
-      color: #1f1c18;
-      text-align: left;
-      text-decoration: none;
+      display: flex; justify-content: space-between; align-items: center;
+      width: 100%; padding: 20px 0;
+      font-family: "Georgia", "Times New Roman", serif; font-size: 22px;
+      color: #1f1c18; text-align: left; text-decoration: none;
     }
-
     .cbv-mobile-link-head .cbv-icon {
-      transition: transform 0.3s ease;
-      width: 18px;
-      color: #595550;
+      transition: transform 0.3s ease; width: 18px; color: #595550;
     }
-
     .cbv-mobile-item.is-expanded .cbv-mobile-link-head .cbv-icon {
-      transform: rotate(180deg);
-      color: #8b5e3c;
+      transform: rotate(180deg); color: var(--cbv-header-accent);
     }
-
     .cbv-mobile-submenu {
-      max-height: 0;
-      overflow: hidden;
+      max-height: 0; overflow: hidden;
       transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      padding-left: 5px;
-      margin-bottom: 0;
+      padding-left: 5px; margin-bottom: 0;
     }
-
     .cbv-mobile-item.is-expanded .cbv-mobile-submenu {
-      max-height: 2500px;
-      margin-bottom: 25px;
+      max-height: 2500px; margin-bottom: 25px;
     }
-
     .cbv-mob-cat-title {
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #8b5e3c;
-      font-weight: 800;
-      margin: 25px 0 12px;
-      display: block;
-      border-bottom: 1px solid #e8e4dd;
-      padding-bottom: 5px;
+      font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--cbv-header-accent); font-weight: 800;
+      margin: 25px 0 12px; display: block; border-bottom: 1px solid #e8e4dd; padding-bottom: 5px;
     }
-
     .cbv-mob-sub-title {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #595550;
-      font-weight: 700;
-      margin: 15px 0 8px;
-      display: block;
-      padding-left: 10px;
+      font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+      color: #595550; font-weight: 700; margin: 15px 0 8px; display: block; padding-left: 10px;
     }
-
     .cbv-mob-link {
-      font-size: 17px;
-      display: block;
-      padding: 8px 0;
-      color: #1f1c18;
-      text-decoration: none;
+      font-size: 17px; display: block; padding: 8px 0; color: #1f1c18; text-decoration: none;
     }
-
     .cbv-mob-link-sub {
-      font-size: 16px;
-      display: block;
-      padding: 6px 0 6px 10px;
-      color: #595550;
-      border-left: 2px solid transparent;
-      text-decoration: none;
+      font-size: 16px; display: block; padding: 6px 0 6px 10px;
+      color: #595550; border-left: 2px solid transparent; text-decoration: none;
     }
-
     .cbv-mob-link-sub:hover {
-      color: #8b5e3c;
-      border-left-color: #8b5e3c;
+      color: var(--cbv-header-accent); border-left-color: var(--cbv-header-accent);
     }
-
     .cbv-mobile-divider {
-      height: 1px;
-      background: #e8e4dd;
-      margin: 20px 0;
-      width: 100%;
-      display: block;
-      opacity: 0.5;
+      height: 1px; background: #e8e4dd; margin: 20px 0; width: 100%; display: block; opacity: 0.5;
     }
-
     .cbv-mobile-scent-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 15px;
+      display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px;
     }
-
-    .cbv-mobile-scent-grid .cbv-scent-pill {
-      background: #fff;
-      border-color: #eee;
-    }
-
+    .cbv-mobile-scent-grid .cbv-scent-pill { background: #fff; border-color: #eee; }
     .cbv-drawer-footer {
-      margin-top: 40px;
-      padding-top: 30px;
-      border-top: 1px solid #e8e4dd;
-      text-align: center;
+      margin-top: 40px; padding-top: 30px; border-top: 1px solid #e8e4dd; text-align: center;
     }
-
     .cbv-drawer-footer a {
-      display: block;
-      padding: 10px;
-      font-size: 14px;
-      color: #595550;
-      text-decoration: none;
+      display: block; padding: 10px; font-size: 14px; color: #595550; text-decoration: none;
     }
   }
 {% endstyle %}
@@ -728,12 +707,25 @@
 
   <header class="cbv-header" role="banner">
     <div class="cbv-header-top">
-      <form action="{{ routes.search_url }}" method="get" role="search" class="cbv-search-bar">
-        <svg class="cbv-icon" viewBox="0 0 24 24" style="opacity:0.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="search" name="q" class="cbv-search-input" placeholder="Search scents..." />
-      </form>
+      
+      <!-- LEFT COLUMN: Search & Sticky Logo -->
+      <div class="cbv-header-left">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="cbv-search-bar">
+          <svg class="cbv-icon" viewBox="0 0 24 24" style="opacity:0.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="search" name="q" class="cbv-search-input" placeholder="Search scents..." />
+        </form>
 
-      <a href="{{ routes.root_url }}" class="cbv-logo-container" aria-label="{{ shop.name }}">
+        <a href="{{ routes.root_url }}" class="cbv-logo-sticky" aria-label="{{ shop.name }}">
+          {%- if settings.logo != blank -%}
+            {{ settings.logo | image_url: width: 300 | image_tag: class: 'cbv-logo-image', loading: 'lazy', alt: shop.name }}
+          {%- else -%}
+            <span class="cbv-logo-main">Candles By Victoria</span>
+          {%- endif -%}
+        </a>
+      </div>
+
+      <!-- CENTER COLUMN: Main Logo -->
+      <a href="{{ routes.root_url }}" class="cbv-logo-center" aria-label="{{ shop.name }}">
         {%- if settings.logo != blank -%}
           {{ settings.logo | image_url: width: 600 | image_tag: class: 'cbv-logo-image', loading: 'lazy', alt: shop.name }}
         {%- else -%}
@@ -742,6 +734,7 @@
         {%- endif -%}
       </a>
 
+      <!-- RIGHT COLUMN: Icons -->
       <div class="cbv-icons">
         {%- if shop.customer_accounts_enabled -%}
           <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="cbv-icon-link" title="Account" aria-label="Account">
@@ -757,6 +750,7 @@
       </div>
     </div>
 
+    <!-- MOBILE HEADER -->
     <div class="cbv-mobile-header">
       <button class="cbv-hamburger" type="button" data-cbv-toggle-drawer aria-label="Open menu">
         <svg class="cbv-icon" viewBox="0 0 24 24">
@@ -933,12 +927,10 @@
         <div class="cbv-mobile-divider"></div>
 
         <span class="cbv-mob-cat-title">Flameless</span>
-
         <span class="cbv-mob-sub-title">Wax Melts</span>
         <a href="/collections/break-away-melts" class="cbv-mob-link-sub">Break-Away Melts</a>
         <a href="/collections/cube-melts" class="cbv-mob-link-sub">Cube Melts</a>
         <a href="/pages/create-your-own-melt" class="cbv-mob-link-sub">Create Your Own Melt</a>
-
         <span class="cbv-mob-sub-title">Scent Shots</span>
         <a href="/collections/scent-shots" class="cbv-mob-link-sub">Shop All Shots</a>
         <a href="/products/scent-shots-3-pack" class="cbv-mob-link-sub">3-Pack Bundle</a>
@@ -946,13 +938,11 @@
         <a href="/pages/custom-scent-shot-pack" class="cbv-mob-link-sub">Custom Pack</a>
 
         <div class="cbv-mobile-divider"></div>
-
         <span class="cbv-mob-cat-title">Bundles & Sets</span>
         <a href="/collections/sampler-packs" class="cbv-mob-link">Sampler Packs</a>
         <a href="/pages/build-your-own-packs" class="cbv-mob-link">Build Your Own Packs</a>
         <a href="/collections/category-boxes" class="cbv-mob-link">Category Boxes</a>
         <a href="/collections/mystery-boxes" class="cbv-mob-link">Mystery Boxes</a>
-
         <span class="cbv-mob-sub-title">Collections</span>
         <a href="/collections/seasonal-collection" class="cbv-mob-link-sub">Seasonal Collection</a>
         <a href="/collections/limited-drops" class="cbv-mob-link-sub">Limited Drops</a>
@@ -997,41 +987,70 @@
 {% javascript %}
   (() => {
     const init = () => {
+      // 1. Mobile Drawer
       const body = document.body;
       const drawer = document.querySelector('[data-cbv-mobile-drawer]');
       const overlay = document.querySelector('[data-cbv-mobile-overlay]');
       const toggles = document.querySelectorAll('[data-cbv-toggle-drawer]');
       const accordionButtons = document.querySelectorAll('[data-cbv-accordion]');
 
-      if (!drawer || !overlay) return;
+      if (drawer && overlay) {
+        const toggleDrawer = () => {
+          const open = drawer.classList.toggle('is-open');
+          overlay.classList.toggle('is-active', open);
+          body.style.overflow = open ? 'hidden' : '';
+        };
 
-      const toggleDrawer = () => {
-        const open = drawer.classList.toggle('is-open');
-        overlay.classList.toggle('is-active', open);
-        body.style.overflow = open ? 'hidden' : '';
-      };
-
-      toggles.forEach((button) => {
-        button.addEventListener('click', toggleDrawer);
-      });
-
-      overlay.addEventListener('click', toggleDrawer);
-
-      accordionButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          button.parentElement.classList.toggle('is-expanded');
+        toggles.forEach((button) => {
+          button.addEventListener('click', toggleDrawer);
         });
-      });
 
-      const fixed = document.querySelector('.cbv-header-fixed-group');
-      if (!fixed) return;
+        overlay.addEventListener('click', toggleDrawer);
+
+        accordionButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            button.parentElement.classList.toggle('is-expanded');
+          });
+        });
+      }
+
+      // 2. Fixed Header Morph Logic
+      const fixedGroup = document.querySelector('.cbv-header-fixed-group');
+      if (!fixedGroup) return;
 
       const setOffset = () => {
-        document.documentElement.style.setProperty('--cbv-header-offset', `${fixed.offsetHeight}px`);
+        // Only update offset when NOT scrolled to prevent jumps
+        if (!fixedGroup.classList.contains('is-scrolled')) {
+           document.documentElement.style.setProperty('--cbv-header-offset', `${fixedGroup.offsetHeight}px`);
+        }
       };
 
       setOffset();
       window.addEventListener('resize', setOffset);
+
+      // Scroll Handler
+      let ticking = false;
+      const SCROLL_THRESHOLD = 50;
+
+      const onScroll = () => {
+        const currentScroll = window.scrollY;
+        
+        if (currentScroll > SCROLL_THRESHOLD) {
+          fixedGroup.classList.add('is-scrolled');
+        } else {
+          fixedGroup.classList.remove('is-scrolled');
+        }
+      };
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            onScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
     };
 
     if (document.readyState === 'loading') {
@@ -1041,103 +1060,3 @@
     }
   })();
 {% endjavascript %}
-
-{%- if settings.cart_type == "drawer" -%}
-  <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
-
-<script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
-
-{%- if settings.cart_type == 'notification' -%}
-  {%- render 'cart-notification', color_scheme: section.settings.color_scheme -%}
-{%- endif -%}
-
-{% schema %}
-{
-  "name": "t:sections.header.name",
-  "class": "section-header",
-  "settings": [
-    {
-      "type": "text",
-      "id": "announcement_text",
-      "label": "Announcement text",
-      "default": "Free Shipping on all orders over $100"
-    },
-    {
-      "type": "url",
-      "id": "scents_az_link",
-      "label": "Scent A–Z page"
-    },
-    {
-      "type": "header",
-      "content": "Shop featured card"
-    },
-    {
-      "type": "image_picker",
-      "id": "shop_feature_image",
-      "label": "Shop featured image"
-    },
-    {
-      "type": "text",
-      "id": "shop_feature_label",
-      "label": "Shop featured label",
-      "default": "Limited Edition"
-    },
-    {
-      "type": "text",
-      "id": "shop_feature_title",
-      "label": "Shop featured title",
-      "default": "Spring Collection"
-    },
-    {
-      "type": "text",
-      "id": "shop_feature_cta",
-      "label": "Shop featured CTA",
-      "default": "Shop Now"
-    },
-    {
-      "type": "url",
-      "id": "shop_feature_link",
-      "label": "Shop featured link"
-    },
-    {
-      "type": "header",
-      "content": "Scent featured card"
-    },
-    {
-      "type": "image_picker",
-      "id": "scents_feature_image",
-      "label": "Scent featured image"
-    },
-    {
-      "type": "text",
-      "id": "scents_feature_label",
-      "label": "Scent featured label",
-      "default": "Scent of the Month"
-    },
-    {
-      "type": "text",
-      "id": "scents_feature_title",
-      "label": "Scent featured title",
-      "default": "Banana Nut Bread"
-    },
-    {
-      "type": "text",
-      "id": "scents_feature_cta",
-      "label": "Scent featured CTA",
-      "default": "Shop Scent"
-    },
-    {
-      "type": "url",
-      "id": "scents_feature_link",
-      "label": "Scent featured link"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "option-1"
-    }
-  ]
-}
-{% endschema %}
