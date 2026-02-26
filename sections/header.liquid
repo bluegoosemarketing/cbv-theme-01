@@ -240,20 +240,35 @@
   }
 
   .cbv-mega-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: #fff;
-    border-top: 1px solid #e8e4dd;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.25s ease;
-    z-index: 900;
-    pointer-events: none;
-  }
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: var(--cbv-bg-white);
+  border-top: 1px solid var(--cbv-border);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.25s ease;
+  z-index: 900;
+  pointer-events: none;
+
+  /* ✅ ADD THESE */
+  top: calc(100% - 1px);      /* removes 1px gap */
+  will-change: opacity, transform;
+}
+
+  /* ✅ Hover bridge: prevents dropdown from collapsing when moving cursor down */
+.cbv-mega-menu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -20px;      /* sits above the menu */
+  width: 100%;
+  height: 20px;    /* “bridge” height */
+  background: transparent;
+}
 
   .cbv-nav-item:hover .cbv-mega-menu {
     opacity: 1;
@@ -782,7 +797,7 @@
                   <li><a href="/collections/all-products" class="cbv-link-highlight">Shop All Candles</a></li>
                   <li><a href="/collections/best-sellers">Best Sellers <span style="color:#d32f2f;font-size:10px;font-weight:800;margin-left:4px;">HOT</span></a></li>
                   <li><a href="/collections/new-arrivals">New Arrivals</a></li>
-                  <li><a href="/pages/the-jar-bar-custom">The Jar Bar Custom</a></li>
+                  <li><a href="/pages/the-jar-bar-custom">Custom Jars</a></li>
                 </ul>
                 <span class="cbv-sub-header">By Size</span>
                 <ul class="cbv-menu-links">
