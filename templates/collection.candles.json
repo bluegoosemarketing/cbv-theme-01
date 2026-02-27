@@ -10,7 +10,7 @@
 {
   "sections": {
     "format_grid": {
-      "type": "cbv-collection-grid",
+      "type": "cbv-collection-format-grid",
       "blocks": {
         "format_12oz": {
           "type": "format_card",
