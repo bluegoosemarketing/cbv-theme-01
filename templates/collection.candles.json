@@ -16,32 +16,41 @@
           "type": "format_card",
           "settings": {
             "format_size": "12oz Signature",
+            "title": "12oz Signature",
             "description": "Perfect for kitchens, offices, and cozy corners.",
-            "link": ""
+            "image": "shopify://shop_images/12oz-Clear-Jar.webp",
+            "link": "shopify://products/12oz-jar-candle",
+            "cta_label": ""
           }
         },
         "format_18oz": {
           "type": "format_card",
           "settings": {
             "format_size": "18oz Classic",
+            "title": "",
             "description": "A fuller throw for larger gathering spaces.",
-            "link": ""
+            "link": "",
+            "cta_label": ""
           }
         },
         "format_30oz": {
           "type": "format_card",
           "settings": {
             "format_size": "30oz Statement",
+            "title": "",
             "description": "An elevated centerpiece for open-concept rooms.",
-            "link": ""
+            "link": "",
+            "cta_label": ""
           }
         },
         "format_70oz": {
           "type": "format_card",
           "settings": {
             "format_size": "70oz Grande",
+            "title": "",
             "description": "Our most luxurious vessel for unforgettable ambience.",
-            "link": ""
+            "link": "",
+            "cta_label": ""
           }
         }
       },
@@ -60,7 +69,7 @@
         "padding_bottom": 72,
         "show_best_sellers": false,
         "best_sellers_heading": "Loved right now",
-        "best_sellers_collection": "",
+        "best_sellers_collection": "custom-candles",
         "best_sellers_limit": 4,
         "best_sellers_cta_label": "Shop now"
       }

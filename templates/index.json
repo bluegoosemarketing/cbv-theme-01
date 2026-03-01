@@ -9,6 +9,25 @@
  */
 {
   "sections": {
+    "cbv_hero_v2_4gQJh6": {
+      "type": "cbv-hero-v2",
+      "name": "CBV Hero v2",
+      "settings": {
+        "eyebrow": "EST. 1999",
+        "headline": "The candle you can actually smell",
+        "body_text": "Hand poured in small batches since 1999, with over 450 scents designed to fill your home with fragrance you notice and love.",
+        "primary_button_label": "Shop Best Sellers",
+        "primary_button_link": "",
+        "secondary_button_label": "Explore All Scents",
+        "secondary_button_link": "",
+        "show_trust_bar": true,
+        "trust_item_1": "Loved for strong scent throw",
+        "trust_item_2": "450+ scents",
+        "trust_item_3": "Hand poured since 1999",
+        "show_scent_examples": true,
+        "scent_examples": "Fresh Laundry, Banana Nut Bread, Beach Nights, Vanilla Sugar"
+      }
+    },
     "image_banner_with_featured_collection": {
       "type": "image-banner-with-featured-collection",
       "settings": {
@@ -385,6 +404,7 @@
     }
   },
   "order": [
+    "cbv_hero_v2_4gQJh6",
     "image_banner_with_featured_collection",
     "rich-text",
     "collection_tabs",

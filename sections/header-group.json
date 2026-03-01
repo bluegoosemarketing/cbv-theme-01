@@ -13,17 +13,7 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {
-        "announcement_text": "Free Shipping on all orders over $100",
-        "scents_az_link": "shopify://pages/scent-library",
-        "shop_feature_label": "Limited Edition",
-        "shop_feature_title": "Spring Collection",
-        "shop_feature_cta": "Shop Now",
-        "scents_feature_label": "Scent of the Month",
-        "scents_feature_title": "Banana Nut Bread",
-        "scents_feature_cta": "Shop Scent",
-        "color_scheme": "option-1"
-      }
+      "settings": {}
     }
   },
   "order": [

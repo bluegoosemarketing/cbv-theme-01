@@ -9,7 +9,7 @@
  */
 {
   "current": {
-    "logo": "shopify://shop_images/plain_candles_by_Victoria-2.svg",
+    "logo": "shopify://shop_images/Logo-Recration_v1.webp",
     "logo_width": 60,
     "logo_width_mobile": 60,
     "show_breadcrumb_nav": false,
@@ -113,15 +113,7 @@
     "sections": {
       "header": {
         "type": "header",
-        "settings": {
-          "menu": "main-menu",
-          "menu_type_desktop": "dropdown",
-          "desktop_header_layout": "logo-centermenu-icons",
-          "color_scheme": "background-1",
-          "padding_top": 20,
-          "padding_bottom": 20,
-          "mobile_desktop_header_layout": "center"
-        }
+        "settings": {}
       },
       "footer": {
         "type": "footer",
@@ -365,15 +357,7 @@
       "sections": {
         "header": {
           "type": "header",
-          "settings": {
-            "menu": "main-menu",
-            "menu_type_desktop": "dropdown",
-            "desktop_header_layout": "logo-centermenu-icons",
-            "color_scheme": "background-1",
-            "padding_top": 20,
-            "padding_bottom": 20,
-            "mobile_desktop_header_layout": "center"
-          }
+          "settings": {}
         },
         "footer": {
           "type": "footer",
@@ -570,15 +554,7 @@
       "sections": {
         "header": {
           "type": "header",
-          "settings": {
-            "menu": "main-menu",
-            "menu_type_desktop": "dropdown",
-            "desktop_header_layout": "logo-centermenu-icons",
-            "color_scheme": "background-1",
-            "padding_top": 20,
-            "padding_bottom": 20,
-            "mobile_desktop_header_layout": "center"
-          }
+          "settings": {}
         },
         "footer": {
           "type": "footer",
@@ -774,15 +750,7 @@
       "sections": {
         "header": {
           "type": "header",
-          "settings": {
-            "menu": "main-menu",
-            "menu_type_desktop": "dropdown",
-            "desktop_header_layout": "logo-centermenu-icons",
-            "color_scheme": "background-1",
-            "padding_top": 20,
-            "padding_bottom": 20,
-            "mobile_desktop_header_layout": "center"
-          }
+          "settings": {}
         },
         "footer": {
           "type": "footer",
@@ -982,15 +950,7 @@
       "sections": {
         "header": {
           "type": "header",
-          "settings": {
-            "menu": "main-menu",
-            "menu_type_desktop": "dropdown",
-            "desktop_header_layout": "logo-centermenu-icons",
-            "color_scheme": "background-1",
-            "padding_top": 20,
-            "padding_bottom": 20,
-            "mobile_desktop_header_layout": "center"
-          }
+          "settings": {}
         },
         "footer": {
           "type": "footer",
