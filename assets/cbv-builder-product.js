@@ -111,11 +111,8 @@
     const noResultsEl = builderEl.querySelector('[data-cbv-no-results]');
     const scentProp = builderEl.querySelector('[data-cbv-prop-scent]');
     const familyProp = builderEl.querySelector('[data-cbv-prop-family]');
-    const wickTypeProp = builderEl.querySelector('[data-cbv-prop-wick-type]');
-
-    const wickTypeGroup = builderEl.querySelector('[data-cbv-wick-type-group]');
-    const wickTypeInputs = builderEl.querySelectorAll('[data-cbv-wick-type-input]');
-    const woodWickGroup = builderEl.querySelector('[data-cbv-wood-wick-group]');
+    const wickUpgradeProp = builderEl.querySelector('[data-cbv-prop-wick-upgrade]');
+    const wickUpgradeGroup = builderEl.querySelector('[data-cbv-wick-upgrade-group]');
     const wickUpgradeInputs = builderEl.querySelectorAll('[data-cbv-wick-upgrade-input]');
 
     const ticketEl = builderEl.querySelector('[data-cbv-ticket]');
@@ -146,8 +143,7 @@
 
     let selectedVariant = allVariants.find((variant) => String(variant.id) === variantIdInput?.value) || allVariants[0] || null;
     let selectedJar = selectedVariant?.option1 || jarInputs[0]?.dataset.cbvJarValue || '';
-    let selectedWickUpgrade = (selectedVariant?.option2 && normalize(selectedVariant.option2) === 'wood wick') ? 'Wood Wick' : 'Standard';
-    let selectedWickType = wickTypeProp?.value || 'Standard Wick';
+    let selectedWickUpgrade = selectedVariant?.option2 || wickUpgradeInputs[0]?.value || 'Standard';
     let variantAvailable = selectedVariant ? Boolean(selectedVariant.available) : true;
 
     const families = ['All', ...new Set(allScents.map((s) => normalizeFamily(s.family)))].sort((a, b) => a.localeCompare(b));
@@ -191,15 +187,6 @@
       return matched || allVariants[0];
     }
 
-    function updateWoodWickState() {
-      if (!woodWickGroup) return;
-      const wicklessSelected = normalize(selectedWickType) === 'wickless';
-      woodWickGroup.classList.toggle('is-disabled', wicklessSelected);
-      wickUpgradeInputs.forEach((input) => {
-        input.disabled = wicklessSelected;
-      });
-    }
-
     function syncChoiceCards(inputs) {
       inputs.forEach((input) => {
         const card = input.closest('.cbv-choice-card');
@@ -213,11 +200,10 @@
       selectedVariant = variant;
       variantAvailable = Boolean(variant.available);
       selectedJar = variant.option1 || selectedJar;
-      if (variant.option2) {
-        selectedWickUpgrade = normalize(variant.option2) === 'wood wick' ? 'Wood Wick' : 'Standard';
-      }
+      if (variant.option2) selectedWickUpgrade = variant.option2;
 
       if (variantIdInput) variantIdInput.value = variant.id;
+      if (wickUpgradeProp) wickUpgradeProp.value = selectedWickUpgrade;
 
       const variantImage = variant.featured_image?.src || variant.featured_media?.src || '';
       if (mainImageEl && variantImage) {
@@ -264,7 +250,7 @@
 
       if (ticketWaxEl) ticketWaxEl.textContent = waxProp.value || '--';
       if (ticketScentEl) ticketScentEl.textContent = scentProp.value || '--';
-      if (ticketWickEl) ticketWickEl.textContent = selectedWickType || 'Standard Wick';
+      if (ticketWickEl) ticketWickEl.textContent = selectedWickUpgrade || '--';
       if (ticketJarEl) ticketJarEl.textContent = selectedJar || '--';
 
       const activeWaxInput = Array.from(waxInputs).find((input) => input.checked);
@@ -433,25 +419,6 @@
       });
     });
 
-    wickTypeInputs.forEach((input) => {
-      input.addEventListener('change', () => {
-        if (!input.checked) return;
-        selectedWickType = input.value;
-        if (wickTypeProp) wickTypeProp.value = selectedWickType;
-        syncChoiceCards(wickTypeInputs);
-
-        if (normalize(selectedWickType) === 'wickless') {
-          selectedWickUpgrade = 'Standard';
-          const standardInput = Array.from(wickUpgradeInputs).find((upgradeInput) => normalize(upgradeInput.value) === 'standard');
-          if (standardInput) standardInput.checked = true;
-        }
-
-        updateWoodWickState();
-        const variant = findVariant(selectedJar, selectedWickUpgrade);
-        applyVariant(variant);
-      });
-    });
-
     wickUpgradeInputs.forEach((input) => {
       input.addEventListener('change', () => {
         if (!input.checked || input.disabled) return;
@@ -474,11 +441,8 @@
 
     renderFamilyFilters();
 
-    if (wickTypeProp) wickTypeProp.value = selectedWickType;
-    if (wickTypeGroup) syncChoiceCards(wickTypeInputs);
-    if (woodWickGroup) syncChoiceCards(wickUpgradeInputs);
+    if (wickUpgradeGroup) syncChoiceCards(wickUpgradeInputs);
 
-    updateWoodWickState();
     applyVariant(findVariant(selectedJar, selectedWickUpgrade));
 
     scentInput.dispatchEvent(new Event('input'));
