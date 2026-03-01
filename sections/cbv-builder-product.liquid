@@ -4,10 +4,19 @@
 {%- liquid
   assign product_form_id = 'cbv-builder-product-form-' | append: section.id
   assign current_variant = product.selected_or_first_available_variant
-  assign show_wick_type = product.tags contains 'cbv_wickless'
-  assign show_wood_wick_upgrade = product.tags contains 'cbv_wood_wick'
+  assign show_wick_type = false
+  assign show_wood_wick_upgrade = false
+  if product.tags contains 'cbv_wickless'
+    assign show_wick_type = true
+  endif
+  if product.tags contains 'cbv_wood_wick'
+    assign show_wood_wick_upgrade = true
+  endif
   assign jar_option_values = product.options_with_values.first.values
-  assign has_jar_options = jar_option_values.size > 1
+  assign has_jar_options = false
+  if jar_option_values.size > 1
+    assign has_jar_options = true
+  endif
 -%}
 
 <section class="cbv-builder color-{{ section.settings.color_scheme }} gradient" data-cbv-builder data-section-id="{{ section.id }}">
