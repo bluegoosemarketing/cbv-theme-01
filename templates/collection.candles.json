@@ -10,7 +10,7 @@
 {
   "sections": {
     "size_selector": {
-      "type": "cbv-collection-size-selector",
+      "type": "cbv-size-selector",
       "blocks": {
         "size_4oz": {
           "type": "size_option",
