@@ -9,73 +9,130 @@
  */
 {
   "sections": {
-    "format_grid": {
-      "type": "cbv-collection-format-grid",
+    "size_selector": {
+      "type": "cbv-collection-size-selector",
       "blocks": {
-        "format_12oz": {
-          "type": "format_card",
+        "size_4oz": {
+          "type": "size_option",
           "settings": {
-            "format_size": "12oz Signature",
-            "title": "12oz Signature",
-            "description": "Perfect for kitchens, offices, and cozy corners.",
-            "image": "shopify://shop_images/12oz-Clear-Jar.webp",
-            "link": "shopify://products/12oz-jar-candle",
-            "cta_label": ""
+            "size_label": "4oz",
+            "title": "4oz Candle",
+            "room_recommendation": "Powder Rooms & Travel",
+            "description": "A charming accent piece. Small in stature but crafted with premium glass.",
+            "wick_count": "1",
+            "wood_wick": "No",
+            "jar_styles": "Standard Jelly"
           }
         },
-        "format_18oz": {
-          "type": "format_card",
+        "size_9oz": {
+          "type": "size_option",
           "settings": {
-            "format_size": "18oz Classic",
-            "title": "",
-            "description": "A fuller throw for larger gathering spaces.",
-            "link": "",
-            "cta_label": ""
+            "size_label": "9oz",
+            "title": "9oz Candle",
+            "room_recommendation": "Small Bedrooms & Desks",
+            "description": "Clean, modern lines in a compact form. Perfect for bedside tables.",
+            "wick_count": "1",
+            "wood_wick": "No",
+            "jar_styles": "Mini Cylinder"
           }
         },
-        "format_30oz": {
-          "type": "format_card",
+        "size_12oz": {
+          "type": "size_option",
           "settings": {
-            "format_size": "30oz Statement",
-            "title": "",
-            "description": "An elevated centerpiece for open-concept rooms.",
-            "link": "",
-            "cta_label": ""
+            "size_label": "12oz",
+            "title": "12oz Candle",
+            "room_recommendation": "Bedrooms & Kitchens",
+            "description": "Our most beloved size. Perfectly balanced proportions for living rooms.",
+            "wick_count": "1",
+            "wood_wick": "Yes",
+            "jar_styles": "Clear Glass\nSeafoam\nBlush\nIridescent",
+            "builder_link": "shopify://products/12oz-jar-candle"
           }
         },
-        "format_70oz": {
-          "type": "format_card",
+        "size_16oz": {
+          "type": "size_option",
           "settings": {
-            "format_size": "70oz Grande",
-            "title": "",
-            "description": "Our most luxurious vessel for unforgettable ambience.",
-            "link": "",
-            "cta_label": ""
+            "size_label": "16oz",
+            "title": "16oz Candle",
+            "room_recommendation": "Living Rooms & Dining",
+            "description": "Elegance in height or width. Choose from tall cylinders or square profiles.",
+            "wick_count": "1-2",
+            "wood_wick": "Yes",
+            "jar_styles": "Tall Cylinder\nSalsa\nSquare"
+          }
+        },
+        "size_18oz": {
+          "type": "size_option",
+          "settings": {
+            "size_label": "18oz",
+            "title": "18oz Candle",
+            "room_recommendation": "Living Rooms & Medium Spaces",
+            "description": "Textured and matte finishes for a sophisticated statement piece.",
+            "wick_count": "2",
+            "wood_wick": "Yes",
+            "jar_styles": "Honeycomb\nMatte Black\nMatte White"
+          }
+        },
+        "size_24oz": {
+          "type": "size_option",
+          "settings": {
+            "size_label": "24oz",
+            "title": "24oz Candle",
+            "room_recommendation": "Open Concept Spaces",
+            "description": "Vintage inspiration meets modern scale with vertical ribbing.",
+            "wick_count": "2",
+            "wood_wick": "No",
+            "jar_styles": "Clear Ribbed"
+          }
+        },
+        "size_30oz": {
+          "type": "size_option",
+          "settings": {
+            "size_label": "30oz",
+            "title": "30oz Candle",
+            "room_recommendation": "Large Great Rooms",
+            "description": "Broad and bold. The wide melt pool releases fragrance rapidly.",
+            "wick_count": "3",
+            "wood_wick": "No",
+            "jar_styles": "Clear Wide Cylinder"
+          }
+        },
+        "size_70oz": {
+          "type": "size_option",
+          "settings": {
+            "size_label": "70oz",
+            "title": "70oz Candle",
+            "room_recommendation": "Grand Entryways & Statement",
+            "description": "The ultimate luxury. A massive vessel designed to anchor a room.",
+            "wick_count": "4",
+            "wood_wick": "No",
+            "jar_styles": "Clear Cylinder\nMatte Black"
           }
         }
       },
       "block_order": [
-        "format_12oz",
-        "format_18oz",
-        "format_30oz",
-        "format_70oz"
+        "size_4oz",
+        "size_9oz",
+        "size_12oz",
+        "size_16oz",
+        "size_18oz",
+        "size_24oz",
+        "size_30oz",
+        "size_70oz"
       ],
       "settings": {
-        "eyebrow": "Craft your candle",
-        "intro": "<p>Select your candle format, then enter the builder to customize scent and wax.</p>",
-        "default_cta_label": "Build Yours",
+        "eyebrow": "Step 1 · Choose your size",
+        "intro": "<p>Select your candle size to begin building your custom pour.</p>",
+        "cta_label": "Build this candle →",
+        "styles_note": "Selection happens in the next step",
+        "default_size_label": "12oz",
         "color_scheme": "option-3",
         "padding_top": 52,
-        "padding_bottom": 72,
-        "show_best_sellers": false,
-        "best_sellers_heading": "Loved right now",
-        "best_sellers_collection": "custom-candles",
-        "best_sellers_limit": 4,
-        "best_sellers_cta_label": "Shop now"
+        "padding_bottom": 72
       }
     }
   },
   "order": [
-    "format_grid"
+    "size_selector"
   ]
 }

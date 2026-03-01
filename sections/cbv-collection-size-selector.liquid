@@ -1,0 +1,428 @@
+{{ 'section-cbv-collection-size-selector.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign default_index = 0
+  assign desired_default = section.settings.default_size_label | strip | downcase
+
+  if section.blocks.size > 0 and desired_default != blank
+    for block in section.blocks
+      assign block_label = block.settings.size_label | strip | downcase
+      if block_label == desired_default
+        assign default_index = forloop.index0
+        break
+      endif
+    endfor
+  endif
+
+  assign default_block = section.blocks[default_index]
+  assign default_title = default_block.settings.title | default: default_block.settings.size_label
+-%}
+
+<section class="cbv-size-selector color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding" data-section-id="{{ section.id }}">
+  <div class="page-width">
+    <header class="cbv-size-selector__hero">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="cbv-size-selector__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 class="cbv-size-selector__collection-title">{{ collection.title | escape }}</h1>
+      {%- if section.settings.intro != blank -%}
+        <div class="cbv-size-selector__intro rte">{{ section.settings.intro }}</div>
+      {%- elsif collection.description != blank -%}
+        <div class="cbv-size-selector__intro rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </header>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="cbv-size-selector__grid" data-size-selector>
+        <div class="cbv-size-selector__visual-wrap">
+          <div class="cbv-size-selector__visual-panel">
+            {%- if default_block.settings.image != blank -%}
+              {{
+                default_block.settings.image
+                | image_url: width: 1400
+                | image_tag:
+                  loading: 'eager',
+                  widths: '400, 600, 800, 1000, 1200, 1400',
+                  sizes: '(min-width: 990px) 44vw, 100vw',
+                  class: 'cbv-size-selector__image',
+                  alt: default_title
+              }}
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'cbv-size-selector__placeholder' }}
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="cbv-size-selector__info">
+          <h2 class="cbv-size-selector__title" data-size-title>{{ default_title | escape }}</h2>
+
+          <p class="cbv-size-selector__badge" data-size-room-badge {% if default_block.settings.room_recommendation == blank %}hidden{% endif %}>
+            Ideal for: <span data-size-room>{{ default_block.settings.room_recommendation | escape }}</span>
+          </p>
+
+          <p class="cbv-size-selector__description" data-size-description>{{ default_block.settings.description | escape }}</p>
+
+          <div class="cbv-size-selector__controls" role="group" aria-label="Candle size selector">
+            <p class="cbv-size-selector__label">Select candle size</p>
+            <div class="cbv-size-selector__button-grid">
+              {%- for block in section.blocks -%}
+                {%- assign button_label = block.settings.size_label | default: block.settings.title -%}
+                <button
+                  type="button"
+                  class="cbv-size-selector__size-btn{% if forloop.index0 == default_index %} is-active{% endif %}"
+                  data-size-button
+                  data-size-index="{{ forloop.index0 }}"
+                  aria-pressed="{% if forloop.index0 == default_index %}true{% else %}false{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+                  <span>{{ button_label | escape }}</span>
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          <div class="cbv-size-selector__styles-box">
+            <div class="cbv-size-selector__styles-header">
+              <h3>Jar styles available</h3>
+              <p>{{ section.settings.styles_note | escape }}</p>
+            </div>
+            <div class="cbv-size-selector__styles-list" data-size-styles></div>
+          </div>
+
+          <div class="cbv-size-selector__specs-grid">
+            <div class="cbv-size-selector__spec-item">
+              <h4>Wick count</h4>
+              <p data-size-wicks>{{ default_block.settings.wick_count | escape }}</p>
+            </div>
+            <div class="cbv-size-selector__spec-item">
+              <h4>Wood wick option</h4>
+              <p data-size-wood>{{ default_block.settings.wood_wick | escape }}</p>
+            </div>
+          </div>
+
+          <a
+            class="cbv-size-selector__cta{% if default_block.settings.builder_link == blank %} is-disabled{% endif %}"
+            data-size-cta
+            href="{% if default_block.settings.builder_link != blank %}{{ default_block.settings.builder_link }}{% else %}#{% endif %}"
+            {% if default_block.settings.builder_link == blank %}aria-disabled="true" tabindex="-1"{% endif %}
+          >
+            {{ section.settings.cta_label | escape }}
+          </a>
+        </div>
+      </div>
+
+      <script type="application/json" data-size-data>
+        [
+          {%- for block in section.blocks -%}
+            {
+              "label": {{ block.settings.size_label | default: block.settings.title | json }},
+              "title": {{ block.settings.title | default: block.settings.size_label | json }},
+              "room": {{ block.settings.room_recommendation | json }},
+              "description": {{ block.settings.description | json }},
+              "wicks": {{ block.settings.wick_count | json }},
+              "woodWick": {{ block.settings.wood_wick | json }},
+              "styles": {{ block.settings.jar_styles | json }},
+              "builderLink": {{ block.settings.builder_link | json }},
+              "image": {%- if block.settings.image != blank -%}
+                {
+                  "src": {{ block.settings.image | image_url: width: 1400 | json }},
+                  "alt": {{ block.settings.title | default: block.settings.size_label | json }}
+                }
+              {%- else -%}
+                null
+              {%- endif -%}
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      </script>
+
+      <script>
+        (() => {
+          const sectionEl = document.querySelector('[data-section-id="{{ section.id }}"]');
+          if (!sectionEl) return;
+
+          const dataScript = sectionEl.querySelector('[data-size-data]');
+          if (!dataScript) return;
+
+          let options;
+          try {
+            options = JSON.parse(dataScript.textContent);
+          } catch (error) {
+            return;
+          }
+
+          if (!Array.isArray(options) || !options.length) return;
+
+          const imageEl = sectionEl.querySelector('.cbv-size-selector__image');
+          const titleEl = sectionEl.querySelector('[data-size-title]');
+          const roomBadgeEl = sectionEl.querySelector('[data-size-room-badge]');
+          const roomEl = sectionEl.querySelector('[data-size-room]');
+          const descriptionEl = sectionEl.querySelector('[data-size-description]');
+          const stylesListEl = sectionEl.querySelector('[data-size-styles]');
+          const wicksEl = sectionEl.querySelector('[data-size-wicks]');
+          const woodEl = sectionEl.querySelector('[data-size-wood]');
+          const ctaEl = sectionEl.querySelector('[data-size-cta]');
+          const buttons = sectionEl.querySelectorAll('[data-size-button]');
+
+          const parseStyles = (styles) => {
+            if (!styles) return [];
+            return styles
+              .split(/[\n,]/)
+              .map((item) => item.trim())
+              .filter(Boolean);
+          };
+
+          const renderStyles = (styles) => {
+            if (!stylesListEl) return;
+            stylesListEl.innerHTML = '';
+            const entries = parseStyles(styles);
+            if (!entries.length) {
+              const empty = document.createElement('span');
+              empty.className = 'cbv-size-selector__style-tag is-empty';
+              empty.textContent = 'Style availability updates in the next step.';
+              stylesListEl.appendChild(empty);
+              return;
+            }
+
+            entries.forEach((style) => {
+              const tag = document.createElement('span');
+              tag.className = 'cbv-size-selector__style-tag';
+              tag.textContent = style;
+              stylesListEl.appendChild(tag);
+            });
+          };
+
+          const updateCta = (link) => {
+            if (!ctaEl) return;
+            const hasLink = Boolean(link);
+            ctaEl.classList.toggle('is-disabled', !hasLink);
+            ctaEl.setAttribute('aria-disabled', hasLink ? 'false' : 'true');
+            ctaEl.setAttribute('tabindex', hasLink ? '0' : '-1');
+            ctaEl.setAttribute('href', hasLink ? link : '#');
+          };
+
+          const updateImage = (image) => {
+            if (!imageEl || !image) return;
+            imageEl.classList.add('is-changing');
+            imageEl.src = image.src;
+            imageEl.alt = image.alt || '';
+            requestAnimationFrame(() => {
+              window.setTimeout(() => {
+                imageEl.classList.remove('is-changing');
+              }, 140);
+            });
+          };
+
+          const select = (index) => {
+            const selected = options[index];
+            if (!selected) return;
+
+            buttons.forEach((button, buttonIndex) => {
+              const active = buttonIndex === index;
+              button.classList.toggle('is-active', active);
+              button.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+
+            if (titleEl) titleEl.textContent = selected.title || selected.label || '';
+            if (descriptionEl) descriptionEl.textContent = selected.description || '';
+            if (wicksEl) wicksEl.textContent = selected.wicks || '—';
+            if (woodEl) woodEl.textContent = selected.woodWick || '—';
+
+            const hasRoom = Boolean(selected.room);
+            if (roomBadgeEl) roomBadgeEl.hidden = !hasRoom;
+            if (roomEl) roomEl.textContent = selected.room || '';
+
+            renderStyles(selected.styles);
+            updateCta(selected.builderLink);
+            updateImage(selected.image);
+          };
+
+          buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+              const index = Number(button.getAttribute('data-size-index'));
+              select(index);
+            });
+          });
+
+          select({{ default_index }});
+        })();
+      </script>
+    {%- else -%}
+      <p class="cbv-size-selector__empty">Add at least one size option block to display the selector.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CBV size selector",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Step 1 · Choose your size"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Intro copy",
+      "default": "<p>Select your candle size to begin building your custom pour.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Primary CTA label",
+      "default": "Build this candle →"
+    },
+    {
+      "type": "text",
+      "id": "styles_note",
+      "label": "Jar styles note",
+      "default": "Selection happens in the next step"
+    },
+    {
+      "type": "text",
+      "id": "default_size_label",
+      "label": "Default selected size label",
+      "default": "12oz"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "option-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 72
+    }
+  ],
+  "blocks": [
+    {
+      "type": "size_option",
+      "name": "Size option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "size_label",
+          "label": "Button label",
+          "default": "12oz"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "12oz Candle"
+        },
+        {
+          "type": "text",
+          "id": "room_recommendation",
+          "label": "Ideal for"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Perfectly balanced proportions. Designed to anchor your daily candle ritual."
+        },
+        {
+          "type": "text",
+          "id": "wick_count",
+          "label": "Wick count",
+          "default": "1"
+        },
+        {
+          "type": "text",
+          "id": "wood_wick",
+          "label": "Wood wick option",
+          "default": "Yes"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Preview image"
+        },
+        {
+          "type": "textarea",
+          "id": "jar_styles",
+          "label": "Jar styles",
+          "info": "Use one style per line (commas also supported).",
+          "default": "Clear Glass\nSeafoam\nBlush\nIridescent"
+        },
+        {
+          "type": "url",
+          "id": "builder_link",
+          "label": "Builder link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "CBV size selector",
+      "blocks": [
+        {
+          "type": "size_option",
+          "settings": {
+            "size_label": "12oz",
+            "title": "12oz Candle",
+            "room_recommendation": "Bedrooms & kitchens"
+          }
+        },
+        {
+          "type": "size_option",
+          "settings": {
+            "size_label": "18oz",
+            "title": "18oz Candle",
+            "room_recommendation": "Living rooms & dining rooms",
+            "wick_count": "2"
+          }
+        },
+        {
+          "type": "size_option",
+          "settings": {
+            "size_label": "30oz",
+            "title": "30oz Candle",
+            "room_recommendation": "Open concept spaces",
+            "wick_count": "3",
+            "wood_wick": "No"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
