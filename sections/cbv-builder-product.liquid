@@ -4,15 +4,13 @@
 {%- liquid
   assign product_form_id = 'cbv-builder-product-form-' | append: section.id
   assign current_variant = product.selected_or_first_available_variant
-  assign show_wick_type = false
-  assign show_wood_wick_upgrade = false
-  if product.tags contains 'cbv_wickless'
-    assign show_wick_type = true
-  endif
-  if product.tags contains 'cbv_wood_wick'
-    assign show_wood_wick_upgrade = true
-  endif
   assign jar_option_values = product.options_with_values.first.values
+  assign wick_upgrade_option = product.options_with_values[1]
+  assign wick_upgrade_values = wick_upgrade_option.values
+  assign has_wick_upgrade_option = false
+  if wick_upgrade_option != blank and wick_upgrade_values.size > 0
+    assign has_wick_upgrade_option = true
+  endif
   assign has_jar_options = false
   if jar_option_values.size > 1
     assign has_jar_options = true
@@ -92,7 +90,7 @@
                         {%- if variant.option1 == jar_value and jar_variant == blank -%}
                           {%- assign jar_variant = variant -%}
                         {%- endif -%}
-                        {%- if show_wood_wick_upgrade and variant.option1 == jar_value and variant.option2 == 'Standard' -%}
+                        {%- if has_wick_upgrade_option and variant.option1 == jar_value and variant.option2 == 'Standard' -%}
                           {%- assign jar_variant = variant -%}
                         {%- endif -%}
                       {%- endfor -%}
@@ -228,49 +226,27 @@
 
                 <input type="hidden" name="properties[scent_1]" value="" data-cbv-prop-scent>
                 <input type="hidden" name="properties[scent_family]" value="" data-cbv-prop-family>
-                <input type="hidden" name="properties[wick_type]" value="Standard Wick" data-cbv-prop-wick-type>
               </div>
             </div>
 
-
-            {%- if show_wick_type -%}
-              <div class="cbv-builder__group" data-cbv-wick-type-group>
+            {%- if has_wick_upgrade_option -%}
+              <div class="cbv-builder__group" data-cbv-wick-upgrade-group>
                 <div class="cbv-builder__group-header">
-                  <label class="cbv-builder__label">Wick Type</label>
+                  <label class="cbv-builder__label">Wick Upgrade</label>
                 </div>
                 <div class="cbv-step-content">
                   <div class="cbv-choice-grid">
-                    <label class="cbv-choice-card is-selected">
-                      <input type="radio" name="cbv_wick_type" value="Standard Wick" class="visually-hidden" checked data-cbv-wick-type-input>
-                      <span class="cbv-choice-title">Standard Wick</span>
-                    </label>
-                    <label class="cbv-choice-card">
-                      <input type="radio" name="cbv_wick_type" value="Wickless" class="visually-hidden" data-cbv-wick-type-input>
-                      <span class="cbv-choice-title">Wickless</span>
-                    </label>
+                    {%- for wick_value in wick_upgrade_values -%}
+                      <label class="cbv-choice-card {% if current_variant.option2 == wick_value or current_variant.option2 == blank and forloop.first %}is-selected{% endif %}" data-cbv-wick-upgrade-card>
+                        <input type="radio" name="cbv_wick_upgrade" value="{{ wick_value | escape }}" class="visually-hidden" {% if current_variant.option2 == wick_value or current_variant.option2 == blank and forloop.first %}checked{% endif %} data-cbv-wick-upgrade-input>
+                        <span class="cbv-choice-title">{{ wick_value }}</span>
+                      </label>
+                    {%- endfor -%}
                   </div>
                 </div>
               </div>
-            {%- endif -%}
 
-            {%- if show_wood_wick_upgrade -%}
-              <div class="cbv-builder__group" data-cbv-wood-wick-group>
-                <div class="cbv-builder__group-header">
-                  <label class="cbv-builder__label">Wood Wick Upgrade</label>
-                </div>
-                <div class="cbv-step-content">
-                  <div class="cbv-choice-grid">
-                    <label class="cbv-choice-card is-selected" data-cbv-wood-wick-card>
-                      <input type="radio" name="cbv_wick_upgrade" value="Standard" class="visually-hidden" checked data-cbv-wick-upgrade-input>
-                      <span class="cbv-choice-title">Standard</span>
-                    </label>
-                    <label class="cbv-choice-card" data-cbv-wood-wick-card>
-                      <input type="radio" name="cbv_wick_upgrade" value="Wood Wick" class="visually-hidden" data-cbv-wick-upgrade-input>
-                      <span class="cbv-choice-title">Wood Wick</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
+              <input type="hidden" name="properties[wick_upgrade]" value="{{ current_variant.option2 | default: wick_upgrade_values.first | escape }}" data-cbv-prop-wick-upgrade>
             {%- endif -%}
 
             <!-- CONFIRMATION: THE POUR TICKET -->
@@ -296,11 +272,11 @@
                     <span data-cbv-ticket-scent>--</span>
                   </div>
                 </div>
-                {%- if show_wick_type -%}
+                {%- if has_wick_upgrade_option -%}
                   <div class="cbv-ticket-row">
-                    <span class="cbv-ticket-label">Wick Type</span>
+                    <span class="cbv-ticket-label">Wick Upgrade</span>
                     <div class="cbv-ticket-value">
-                      <span data-cbv-ticket-wick>Standard Wick</span>
+                      <span data-cbv-ticket-wick>{{ current_variant.option2 | default: wick_upgrade_values.first }}</span>
                     </div>
                   </div>
                 {%- endif -%}
