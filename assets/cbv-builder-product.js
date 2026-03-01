@@ -32,10 +32,13 @@
     const fragranceScript = builderEl.querySelector('[data-cbv-fragrance-data]');
     if (!fragranceScript) return;
 
-    // --- FRAGRANCE LOADING ---
     function parseFragrancePayload(scriptEl) {
-      try { return JSON.parse(scriptEl.textContent || '[]'); } 
-      catch (error) { console.error('CBV Builder: invalid fragrance data', error); return []; }
+      try {
+        return JSON.parse(scriptEl.textContent || '[]');
+      } catch (error) {
+        console.error('CBV Builder: invalid fragrance data', error);
+        return [];
+      }
     }
 
     async function loadAllScents(scriptEl) {
@@ -71,6 +74,7 @@
           }
         })
       );
+
       return [...firstPage, ...loadedPages.flat()];
     }
 
@@ -87,39 +91,47 @@
 
     const allScents = [...scentByHandle.values()].sort((a, b) => a.name.localeCompare(b.name));
 
-    // --- DOM ELEMENTS ---
     const jarGroup = builderEl.querySelector('[data-cbv-step="jar"]');
     const waxGroup = builderEl.querySelector('[data-cbv-step="wax"]');
     const scentGroup = builderEl.querySelector('[data-cbv-step="scent"]');
 
+    const variantScript = builderEl.querySelector('[data-cbv-variants]');
+    const allVariants = variantScript ? JSON.parse(variantScript.textContent || '[]') : [];
+
     const jarInputs = builderEl.querySelectorAll('[data-cbv-jar-input]');
     const variantIdInput = builderEl.querySelector('[data-cbv-variant-id]');
     const mainImageEl = document.getElementById('CBV-Main-Image');
-    
+
     const waxInputs = builderEl.querySelectorAll('[data-cbv-wax-input]');
     const waxProp = builderEl.querySelector('[data-cbv-prop-wax]');
-    
+
     const scentInput = builderEl.querySelector('[data-cbv-scent-input]');
     const resultsEl = builderEl.querySelector('[data-cbv-results]');
     const familyFiltersEl = builderEl.querySelector('[data-cbv-family-filters]');
     const noResultsEl = builderEl.querySelector('[data-cbv-no-results]');
     const scentProp = builderEl.querySelector('[data-cbv-prop-scent]');
     const familyProp = builderEl.querySelector('[data-cbv-prop-family]');
-    
+    const wickTypeProp = builderEl.querySelector('[data-cbv-prop-wick-type]');
+
+    const wickTypeGroup = builderEl.querySelector('[data-cbv-wick-type-group]');
+    const wickTypeInputs = builderEl.querySelectorAll('[data-cbv-wick-type-input]');
+    const woodWickGroup = builderEl.querySelector('[data-cbv-wood-wick-group]');
+    const wickUpgradeInputs = builderEl.querySelectorAll('[data-cbv-wick-upgrade-input]');
+
     const ticketEl = builderEl.querySelector('[data-cbv-ticket]');
     const ticketJarEl = builderEl.querySelector('[data-cbv-ticket-jar]');
     const ticketWaxEl = builderEl.querySelector('[data-cbv-ticket-wax]');
     const ticketScentEl = builderEl.querySelector('[data-cbv-ticket-scent]');
+    const ticketWickEl = builderEl.querySelector('[data-cbv-ticket-wick]');
     const ticketSwatchEl = builderEl.querySelector('[data-cbv-ticket-swatch]');
 
     const submitBtn = builderEl.querySelector('[data-cbv-submit]');
     const btnTitleEl = submitBtn.querySelector('.cbv-btn-title');
     const btnPriceEl = submitBtn.querySelector('.cbv-btn-price');
-    const variantAvailable = submitBtn.dataset.cbvVariantAvailable === 'true';
 
     const purchaseOptions = builderEl.querySelectorAll('[data-cbv-option]');
     const freqSelector = builderEl.querySelector('[data-cbv-frequency]');
-    const freqSelectInput = builderEl.querySelector('.cbv-freq-select'); 
+    const freqSelectInput = builderEl.querySelector('.cbv-freq-select');
     const mainPriceEl = builderEl.querySelector('[data-cbv-price-display]');
     const onetimePriceDisplay = builderEl.querySelector('[data-cbv-onetime-price]');
     const subOldPriceDisplay = builderEl.querySelector('[data-cbv-sub-old]');
@@ -132,12 +144,14 @@
     let selectedFamily = 'All';
     let selectedScent = null;
 
-    const families = ['All', ...new Set(allScents.map((s) => normalizeFamily(s.family)))].sort((a, b) =>
-      a.localeCompare(b)
-    );
-    families.unshift(families.splice(families.indexOf('All'), 1)[0]);
+    let selectedVariant = allVariants.find((variant) => String(variant.id) === variantIdInput?.value) || allVariants[0] || null;
+    let selectedJar = selectedVariant?.option1 || jarInputs[0]?.dataset.cbvJarValue || '';
+    let selectedWickUpgrade = (selectedVariant?.option2 && normalize(selectedVariant.option2) === 'wood wick') ? 'Wood Wick' : 'Standard';
+    let selectedWickType = wickTypeProp?.value || 'Standard Wick';
+    let variantAvailable = selectedVariant ? Boolean(selectedVariant.available) : true;
 
-    // --- LOGIC ---
+    const families = ['All', ...new Set(allScents.map((s) => normalizeFamily(s.family)))].sort((a, b) => a.localeCompare(b));
+    families.unshift(families.splice(families.indexOf('All'), 1)[0]);
 
     function toggleGroup(group) {
       if (!group) return;
@@ -145,85 +159,165 @@
     }
 
     function collapseGroup(group) {
-      if (group) group.classList.add('is-collapsed');
+      if (!group) return;
+      group.classList.add('is-collapsed');
     }
 
     function expandGroup(group) {
-      if (group) group.classList.remove('is-collapsed');
+      if (!group) return;
+      group.classList.remove('is-collapsed');
     }
 
     function updateStepHeader(group, text) {
-      if (!group) return;
-      const titleSpan = group.querySelector('[data-cbv-step-title]');
-      if (!titleSpan) return;
-      let summary = group.querySelector('.cbv-selection-summary');
-      if (!summary) {
-        summary = document.createElement('div');
-        summary.className = 'cbv-selection-summary';
-        titleSpan.appendChild(summary);
-      }
+      const summary = group?.querySelector('[data-cbv-step-title]');
+      if (!summary) return;
       summary.textContent = text;
+    }
+
+    function findVariant(jarValue, wickUpgradeValue) {
+      if (!allVariants.length) return null;
+      const normalizedJar = normalize(jarValue);
+      const normalizedUpgrade = normalize(wickUpgradeValue || 'Standard');
+
+      let matched = allVariants.find((variant) => normalize(variant.option1) === normalizedJar && normalize(variant.option2) === normalizedUpgrade);
+      if (matched) return matched;
+
+      if (normalizedUpgrade !== 'standard') {
+        matched = allVariants.find((variant) => normalize(variant.option1) === normalizedJar && normalize(variant.option2) === 'standard');
+        if (matched) return matched;
+      }
+
+      matched = allVariants.find((variant) => normalize(variant.option1) === normalizedJar);
+      return matched || allVariants[0];
+    }
+
+    function updateWoodWickState() {
+      if (!woodWickGroup) return;
+      const wicklessSelected = normalize(selectedWickType) === 'wickless';
+      woodWickGroup.classList.toggle('is-disabled', wicklessSelected);
+      wickUpgradeInputs.forEach((input) => {
+        input.disabled = wicklessSelected;
+      });
+    }
+
+    function syncChoiceCards(inputs) {
+      inputs.forEach((input) => {
+        const card = input.closest('.cbv-choice-card');
+        if (!card) return;
+        card.classList.toggle('is-selected', input.checked);
+      });
+    }
+
+    function applyVariant(variant) {
+      if (!variant) return;
+      selectedVariant = variant;
+      variantAvailable = Boolean(variant.available);
+      selectedJar = variant.option1 || selectedJar;
+      if (variant.option2) {
+        selectedWickUpgrade = normalize(variant.option2) === 'wood wick' ? 'Wood Wick' : 'Standard';
+      }
+
+      if (variantIdInput) variantIdInput.value = variant.id;
+
+      const variantImage = variant.featured_image?.src || variant.featured_media?.src || '';
+      if (mainImageEl && variantImage) {
+        mainImageEl.src = variantImage;
+        mainImageEl.srcset = variantImage;
+      }
+
+      if (mainPriceEl) {
+        mainPriceEl.dataset.cbvBasePrice = variant.price;
+        mainPriceEl.textContent = formatMoney(variant.price);
+      }
+
+      submitBtn.dataset.cbvVariantAvailable = String(variantAvailable);
+
+      if (jarInputs.length > 0) {
+        jarInputs.forEach((input) => {
+          const isSelected = normalize(input.dataset.cbvJarValue) === normalize(selectedJar);
+          input.checked = isSelected;
+          const card = input.closest('.cbv-jar-card');
+          if (card) card.classList.toggle('is-selected', isSelected);
+        });
+      }
+
+      if (wickUpgradeInputs.length > 0) {
+        wickUpgradeInputs.forEach((input) => {
+          input.checked = normalize(input.value) === normalize(selectedWickUpgrade);
+        });
+        syncChoiceCards(wickUpgradeInputs);
+      }
+
+      updateStepHeader(jarGroup, selectedJar);
+      updateTicket();
+      updatePricingUI();
     }
 
     function updateTicket() {
       const hasJar = jarInputs.length > 0 ? Boolean(builderEl.querySelector('[data-cbv-jar-input]:checked')) : true;
       const hasWax = Boolean(waxProp.value);
       const hasScent = Boolean(scentProp.value);
-      
-      if(jarGroup) hasJar ? jarGroup.classList.add('is-completed') : jarGroup.classList.remove('is-completed');
-      if(waxGroup) hasWax ? waxGroup.classList.add('is-completed') : waxGroup.classList.remove('is-completed');
-      if(scentGroup) hasScent ? scentGroup.classList.add('is-completed') : scentGroup.classList.remove('is-completed');
+
+      if (jarGroup) jarGroup.classList.toggle('is-completed', hasJar);
+      if (waxGroup) waxGroup.classList.toggle('is-completed', hasWax);
+      if (scentGroup) scentGroup.classList.toggle('is-completed', hasScent);
 
       if (ticketWaxEl) ticketWaxEl.textContent = waxProp.value || '--';
       if (ticketScentEl) ticketScentEl.textContent = scentProp.value || '--';
-      
-      if (ticketJarEl && jarInputs.length > 0) {
-          const activeJar = builderEl.querySelector('[data-cbv-jar-input]:checked');
-          if(activeJar) ticketJarEl.textContent = activeJar.dataset.title;
+      if (ticketWickEl) ticketWickEl.textContent = selectedWickType || 'Standard Wick';
+      if (ticketJarEl) ticketJarEl.textContent = selectedJar || '--';
+
+      const activeWaxInput = Array.from(waxInputs).find((input) => input.checked);
+      if (activeWaxInput && ticketSwatchEl) {
+        ticketSwatchEl.style.backgroundColor = activeWaxInput.dataset.hex;
       }
 
-      const activeWaxInput = Array.from(waxInputs).find(i => i.checked);
-      if(activeWaxInput && ticketSwatchEl) {
-         ticketSwatchEl.style.backgroundColor = activeWaxInput.dataset.hex;
-      }
-
-      if (hasWax && hasScent) ticketEl.hidden = false;
-      else ticketEl.hidden = true;
+      ticketEl.hidden = !(hasWax && hasScent);
 
       const ready = hasJar && hasWax && hasScent && variantAvailable;
       submitBtn.disabled = !ready;
     }
 
     function updatePricingUI() {
-      const basePriceCents = parseFloat(mainPriceEl.dataset.cbvBasePrice);
-      const subPriceCents = basePriceCents * 0.9; 
+      const basePriceCents = parseFloat(mainPriceEl.dataset.cbvBasePrice || '0');
+      const subPriceCents = basePriceCents * 0.9;
 
-      if(onetimePriceDisplay) onetimePriceDisplay.textContent = formatMoney(basePriceCents);
-      if(subOldPriceDisplay) subOldPriceDisplay.textContent = formatMoney(basePriceCents);
-      if(subNewPriceDisplay) subNewPriceDisplay.textContent = formatMoney(subPriceCents);
+      if (onetimePriceDisplay) onetimePriceDisplay.textContent = formatMoney(basePriceCents);
+      if (subOldPriceDisplay) subOldPriceDisplay.textContent = formatMoney(basePriceCents);
+      if (subNewPriceDisplay) subNewPriceDisplay.textContent = formatMoney(subPriceCents);
 
       let finalPriceCents = basePriceCents;
       if (purchaseType === 'sub') {
         finalPriceCents = subPriceCents;
         freqSelector.hidden = false;
-        if(freqSelectInput) freqSelectInput.disabled = false;
-        btnTitleEl.textContent = variantAvailable ? "Join The Club & Pour" : "Sold Out";
+        if (freqSelectInput) freqSelectInput.disabled = false;
+        btnTitleEl.textContent = variantAvailable ? 'Join The Club & Pour' : 'Sold Out';
       } else {
         freqSelector.hidden = true;
-        if(freqSelectInput) freqSelectInput.disabled = true;
-        btnTitleEl.textContent = variantAvailable ? "Pour My Candle" : "Sold Out";
+        if (freqSelectInput) freqSelectInput.disabled = true;
+        btnTitleEl.textContent = variantAvailable ? 'Pour My Candle' : 'Sold Out';
       }
-      if(btnPriceEl) btnPriceEl.textContent = ` - ${formatMoney(finalPriceCents)}`;
+      if (btnPriceEl) btnPriceEl.textContent = ` - ${formatMoney(finalPriceCents)}`;
     }
 
     function selectScent(scent) {
       selectedScent = scent;
       scentProp.value = scent.name;
       familyProp.value = scent.family || '';
-      
+
       updateStepHeader(scentGroup, scent.name);
       updateTicket();
-      renderResults(); 
+      renderResults();
+    }
+
+    function getFilteredScents(query = '') {
+      return allScents.filter((scent) => {
+        const scentFamily = normalizeFamily(scent.family);
+        const matchesFamily = selectedFamily === 'All' || normalize(scentFamily) === normalize(selectedFamily);
+        if (!matchesFamily) return false;
+        if (!query) return true;
+        return normalize(scent.name).includes(query) || normalize(scentFamily).includes(query);
+      });
     }
 
     function renderResults() {
@@ -240,23 +334,11 @@
           button.classList.add('is-selected');
         }
         button.innerHTML = `<span>${scent.name}</span><span class="cbv-scent__family">${scent.family || 'Uncategorized'}</span>`;
-        
         button.addEventListener('click', () => selectScent(scent));
-        
         resultsEl.appendChild(button);
       });
 
       if (noResultsEl) noResultsEl.hidden = visible.length > 0;
-    }
-
-    function getFilteredScents(query = '') {
-      return allScents.filter((scent) => {
-        const scentFamily = normalizeFamily(scent.family);
-        const matchesFamily = selectedFamily === 'All' || normalize(scentFamily) === normalize(selectedFamily);
-        if (!matchesFamily) return false;
-        if (!query) return true;
-        return normalize(scent.name).includes(query) || normalize(scentFamily).includes(query);
-      });
     }
 
     function renderFamilyFilters() {
@@ -283,9 +365,7 @@
       });
     }
 
-    // --- LISTENERS ---
-
-    continueBtns.forEach(btn => {
+    continueBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
         const nextStep = btn.dataset.cbvContinue;
         const currentGroup = btn.closest('.cbv-builder__group');
@@ -295,75 +375,50 @@
       });
     });
 
-    groupHeaders.forEach(header => {
+    groupHeaders.forEach((header) => {
       header.addEventListener('click', () => {
         const group = header.closest('.cbv-builder__group');
         toggleGroup(group);
       });
     });
 
-    purchaseOptions.forEach(option => {
+    purchaseOptions.forEach((option) => {
       option.addEventListener('click', () => {
-        purchaseOptions.forEach(o => o.classList.remove('is-selected'));
+        purchaseOptions.forEach((o) => o.classList.remove('is-selected'));
         option.classList.add('is-selected');
         purchaseType = option.dataset.cbvOption;
         const radio = option.querySelector('input[type="radio"]');
-        if(radio) radio.checked = true;
+        if (radio) radio.checked = true;
         updatePricingUI();
       });
     });
 
-    // Jar Logic
     if (jarInputs.length > 0) {
-      // 1. Changes
-      jarInputs.forEach(input => {
+      jarInputs.forEach((input) => {
         input.addEventListener('change', () => {
           if (!input.checked) return;
-          handleJarSelection(input);
-        });
-      });
-
-      // 2. Click-to-Confirm
-      const jarCards = builderEl.querySelectorAll('[data-cbv-jar-card]');
-      jarCards.forEach(card => {
-        card.addEventListener('click', (e) => {
-          const input = card.querySelector('input');
-          if (input && input.checked) {
-             setTimeout(() => {
-                collapseGroup(jarGroup);
-                expandGroup(waxGroup);
-             }, 100);
-          }
-        });
-      });
-
-      function handleJarSelection(input) {
-          builderEl.querySelectorAll('.cbv-jar-card').forEach(c => c.classList.remove('is-selected'));
-          input.closest('.cbv-jar-card').classList.add('is-selected');
-
-          if (variantIdInput) variantIdInput.value = input.value;
-          const newImageSrc = input.dataset.imageSrc;
-          if (mainImageEl && newImageSrc) {
-            mainImageEl.src = newImageSrc;
-            mainImageEl.srcset = newImageSrc;
-          }
-          const newPriceCents = parseFloat(input.dataset.price);
-          if (mainPriceEl) {
-            mainPriceEl.dataset.cbvBasePrice = newPriceCents;
-            mainPriceEl.textContent = formatMoney(newPriceCents);
-          }
-          
-          updateStepHeader(jarGroup, input.dataset.title);
+          selectedJar = input.dataset.cbvJarValue || input.value;
+          const variant = findVariant(selectedJar, selectedWickUpgrade);
+          applyVariant(variant);
           setTimeout(() => {
             collapseGroup(jarGroup);
             expandGroup(waxGroup);
           }, 400);
-          updateTicket();
-          updatePricingUI(); 
-      }
+        });
+      });
 
-      const checkedJar = builderEl.querySelector('[data-cbv-jar-input]:checked');
-      if(checkedJar) updateStepHeader(jarGroup, checkedJar.dataset.title);
+      const jarCards = builderEl.querySelectorAll('[data-cbv-jar-card]');
+      jarCards.forEach((card) => {
+        card.addEventListener('click', () => {
+          const input = card.querySelector('input');
+          if (input && input.checked) {
+            setTimeout(() => {
+              collapseGroup(jarGroup);
+              expandGroup(waxGroup);
+            }, 100);
+          }
+        });
+      });
     }
 
     waxInputs.forEach((input) => {
@@ -378,6 +433,35 @@
       });
     });
 
+    wickTypeInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        if (!input.checked) return;
+        selectedWickType = input.value;
+        if (wickTypeProp) wickTypeProp.value = selectedWickType;
+        syncChoiceCards(wickTypeInputs);
+
+        if (normalize(selectedWickType) === 'wickless') {
+          selectedWickUpgrade = 'Standard';
+          const standardInput = Array.from(wickUpgradeInputs).find((upgradeInput) => normalize(upgradeInput.value) === 'standard');
+          if (standardInput) standardInput.checked = true;
+        }
+
+        updateWoodWickState();
+        const variant = findVariant(selectedJar, selectedWickUpgrade);
+        applyVariant(variant);
+      });
+    });
+
+    wickUpgradeInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        if (!input.checked || input.disabled) return;
+        selectedWickUpgrade = input.value;
+        syncChoiceCards(wickUpgradeInputs);
+        const variant = findVariant(selectedJar, selectedWickUpgrade);
+        applyVariant(variant);
+      });
+    });
+
     scentInput.addEventListener('input', () => {
       if (selectedScent && normalize(scentInput.value) !== normalize(selectedScent.name)) {
         selectedScent = null;
@@ -388,14 +472,18 @@
       renderResults();
     });
 
-    // --- INIT ---
     renderFamilyFilters();
-    updateTicket();
-    
-    // Safety check: trigger input event to force render
+
+    if (wickTypeProp) wickTypeProp.value = selectedWickType;
+    if (wickTypeGroup) syncChoiceCards(wickTypeInputs);
+    if (woodWickGroup) syncChoiceCards(wickUpgradeInputs);
+
+    updateWoodWickState();
+    applyVariant(findVariant(selectedJar, selectedWickUpgrade));
+
     scentInput.dispatchEvent(new Event('input'));
-    renderResults(); 
-    
+    renderResults();
+    updateTicket();
     updatePricingUI();
   }
 
