@@ -60,12 +60,12 @@
     width: 100%;
     z-index: 1000;
     background: var(--cbv-header-bg);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.0);
-    transition: box-shadow 0.3s ease;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom 0.3s ease;
   }
   
   .cbv-header-fixed-group.is-scrolled {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   }
 
   .shopify-section-header {
@@ -129,6 +129,8 @@
     height: var(--cbv-sticky-height); /* Lock height to 60px */
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding-top: 3px; /* Optical vertical center adjustment */
   }
 
   /* --- LEFT COLUMN WRAPPER --- */
@@ -359,6 +361,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 3px; /* Optical vertical center adjustment */
     pointer-events: none; /* Allow clicks to pass through empty space to logo/icons */
   }
   
