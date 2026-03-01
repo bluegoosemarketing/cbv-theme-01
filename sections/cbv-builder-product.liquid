@@ -4,6 +4,10 @@
 {%- liquid
   assign product_form_id = 'cbv-builder-product-form-' | append: section.id
   assign current_variant = product.selected_or_first_available_variant
+  assign show_wick_type = product.tags contains 'cbv_wickless'
+  assign show_wood_wick_upgrade = product.tags contains 'cbv_wood_wick'
+  assign jar_option_values = product.options_with_values.first.values
+  assign has_jar_options = jar_option_values.size > 1
 -%}
 
 <section class="cbv-builder color-{{ section.settings.color_scheme }} gradient" data-cbv-builder data-section-id="{{ section.id }}">
@@ -59,7 +63,7 @@
             <input type="hidden" name="id" value="{{ current_variant.id }}" data-cbv-variant-id>
 
             <!-- STEP 1: THE JAR BAR -->
-            {%- if product.variants.size > 1 -%}
+            {%- if has_jar_options -%}
               <div class="cbv-builder__group cbv-jar-bar" data-cbv-step="jar">
                 <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
                   <label class="cbv-builder__label">
@@ -73,36 +77,49 @@
                 
                 <div class="cbv-step-content">
                   <div class="cbv-jar-grid">
-                    {%- for variant in product.variants -%}
-                      <label class="cbv-jar-card {% if variant.id == current_variant.id %}is-selected{% endif %}" data-cbv-jar-card>
-                        <input 
-                          type="radio" 
-                          name="cbv_jar_selection" 
-                          value="{{ variant.id }}" 
-                          class="visually-hidden" 
-                          {% if variant.id == current_variant.id %}checked{% endif %}
-                          data-cbv-jar-input
-                          data-price="{{ variant.price }}"
-                          data-image-src="{{ variant.featured_media | image_url: width: 1200 }}"
-                          data-title="{{ variant.title }}"
-                        >
-                        <div class="cbv-jar-image-wrap">
-                          {%- if variant.featured_media -%}
-                            {{ variant.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
-                          {%- else -%}
-                            {{ product.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
-                          {%- endif -%}
-                        </div>
-                        <div class="cbv-jar-info">
-                          <span class="cbv-jar-title">{{ variant.title }}</span>
-                          {% assign price_diff = variant.price | minus: product.price %}
-                          {% if price_diff > 0 %}
-                            <span class="cbv-jar-upgrade">+{{ price_diff | money }}</span>
-                          {% else %}
-                            <span class="cbv-jar-included">Included</span>
-                          {% endif %}
-                        </div>
-                      </label>
+                    {%- for jar_value in jar_option_values -%}
+                      {%- assign jar_variant = blank -%}
+                      {%- for variant in product.variants -%}
+                        {%- if variant.option1 == jar_value and jar_variant == blank -%}
+                          {%- assign jar_variant = variant -%}
+                        {%- endif -%}
+                        {%- if show_wood_wick_upgrade and variant.option1 == jar_value and variant.option2 == 'Standard' -%}
+                          {%- assign jar_variant = variant -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+
+                      {%- if jar_variant != blank -%}
+                        <label class="cbv-jar-card {% if current_variant.option1 == jar_value %}is-selected{% endif %}" data-cbv-jar-card>
+                          <input
+                            type="radio"
+                            name="cbv_jar_selection"
+                            value="{{ jar_value | escape }}"
+                            class="visually-hidden"
+                            {% if current_variant.option1 == jar_value %}checked{% endif %}
+                            data-cbv-jar-input
+                            data-cbv-jar-value="{{ jar_value | escape }}"
+                            data-price="{{ jar_variant.price }}"
+                            data-image-src="{{ jar_variant.featured_media | default: product.featured_media | image_url: width: 1200 }}"
+                            data-title="{{ jar_value | escape }}"
+                          >
+                          <div class="cbv-jar-image-wrap">
+                            {%- if jar_variant.featured_media -%}
+                              {{ jar_variant.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
+                            {%- else -%}
+                              {{ product.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
+                            {%- endif -%}
+                          </div>
+                          <div class="cbv-jar-info">
+                            <span class="cbv-jar-title">{{ jar_value }}</span>
+                            {% assign price_diff = jar_variant.price | minus: product.price %}
+                            {% if price_diff > 0 %}
+                              <span class="cbv-jar-upgrade">+{{ price_diff | money }}</span>
+                            {% else %}
+                              <span class="cbv-jar-included">Included</span>
+                            {% endif %}
+                          </div>
+                        </label>
+                      {%- endif -%}
                     {%- endfor -%}
                   </div>
                   
@@ -117,7 +134,7 @@
             <div class="cbv-builder__group is-collapsed" data-cbv-step="wax">
               <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
                 <label class="cbv-builder__label">
-                  <span class="cbv-step-num">{% if product.variants.size > 1 %}2{% else %}1{% endif %}</span> 
+                  <span class="cbv-step-num">{% if has_jar_options %}2{% else %}1{% endif %}</span> 
                   <span class="cbv-step-title" data-cbv-step-title="Choose Wax Color">Choose Wax Color</span>
                 </label>
                 <div class="cbv-builder__toggle-icon">
@@ -165,7 +182,7 @@
             <div class="cbv-builder__group cbv-scent is-collapsed" data-cbv-scent-picker data-cbv-step="scent">
               <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
                 <label class="cbv-builder__label" for="CBVScent-{{ section.id }}">
-                  <span class="cbv-step-num">{% if product.variants.size > 1 %}3{% else %}2{% endif %}</span> 
+                  <span class="cbv-step-num">{% if has_jar_options %}3{% else %}2{% endif %}</span> 
                   <span class="cbv-step-title" data-cbv-step-title="Choose Scent">Choose Scent</span>
                 </label>
                 <div class="cbv-builder__toggle-icon">
@@ -202,8 +219,50 @@
 
                 <input type="hidden" name="properties[scent_1]" value="" data-cbv-prop-scent>
                 <input type="hidden" name="properties[scent_family]" value="" data-cbv-prop-family>
+                <input type="hidden" name="properties[wick_type]" value="Standard Wick" data-cbv-prop-wick-type>
               </div>
             </div>
+
+
+            {%- if show_wick_type -%}
+              <div class="cbv-builder__group" data-cbv-wick-type-group>
+                <div class="cbv-builder__group-header">
+                  <label class="cbv-builder__label">Wick Type</label>
+                </div>
+                <div class="cbv-step-content">
+                  <div class="cbv-choice-grid">
+                    <label class="cbv-choice-card is-selected">
+                      <input type="radio" name="cbv_wick_type" value="Standard Wick" class="visually-hidden" checked data-cbv-wick-type-input>
+                      <span class="cbv-choice-title">Standard Wick</span>
+                    </label>
+                    <label class="cbv-choice-card">
+                      <input type="radio" name="cbv_wick_type" value="Wickless" class="visually-hidden" data-cbv-wick-type-input>
+                      <span class="cbv-choice-title">Wickless</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+
+            {%- if show_wood_wick_upgrade -%}
+              <div class="cbv-builder__group" data-cbv-wood-wick-group>
+                <div class="cbv-builder__group-header">
+                  <label class="cbv-builder__label">Wood Wick Upgrade</label>
+                </div>
+                <div class="cbv-step-content">
+                  <div class="cbv-choice-grid">
+                    <label class="cbv-choice-card is-selected" data-cbv-wood-wick-card>
+                      <input type="radio" name="cbv_wick_upgrade" value="Standard" class="visually-hidden" checked data-cbv-wick-upgrade-input>
+                      <span class="cbv-choice-title">Standard</span>
+                    </label>
+                    <label class="cbv-choice-card" data-cbv-wood-wick-card>
+                      <input type="radio" name="cbv_wick_upgrade" value="Wood Wick" class="visually-hidden" data-cbv-wick-upgrade-input>
+                      <span class="cbv-choice-title">Wood Wick</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
 
             <!-- CONFIRMATION: THE POUR TICKET -->
             <div class="cbv-pour-ticket" data-cbv-ticket hidden>
@@ -228,6 +287,14 @@
                     <span data-cbv-ticket-scent>--</span>
                   </div>
                 </div>
+                {%- if show_wick_type -%}
+                  <div class="cbv-ticket-row">
+                    <span class="cbv-ticket-label">Wick Type</span>
+                    <div class="cbv-ticket-value">
+                      <span data-cbv-ticket-wick>Standard Wick</span>
+                    </div>
+                  </div>
+                {%- endif -%}
               </div>
             </div>
 
@@ -376,6 +443,14 @@
       </div>
     </div>
   </div>
+
+
+  <script type="application/json" data-cbv-variants>
+    {{
+      product.variants
+      | json
+    }}
+  </script>
 
   {%- paginate shop.metaobjects.fragrance.values by 250 -%}
     <script
