@@ -1,0 +1,175 @@
+{{ 'section-cbv-scent-detail.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign scent_name = metaobject.name.value | default: metaobject.name
+  assign scent_family = metaobject.scent_family.value | default: metaobject.scent_family
+  assign scent_handle = metaobject.handle
+-%}
+
+<section class="cbv-scent-detail page-width section-{{ section.id }}-padding">
+  <div class="cbv-scent-detail__intro">
+    <p class="cbv-scent-detail__eyebrow">Candles By Victoria Fragrance</p>
+    <h1 class="cbv-scent-detail__title">{{ scent_name }}</h1>
+    <p class="cbv-scent-detail__badge">{{ scent_family | default: 'Signature Collection' }}</p>
+
+    <div class="cbv-scent-detail__about rte">
+      <p>
+        A fan-favorite in our {{ scent_family | default: 'signature' }} collection, {{ scent_name }} is crafted to deliver a beautiful, room-filling experience.
+        Explore this scent across our format lineup and personalize it in the builder to match your space.
+      </p>
+    </div>
+  </div>
+
+  <div class="cbv-scent-detail__formats">
+    <h2>Available In</h2>
+    <div class="cbv-scent-detail__format-grid">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign base_url = block.settings.product_url | default: '/products/12oz-jar-candle'
+            assign joiner = '?'
+            if base_url contains '?'
+              assign joiner = '&'
+            endif
+            assign full_url = base_url | append: joiner | append: 'scent=' | append: scent_handle
+          -%}
+          <article class="cbv-format-card" {{ block.shopify_attributes }}>
+            <h3>{{ block.settings.title | default: 'Builder format' }}</h3>
+            <p>{{ block.settings.subcopy | default: 'A premium format handcrafted and poured to order.' }}</p>
+            {%- if block.settings.wickless_note != blank -%}
+              <p class="cbv-format-card__meta">{{ block.settings.wickless_note }}</p>
+            {%- endif -%}
+            <a class="button" href="{{ full_url }}">Customize this scent</a>
+          </article>
+        {%- endfor -%}
+      {%- else -%}
+        {%- assign fallback_titles = '12oz Jar Candle|18oz Large Candle|30oz Triple Wick|70oz Massive Candle' | split: '|' -%}
+        {%- assign fallback_links = '/products/12oz-jar-candle|/products/18oz-large-candle|/products/30oz-triple-wick-candle|/products/70oz-massive-candle' | split: '|' -%}
+        {%- assign fallback_copy = 'Classic everyday luxury with exceptional throw.|A statement jar for longer evening burns.|Broad melt pool and elevated fragrance projection.|Grand scale ambiance for signature spaces.' | split: '|' -%}
+
+        {%- for item in fallback_titles -%}
+          {%- assign idx = forloop.index0 -%}
+          {%- assign fallback_url = fallback_links[idx] | append: '?scent=' | append: scent_handle -%}
+          <article class="cbv-format-card">
+            <h3>{{ item }}</h3>
+            <p>{{ fallback_copy[idx] }}</p>
+            <a class="button" href="{{ fallback_url }}">Customize this scent</a>
+          </article>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": {{ scent_name | json }},
+      "url": {{ request.origin | append: request.path | json }}
+    }
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "CBV Scent Detail",
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "format",
+      "name": "Format",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Format title",
+          "default": "12oz Jar Candle"
+        },
+        {
+          "type": "text",
+          "id": "subcopy",
+          "label": "Subcopy",
+          "default": "Classic silhouette, double scented, hand-poured in Texas."
+        },
+        {
+          "type": "url",
+          "id": "product_url",
+          "label": "Product URL"
+        },
+        {
+          "type": "text",
+          "id": "wickless_note",
+          "label": "Optional wickless/supporting note"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "CBV Scent Detail",
+      "blocks": [
+        {
+          "type": "format",
+          "settings": {
+            "title": "12oz Jar Candle",
+            "subcopy": "Classic silhouette, double scented, hand-poured in Texas.",
+            "product_url": "/products/12oz-jar-candle"
+          }
+        },
+        {
+          "type": "format",
+          "settings": {
+            "title": "18oz Large Candle",
+            "subcopy": "Extended burn time with elevated fragrance impact.",
+            "product_url": "/products/18oz-large-candle"
+          }
+        },
+        {
+          "type": "format",
+          "settings": {
+            "title": "30oz Triple Wick",
+            "subcopy": "Broad throw and dramatic glow for larger rooms.",
+            "product_url": "/products/30oz-triple-wick-candle"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+  }
+{% endstylesheet %}

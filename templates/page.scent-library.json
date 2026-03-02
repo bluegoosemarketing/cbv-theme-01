@@ -1,0 +1,26 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cbv-scent-library",
+      "settings": {
+        "heading": "Scent Library",
+        "subcopy": "Browse by family, search by name, then choose a format.",
+        "seo_copy": "<p>Explore our fragrance collection and discover your signature scent. Filter by fragrance family, search instantly, and then choose the format that fits your space and style.</p>",
+        "padding_top": 40,
+        "padding_bottom": 56
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

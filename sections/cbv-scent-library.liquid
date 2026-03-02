@@ -1,0 +1,158 @@
+{{ 'section-cbv-scent-library.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'cbv-scent-library.js' | asset_url }}" defer></script>
+
+{%- paginate shop.metaobjects.fragrance.values by 250 -%}
+  {%- assign section_heading = section.settings.heading | default: 'Scent Library' -%}
+  {%- assign section_subcopy = section.settings.subcopy | default: 'Browse by family, search by name, then choose a format.' -%}
+
+  <section
+    class="cbv-scent-library page-width section-{{ section.id }}-padding"
+    data-cbv-scent-library
+    data-section-id="{{ section.id }}"
+  >
+    <header class="cbv-scent-library__hero">
+      <p class="cbv-scent-library__eyebrow">Candles By Victoria</p>
+      <h1 class="cbv-scent-library__title">{{ section_heading }}</h1>
+      <p class="cbv-scent-library__subcopy">{{ section_subcopy }}</p>
+    </header>
+
+    <div class="cbv-scent-library__controls" role="region" aria-label="Scent Library filters">
+      <div class="cbv-scent-library__search-wrap">
+        <label class="cbv-scent-library__label" for="ScentSearch-{{ section.id }}">Search scents</label>
+        <input
+          id="ScentSearch-{{ section.id }}"
+          class="cbv-scent-library__search"
+          type="search"
+          placeholder="Search by scent name"
+          autocomplete="off"
+          data-cbv-scent-search
+        >
+      </div>
+
+      <div class="cbv-scent-library__families" data-cbv-family-filters aria-label="Filter by scent family"></div>
+
+      <div class="cbv-scent-library__alphabet" data-cbv-letter-filters aria-label="Jump by letter"></div>
+    </div>
+
+    <div class="cbv-scent-library__meta">
+      <p class="cbv-scent-library__count" data-cbv-scent-count>Showing 0 scents</p>
+    </div>
+
+    <div class="cbv-scent-library__results" data-cbv-scent-results aria-live="polite"></div>
+
+    <div class="cbv-scent-library__empty" data-cbv-no-results hidden>
+      <h2>No scents found</h2>
+      <p>Try another search term, choose a different family, or clear the letter filter.</p>
+    </div>
+
+    {%- if section.settings.seo_copy != blank -%}
+      <div class="cbv-scent-library__seo rte">
+        {{ section.settings.seo_copy }}
+      </div>
+    {%- endif -%}
+
+    <script
+      type="application/json"
+      data-cbv-scent-data
+      data-cbv-fragrance-page="{{ paginate.current_page }}"
+      data-cbv-fragrance-pages="{{ paginate.pages }}"
+      data-cbv-fragrance-page-param="{{ paginate.page_param }}"
+    >
+      [
+        {%- assign first_entry = true -%}
+        {%- for fragrance in shop.metaobjects.fragrance.values -%}
+          {%- liquid
+            assign scent_name = fragrance.name.value | default: fragrance.name
+            assign scent_family = fragrance.scent_family.value | default: fragrance.scent_family
+            assign scent_active = fragrance.is_active.value | default: fragrance.is_active
+          -%}
+          {%- if scent_name != blank and scent_active != false -%}
+            {%- unless first_entry -%},{%- endunless -%}
+            {
+              "name": {{ scent_name | json }},
+              "family": {{ scent_family | default: 'Uncategorized' | json }},
+              "handle": {{ fragrance.handle | json }},
+              "url": {{ fragrance.url | json }}
+            }
+            {%- assign first_entry = false -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": {{ section_heading | json }},
+        "description": {{ section_subcopy | json }},
+        "url": {{ request.origin | append: request.path | json }}
+      }
+    </script>
+  </section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "CBV Scent Library",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Scent Library"
+    },
+    {
+      "type": "textarea",
+      "id": "subcopy",
+      "label": "Subcopy",
+      "default": "Browse by family, search by name, then choose a format."
+    },
+    {
+      "type": "richtext",
+      "id": "seo_copy",
+      "label": "SEO copy",
+      "default": "<p>Discover the full Candles By Victoria scent library. Explore fragrance families and find the perfect scent before choosing your favorite candle format.</p>"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 56
+    }
+  ],
+  "presets": [
+    {
+      "name": "CBV Scent Library"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+  }
+{% endstylesheet %}
