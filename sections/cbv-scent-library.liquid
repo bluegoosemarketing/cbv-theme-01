@@ -60,19 +60,30 @@
     >
       [
         {%- assign first_entry = true -%}
-        {%- for fragrance in shop.metaobjects.fragrance.values -%}
+        {%- for fragrance in paginate.items -%}
           {%- liquid
             assign scent_name = fragrance.name.value | default: fragrance.name
             assign scent_family = fragrance.scent_family.value | default: fragrance.scent_family
             assign scent_active = fragrance.is_active.value | default: fragrance.is_active
+            assign scent_handle = fragrance.handle | default: fragrance.system.handle
+
+            if scent_handle == blank and scent_name != blank
+              assign scent_handle = scent_name | handleize
+            endif
+
+            assign scent_url = fragrance.url | default: fragrance.system.url
+
+            if scent_url == blank and scent_handle != blank
+              assign scent_url = '/pages/fragrance/' | append: scent_handle
+            endif
           -%}
           {%- if scent_name != blank and scent_active != false -%}
             {%- unless first_entry -%},{%- endunless -%}
             {
               "name": {{ scent_name | json }},
               "family": {{ scent_family | default: 'Uncategorized' | json }},
-              "handle": {{ fragrance.handle | json }},
-              "url": {{ fragrance.url | json }}
+              "handle": {{ scent_handle | json }},
+              "url": {{ scent_url | json }}
             }
             {%- assign first_entry = false -%}
           {%- endif -%}
