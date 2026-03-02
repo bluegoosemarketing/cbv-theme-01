@@ -22,6 +22,18 @@
       .replaceAll("'", '&#039;');
   }
 
+
+  function slugify(value) {
+    return (value || '')
+      .toString()
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
+
   function parsePayload(scriptEl) {
     try {
       return JSON.parse(scriptEl.textContent || '[]');
@@ -99,25 +111,36 @@
     if (!allScentsRaw.length) return;
 
     const scentMap = new Map();
+    let fallbackUrlCount = 0;
+
     allScentsRaw.forEach((item) => {
       const name = (item?.name || '').toString().trim();
       const family = (item?.family || 'Uncategorized').toString().trim() || 'Uncategorized';
-      const url = (item?.url || '').toString().trim();
-      if (!name || !url) return;
+      if (!name) return;
 
-      const key = normalize(item.handle || `${name}-${family}`);
+      const handle = (item?.handle || '').toString().trim() || slugify(name);
+      let url = (item?.url || '').toString().trim();
+
+      if (!url) {
+        fallbackUrlCount += 1;
+        url = `/pages/fragrance/${handle || slugify(name)}`;
+      }
+
+      const key = normalize(handle || `${name}-${family}`);
       if (!scentMap.has(key)) {
         scentMap.set(key, {
           name,
           family,
           url,
-          handle: item.handle,
+          handle,
           firstLetter: name.charAt(0).toUpperCase()
         });
       }
     });
 
     const allScents = [...scentMap.values()].sort((a, b) => a.name.localeCompare(b.name));
+    console.info('CBV Scent Library counts', { raw: allScentsRaw.length, deduped: allScents.length, fallbackUrlCount });
+
     const families = ['All', ...new Set(allScents.map((item) => item.family).sort((a, b) => a.localeCompare(b)))];
 
     let activeFamily = 'All';
