@@ -14,7 +14,7 @@
   --cbv-success-text: #855a30; 
   --cbv-accent: #dfae68;
   
-  background-color: var(--cbv-color-bg-warm);
+  background-color: #fff;
 }
 
 .cbv-builder__grid {
