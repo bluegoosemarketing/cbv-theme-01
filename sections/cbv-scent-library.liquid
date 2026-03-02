@@ -1,107 +1,716 @@
-{{ 'section-cbv-scent-library.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'cbv-scent-library.js' | asset_url }}" defer></script>
+{% comment %}
+  CBV Scent Library - V4 (Mobile Optimized)
+  Changes: Mobile Category Dropdown, 1400px Width, 60px Sticky Offset
+{% endcomment %}
 
-{%- paginate shop.metaobjects.fragrance.values by 250 -%}
-  {%- assign section_heading = section.settings.heading | default: 'Scent Library' -%}
-  {%- assign section_subcopy = section.settings.subcopy | default: 'Browse by family, search by name, then choose a format.' -%}
+{%- assign section_heading = section.settings.heading | default: 'Scent Library' -%}
+{%- assign section_subcopy = section.settings.subcopy | default: 'Browse by family, search by name, then choose a format.' -%}
 
-  <section
-    class="cbv-scent-library page-width section-{{ section.id }}-padding"
-    data-cbv-scent-library
-    data-section-id="{{ section.id }}"
-  >
-    <header class="cbv-scent-library__hero">
-      <p class="cbv-scent-library__eyebrow">Candles By Victoria</p>
-      <h1 class="cbv-scent-library__title">{{ section_heading }}</h1>
-      <p class="cbv-scent-library__subcopy">{{ section_subcopy }}</p>
-    </header>
+<div class="cbv-lib-wrapper section-{{ section.id }}-padding">
+  
+  {%- comment -%} HERO SECTION {%- endcomment -%}
+  <header class="cbv-lib-hero">
+    <div class="cbv-lib-hero__inner">
+      <h1 class="cbv-lib-hero__title">{{ section_heading }}</h1>
+      <p class="cbv-lib-hero__subcopy">{{ section_subcopy }}</p>
+    </div>
+  </header>
 
-    <div class="cbv-scent-library__controls" role="region" aria-label="Scent Library filters">
-      <div class="cbv-scent-library__search-wrap">
-        <label class="cbv-scent-library__label" for="ScentSearch-{{ section.id }}">Search scents</label>
-        <input
-          id="ScentSearch-{{ section.id }}"
-          class="cbv-scent-library__search"
-          type="search"
-          placeholder="Search by scent name"
+  {%- comment -%} CONTROL BAR (Sticky) {%- endcomment -%}
+  <div class="cbv-lib-controls" id="CBV_LibControls">
+    <div class="cbv-lib-controls__container">
+      
+      <!-- Search Input -->
+      <div class="cbv-lib-search-group">
+        <svg class="cbv-lib-icon-search" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input 
+          type="text" 
+          id="CBV_ScentSearch" 
+          class="cbv-lib-search-input" 
+          placeholder="Search for a scent..." 
           autocomplete="off"
-          data-cbv-scent-search
         >
+        <button id="CBV_ClearSearch" class="cbv-lib-search-clear" aria-label="Clear search" hidden>×</button>
       </div>
 
-      <div class="cbv-scent-library__families" data-cbv-family-filters aria-label="Filter by scent family"></div>
+      <!-- Family Filters -->
+      <div class="cbv-lib-filter-group">
+        
+        <!-- Mobile Toggle Button (Visible only on mobile) -->
+        <button id="CBV_MobileFilterToggle" class="cbv-lib-mobile-toggle" aria-expanded="false">
+          <span id="CBV_MobileToggleLabel">Filter by Family</span>
+          <svg class="cbv-lib-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
 
-      <div class="cbv-scent-library__alphabet" data-cbv-letter-filters aria-label="Jump by letter"></div>
-    </div>
-
-    <div class="cbv-scent-library__meta">
-      <p class="cbv-scent-library__count" data-cbv-scent-count>Showing 0 scents</p>
-    </div>
-
-    <div class="cbv-scent-library__results" data-cbv-scent-results aria-live="polite"></div>
-
-    <div class="cbv-scent-library__empty" data-cbv-no-results hidden>
-      <h2>No scents found</h2>
-      <p>Try another search term, choose a different family, or clear the letter filter.</p>
-    </div>
-
-    {%- if section.settings.seo_copy != blank -%}
-      <div class="cbv-scent-library__seo rte">
-        {{ section.settings.seo_copy }}
+        <!-- The Cloud (Hidden on mobile until toggled) -->
+        <div class="cbv-lib-filters-cloud" id="CBV_FamilyFilters">
+          <button class="cbv-lib-pill is-active" data-filter="all">All Scents</button>
+          <!-- JS will populate families here -->
+        </div>
       </div>
-    {%- endif -%}
+    </div>
+    
+    <!-- Alphabet Filter Bar -->
+    <div class="cbv-lib-alpha-bar">
+      <div class="cbv-lib-alpha-scroll" id="CBV_AlphaFilters">
+        <button class="cbv-lib-alpha-link is-active" data-letter="all">All</button>
+        <!-- JS will populate A-Z here -->
+      </div>
+    </div>
+  </div>
 
-    <script
-      type="application/json"
-      data-cbv-scent-data
-      data-cbv-fragrance-page="{{ paginate.current_page }}"
-      data-cbv-fragrance-pages="{{ paginate.pages }}"
-      data-cbv-fragrance-page-param="{{ paginate.page_param }}"
-    >
-      [
-        {%- assign first_entry = true -%}
-        {%- for fragrance in shop.metaobjects.fragrance.values -%}
-          {%- liquid
-            assign scent_name = fragrance.name.value | default: fragrance.name
-            assign scent_family = fragrance.scent_family.value | default: fragrance.scent_family
-            assign scent_active = fragrance.is_active.value | default: fragrance.is_active
-            assign scent_handle = fragrance.handle | default: fragrance.system.handle
+  {%- comment -%} RESULTS GRID {%- endcomment -%}
+  <div class="cbv-lib-results-container page-width">
+    <div class="cbv-lib-meta-row">
+      <span class="cbv-lib-count" id="CBV_ResultCount">Loading library...</span>
+    </div>
 
-            if scent_handle == blank and scent_name != blank
-              assign scent_handle = scent_name | handleize
-            endif
+    <div class="cbv-lib-grid" id="CBV_ScentGrid">
+      <!-- JS populates cards here -->
+    </div>
 
-            assign scent_url = fragrance.url | default: fragrance.system.url
+    <!-- Empty State -->
+    <div class="cbv-lib-empty-state" id="CBV_EmptyState" hidden>
+      <div class="cbv-lib-empty-icon">🍃</div>
+      <h3 class="cbv-lib-empty-title">No scents found</h3>
+      <p class="cbv-lib-empty-desc">We couldn't find a match. Try checking your spelling or browsing by 'All Scents'.</p>
+      <button class="cbv-lib-btn-reset" id="CBV_ResetFilters">View Full Library</button>
+    </div>
+  </div>
 
-            if scent_url == blank and scent_handle != blank
-              assign scent_url = '/pages/fragrance/' | append: scent_handle
-            endif
-          -%}
-          {%- if scent_name != blank and scent_active != false -%}
-            {%- unless first_entry -%},{%- endunless -%}
-            {
-              "name": {{ scent_name | json }},
-              "family": {{ scent_family | default: 'Uncategorized' | json }},
-              "handle": {{ scent_handle | json }},
-              "url": {{ scent_url | json }}
-            }
-            {%- assign first_entry = false -%}
-          {%- endif -%}
-        {%- endfor -%}
-      ]
-    </script>
+</div>
 
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": {{ section_heading | json }},
-        "description": {{ section_subcopy | json }},
-        "url": {{ request.origin | append: request.path | json }}
+{%- comment -%} 
+  DATA ISLAND 
+{%- endcomment -%}
+<script type="application/json" id="CBV_ScentData">
+[
+  {%- paginate shop.metaobjects.fragrance.values by 1000 -%}
+    {%- for fragrance in shop.metaobjects.fragrance.values -%}
+      {%- liquid
+        assign scent_name = fragrance.name.value | default: fragrance.name
+        assign scent_family = fragrance.scent_family.value | default: fragrance.scent_family
+        assign scent_active = fragrance.is_active.value | default: fragrance.is_active
+        assign scent_handle = fragrance.handle | default: fragrance.system.handle
+        
+        if scent_handle == blank and scent_name != blank
+          assign scent_handle = scent_name | handleize
+        endif
+
+        assign scent_url = fragrance.url | default: fragrance.system.url
+        if scent_url == blank and scent_handle != blank
+          assign scent_url = '/pages/fragrance/' | append: scent_handle
+        endif
+      -%}
+      {%- if scent_name != blank and scent_active != false -%}
+        {
+          "name": {{ scent_name | json }},
+          "family": {{ scent_family | default: 'Signature Collection' | json }},
+          "handle": {{ scent_handle | json }},
+          "url": {{ scent_url | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endpaginate -%}
+]
+</script>
+
+{%- comment -%} STYLES {%- endcomment -%}
+<style>
+  /* --- SCOPED VARIABLES --- */
+  .cbv-lib-wrapper {
+    --cbv-font-heading: "Playfair Display", "Times New Roman", serif; 
+    --cbv-font-body: "Inter", "Helvetica Neue", sans-serif;
+    
+    --cbv-color-bg: #FDFBF7; 
+    --cbv-color-card: #FFFFFF;
+    --cbv-color-text: #1C1C1C;
+    --cbv-color-subtext: #555555;
+    --cbv-color-accent: #C7A17A;
+    --cbv-color-border: #E8E6E1;
+    
+    --cbv-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    background-color: var(--cbv-color-bg);
+    color: var(--cbv-color-text);
+    min-height: 80vh;
+    font-family: var(--cbv-font-body);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .cbv-lib-wrapper * {
+    box-sizing: border-box;
+  }
+
+  /* --- HERO --- */
+  .cbv-lib-hero {
+    text-align: center;
+    padding: 30px 20px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .cbv-lib-hero__title {
+    font-family: var(--cbv-font-heading);
+    font-size: clamp(42px, 5vw, 64px); 
+    font-weight: 400;
+    line-height: 1.1;
+    margin: 0 0 16px; 
+    letter-spacing: -0.01em;
+    color: var(--cbv-color-text);
+  }
+
+  .cbv-lib-hero__subcopy {
+    font-size: 16px;
+    color: var(--cbv-color-subtext);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* --- CONTROLS --- */
+  .cbv-lib-controls {
+    position: sticky;
+    top: 60px; /* Offset for existing sticky header */
+    z-index: 90;
+    background: rgba(253, 251, 247, 0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--cbv-color-border);
+    padding: 20px 0 0;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .cbv-lib-controls.is-stuck {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  }
+
+  .cbv-lib-controls__container {
+    max-width: 1400px; /* Wider container */
+    margin: 0 auto;
+    padding: 0 20px 20px;
+  }
+
+  /* Search */
+  .cbv-lib-search-group {
+    position: relative;
+    width: 100%;
+    max-width: 700px; /* Constrained search width */
+    margin: 0 auto 24px;
+  }
+  
+  .cbv-lib-icon-search {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cbv-color-subtext);
+    pointer-events: none;
+    width: 24px;
+    height: 24px;
+    z-index: 2;
+  }
+
+  input.cbv-lib-search-input {
+    width: 100%;
+    padding: 16px 50px 16px 60px; 
+    border: 1px solid #D1CDC7;
+    border-radius: 6px;
+    background: var(--cbv-color-card);
+    font-size: 16px;
+    color: var(--cbv-color-text);
+    transition: all 0.2s var(--cbv-ease);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    -webkit-appearance: none;
+    height: auto;
+    margin: 0;
+  }
+
+  input.cbv-lib-search-input:focus {
+    outline: none;
+    border-color: var(--cbv-color-accent);
+    box-shadow: 0 0 0 1px var(--cbv-color-accent), 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  .cbv-lib-search-clear {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--cbv-color-subtext);
+    padding: 0 10px;
+    line-height: 1;
+    z-index: 2;
+  }
+
+  /* --- FILTERS (Mobile vs Desktop) --- */
+  
+  /* The Mobile Toggle Button */
+  .cbv-lib-mobile-toggle {
+    display: none; /* Hidden on Desktop */
+    width: 100%;
+    background: var(--cbv-color-card);
+    border: 1px solid #D1CDC7;
+    border-radius: 6px;
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cbv-color-text);
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+
+  .cbv-lib-chevron {
+    transition: transform 0.3s ease;
+  }
+  
+  .cbv-lib-mobile-toggle.is-open .cbv-lib-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* The Cloud */
+  .cbv-lib-filters-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding-bottom: 8px;
+  }
+
+  .cbv-lib-pill {
+    white-space: nowrap;
+    padding: 8px 18px;
+    border: 1px solid var(--cbv-color-border);
+    background: var(--cbv-color-card);
+    border-radius: 50px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s var(--cbv-ease);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: var(--cbv-color-subtext);
+  }
+
+  .cbv-lib-pill:hover {
+    border-color: var(--cbv-color-text);
+    color: var(--cbv-color-text);
+    transform: translateY(-1px);
+  }
+
+  .cbv-lib-pill.is-active {
+    background: var(--cbv-color-text);
+    color: #fff;
+    border-color: var(--cbv-color-text);
+  }
+
+  /* Alphabet Bar */
+  .cbv-lib-alpha-bar {
+    border-top: 1px solid var(--cbv-color-border);
+    background: rgba(253, 251, 247, 0.8);
+  }
+
+  .cbv-lib-alpha-scroll {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 12px 20px;
+    font-family: var(--cbv-font-heading);
+    gap: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .cbv-lib-alpha-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 15px;
+    color: #888;
+    transition: color 0.2s;
+  }
+
+  .cbv-lib-alpha-link:hover, .cbv-lib-alpha-link.is-active {
+    color: var(--cbv-color-accent);
+    font-weight: bold;
+    transform: scale(1.1);
+  }
+
+  /* --- GRID RESULTS --- */
+  .cbv-lib-meta-row {
+    padding: 20px 0 10px;
+    color: var(--cbv-color-subtext);
+    font-size: 13px;
+    font-style: italic;
+    text-align: right;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .cbv-lib-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    padding-bottom: 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* Card Design */
+  .cbv-lib-card {
+    background: var(--cbv-color-card);
+    border: 1px solid var(--cbv-color-border);
+    padding: 30px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    min-height: 200px;
+    position: relative;
+    transition: all 0.3s var(--cbv-ease);
+  }
+
+  .cbv-lib-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+    border-color: var(--cbv-color-accent);
+  }
+
+  .cbv-lib-card__family {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--cbv-color-subtext);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+
+  .cbv-lib-card__title {
+    font-family: var(--cbv-font-heading);
+    font-size: 24px;
+    line-height: 1.25;
+    margin: 0 0 20px;
+    color: var(--cbv-color-text);
+  }
+
+  .cbv-lib-card__action {
+    margin-top: auto;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cbv-color-accent);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .cbv-lib-card__arrow {
+    font-size: 16px;
+    transition: transform 0.2s var(--cbv-ease);
+  }
+
+  .cbv-lib-card:hover .cbv-lib-card__arrow {
+    transform: translateX(5px);
+  }
+
+  /* --- EMPTY STATE --- */
+  .cbv-lib-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+    border: 1px dashed var(--cbv-color-border);
+    border-radius: 8px;
+    margin-top: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cbv-lib-empty-icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+    display: block;
+  }
+  
+  .cbv-lib-empty-title {
+    font-family: var(--cbv-font-heading);
+    font-size: 28px;
+    margin: 0 0 12px;
+  }
+  
+  .cbv-lib-empty-desc {
+    font-size: 15px;
+    color: var(--cbv-color-subtext);
+    margin-bottom: 20px;
+  }
+
+  .cbv-lib-btn-reset {
+    background: var(--cbv-color-text);
+    color: #fff;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: background 0.2s;
+  }
+  .cbv-lib-btn-reset:hover {
+    background: #000;
+  }
+
+  /* --- UTILITY & ANIMATION --- */
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  .cbv-fade-in {
+    animation: cbvFadeIn 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes cbvFadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- MOBILE BREAKPOINT --- */
+  @media screen and (max-width: 768px) {
+    .cbv-lib-hero__title { font-size: 36px; }
+    
+    .cbv-lib-search-group { margin-bottom: 12px; }
+    input.cbv-lib-search-input { font-size: 16px; padding: 12px 40px 12px 45px; }
+    .cbv-lib-icon-search { left: 14px; width: 20px; }
+
+    /* Mobile Toggle Logic */
+    .cbv-lib-mobile-toggle { display: flex; }
+    
+    .cbv-lib-filters-cloud {
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      align-items: stretch;
+      padding-top: 10px;
+      width: 100%;
+    }
+    
+    .cbv-lib-filters-cloud.is-open {
+      display: flex;
+    }
+    
+    .cbv-lib-pill {
+      text-align: center;
+      width: 100%;
+    }
+
+    /* Keep Alpha Bar Scrollable on Mobile */
+    .cbv-lib-alpha-scroll {
+      justify-content: flex-start;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+    }
+    
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+  }
+</style>
+
+{%- comment -%} LOGIC {%- endcomment -%}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check if data exists
+    const dataEl = document.getElementById('CBV_ScentData');
+    if(!dataEl) return;
+
+    const rawData = dataEl.textContent;
+    const scents = JSON.parse(rawData);
+    
+    // DOM Elements
+    const grid = document.getElementById('CBV_ScentGrid');
+    const searchInput = document.getElementById('CBV_ScentSearch');
+    const clearBtn = document.getElementById('CBV_ClearSearch');
+    const familyContainer = document.getElementById('CBV_FamilyFilters');
+    const alphaContainer = document.getElementById('CBV_AlphaFilters');
+    const countLabel = document.getElementById('CBV_ResultCount');
+    const emptyState = document.getElementById('CBV_EmptyState');
+    const resetBtn = document.getElementById('CBV_ResetFilters');
+    const controls = document.getElementById('CBV_LibControls');
+    
+    // Mobile Elements
+    const mobileToggle = document.getElementById('CBV_MobileFilterToggle');
+    const mobileLabel = document.getElementById('CBV_MobileToggleLabel');
+    
+    // State
+    let state = {
+      search: '',
+      family: 'all',
+      letter: 'all'
+    };
+
+    // 1. Initialize Families
+    const families = [...new Set(scents.map(s => s.family))].sort();
+    families.forEach(fam => {
+      const btn = document.createElement('button');
+      btn.className = 'cbv-lib-pill';
+      btn.textContent = fam;
+      btn.dataset.filter = fam;
+      familyContainer.appendChild(btn);
+    });
+
+    // 2. Initialize Alphabet
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    alphabet.forEach(char => {
+      const btn = document.createElement('button');
+      btn.className = 'cbv-lib-alpha-link';
+      btn.textContent = char;
+      btn.dataset.letter = char;
+      alphaContainer.appendChild(btn);
+    });
+    
+    // Sticky Scroll Shadow Logic
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > controls.offsetTop + 10) {
+        controls.classList.add('is-stuck');
+      } else {
+        controls.classList.remove('is-stuck');
       }
-    </script>
-  </section>
-{%- endpaginate -%}
+    });
+
+    // Mobile Toggle Logic
+    mobileToggle.addEventListener('click', () => {
+      const isOpen = mobileToggle.classList.toggle('is-open');
+      mobileToggle.setAttribute('aria-expanded', isOpen);
+      familyContainer.classList.toggle('is-open', isOpen);
+    });
+
+    // 3. Render Function
+    function render() {
+      // Filter logic
+      const filtered = scents.filter(scent => {
+        const matchesSearch = scent.name.toLowerCase().includes(state.search.toLowerCase());
+        const matchesFamily = state.family === 'all' || scent.family === state.family;
+        const matchesLetter = state.letter === 'all' || scent.name.trim().toUpperCase().startsWith(state.letter);
+        return matchesSearch && matchesFamily && matchesLetter;
+      });
+
+      // Update UI Count
+      countLabel.textContent = `Showing ${filtered.length} scent${filtered.length !== 1 ? 's' : ''}`;
+      
+      // Clear Grid
+      grid.innerHTML = '';
+      
+      if (filtered.length === 0) {
+        emptyState.hidden = false;
+        grid.hidden = true;
+      } else {
+        emptyState.hidden = true;
+        grid.hidden = false;
+
+        // Populate Grid
+        filtered.forEach((scent, index) => {
+          const card = document.createElement('a');
+          card.href = scent.url;
+          card.className = 'cbv-lib-card cbv-fade-in';
+          card.style.animationDelay = `${Math.min(index * 0.03, 1)}s`; 
+          
+          card.innerHTML = `
+            <div>
+              <div class="cbv-lib-card__family">${scent.family}</div>
+              <div class="cbv-lib-card__title">${scent.name}</div>
+            </div>
+            <div class="cbv-lib-card__action">
+              View Scent
+              <span class="cbv-lib-card__arrow">→</span>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      // Update Active States
+      document.querySelectorAll('.cbv-lib-pill').forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.filter === state.family);
+      });
+      document.querySelectorAll('.cbv-lib-alpha-link').forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.letter === state.letter);
+      });
+      
+      // Update Mobile Label
+      if(state.family === 'all') {
+        mobileLabel.textContent = "Filter by Family";
+      } else {
+        mobileLabel.textContent = "Family: " + state.family;
+      }
+      
+      // Clear button visibility
+      clearBtn.hidden = state.search === '';
+    }
+
+    // 4. Event Listeners
+    
+    // Search
+    searchInput.addEventListener('input', (e) => {
+      state.search = e.target.value;
+      if(window.scrollY > grid.offsetTop) {
+         window.scrollTo({ top: grid.offsetTop - 200, behavior: 'smooth' });
+      }
+      render();
+    });
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      state.search = '';
+      render();
+    });
+
+    // Family Filter
+    familyContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('cbv-lib-pill')) {
+        state.family = e.target.dataset.filter;
+        render();
+        
+        // Mobile: Close dropdown after selection
+        if(window.innerWidth < 769) {
+          mobileToggle.classList.remove('is-open');
+          mobileToggle.setAttribute('aria-expanded', false);
+          familyContainer.classList.remove('is-open');
+        }
+      }
+    });
+
+    // Alphabet Filter
+    alphaContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('cbv-lib-alpha-link')) {
+        state.letter = e.target.dataset.letter;
+        render();
+      }
+    });
+
+    // Reset
+    resetBtn.addEventListener('click', () => {
+      state = { search: '', family: 'all', letter: 'all' };
+      searchInput.value = '';
+      render();
+    });
+
+    // Initial Render
+    render();
+  });
+</script>
 
 {% schema %}
 {
@@ -120,10 +729,8 @@
       "default": "Browse by family, search by name, then choose a format."
     },
     {
-      "type": "richtext",
-      "id": "seo_copy",
-      "label": "SEO copy",
-      "default": "<p>Discover the full Candles By Victoria scent library. Explore fragrance families and find the perfect scent before choosing your favorite candle format.</p>"
+      "type": "header",
+      "content": "Layout"
     },
     {
       "type": "range",
@@ -133,7 +740,7 @@
       "step": 4,
       "unit": "px",
       "label": "Top padding",
-      "default": 40
+      "default": 36
     },
     {
       "type": "range",
@@ -143,27 +750,13 @@
       "step": 4,
       "unit": "px",
       "label": "Bottom padding",
-      "default": 56
+      "default": 80
     }
   ],
   "presets": [
     {
-      "name": "CBV Scent Library"
+      "name": "CBV Scent Library (New)"
     }
   ]
 }
 {% endschema %}
-
-{% stylesheet %}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
-  }
-
-  @media screen and (max-width: 749px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-    }
-  }
-{% endstylesheet %}
