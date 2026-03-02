@@ -1,0 +1,57 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cbv-scent-detail",
+      "settings": {
+        "padding_top": 40,
+        "padding_bottom": 56
+      },
+      "blocks": {
+        "format_1": {
+          "type": "format",
+          "settings": {
+            "title": "12oz Jar Candle",
+            "subcopy": "Classic silhouette, double scented, hand-poured in Texas.",
+            "product_url": "/products/12oz-jar-candle",
+            "wickless_note": ""
+          }
+        },
+        "format_2": {
+          "type": "format",
+          "settings": {
+            "title": "18oz Large Candle",
+            "subcopy": "Extended burn time with elevated fragrance impact.",
+            "product_url": "/products/18oz-large-candle",
+            "wickless_note": ""
+          }
+        },
+        "format_3": {
+          "type": "format",
+          "settings": {
+            "title": "30oz Triple Wick",
+            "subcopy": "Broad throw and dramatic glow for larger rooms.",
+            "product_url": "/products/30oz-triple-wick-candle",
+            "wickless_note": ""
+          }
+        }
+      },
+      "block_order": [
+        "format_1",
+        "format_2",
+        "format_3"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
