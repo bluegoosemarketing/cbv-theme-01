@@ -60,7 +60,7 @@
     >
       [
         {%- assign first_entry = true -%}
-        {%- for fragrance in paginate.items -%}
+        {%- for fragrance in shop.metaobjects.fragrance.values -%}
           {%- liquid
             assign scent_name = fragrance.name.value | default: fragrance.name
             assign scent_family = fragrance.scent_family.value | default: fragrance.scent_family
