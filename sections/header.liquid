@@ -58,7 +58,8 @@
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 5000;
+    isolation: isolate;
     background: var(--cbv-header-bg);
     border-bottom: 1px solid transparent;
     transition: border-bottom 0.3s ease;
@@ -401,7 +402,7 @@
     visibility: hidden;
     transform: translateY(10px);
     transition: all 0.25s ease;
-    z-index: 900;
+    z-index: 6000;
     pointer-events: none;
     will-change: opacity, transform;
   }
