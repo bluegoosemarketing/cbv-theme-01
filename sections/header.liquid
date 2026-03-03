@@ -702,6 +702,18 @@
       display: block; padding: 10px; font-size: 14px; color: #595550; text-decoration: none;
     }
   }
+  /* FORCE HEADER ON TOP */
+#shopify-section-header, 
+.shopify-section-header, 
+.section-header {
+  position: relative !important;
+  z-index: 99999 !important;
+}
+
+/* Lower the Scent Library relative to header */
+.cbv-lib-controls {
+  z-index: 10 !important; 
+}
 {% endstyle %}
 
 <div class="cbv-header-fixed-group color-{{ section.settings.color_scheme }} gradient">

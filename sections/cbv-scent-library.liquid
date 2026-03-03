@@ -1,6 +1,6 @@
 {% comment %}
-  CBV Scent Library - V4 (Mobile Optimized)
-  Changes: Mobile Category Dropdown, 1400px Width, 60px Sticky Offset
+  CBV Scent Library - V8 (Z-Index Zero)
+  Changes: Removed ALL z-index on controls. Flattened stacking context.
 {% endcomment %}
 
 {%- assign section_heading = section.settings.heading | default: 'Scent Library' -%}
@@ -16,33 +16,35 @@
     </div>
   </header>
 
-  {%- comment -%} CONTROL BAR (Sticky) {%- endcomment -%}
+  {%- comment -%} CONTROL BAR {%- endcomment -%}
   <div class="cbv-lib-controls" id="CBV_LibControls">
     <div class="cbv-lib-controls__container">
       
       <!-- Search Input -->
       <div class="cbv-lib-search-group">
-        <svg class="cbv-lib-icon-search" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input 
-          type="text" 
-          id="CBV_ScentSearch" 
-          class="cbv-lib-search-input" 
-          placeholder="Search for a scent..." 
-          autocomplete="off"
-        >
-        <button id="CBV_ClearSearch" class="cbv-lib-search-clear" aria-label="Clear search" hidden>×</button>
+        <div class="cbv-lib-search-inner">
+          <svg class="cbv-lib-icon-search" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input 
+            type="text" 
+            id="CBV_ScentSearch" 
+            class="cbv-lib-search-input" 
+            placeholder="Search for a scent..." 
+            autocomplete="off"
+          >
+          <button id="CBV_ClearSearch" class="cbv-lib-search-clear" aria-label="Clear search" hidden>×</button>
+        </div>
       </div>
 
       <!-- Family Filters -->
       <div class="cbv-lib-filter-group">
         
-        <!-- Mobile Toggle Button (Visible only on mobile) -->
+        <!-- Mobile Toggle Button -->
         <button id="CBV_MobileFilterToggle" class="cbv-lib-mobile-toggle" aria-expanded="false">
           <span id="CBV_MobileToggleLabel">Filter by Family</span>
           <svg class="cbv-lib-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
 
-        <!-- The Cloud (Hidden on mobile until toggled) -->
+        <!-- The Cloud -->
         <div class="cbv-lib-filters-cloud" id="CBV_FamilyFilters">
           <button class="cbv-lib-pill is-active" data-filter="all">All Scents</button>
           <!-- JS will populate families here -->
@@ -117,6 +119,20 @@
 
 {%- comment -%} STYLES {%- endcomment -%}
 <style>
+  /* --- SAFETY: Force Main Content Low --- */
+  #MainContent, .main-content {
+    position: relative;
+    z-index: 1; /* Keep content low */
+  }
+
+  /* --- SAFETY: Force Header High --- */
+  .shopify-section-header, 
+  #shopify-section-header, 
+  header[role="banner"] {
+    position: relative;
+    z-index: 999999 !important; /* Ensure it wins */
+  }
+
   /* --- SCOPED VARIABLES --- */
   .cbv-lib-wrapper {
     --cbv-font-heading: "Playfair Display", "Times New Roman", serif; 
@@ -137,6 +153,9 @@
     font-family: var(--cbv-font-body);
     font-size: 16px;
     line-height: 1.5;
+    
+    position: relative;
+    z-index: auto; /* Allow natural stacking */
   }
   
   .cbv-lib-wrapper * {
@@ -171,32 +190,30 @@
 
   /* --- CONTROLS --- */
   .cbv-lib-controls {
-    position: sticky;
-    top: var(--cbv-header-offset);
-    z-index: 5;
-    background: rgba(253, 251, 247, 0.98);
-    backdrop-filter: blur(10px);
+    position: relative; 
+    z-index: auto; /* NO stacking context */
+    background: transparent;
     border-bottom: 1px solid var(--cbv-color-border);
     padding: 20px 0 0;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .cbv-lib-controls.is-stuck {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
   }
 
   .cbv-lib-controls__container {
-    max-width: 1400px; /* Wider container */
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px 20px;
   }
 
-  /* Search */
+  /* Search Group - ZERO Z-Index */
   .cbv-lib-search-group {
-    position: relative;
     width: 100%;
-    max-width: 700px; /* Constrained search width */
+    max-width: 700px; 
     margin: 0 auto 24px;
+    position: static; /* Force static */
+  }
+
+  .cbv-lib-search-inner {
+    position: relative; /* Only this is relative for icon placement */
+    z-index: 0; /* Forced low */
   }
   
   .cbv-lib-icon-search {
@@ -208,7 +225,7 @@
     pointer-events: none;
     width: 24px;
     height: 24px;
-    z-index: 2;
+    z-index: 1; 
   }
 
   input.cbv-lib-search-input {
@@ -224,6 +241,8 @@
     -webkit-appearance: none;
     height: auto;
     margin: 0;
+    position: relative;
+    z-index: 0; /* Forced low */
   }
 
   input.cbv-lib-search-input:focus {
@@ -244,14 +263,12 @@
     color: var(--cbv-color-subtext);
     padding: 0 10px;
     line-height: 1;
-    z-index: 2;
+    z-index: 1;
   }
 
-  /* --- FILTERS (Mobile vs Desktop) --- */
-  
-  /* The Mobile Toggle Button */
+  /* --- FILTERS --- */
   .cbv-lib-mobile-toggle {
-    display: none; /* Hidden on Desktop */
+    display: none; 
     width: 100%;
     background: var(--cbv-color-card);
     border: 1px solid #D1CDC7;
@@ -282,6 +299,8 @@
     justify-content: center;
     gap: 10px;
     padding-bottom: 8px;
+    position: relative;
+    z-index: 0; /* Forced low */
   }
 
   .cbv-lib-pill {
@@ -297,6 +316,8 @@
     letter-spacing: 0.05em;
     font-weight: 600;
     color: var(--cbv-color-subtext);
+    position: relative;
+    z-index: 0;
   }
 
   .cbv-lib-pill:hover {
@@ -315,6 +336,8 @@
   .cbv-lib-alpha-bar {
     border-top: 1px solid var(--cbv-color-border);
     background: rgba(253, 251, 247, 0.8);
+    position: relative;
+    z-index: 0;
   }
 
   .cbv-lib-alpha-scroll {
@@ -548,7 +571,6 @@
     const countLabel = document.getElementById('CBV_ResultCount');
     const emptyState = document.getElementById('CBV_EmptyState');
     const resetBtn = document.getElementById('CBV_ResetFilters');
-    const controls = document.getElementById('CBV_LibControls');
     
     // Mobile Elements
     const mobileToggle = document.getElementById('CBV_MobileFilterToggle');
@@ -579,15 +601,6 @@
       btn.textContent = char;
       btn.dataset.letter = char;
       alphaContainer.appendChild(btn);
-    });
-    
-    // Sticky Scroll Shadow Logic
-    window.addEventListener('scroll', () => {
-      if(window.scrollY > controls.offsetTop + 10) {
-        controls.classList.add('is-stuck');
-      } else {
-        controls.classList.remove('is-stuck');
-      }
     });
 
     // Mobile Toggle Logic
@@ -665,9 +678,6 @@
     // Search
     searchInput.addEventListener('input', (e) => {
       state.search = e.target.value;
-      if(window.scrollY > grid.offsetTop) {
-         window.scrollTo({ top: grid.offsetTop - 200, behavior: 'smooth' });
-      }
       render();
     });
 
