@@ -12,34 +12,127 @@
     "main": {
       "type": "cbv-scent-detail",
       "settings": {
-        "padding_top": 40,
-        "padding_bottom": 56
+        "padding_top": 88,
+        "padding_bottom": 72
       },
       "blocks": {
         "format_1": {
           "type": "format",
           "settings": {
-            "title": "12oz Jar Candle",
-            "subcopy": "Classic silhouette, double scented, hand-poured in Texas.",
-            "product_url": "/products/12oz-jar-candle",
+            "format_group": "candle",
+            "format_type": "4oz · Mini Jelly",
+            "title": "4oz Candle Builder",
+            "subcopy": "Petite one-wick profile with wickless availability for smaller spaces.",
+            "product_url": "/collections/candle-jars",
+            "cta_label": "Choose this vessel",
             "wickless_note": ""
           }
         },
         "format_2": {
           "type": "format",
           "settings": {
-            "title": "18oz Large Candle",
-            "subcopy": "Extended burn time with elevated fragrance impact.",
-            "product_url": "/products/18oz-large-candle",
+            "format_group": "candle",
+            "format_type": "9oz · Salsa / Mini Cylinder",
+            "title": "9oz Candle Builder",
+            "subcopy": "Compact one-wick format with wickless availability for desks and bedside styling.",
+            "product_url": "/collections/candle-jars",
+            "cta_label": "Choose this vessel",
             "wickless_note": ""
           }
         },
         "format_3": {
           "type": "format",
           "settings": {
-            "title": "30oz Triple Wick",
-            "subcopy": "Broad throw and dramatic glow for larger rooms.",
-            "product_url": "/products/30oz-triple-wick-candle",
+            "format_group": "candle",
+            "format_type": "12oz · Tumbler Collection",
+            "title": "12oz Candle Builder",
+            "subcopy": "Our signature everyday vessel with curated glass colorways and optional wood wick.",
+            "product_url": "/products/12oz-jar-candle",
+            "cta_label": "Choose this vessel",
+            "wickless_note": ""
+          }
+        },
+        "format_4": {
+          "type": "format",
+          "settings": {
+            "format_group": "candle",
+            "format_type": "16oz · Cylinder / Salsa / Square",
+            "title": "16oz Candle Builder",
+            "subcopy": "Versatile medium format with curated silhouettes and wickless or wood-wick pathways.",
+            "product_url": "/products/16oz-square-candle",
+            "cta_label": "Choose this vessel",
+            "wickless_note": ""
+          }
+        },
+        "format_5": {
+          "type": "format",
+          "settings": {
+            "format_group": "candle",
+            "format_type": "18oz · Honeycomb Collection",
+            "title": "18oz Candle Builder",
+            "subcopy": "Textural, elevated vessel family with two-wick performance and wickless/wood-wick options.",
+            "product_url": "/products/18oz-honeycomb-candle",
+            "cta_label": "Choose this vessel",
+            "wickless_note": ""
+          }
+        },
+        "format_6": {
+          "type": "format",
+          "settings": {
+            "format_group": "candle",
+            "format_type": "24oz · Ribbed Jar",
+            "title": "24oz Candle Builder",
+            "subcopy": "Ribbed two-wick profile designed for open-concept fragrance moments.",
+            "product_url": "/collections/candle-jars",
+            "cta_label": "Choose this vessel",
+            "wickless_note": ""
+          }
+        },
+        "format_7": {
+          "type": "format",
+          "settings": {
+            "format_group": "candle",
+            "format_type": "30oz · Cylinder Statement",
+            "title": "30oz Candle Builder",
+            "subcopy": "Triple-wick statement format with broad fragrance projection.",
+            "product_url": "/collections/30oz-victorian",
+            "cta_label": "Choose this vessel",
+            "wickless_note": ""
+          }
+        },
+        "format_8": {
+          "type": "format",
+          "settings": {
+            "format_group": "candle",
+            "format_type": "70oz · Grand Cylinder",
+            "title": "70oz Candle Builder",
+            "subcopy": "Our most dramatic four-wick vessel for large, high-impact spaces.",
+            "product_url": "/collections/70oz-5-wick",
+            "cta_label": "Choose this vessel",
+            "wickless_note": ""
+          }
+        },
+        "format_9": {
+          "type": "format",
+          "settings": {
+            "format_group": "flameless",
+            "format_type": "Flameless · Wickless Cylinder",
+            "title": "18oz Wickless Builder",
+            "subcopy": "Enjoy the same signature fragrance without an open flame.",
+            "product_url": "/products/18oz-wickless-cylinder-jar",
+            "cta_label": "Choose flameless",
+            "wickless_note": ""
+          }
+        },
+        "format_10": {
+          "type": "format",
+          "settings": {
+            "format_group": "bundle",
+            "format_type": "Bundles · Scent Shots",
+            "title": "Scent Shot Bundles",
+            "subcopy": "Sample and layer fragrance stories across multiple spaces.",
+            "product_url": "/products/scent-shots-3-pack",
+            "cta_label": "Explore bundles",
             "wickless_note": ""
           }
         }
@@ -47,7 +140,14 @@
       "block_order": [
         "format_1",
         "format_2",
-        "format_3"
+        "format_3",
+        "format_4",
+        "format_5",
+        "format_6",
+        "format_7",
+        "format_8",
+        "format_9",
+        "format_10"
       ]
     }
   },

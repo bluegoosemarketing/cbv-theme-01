@@ -3,11 +3,23 @@
   --cbv-detail-muted: #6f645c;
   --cbv-detail-accent: #7d503b;
   --cbv-detail-border: rgba(39, 33, 29, 0.12);
+  --cbv-detail-surface: #faf7f3;
+  display: grid;
+  gap: clamp(3.2rem, 6vw, 5.6rem);
+}
+
+.cbv-scent-detail__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 4.4rem);
+  padding: clamp(2.2rem, 3vw, 3.4rem);
+  border-radius: 2.4rem;
+  background: linear-gradient(135deg, #fff 0%, var(--cbv-detail-surface) 100%);
+  border: 1px solid var(--cbv-detail-border);
 }
 
 .cbv-scent-detail__intro {
-  max-width: 74rem;
-  margin-bottom: 3rem;
+  max-width: 72rem;
 }
 
 .cbv-scent-detail__eyebrow {
@@ -19,16 +31,23 @@
 }
 
 .cbv-scent-detail__title {
-  margin: 0;
+  margin: 0.4rem 0 0;
   color: var(--cbv-detail-ink);
-  font-size: clamp(3.2rem, 5vw, 5.8rem);
-  line-height: 1.06;
+  font-size: clamp(3.4rem, 5.5vw, 6.4rem);
+  line-height: 1.02;
+}
+
+.cbv-scent-detail__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.6rem;
 }
 
 .cbv-scent-detail__badge {
-  margin: 1.4rem 0 0;
+  margin: 0;
   display: inline-block;
-  padding: 0.5rem 1.1rem;
+  padding: 0.55rem 1.2rem;
   border-radius: 999px;
   border: 1px solid var(--cbv-detail-border);
   color: var(--cbv-detail-muted);
@@ -37,37 +56,118 @@
   letter-spacing: 0.08em;
 }
 
+.cbv-scent-detail__badge--seasonal {
+  border-color: rgba(125, 80, 59, 0.24);
+  color: var(--cbv-detail-accent);
+}
+
 .cbv-scent-detail__about {
-  margin-top: 1.8rem;
+  margin-top: 2rem;
   color: var(--cbv-detail-muted);
   max-width: 58rem;
+  font-size: 1.75rem;
+  line-height: 1.7;
+}
+
+.cbv-scent-detail__facts {
+  background: #fff;
+  border: 1px solid var(--cbv-detail-border);
+  border-radius: 1.8rem;
+  padding: 2rem;
+  display: grid;
+  gap: 1.4rem;
+  align-self: start;
+}
+
+.cbv-scent-detail__fact {
+  padding-bottom: 1.4rem;
+  border-bottom: 1px solid var(--cbv-detail-border);
+}
+
+.cbv-scent-detail__fact:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.cbv-scent-detail__fact-label {
+  margin: 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--cbv-detail-muted);
+}
+
+.cbv-scent-detail__fact-value {
+  margin: 0.7rem 0 0;
+  color: var(--cbv-detail-ink);
+  line-height: 1.5;
+}
+
+.cbv-scent-detail__formats-header {
+  max-width: 72rem;
 }
 
 .cbv-scent-detail__formats h2 {
-  margin: 0 0 1.6rem;
+  margin: 0.7rem 0 1rem;
   color: var(--cbv-detail-ink);
+  font-size: clamp(2.6rem, 4.3vw, 4rem);
+}
+
+.cbv-scent-detail__formats-header p {
+  margin: 0 0 1.6rem;
+  color: var(--cbv-detail-muted);
+}
+
+.cbv-scent-detail__format-group {
+  margin-top: 3rem;
+}
+
+.cbv-scent-detail__format-group h3 {
+  margin: 0 0 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-size: 1.2rem;
+  color: var(--cbv-detail-muted);
 }
 
 .cbv-scent-detail__format-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 1.2rem;
+  gap: 1.6rem;
 }
 
 .cbv-format-card {
   border: 1px solid var(--cbv-detail-border);
-  border-radius: 1.4rem;
-  padding: 1.8rem;
+  border-radius: 1.6rem;
+  padding: 2rem;
   background: #fff;
+  display: grid;
+  gap: 0.9rem;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cbv-format-card:hover {
+  border-color: rgba(125, 80, 59, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 1.4rem 2.8rem rgba(39, 33, 29, 0.08);
+}
+
+.cbv-format-card__type {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 1.1rem;
+  color: var(--cbv-detail-accent);
 }
 
 .cbv-format-card h3 {
   margin: 0;
   color: var(--cbv-detail-ink);
+  font-size: 2.2rem;
 }
 
 .cbv-format-card p {
-  margin: 0.8rem 0;
+  margin: 0;
   color: var(--cbv-detail-muted);
 }
 
@@ -77,12 +177,31 @@
   letter-spacing: 0.08em;
 }
 
-.cbv-format-card .button {
-  margin-top: 1rem;
+.cbv-format-card__cta {
+  margin-top: 0.5rem;
+  color: var(--cbv-detail-ink);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.cbv-scent-detail__footnote {
+  margin: 2rem 0 0;
+  color: var(--cbv-detail-muted);
+  border-top: 1px solid var(--cbv-detail-border);
+  padding-top: 1.5rem;
 }
 
 @media screen and (min-width: 900px) {
   .cbv-scent-detail__format-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .cbv-scent-detail__hero {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
