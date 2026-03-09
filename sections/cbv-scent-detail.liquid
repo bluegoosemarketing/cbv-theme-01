@@ -72,7 +72,7 @@
             assign joiner = '&'
           endif
           assign full_url = base_url | append: joiner | append: 'scent=' | append: scent_handle
-          assign card_markup
+          capture card_markup
             echo '<article class="cbv-format-card"'
             echo block.shopify_attributes
             echo '>'
@@ -95,7 +95,7 @@
             echo '">'
             echo block.settings.cta_label | default: 'Customize this scent'
             echo '<span aria-hidden="true">→</span></a></article>'
-          endassign
+          endcapture
         -%}
         {%- case block.settings.format_group -%}
           {%- when 'flameless' -%}
