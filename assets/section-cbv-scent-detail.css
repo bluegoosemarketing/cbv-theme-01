@@ -67,18 +67,18 @@
 
 .cbv-eyebrow {
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 1.1rem;
+  letter-spacing: 0.25em;
+  font-size: 1.4rem;
   color: var(--cbv-accent);
   font-weight: 600;
-  margin-bottom: 1.6rem;
+  margin-bottom: 2rem;
   display: block;
 }
 
 .cbv-title {
-  margin: 0 0 2.4rem;
-  font-size: clamp(4.5rem, 7vw, 8.5rem);
-  line-height: 0.95;
+  margin: 0 0 3rem;
+  font-size: clamp(6rem, 9vw, 12rem); /* Significantly scaled up */
+  line-height: 0.9;
   font-weight: 400;
   color: var(--cbv-ink);
   letter-spacing: -0.03em;
@@ -93,13 +93,13 @@
 .cbv-badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.8rem 1.8rem;
+  padding: 1.1rem 2.4rem;
   border-radius: 100px;
   background: var(--cbv-ink);
   color: #fff;
   text-transform: uppercase;
-  font-size: 1.05rem;
-  letter-spacing: 0.12em;
+  font-size: 1.25rem;
+  letter-spacing: 0.15em;
   font-weight: 500;
 }
 
@@ -160,7 +160,7 @@
 }
 
 /* =======================================
-   AVAILABLE IN (FORMAT BUILDERS)
+   AVAILABLE IN (CATEGORY CARDS)
 ======================================= */
 .cbv-formats-wrapper {
   padding: 0 clamp(1rem, 3vw, 2rem);
@@ -187,53 +187,27 @@
   margin: 0;
 }
 
-.cbv-format-category {
-  margin-bottom: clamp(5rem, 7vw, 8rem);
-}
-
-.cbv-category-header {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  margin-bottom: 3rem;
-}
-
-.cbv-category-title {
-  font-size: 1.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--cbv-ink);
-  margin: 0;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.cbv-category-line {
-  height: 1px;
-  width: 100%;
-  background: linear-gradient(to right, var(--cbv-border), rgba(226, 214, 204, 0));
-}
-
-.cbv-format-grid {
+.cbv-category-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2.4rem;
 }
 
 @media screen and (min-width: 768px) {
-  .cbv-format-grid {
+  .cbv-category-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .cbv-format-grid {
+  .cbv-category-grid {
+    /* Exactly 3 columns for our 3 main categories */
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 /* =======================================
-   PRODUCT / FORMAT CARDS
+   CATEGORY CARDS
 ======================================= */
 .cbv-card {
   display: flex;
@@ -295,16 +269,16 @@
 }
 
 .cbv-card__title {
-  font-size: 2.4rem;
-  line-height: 1.2;
+  font-size: 2.8rem;
+  line-height: 1.1;
   margin: 0 0 1.2rem;
   font-weight: 400;
   color: var(--cbv-ink);
 }
 
 .cbv-card__desc {
-  font-size: 1.45rem;
-  line-height: 1.6;
+  font-size: 1.55rem;
+  line-height: 1.5;
   color: var(--cbv-ink-light);
   margin: 0 0 2rem;
 }
@@ -365,14 +339,4 @@
 .cbv-card:hover .cbv-card__cta-icon svg {
   transform: translateX(2px);
   stroke: #fff;
-}
-
-.cbv-scent-footnote {
-  margin-top: 6rem;
-  text-align: center;
-  font-size: 1.4rem;
-  color: var(--cbv-ink-light);
-  background: var(--cbv-hero-bg-1);
-  padding: 2.4rem;
-  border-radius: 1.2rem;
 }
