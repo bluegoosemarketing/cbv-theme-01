@@ -4,60 +4,150 @@
   assign scent_name = metaobject.name.value | default: metaobject.name
   assign scent_family = metaobject.scent_family.value | default: metaobject.scent_family
   assign scent_handle = metaobject.handle
+  assign scent_description = metaobject.description.value | default: metaobject.description | default: metaobject.short_description.value | default: metaobject.short_description
+  assign scent_notes = metaobject.fragrance_notes.value | default: metaobject.fragrance_notes | default: metaobject.notes.value | default: metaobject.notes
+  assign scent_season = metaobject.season.value | default: metaobject.season | default: metaobject.seasonal.value | default: metaobject.seasonal
+
+  assign candle_cards = ''
+  assign flameless_cards = ''
+  assign bundle_cards = ''
 -%}
 
 <section class="cbv-scent-detail page-width section-{{ section.id }}-padding">
-  <div class="cbv-scent-detail__intro">
-    <p class="cbv-scent-detail__eyebrow">Candles By Victoria Fragrance</p>
-    <h1 class="cbv-scent-detail__title">{{ scent_name }}</h1>
-    <p class="cbv-scent-detail__badge">{{ scent_family | default: 'Signature Collection' }}</p>
+  <header class="cbv-scent-detail__hero">
+    <div class="cbv-scent-detail__intro">
+      <p class="cbv-scent-detail__eyebrow">Candles By Victoria Fragrance Profile</p>
+      <h1 class="cbv-scent-detail__title">{{ scent_name }}</h1>
+      <div class="cbv-scent-detail__tags" role="list" aria-label="Scent details">
+        <p class="cbv-scent-detail__badge" role="listitem">{{ scent_family | default: 'Signature Collection' }}</p>
+        {%- if scent_season != blank -%}
+          <p class="cbv-scent-detail__badge cbv-scent-detail__badge--seasonal" role="listitem">{{ scent_season }}</p>
+        {%- endif -%}
+      </div>
 
-    <div class="cbv-scent-detail__about rte">
-      <p>
-        A fan-favorite in our {{ scent_family | default: 'signature' }} collection, {{ scent_name }} is crafted to deliver a beautiful, room-filling experience.
-        Explore this scent across our format lineup and personalize it in the builder to match your space.
-      </p>
+      <div class="cbv-scent-detail__about rte">
+        {%- if scent_description != blank -%}
+          {{ scent_description }}
+        {%- else -%}
+          <p>
+            A fan-favorite in our {{ scent_family | default: 'signature' }} collection, {{ scent_name }} is crafted to deliver a beautiful, room-filling fragrance experience.
+            Select a format below, then personalize your pour inside the builder.
+          </p>
+        {%- endif -%}
+      </div>
     </div>
-  </div>
 
-  <div class="cbv-scent-detail__formats">
-    <h2>Available In</h2>
-    <div class="cbv-scent-detail__format-grid">
-      {%- if section.blocks.size > 0 -%}
-        {%- for block in section.blocks -%}
-          {%- liquid
-            assign base_url = block.settings.product_url | default: '/products/12oz-jar-candle'
-            assign joiner = '?'
-            if base_url contains '?'
-              assign joiner = '&'
-            endif
-            assign full_url = base_url | append: joiner | append: 'scent=' | append: scent_handle
-          -%}
-          <article class="cbv-format-card" {{ block.shopify_attributes }}>
-            <h3>{{ block.settings.title | default: 'Builder format' }}</h3>
-            <p>{{ block.settings.subcopy | default: 'A premium format handcrafted and poured to order.' }}</p>
-            {%- if block.settings.wickless_note != blank -%}
-              <p class="cbv-format-card__meta">{{ block.settings.wickless_note }}</p>
-            {%- endif -%}
-            <a class="button" href="{{ full_url }}">Customize this scent</a>
-          </article>
-        {%- endfor -%}
-      {%- else -%}
-        {%- assign fallback_titles = '12oz Jar Candle|18oz Large Candle|30oz Triple Wick|70oz Massive Candle' | split: '|' -%}
-        {%- assign fallback_links = '/products/12oz-jar-candle|/products/18oz-large-candle|/products/30oz-triple-wick-candle|/products/70oz-massive-candle' | split: '|' -%}
-        {%- assign fallback_copy = 'Classic everyday luxury with exceptional throw.|A statement jar for longer evening burns.|Broad melt pool and elevated fragrance projection.|Grand scale ambiance for signature spaces.' | split: '|' -%}
-
-        {%- for item in fallback_titles -%}
-          {%- assign idx = forloop.index0 -%}
-          {%- assign fallback_url = fallback_links[idx] | append: '?scent=' | append: scent_handle -%}
-          <article class="cbv-format-card">
-            <h3>{{ item }}</h3>
-            <p>{{ fallback_copy[idx] }}</p>
-            <a class="button" href="{{ fallback_url }}">Customize this scent</a>
-          </article>
-        {%- endfor -%}
+    <div class="cbv-scent-detail__facts" aria-label="Fragrance details">
+      <div class="cbv-scent-detail__fact">
+        <p class="cbv-scent-detail__fact-label">Fragrance family</p>
+        <p class="cbv-scent-detail__fact-value">{{ scent_family | default: 'Signature Collection' }}</p>
+      </div>
+      {%- if scent_notes != blank -%}
+        <div class="cbv-scent-detail__fact">
+          <p class="cbv-scent-detail__fact-label">Fragrance notes</p>
+          <p class="cbv-scent-detail__fact-value">{{ scent_notes }}</p>
+        </div>
+      {%- endif -%}
+      {%- if scent_season != blank -%}
+        <div class="cbv-scent-detail__fact">
+          <p class="cbv-scent-detail__fact-label">Seasonal profile</p>
+          <p class="cbv-scent-detail__fact-value">{{ scent_season }}</p>
+        </div>
       {%- endif -%}
     </div>
+  </header>
+
+  <div class="cbv-scent-detail__formats">
+    <div class="cbv-scent-detail__formats-header">
+      <p class="cbv-scent-detail__eyebrow">Available In</p>
+      <h2>Choose your format, then customize {{ scent_name }}</h2>
+      <p>From petite everyday pours to statement centerpiece vessels, choose the candle size that fits your space and scenting style, then enter the builder with this fragrance pre-selected.</p>
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign base_url = block.settings.product_url | default: '/products/12oz-jar-candle'
+          assign joiner = '?'
+          if base_url contains '?'
+            assign joiner = '&'
+          endif
+          assign full_url = base_url | append: joiner | append: 'scent=' | append: scent_handle
+          assign card_markup
+            echo '<article class="cbv-format-card"'
+            echo block.shopify_attributes
+            echo '>'
+            echo '<p class="cbv-format-card__type">'
+            echo block.settings.format_type | default: 'Candle'
+            echo '</p>'
+            echo '<h3>'
+            echo block.settings.title | default: 'Builder format'
+            echo '</h3>'
+            echo '<p>'
+            echo block.settings.subcopy | default: 'A premium format handcrafted and poured to order.'
+            echo '</p>'
+            if block.settings.wickless_note != blank
+              echo '<p class="cbv-format-card__meta">'
+              echo block.settings.wickless_note
+              echo '</p>'
+            endif
+            echo '<a class="cbv-format-card__cta" href="'
+            echo full_url
+            echo '">'
+            echo block.settings.cta_label | default: 'Customize this scent'
+            echo '<span aria-hidden="true">→</span></a></article>'
+          endassign
+        -%}
+        {%- case block.settings.format_group -%}
+          {%- when 'flameless' -%}
+            {%- assign flameless_cards = flameless_cards | append: card_markup -%}
+          {%- when 'bundle' -%}
+            {%- assign bundle_cards = bundle_cards | append: card_markup -%}
+          {%- else -%}
+            {%- assign candle_cards = candle_cards | append: card_markup -%}
+        {%- endcase -%}
+      {%- endfor -%}
+
+      {%- if candle_cards != blank -%}
+        <section class="cbv-scent-detail__format-group">
+          <h3>Candles</h3>
+          <div class="cbv-scent-detail__format-grid">{{ candle_cards }}</div>
+        </section>
+      {%- endif -%}
+      {%- if flameless_cards != blank -%}
+        <section class="cbv-scent-detail__format-group">
+          <h3>Flameless</h3>
+          <div class="cbv-scent-detail__format-grid">{{ flameless_cards }}</div>
+        </section>
+      {%- endif -%}
+      {%- if bundle_cards != blank -%}
+        <section class="cbv-scent-detail__format-group">
+          <h3>Bundles &amp; Sets</h3>
+          <div class="cbv-scent-detail__format-grid">{{ bundle_cards }}</div>
+        </section>
+      {%- endif -%}
+    {%- else -%}
+      {%- assign fallback_types = '4oz · Mini Jelly|9oz · Salsa / Mini Cylinder|12oz · Tumbler Collection|16oz · Cylinder / Salsa / Square|18oz · Honeycomb Collection|24oz · Ribbed Jar|30oz · Cylinder Statement|70oz · Grand Cylinder' | split: '|' -%}
+      {%- assign fallback_titles = '4oz Candle Builder|9oz Candle Builder|12oz Candle Builder|16oz Candle Builder|18oz Candle Builder|24oz Candle Builder|30oz Candle Builder|70oz Candle Builder' | split: '|' -%}
+      {%- assign fallback_links = '/collections/candle-jars|/collections/candle-jars|/products/12oz-jar-candle|/products/16oz-square-candle|/products/18oz-honeycomb-candle|/collections/candle-jars|/collections/30oz-victorian|/collections/70oz-5-wick' | split: '|' -%}
+      {%- assign fallback_copy = 'Petite one-wick profile with wickless availability for smaller spaces.|Compact one-wick format with wickless availability for desks and bedside styling.|Our signature everyday vessel with curated glass colorways and optional wood wick.|Versatile medium format with curated silhouettes and wickless or wood-wick pathways.|Textural, elevated vessel family with two-wick performance and wickless/wood-wick options.|Ribbed two-wick profile designed for open-concept fragrance moments.|Triple-wick statement format with broad fragrance projection.|Our most dramatic four-wick vessel for large, high-impact spaces.' | split: '|' -%}
+      <section class="cbv-scent-detail__format-group">
+        <h3>Complete vessel lineup</h3>
+        <div class="cbv-scent-detail__format-grid">
+          {%- for item in fallback_titles -%}
+            {%- assign idx = forloop.index0 -%}
+            {%- assign fallback_url = fallback_links[idx] | append: '?scent=' | append: scent_handle -%}
+            <article class="cbv-format-card">
+              <p class="cbv-format-card__type">{{ fallback_types[idx] }}</p>
+              <h3>{{ item }}</h3>
+              <p>{{ fallback_copy[idx] }}</p>
+              <a class="cbv-format-card__cta" href="{{ fallback_url }}">Choose this vessel <span aria-hidden="true">→</span></a>
+            </article>
+          {%- endfor -%}
+        </div>
+      </section>
+    {%- endif -%}
+
+    <p class="cbv-scent-detail__footnote">Most formats support wickless options, and select vessels offer wood wick upgrades in-builder for a different ambiance.</p>
   </div>
 
   <script type="application/ld+json">
@@ -82,7 +172,7 @@
       "step": 4,
       "unit": "px",
       "label": "Top padding",
-      "default": 40
+      "default": 88
     },
     {
       "type": "range",
@@ -92,7 +182,7 @@
       "step": 4,
       "unit": "px",
       "label": "Bottom padding",
-      "default": 56
+      "default": 72
     }
   ],
   "blocks": [
@@ -100,6 +190,32 @@
       "type": "format",
       "name": "Format",
       "settings": [
+        {
+          "type": "select",
+          "id": "format_group",
+          "label": "Format group",
+          "default": "candle",
+          "options": [
+            {
+              "value": "candle",
+              "label": "Candles"
+            },
+            {
+              "value": "flameless",
+              "label": "Flameless"
+            },
+            {
+              "value": "bundle",
+              "label": "Bundles / sets"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "format_type",
+          "label": "Format type label",
+          "default": "Candle"
+        },
         {
           "type": "text",
           "id": "title",
@@ -119,6 +235,12 @@
         },
         {
           "type": "text",
+          "id": "cta_label",
+          "label": "CTA label",
+          "default": "Customize this scent"
+        },
+        {
+          "type": "text",
           "id": "wickless_note",
           "label": "Optional wickless/supporting note"
         }
@@ -133,25 +255,111 @@
         {
           "type": "format",
           "settings": {
-            "title": "12oz Jar Candle",
-            "subcopy": "Classic silhouette, double scented, hand-poured in Texas.",
-            "product_url": "/products/12oz-jar-candle"
+            "title": "4oz Candle Builder",
+            "format_group": "candle",
+            "format_type": "4oz · Mini Jelly",
+            "subcopy": "Petite one-wick profile with wickless availability for smaller spaces.",
+            "product_url": "/collections/candle-jars",
+            "cta_label": "Choose this vessel"
           }
         },
         {
           "type": "format",
           "settings": {
-            "title": "18oz Large Candle",
-            "subcopy": "Extended burn time with elevated fragrance impact.",
-            "product_url": "/products/18oz-large-candle"
+            "title": "9oz Candle Builder",
+            "format_group": "candle",
+            "format_type": "9oz · Salsa / Mini Cylinder",
+            "subcopy": "Compact one-wick format with wickless availability for desks and bedside styling.",
+            "product_url": "/collections/candle-jars",
+            "cta_label": "Choose this vessel"
           }
         },
         {
           "type": "format",
           "settings": {
-            "title": "30oz Triple Wick",
-            "subcopy": "Broad throw and dramatic glow for larger rooms.",
-            "product_url": "/products/30oz-triple-wick-candle"
+            "title": "12oz Candle Builder",
+            "format_group": "candle",
+            "format_type": "12oz · Tumbler Collection",
+            "subcopy": "Our signature everyday vessel with curated glass colorways and optional wood wick.",
+            "product_url": "/products/12oz-jar-candle",
+            "cta_label": "Choose this vessel"
+          }
+        },
+        {
+          "type": "format",
+          "settings": {
+            "title": "16oz Candle Builder",
+            "format_group": "candle",
+            "format_type": "16oz · Cylinder / Salsa / Square",
+            "subcopy": "Versatile medium format with curated silhouettes and wickless or wood-wick pathways.",
+            "product_url": "/products/16oz-square-candle",
+            "cta_label": "Choose this vessel"
+          }
+        },
+        {
+          "type": "format",
+          "settings": {
+            "title": "18oz Candle Builder",
+            "format_group": "candle",
+            "format_type": "18oz · Honeycomb Collection",
+            "subcopy": "Textural, elevated vessel family with two-wick performance and wickless/wood-wick options.",
+            "product_url": "/products/18oz-honeycomb-candle",
+            "cta_label": "Choose this vessel"
+          }
+        },
+        {
+          "type": "format",
+          "settings": {
+            "title": "24oz Candle Builder",
+            "format_group": "candle",
+            "format_type": "24oz · Ribbed Jar",
+            "subcopy": "Ribbed two-wick profile designed for open-concept fragrance moments.",
+            "product_url": "/collections/candle-jars",
+            "cta_label": "Choose this vessel"
+          }
+        },
+        {
+          "type": "format",
+          "settings": {
+            "title": "30oz Candle Builder",
+            "format_group": "candle",
+            "format_type": "30oz · Cylinder Statement",
+            "subcopy": "Triple-wick statement format with broad fragrance projection.",
+            "product_url": "/collections/30oz-victorian",
+            "cta_label": "Choose this vessel"
+          }
+        },
+        {
+          "type": "format",
+          "settings": {
+            "title": "70oz Candle Builder",
+            "format_group": "candle",
+            "format_type": "70oz · Grand Cylinder",
+            "subcopy": "Our most dramatic four-wick vessel for large, high-impact spaces.",
+            "product_url": "/collections/70oz-5-wick",
+            "cta_label": "Choose this vessel"
+          }
+        },
+        {
+          "type": "format",
+          "settings": {
+            "title": "18oz Wickless Builder",
+            "format_group": "flameless",
+            "format_type": "Flameless · Wickless Cylinder",
+            "subcopy": "Enjoy the same signature fragrance without an open flame.",
+            "product_url": "/products/18oz-wickless-cylinder-jar",
+            "cta_label": "Choose flameless"
+          }
+        },
+        {
+          "type": "format",
+          "settings": {
+            "title": "Scent Shot Bundles",
+            "format_group": "bundle",
+            "format_type": "Bundles · Scent Shots",
+            "subcopy": "Sample and layer fragrance stories across multiple spaces.",
+            "product_url": "/products/scent-shots-3-pack",
+            "cta_label": "Explore bundles"
           }
         }
       ]
