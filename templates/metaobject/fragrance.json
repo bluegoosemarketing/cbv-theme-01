@@ -12,8 +12,8 @@
     "main": {
       "type": "cbv-scent-detail",
       "settings": {
-        "padding_top": 88,
-        "padding_bottom": 72
+        "padding_top": 140,
+        "padding_bottom": 100
       },
       "blocks": {
         "format_1": {
@@ -24,7 +24,7 @@
             "title": "4oz Candle Builder",
             "subcopy": "Petite one-wick profile with wickless availability for smaller spaces.",
             "product_url": "/collections/candle-jars",
-            "cta_label": "Choose this vessel",
+            "cta_label": "Customize Scent",
             "wickless_note": ""
           }
         },
@@ -36,7 +36,7 @@
             "title": "9oz Candle Builder",
             "subcopy": "Compact one-wick format with wickless availability for desks and bedside styling.",
             "product_url": "/collections/candle-jars",
-            "cta_label": "Choose this vessel",
+            "cta_label": "Customize Scent",
             "wickless_note": ""
           }
         },
@@ -48,7 +48,7 @@
             "title": "12oz Candle Builder",
             "subcopy": "Our signature everyday vessel with curated glass colorways and optional wood wick.",
             "product_url": "/products/12oz-jar-candle",
-            "cta_label": "Choose this vessel",
+            "cta_label": "Customize Scent",
             "wickless_note": ""
           }
         },
@@ -60,7 +60,7 @@
             "title": "16oz Candle Builder",
             "subcopy": "Versatile medium format with curated silhouettes and wickless or wood-wick pathways.",
             "product_url": "/products/16oz-square-candle",
-            "cta_label": "Choose this vessel",
+            "cta_label": "Customize Scent",
             "wickless_note": ""
           }
         },
@@ -72,7 +72,7 @@
             "title": "18oz Candle Builder",
             "subcopy": "Textural, elevated vessel family with two-wick performance and wickless/wood-wick options.",
             "product_url": "/products/18oz-honeycomb-candle",
-            "cta_label": "Choose this vessel",
+            "cta_label": "Customize Scent",
             "wickless_note": ""
           }
         },
@@ -84,7 +84,7 @@
             "title": "24oz Candle Builder",
             "subcopy": "Ribbed two-wick profile designed for open-concept fragrance moments.",
             "product_url": "/collections/candle-jars",
-            "cta_label": "Choose this vessel",
+            "cta_label": "Customize Scent",
             "wickless_note": ""
           }
         },
@@ -96,7 +96,7 @@
             "title": "30oz Candle Builder",
             "subcopy": "Triple-wick statement format with broad fragrance projection.",
             "product_url": "/collections/30oz-victorian",
-            "cta_label": "Choose this vessel",
+            "cta_label": "Customize Scent",
             "wickless_note": ""
           }
         },
@@ -108,7 +108,7 @@
             "title": "70oz Candle Builder",
             "subcopy": "Our most dramatic four-wick vessel for large, high-impact spaces.",
             "product_url": "/collections/70oz-5-wick",
-            "cta_label": "Choose this vessel",
+            "cta_label": "Customize Scent",
             "wickless_note": ""
           }
         },
@@ -120,7 +120,7 @@
             "title": "18oz Wickless Builder",
             "subcopy": "Enjoy the same signature fragrance without an open flame.",
             "product_url": "/products/18oz-wickless-cylinder-jar",
-            "cta_label": "Choose flameless",
+            "cta_label": "Choose Flameless",
             "wickless_note": ""
           }
         },
@@ -132,12 +132,12 @@
             "title": "Scent Shot Bundles",
             "subcopy": "Sample and layer fragrance stories across multiple spaces.",
             "product_url": "/products/scent-shots-3-pack",
-            "cta_label": "Explore bundles",
+            "cta_label": "Explore Bundles",
             "wickless_note": ""
           }
         }
       },
-      "block_order": [
+      "block_order":[
         "format_1",
         "format_2",
         "format_3",
