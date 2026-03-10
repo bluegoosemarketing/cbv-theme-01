@@ -7,6 +7,7 @@
   assign scent_description = metaobject.description.value | default: metaobject.description | default: metaobject.short_description.value | default: metaobject.short_description
   assign scent_notes = metaobject.fragrance_notes.value | default: metaobject.fragrance_notes | default: metaobject.notes.value | default: metaobject.notes
   assign scent_season = metaobject.season.value | default: metaobject.season | default: metaobject.seasonal.value | default: metaobject.seasonal
+  assign scent_param_value = scent_name | default: scent_handle | strip | url_encode
 -%}
 
 <section class="cbv-scent-detail page-width section-{{ section.id }}-padding">
@@ -81,7 +82,7 @@
             endif
             
             # This dynamically appends the ?scent=handle to your URL for the next page to read
-            assign full_url = base_url | append: joiner | append: 'scent=' | append: scent_handle
+            assign full_url = base_url | append: joiner | append: 'scent=' | append: scent_param_value
           -%}
           
           <a href="{{ full_url }}" class="cbv-card" {{ block.shopify_attributes }}>
@@ -106,7 +107,7 @@
         {%- endfor -%}
       {%- else -%}
         <!-- Fallback if blocks are deleted -->
-        <a href="/collections/custom-candles?scent={{ scent_handle }}" class="cbv-card">
+        <a href="/collections/custom-candles?scent={{ scent_param_value }}" class="cbv-card">
           <div class="cbv-card__top">
             <span class="cbv-card__type">Custom Candles</span>
             <h3 class="cbv-card__title">Hand-Poured Candles</h3>
