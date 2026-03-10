@@ -11,15 +11,6 @@
   "sections": {
     "main": {
       "type": "cbv-builder-product",
-      "settings": {
-        "eyebrow": "Build your candle",
-        "color_scheme": "option-1",
-        "padding_top": 32,
-        "padding_bottom": 40
-      }
-    },
-    "17731737379e8ddbc1": {
-      "type": "apps",
       "blocks": {
         "recharge_subscriptions_subscription_widget_v2_7kMJbM": {
           "type": "shopify://apps/recharge-subscriptions/blocks/subscription-widget-v2/371eed76-0b44-4869-9813-730372ea378e",
@@ -30,14 +21,14 @@
         "recharge_subscriptions_subscription_widget_v2_7kMJbM"
       ],
       "settings": {
-        "include_margins": true,
-        "padding_top": 96,
-        "padding_bottom": 96
+        "eyebrow": "Build your candle",
+        "color_scheme": "option-1",
+        "padding_top": 32,
+        "padding_bottom": 40
       }
     }
   },
   "order": [
-    "main",
-    "17731737379e8ddbc1"
+    "main"
   ]
 }
