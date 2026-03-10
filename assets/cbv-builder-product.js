@@ -116,6 +116,7 @@
     const noResultsEl = builderEl.querySelector('[data-cbv-no-results]');
     const scentProp = builderEl.querySelector('[data-cbv-prop-scent]');
     const familyProp = builderEl.querySelector('[data-cbv-prop-family]');
+    const selectedScentBanner = builderEl.querySelector('[data-cbv-selected-scent]');
     const wickUpgradeProp = builderEl.querySelector('[data-cbv-prop-wick-upgrade]');
     const wickUpgradeGroup = builderEl.querySelector('[data-cbv-wick-upgrade-group]');
     const wickUpgradeInputs = builderEl.querySelectorAll('[data-cbv-wick-upgrade-input]');
@@ -297,6 +298,11 @@
       scentProp.value = scent.name;
       familyProp.value = scent.family || '';
 
+      if (selectedScentBanner) {
+        selectedScentBanner.textContent = `Selected fragrance: ${scent.name}`;
+        selectedScentBanner.hidden = false;
+      }
+
       updateStepHeader(scentGroup, scent.name);
       updateTicket();
       renderResults();
@@ -347,6 +353,7 @@
             selectedScent = null;
             scentProp.value = '';
             familyProp.value = '';
+            if (selectedScentBanner) selectedScentBanner.hidden = true;
             updateTicket();
           }
 
@@ -440,6 +447,7 @@
         selectedScent = null;
         scentProp.value = '';
         familyProp.value = '';
+        if (selectedScentBanner) selectedScentBanner.hidden = true;
         updateTicket();
       }
       renderResults();
