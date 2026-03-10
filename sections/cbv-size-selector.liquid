@@ -177,6 +177,17 @@
           const woodEl = sectionEl.querySelector('[data-size-wood]');
           const ctaEl = sectionEl.querySelector('[data-size-cta]');
           const buttons = sectionEl.querySelectorAll('[data-size-button]');
+          const scentParam = new URLSearchParams(window.location.search).get('scent');
+
+          const appendScentParam = (url) => {
+            if (!url || !scentParam) return url;
+
+            const [base, hash = ''] = url.split('#');
+            const joiner = base.includes('?') ? '&' : '?';
+            const nextUrl = `${base}${joiner}scent=${encodeURIComponent(scentParam)}`;
+
+            return hash ? `${nextUrl}#${hash}` : nextUrl;
+          };
 
           const parseStyles = (styles) => {
             if (!styles) return [];
@@ -250,7 +261,7 @@
             // CTA
             if (ctaEl) {
                 if (selected.builderLink) {
-                    ctaEl.href = selected.builderLink;
+                    ctaEl.href = appendScentParam(selected.builderLink);
                     ctaEl.classList.remove('is-disabled');
                 } else {
                     ctaEl.href = '#';

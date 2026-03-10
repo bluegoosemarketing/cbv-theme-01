@@ -28,6 +28,11 @@
     return '$' + (cents / 100).toFixed(2);
   }
 
+  function getUrlScent() {
+    const params = new URLSearchParams(window.location.search);
+    return (params.get('scent') || '').toString().trim();
+  }
+
   async function setupBuilder(builderEl) {
     const fragranceScript = builderEl.querySelector('[data-cbv-fragrance-data]');
     if (!fragranceScript) return;
@@ -288,6 +293,7 @@
 
     function selectScent(scent) {
       selectedScent = scent;
+      scentInput.value = scent.name;
       scentProp.value = scent.name;
       familyProp.value = scent.family || '';
 
@@ -444,6 +450,14 @@
     if (wickUpgradeGroup) syncChoiceCards(wickUpgradeInputs);
 
     applyVariant(findVariant(selectedJar, selectedWickUpgrade));
+
+    const requestedScent = getUrlScent();
+    if (requestedScent) {
+      const matchedScent = allScents.find((scent) => normalize(scent.name) === normalize(requestedScent));
+      if (matchedScent) {
+        selectScent(matchedScent);
+      }
+    }
 
     scentInput.dispatchEvent(new Event('input'));
     renderResults();
