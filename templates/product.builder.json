@@ -12,7 +12,7 @@
     "main": {
       "type": "cbv-builder-product",
       "settings": {
-        "eyebrow": "Customize your candle",
+        "eyebrow": "Build your candle",
         "color_scheme": "option-1",
         "padding_top": 32,
         "padding_bottom": 40

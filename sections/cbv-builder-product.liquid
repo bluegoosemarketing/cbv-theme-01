@@ -15,6 +15,7 @@
   if jar_option_values.size > 1
     assign has_jar_options = true
   endif
+  assign display_title = product.title | replace: ' - ', ' '
 -%}
 
 <section class="cbv-builder color-{{ section.settings.color_scheme }} gradient" data-cbv-builder data-section-id="{{ section.id }}">
@@ -43,23 +44,35 @@
       <!-- Content Column -->
       <div class="cbv-builder__content">
         <p class="cbv-builder__eyebrow">{{ section.settings.eyebrow }}</p>
-        <h1 class="cbv-builder__title">{{ product.title | escape }}</h1>
-        
-        <div class="cbv-builder__meta">
-          <div class="cbv-builder__price" data-cbv-price-display data-cbv-base-price="{{ current_variant.price }}">{{ current_variant.price | money }}</div>
-          <div class="cbv-reviews-badge">
-            <div class="cbv-stars">
-              {%- for i in (1..5) -%}
-                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-              {%- endfor -%}
-            </div>
-            <span class="cbv-reviews-text">4.9/5 | <strong>15,000+ Poured</strong></span>
+        <h1 class="cbv-builder__title">{{ display_title | escape }}</h1>
+
+        <div class="cbv-reviews-badge" aria-label="Rated 4.9 out of 5 from 15000+ candles poured">
+          <div class="cbv-stars">
+            {%- for i in (1..5) -%}
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            {%- endfor -%}
           </div>
+          <span class="cbv-reviews-text"><strong>4.9 rating</strong> &bull; 15,000+ candles poured</span>
+        </div>
+
+        <div class="cbv-builder__price-wrap">
+          <div class="cbv-builder__price" data-cbv-price-display data-cbv-base-price="{{ current_variant.price }}">{{ current_variant.price | money_without_trailing_zeros }}</div>
+          <p class="cbv-builder__price-note">Starting at</p>
         </div>
 
         {% if product.description != blank %}
           <div class="cbv-builder__description rte">{{ product.description }}</div>
         {% endif %}
+
+        <div class="cbv-builder__trust-row" aria-label="Why customers love this candle">
+          <span class="cbv-builder__trust-item">🕯 Hand poured in Texas</span>
+          <span class="cbv-builder__trust-item">🔥 Strong scent throw</span>
+          <span class="cbv-builder__trust-item">♻ Clean burning wax</span>
+        </div>
+
+        <p class="cbv-builder__selected-scent" data-cbv-selected-scent hidden></p>
+
+        <hr class="cbv-builder__divider" aria-hidden="true">
 
         <product-form class="product-form" data-section-id="{{ section.id }}">
           <div class="product-form__error-message-wrapper" role="alert" hidden>
@@ -476,7 +489,7 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "Customize your candle"
+      "default": "Build your candle"
     },
     {
       "type": "image_picker",
