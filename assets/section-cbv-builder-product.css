@@ -392,6 +392,22 @@
 .cbv-ticket-swatch { width: 2rem; height: 2rem; border-radius: 50%; display: inline-block; background-color: #eee; margin-right: 0.8rem; border: 1px solid rgba(0,0,0,0.1); }
 
 .cbv-purchase-options { margin-bottom: 3rem; }
+.cbv-purchase-options--apps {
+  background: #fff;
+  border: 1px solid #d0d0d0;
+  border-radius: 0.8rem;
+  padding: 2rem;
+}
+
+.cbv-purchase-options__block + .cbv-purchase-options__block {
+  margin-top: 1.5rem;
+}
+
+.cbv-purchase-options--apps [data-recharge-subscription-widget],
+.cbv-purchase-options--apps .rc-widget,
+.cbv-purchase-options--apps .shopify-block {
+  width: 100%;
+}
 .cbv-option-card { display: block; background: #fff; border: 1px solid #d0d0d0; border-radius: 0.8rem; padding: 2rem; margin-bottom: 1.5rem; cursor: pointer; transition: all 0.2s ease; position: relative; }
 .cbv-option-card:hover { border-color: #888; }
 .cbv-option-card--sub { background-color: #faf9f6; border-color: #dcdcdc; }

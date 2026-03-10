@@ -132,18 +132,11 @@
     const btnTitleEl = submitBtn.querySelector('.cbv-btn-title');
     const btnPriceEl = submitBtn.querySelector('.cbv-btn-price');
 
-    const purchaseOptions = builderEl.querySelectorAll('[data-cbv-option]');
-    const freqSelector = builderEl.querySelector('[data-cbv-frequency]');
-    const freqSelectInput = builderEl.querySelector('.cbv-freq-select');
     const mainPriceEl = builderEl.querySelector('[data-cbv-price-display]');
-    const onetimePriceDisplay = builderEl.querySelector('[data-cbv-onetime-price]');
-    const subOldPriceDisplay = builderEl.querySelector('[data-cbv-sub-old]');
-    const subNewPriceDisplay = builderEl.querySelector('[data-cbv-sub-new]');
 
     const groupHeaders = builderEl.querySelectorAll('[data-cbv-accordion-toggle]');
     const continueBtns = builderEl.querySelectorAll('[data-cbv-continue]');
 
-    let purchaseType = 'onetime';
     let selectedFamily = 'All';
     let selectedScent = null;
 
@@ -208,7 +201,11 @@
       selectedJar = variant.option1 || selectedJar;
       if (variant.option2) selectedWickUpgrade = variant.option2;
 
-      if (variantIdInput) variantIdInput.value = variant.id;
+      if (variantIdInput) {
+        variantIdInput.value = variant.id;
+        variantIdInput.dispatchEvent(new Event('input', { bubbles: true }));
+        variantIdInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
       if (wickUpgradeProp) wickUpgradeProp.value = selectedWickUpgrade;
 
       const variantImage = variant.featured_image?.src || variant.featured_media?.src || '';
@@ -243,6 +240,14 @@
       updateStepHeader(jarGroup, selectedJar);
       updateTicket();
       updatePricingUI();
+      builderEl.dispatchEvent(
+        new CustomEvent('cbv:variant:change', {
+          bubbles: true,
+          detail: {
+            variant
+          }
+        })
+      );
     }
 
     function updateTicket() {
@@ -272,24 +277,8 @@
 
     function updatePricingUI() {
       const basePriceCents = parseFloat(mainPriceEl.dataset.cbvBasePrice || '0');
-      const subPriceCents = basePriceCents * 0.9;
-
-      if (onetimePriceDisplay) onetimePriceDisplay.textContent = formatMoney(basePriceCents);
-      if (subOldPriceDisplay) subOldPriceDisplay.textContent = formatMoney(basePriceCents);
-      if (subNewPriceDisplay) subNewPriceDisplay.textContent = formatMoney(subPriceCents);
-
-      let finalPriceCents = basePriceCents;
-      if (purchaseType === 'sub') {
-        finalPriceCents = subPriceCents;
-        freqSelector.hidden = false;
-        if (freqSelectInput) freqSelectInput.disabled = false;
-        btnTitleEl.textContent = variantAvailable ? 'Join The Club & Pour' : 'Sold Out';
-      } else {
-        freqSelector.hidden = true;
-        if (freqSelectInput) freqSelectInput.disabled = true;
-        btnTitleEl.textContent = variantAvailable ? 'Pour My Candle' : 'Sold Out';
-      }
-      if (btnPriceEl) btnPriceEl.textContent = ` - ${formatMoney(finalPriceCents)}`;
+      btnTitleEl.textContent = variantAvailable ? 'Pour My Candle' : 'Sold Out';
+      if (btnPriceEl) btnPriceEl.textContent = ` - ${formatMoney(basePriceCents)}`;
     }
 
     function selectScent(scent) {
@@ -378,17 +367,6 @@
       header.addEventListener('click', () => {
         const group = header.closest('.cbv-builder__group');
         toggleGroup(group);
-      });
-    });
-
-    purchaseOptions.forEach((option) => {
-      option.addEventListener('click', () => {
-        purchaseOptions.forEach((o) => o.classList.remove('is-selected'));
-        option.classList.add('is-selected');
-        purchaseType = option.dataset.cbvOption;
-        const radio = option.querySelector('input[type="radio"]');
-        if (radio) radio.checked = true;
-        updatePricingUI();
       });
     });
 

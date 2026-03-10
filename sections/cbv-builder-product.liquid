@@ -297,52 +297,15 @@
             </div>
 
             <!-- PURCHASE OPTIONS -->
-            <div class="cbv-purchase-options" data-cbv-purchase-options>
-              <label class="cbv-option-card is-selected" data-cbv-option="onetime">
-                <input type="radio" name="purchase_type" value="onetime" checked class="visually-hidden">
-                <div class="cbv-opt-layout">
-                  <div class="cbv-opt-radio">
-                    <svg class="cbv-icon-unchecked" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
-                    <svg class="cbv-icon-checked" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><circle cx="12" cy="12" r="5"/></svg>
+            {%- if section.blocks.size > 0 -%}
+              <div class="cbv-purchase-options cbv-purchase-options--apps" data-cbv-purchase-options>
+                {%- for block in section.blocks -%}
+                  <div class="cbv-purchase-options__block" {{ block.shopify_attributes }}>
+                    {% render block %}
                   </div>
-                  <div class="cbv-opt-content">
-                    <span class="cbv-opt-title">One-Time Pour</span>
-                  </div>
-                  <div class="cbv-opt-price" data-cbv-onetime-price>{{ current_variant.price | money }}</div>
-                </div>
-              </label>
-
-              <label class="cbv-option-card cbv-option-card--sub" data-cbv-option="sub">
-                <input type="radio" name="purchase_type" value="sub" class="visually-hidden">
-                <div class="cbv-opt-layout">
-                  <div class="cbv-opt-radio">
-                    <svg class="cbv-icon-unchecked" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
-                    <svg class="cbv-icon-checked" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><circle cx="12" cy="12" r="5"/></svg>
-                  </div>
-                  <div class="cbv-opt-content">
-                    <div class="cbv-opt-header">
-                      <span class="cbv-opt-title">The Candle Club</span>
-                      <span class="cbv-opt-badge">Save 10%</span>
-                    </div>
-                    <div class="cbv-opt-subtitle">Subscribe & save. Never run out.</div>
-                  </div>
-                  <div class="cbv-opt-price">
-                    <span class="cbv-old-price" data-cbv-sub-old>{{ current_variant.price | money }}</span>
-                    <span class="cbv-new-price" data-cbv-sub-new>{{ current_variant.price | times: 0.9 | money }}</span>
-                  </div>
-                </div>
-              </label>
-
-              <div class="cbv-frequency-selector" data-cbv-frequency hidden>
-                <div class="cbv-freq-inner">
-                  <span class="cbv-freq-label">Deliver every:</span>
-                  <select name="selling_plan" class="cbv-freq-select">
-                    <option value="monthly">30 Days (Most Popular)</option>
-                    <option value="bimonthly">60 Days</option>
-                  </select>
-                </div>
+                {%- endfor -%}
               </div>
-            </div>
+            {%- endif -%}
 
             <!-- ADD TO CART -->
             <div class="product-form__buttons">
@@ -522,6 +485,11 @@
       "unit": "px",
       "label": "Bottom padding",
       "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
     }
   ],
   "presets": [
