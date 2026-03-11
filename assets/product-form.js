@@ -8,9 +8,7 @@ if (!customElements.get("product-form")) {
         this.form = this.querySelector("form");
         this.form.querySelector("[name=id]").disabled = false;
         this.form.addEventListener("submit", this.onSubmitHandler.bind(this));
-        this.cart =
-          document.querySelector("cart-notification") ||
-          document.querySelector("cart-drawer");
+        this.cart = this.getCartComponent();
         this.submitButton = this.querySelector('[type="submit"]');
         if (document.querySelector("cart-drawer"))
           this.submitButton.setAttribute("aria-haspopup", "dialog");
@@ -29,13 +27,17 @@ if (!customElements.get("product-form")) {
         delete config.headers["Content-Type"];
 
         const formData = new FormData(this.form);
-        if (this.cart) {
+        this.cart = this.getCartComponent();
+
+        if (this.cart && typeof this.cart.getSectionsToRender === "function") {
           formData.append(
             "sections",
             this.cart.getSectionsToRender().map((section) => section.id)
           );
           formData.append("sections_url", window.location.pathname);
-          this.cart.setActiveElement(document.activeElement);
+          if (typeof this.cart.setActiveElement === "function") {
+            this.cart.setActiveElement(document.activeElement);
+          }
         }
         config.body = formData;
 
@@ -53,7 +55,10 @@ if (!customElements.get("product-form")) {
               soldOutMessage.classList.remove("hidden");
               this.error = true;
               return;
-            } else if (!this.cart) {
+            } else if (
+              !this.cart ||
+              typeof this.cart.renderContents !== "function"
+            ) {
               window.location = window.routes.cart_url;
               return;
             }
@@ -95,6 +100,20 @@ if (!customElements.get("product-form")) {
               AOS.init();
             }
           });
+      }
+
+      getCartComponent() {
+        const carts = Array.from(
+          document.querySelectorAll("cart-notification, cart-drawer")
+        );
+
+        return (
+          carts.find(
+            (cart) =>
+              typeof cart.getSectionsToRender === "function" &&
+              typeof cart.renderContents === "function"
+          ) || carts[0] || null
+        );
       }
 
       handleErrorMessage(errorMessage = false) {
