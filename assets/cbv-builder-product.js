@@ -259,17 +259,15 @@
       if (waxGroup) waxGroup.classList.toggle('is-completed', hasWax);
       if (scentGroup) scentGroup.classList.toggle('is-completed', hasScent);
 
-      if (ticketWaxEl) ticketWaxEl.textContent = waxProp.value || '--';
-      if (ticketScentEl) ticketScentEl.textContent = scentProp.value || '--';
-      if (ticketWickEl) ticketWickEl.textContent = selectedWickUpgrade || '--';
-      if (ticketJarEl) ticketJarEl.textContent = selectedJar || '--';
+      if (ticketWaxEl) ticketWaxEl.textContent = waxProp.value || 'Make selection';
+      if (ticketScentEl) ticketScentEl.textContent = scentProp.value || 'Make selection';
+      if (ticketWickEl) ticketWickEl.textContent = selectedWickUpgrade || 'Not selected';
+      if (ticketJarEl) ticketJarEl.textContent = selectedJar || 'Not selected';
 
       const activeWaxInput = Array.from(waxInputs).find((input) => input.checked);
-      if (activeWaxInput && ticketSwatchEl) {
-        ticketSwatchEl.style.backgroundColor = activeWaxInput.dataset.hex;
+      if (ticketSwatchEl) {
+        ticketSwatchEl.style.backgroundColor = activeWaxInput ? activeWaxInput.dataset.hex : '#eee';
       }
-
-      ticketEl.hidden = !(hasWax && hasScent);
 
       const ready = hasJar && hasWax && hasScent && variantAvailable;
       submitBtn.disabled = !ready;
