@@ -1,0 +1,210 @@
+{{ 'section-cbv-simple-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'cbv-simple-product.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign product_form_id = 'cbv-standard-product-form-' | append: section.id
+  assign current_variant = product.selected_or_first_available_variant
+  assign current_media = current_variant.featured_media | default: product.featured_media
+-%}
+
+<section class="cbv-simple-product cbv-simple-product--standard color-{{ section.settings.color_scheme }} gradient" data-cbv-simple-product data-section-id="{{ section.id }}">
+  <div class="page-width section-{{ section.id }}-padding">
+    <div class="cbv-simple-product__grid">
+      <div class="cbv-simple-product__media">
+        {% if current_media %}
+          <div class="cbv-simple-product__main-media" style="--ratio-percent: {{ 1 | divided_by: current_media.aspect_ratio | times: 100 }}%;">
+            {{
+              current_media
+              | image_url: width: 1400
+              | image_tag:
+                id: 'CBVSimpleMainImage-' | append: section.id,
+                class: 'cbv-simple-product__main-image',
+                loading: 'lazy',
+                widths: '480, 760, 980, 1200, 1400',
+                sizes: '(min-width: 990px) 55vw, 100vw'
+            }}
+          </div>
+        {% endif %}
+
+        {% if product.media.size > 1 %}
+          <div class="cbv-simple-product__thumbs" role="list" aria-label="{{ product.title | escape }} media gallery">
+            {% for media in product.media %}
+              {% if media.media_type == 'image' %}
+                <button
+                  type="button"
+                  class="cbv-simple-product__thumb{% if media.id == current_media.id %} is-active{% endif %}"
+                  data-cbv-thumb
+                  data-media-id="{{ media.id }}"
+                  data-image-src="{{ media | image_url: width: 1400 }}"
+                  aria-label="View image {{ forloop.index }}"
+                >
+                  {{ media | image_url: width: 200 | image_tag: loading: 'lazy', class: 'cbv-simple-product__thumb-image' }}
+                </button>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="cbv-simple-product__content">
+        {% if section.settings.eyebrow != blank %}
+          <p class="cbv-simple-product__eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+        <h1 class="cbv-simple-product__title">{{ product.title | escape }}</h1>
+
+        <div class="cbv-simple-product__price" data-cbv-price>
+          {{ current_variant.price | money_without_trailing_zeros }}
+        </div>
+
+        {% if product.description != blank %}
+          <div class="cbv-simple-product__description rte">{{ product.description }}</div>
+        {% endif %}
+
+        <product-form class="product-form" data-section-id="{{ section.id }}">
+          <div class="product-form__error-message-wrapper" role="alert" hidden>
+            <span class="product-form__error-message"></span>
+          </div>
+
+          {%- form 'product', product, id: product_form_id, class: 'form cbv-simple-product__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}" data-cbv-variant-id>
+
+            {% unless product.has_only_default_variant %}
+              <div class="cbv-simple-product__variant-wrap" data-cbv-option-wrap>
+                {% for option in product.options_with_values %}
+                  <div class="cbv-simple-product__option-group">
+                    <label class="cbv-simple-product__option-label" for="CBVOption-{{ section.id }}-{{ forloop.index0 }}">
+                      {{ option.name }}
+                    </label>
+                    <div class="select">
+                      <select
+                        id="CBVOption-{{ section.id }}-{{ forloop.index0 }}"
+                        class="select__select cbv-simple-product__option-select"
+                        data-cbv-option
+                        data-option-position="{{ option.position }}"
+                      >
+                        {% for value in option.values %}
+                          <option value="{{ value | escape }}" {% if value == option.selected_value %}selected{% endif %}>
+                            {{ value }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                      {% render 'icon-caret' %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endunless %}
+
+            {%- if section.blocks.size > 0 -%}
+              <div class="cbv-simple-product__purchase-options" data-cbv-purchase-options>
+                {%- for block in section.blocks -%}
+                  <div class="cbv-simple-product__purchase-option" {{ block.shopify_attributes }}>
+                    {% render block %}
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            <div class="product-form__buttons">
+              <button
+                id="ProductSubmitButton-{{ section.id }}"
+                type="submit"
+                name="add"
+                class="product-form__submit button button--primary cbv-simple-product__submit"
+                {% unless current_variant.available %}disabled{% endunless %}
+                data-cbv-submit
+              >
+                <span>
+                  {% if current_variant.available %}
+                    {{ section.settings.cta_label }} · {{ current_variant.price | money }}
+                  {% else %}
+                    {{ 'products.product.sold_out' | t }}
+                  {% endif %}
+                </span>
+                <div class="loading-overlay-spinner hidden">
+                  <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                  </svg>
+                </div>
+              </button>
+            </div>
+          {%- endform -%}
+        </product-form>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-cbv-variants>
+    {{ product.variants | json }}
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "CBV Standard candle",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Candles By Victoria"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Add to cart label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "option-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "CBV Standard candle"
+    }
+  ]
+}
+{% endschema %}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
