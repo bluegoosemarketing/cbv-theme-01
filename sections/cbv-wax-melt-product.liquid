@@ -3,6 +3,7 @@
 
 {%- liquid
   assign product_form_id = 'cbv-wax-melt-product-form-' | append: section.id
+  assign main_image_id = 'CBVWaxMeltMainImage-' | append: section.id
   assign current_variant = product.selected_or_first_available_variant
   assign current_media = current_variant.featured_media | default: product.featured_media
 -%}
@@ -17,7 +18,7 @@
               current_media
               | image_url: width: 1400
               | image_tag:
-                id: 'CBVWaxMeltMainImage-' | append: section.id,
+                id: main_image_id,
                 class: 'cbv-simple-product__main-image',
                 loading: 'lazy',
                 widths: '480, 760, 980, 1200, 1400',
