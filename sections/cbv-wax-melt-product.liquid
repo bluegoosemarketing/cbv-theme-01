@@ -1,60 +1,73 @@
-{{ 'section-cbv-simple-product.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'cbv-simple-product.js' | asset_url }}" defer="defer"></script>
+{{ 'section-cbv-builder-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'cbv-wax-melt-builder.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign product_form_id = 'cbv-wax-melt-product-form-' | append: section.id
-  assign main_image_id = 'CBVWaxMeltMainImage-' | append: section.id
   assign current_variant = product.selected_or_first_available_variant
-  assign current_media = current_variant.featured_media | default: product.featured_media
+  assign vessel_option_values = product.options_with_values.first.values
+  assign secondary_option = product.options_with_values[1]
+  assign secondary_option_values = secondary_option.values
+  assign has_secondary_option = false
+  if secondary_option != blank and secondary_option_values.size > 0
+    assign has_secondary_option = true
+  endif
 -%}
 
-<section class="cbv-simple-product cbv-simple-product--wax-melt color-{{ section.settings.color_scheme }} gradient" data-cbv-simple-product data-section-id="{{ section.id }}">
+<section class="cbv-builder cbv-builder--wax-melt color-{{ section.settings.color_scheme }} gradient" data-cbv-wax-builder data-section-id="{{ section.id }}">
   <div class="page-width section-{{ section.id }}-padding">
-    <div class="cbv-simple-product__grid">
-      <div class="cbv-simple-product__media">
-        {% if current_media %}
-          <div class="cbv-simple-product__main-media" style="--ratio-percent: {{ 1 | divided_by: current_media.aspect_ratio | times: 100 }}%;">
+    <div class="cbv-builder__grid">
+      <div class="cbv-builder__media">
+        {% if product.featured_media %}
+          <div class="cbv-builder__image-wrapper" style="--ratio-percent: {{ 1 | divided_by: product.featured_media.aspect_ratio | times: 100 }}%;">
             {{
-              current_media
-              | image_url: width: 1400
+              product.featured_media
+              | image_url: width: 1200
               | image_tag:
-                id: main_image_id,
-                class: 'cbv-simple-product__main-image',
                 loading: 'lazy',
-                widths: '480, 760, 980, 1200, 1400',
-                sizes: '(min-width: 990px) 55vw, 100vw'
+                widths: '400, 600, 900, 1200',
+                sizes: '(min-width: 990px) 50vw, 100vw',
+                class: 'cbv-builder__image',
+                data-cbv-main-image: ''
             }}
           </div>
         {% endif %}
 
-        {% if product.media.size > 1 %}
-          <div class="cbv-simple-product__thumbs" role="list" aria-label="{{ product.title | escape }} media gallery">
-            {% for media in product.media %}
-              {% if media.media_type == 'image' %}
-                <button
-                  type="button"
-                  class="cbv-simple-product__thumb{% if media.id == current_media.id %} is-active{% endif %}"
-                  data-cbv-thumb
-                  data-media-id="{{ media.id }}"
-                  data-image-src="{{ media | image_url: width: 1400 }}"
-                  aria-label="View image {{ forloop.index }}"
-                >
-                  {{ media | image_url: width: 200 | image_tag: loading: 'lazy', class: 'cbv-simple-product__thumb-image' }}
-                </button>
-              {% endif %}
-            {% endfor %}
+        <div class="cbv-pour-ticket cbv-pour-ticket--media" data-cbv-ticket>
+          <div class="cbv-ticket-header">Your Wax Melt Build</div>
+          <div class="cbv-ticket-grid">
+            <div class="cbv-ticket-row">
+              <span class="cbv-ticket-label">Vessel / Format</span>
+              <div class="cbv-ticket-value">
+                <span data-cbv-ticket-vessel>{{ current_variant.option1 | default: current_variant.title }}</span>
+              </div>
+            </div>
+            <div class="cbv-ticket-row">
+              <span class="cbv-ticket-label">Fragrance</span>
+              <div class="cbv-ticket-value">
+                <span data-cbv-ticket-scent>Make selection</span>
+              </div>
+            </div>
+            {%- if has_secondary_option -%}
+              <div class="cbv-ticket-row">
+                <span class="cbv-ticket-label">{{ secondary_option.name }}</span>
+                <div class="cbv-ticket-value">
+                  <span data-cbv-ticket-secondary>{{ current_variant.option2 | default: secondary_option_values.first }}</span>
+                </div>
+              </div>
+            {%- endif -%}
           </div>
-        {% endif %}
+        </div>
       </div>
 
-      <div class="cbv-simple-product__content">
+      <div class="cbv-builder__content">
         {% if section.settings.eyebrow != blank %}
-          <p class="cbv-simple-product__eyebrow">{{ section.settings.eyebrow }}</p>
+          <p class="cbv-builder__eyebrow">{{ section.settings.eyebrow }}</p>
         {% endif %}
-        <h1 class="cbv-simple-product__title">{{ product.title | escape }}</h1>
+        <h1 class="cbv-builder__title">{{ product.title | escape }}</h1>
 
-        <div class="cbv-simple-product__price" data-cbv-price>
-          {{ current_variant.price | money_without_trailing_zeros }}
+        <div class="cbv-builder__price-wrap">
+          <div class="cbv-builder__price" data-cbv-price-display data-cbv-base-price="{{ current_variant.price }}">{{ current_variant.price | money_without_trailing_zeros }}</div>
+          <p class="cbv-builder__price-note">Starting at</p>
         </div>
 
         {% if section.settings.supporting_text != blank %}
@@ -62,48 +75,138 @@
         {% endif %}
 
         {% if product.description != blank %}
-          <div class="cbv-simple-product__description rte">{{ product.description }}</div>
+          <div class="cbv-builder__description rte">{{ product.description }}</div>
         {% endif %}
+
+        <p class="cbv-builder__selected-scent" data-cbv-selected-scent hidden></p>
+
+        <hr class="cbv-builder__divider" aria-hidden="true">
 
         <product-form class="product-form" data-section-id="{{ section.id }}">
           <div class="product-form__error-message-wrapper" role="alert" hidden>
             <span class="product-form__error-message"></span>
           </div>
 
-          {%- form 'product', product, id: product_form_id, class: 'form cbv-simple-product__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+          {%- form 'product', product, id: product_form_id, class: 'form cbv-builder__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
             <input type="hidden" name="id" value="{{ current_variant.id }}" data-cbv-variant-id>
 
-            {% unless product.has_only_default_variant %}
-              <div class="cbv-simple-product__variant-wrap" data-cbv-option-wrap>
-                {% for option in product.options_with_values %}
-                  <div class="cbv-simple-product__option-group">
-                    <label class="cbv-simple-product__option-label" for="CBVWaxOption-{{ section.id }}-{{ forloop.index0 }}">
-                      {{ option.name }}
-                    </label>
-                    <div class="select">
-                      <select
-                        id="CBVWaxOption-{{ section.id }}-{{ forloop.index0 }}"
-                        class="select__select cbv-simple-product__option-select"
-                        data-cbv-option
-                        data-option-position="{{ option.position }}"
-                      >
-                        {% for value in option.values %}
-                          <option value="{{ value | escape }}" {% if value == option.selected_value %}selected{% endif %}>
-                            {{ value }}
-                          </option>
-                        {% endfor %}
-                      </select>
-                      {% render 'icon-caret' %}
-                    </div>
-                  </div>
-                {% endfor %}
+            <div class="cbv-builder__group cbv-jar-bar" data-cbv-step="vessel">
+              <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
+                <label class="cbv-builder__label">
+                  <span class="cbv-step-num">1</span>
+                  <span class="cbv-step-title" data-cbv-step-title="Choose Vessel / Format">Choose Vessel / Format</span>
+                </label>
+                <div class="cbv-builder__toggle-icon">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
               </div>
-            {% endunless %}
+
+              <div class="cbv-step-content">
+                <div class="cbv-jar-grid">
+                  {%- for vessel_value in vessel_option_values -%}
+                    {%- assign vessel_variant = blank -%}
+                    {%- for variant in product.variants -%}
+                      {%- if variant.option1 == vessel_value and vessel_variant == blank -%}
+                        {%- assign vessel_variant = variant -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+
+                    {%- if vessel_variant != blank -%}
+                      <label class="cbv-jar-card {% if current_variant.option1 == vessel_value %}is-selected{% endif %}" data-cbv-vessel-card>
+                        <input
+                          type="radio"
+                          name="cbv_vessel_selection"
+                          value="{{ vessel_value | escape }}"
+                          class="visually-hidden"
+                          {% if current_variant.option1 == vessel_value %}checked{% endif %}
+                          data-cbv-vessel-input
+                          data-cbv-vessel-value="{{ vessel_value | escape }}"
+                          data-image-src="{{ vessel_variant.featured_media | default: product.featured_media | image_url: width: 1200 }}"
+                        >
+                        <div class="cbv-jar-image-wrap">
+                          {%- if vessel_variant.featured_media -%}
+                            {{ vessel_variant.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
+                          {%- else -%}
+                            {{ product.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
+                          {%- endif -%}
+                        </div>
+                        <div class="cbv-jar-info">
+                          <span class="cbv-jar-title">{{ vessel_value }}</span>
+                          {% assign price_diff = vessel_variant.price | minus: product.price %}
+                          {% if price_diff > 0 %}
+                            <span class="cbv-jar-upgrade">+{{ price_diff | money }}</span>
+                          {% else %}
+                            <span class="cbv-jar-included">Included</span>
+                          {% endif %}
+                        </div>
+                      </label>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+
+                <button type="button" class="cbv-continue-btn" data-cbv-continue="scent">
+                  Next: Choose Scent &rarr;
+                </button>
+              </div>
+            </div>
+
+            <div class="cbv-builder__group cbv-scent is-collapsed" data-cbv-step="scent">
+              <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
+                <label class="cbv-builder__label">
+                  <span class="cbv-step-num">2</span>
+                  <span class="cbv-step-title" data-cbv-step-title="Choose Scent">Choose Scent</span>
+                </label>
+                <div class="cbv-builder__toggle-icon">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </div>
+
+              <div class="cbv-step-content">
+                <div class="cbv-scent__search-wrap">
+                  <input type="search" class="cbv-scent__search" placeholder="Search fragrance name or family" aria-label="Search scents" data-cbv-scent-input>
+                  <button type="button" class="cbv-scent__clear" data-cbv-clear-scent>Clear</button>
+                </div>
+
+                <div class="cbv-scent__families" data-cbv-family-filters></div>
+
+                <div class="cbv-scent__results-window">
+                  <div id="CBVWaxScentResults-{{ section.id }}" class="cbv-scent__results" data-cbv-results></div>
+                  <p class="cbv-scent__empty" data-cbv-no-results hidden>No scents found matching your search.</p>
+                </div>
+
+                <input type="hidden" name="properties[scent_1]" value="" data-cbv-prop-scent>
+                <input type="hidden" name="properties[scent_family]" value="" data-cbv-prop-family>
+                <input type="hidden" name="properties[vessel_format]" value="{{ current_variant.option1 | escape }}" data-cbv-prop-vessel>
+              </div>
+            </div>
+
+            {%- if has_secondary_option -%}
+              <div class="cbv-builder__group" data-cbv-secondary-group>
+                <div class="cbv-builder__group-header">
+                  <label class="cbv-builder__label">
+                    <span class="cbv-step-num">3</span>
+                    <span class="cbv-step-title">{{ secondary_option.name }}</span>
+                  </label>
+                </div>
+
+                <div class="cbv-step-content">
+                  <div class="cbv-choice-grid">
+                    {%- for secondary_value in secondary_option_values -%}
+                      <label class="cbv-choice-card {% if current_variant.option2 == secondary_value or current_variant.option2 == blank and forloop.first %}is-selected{% endif %}" data-cbv-secondary-card>
+                        <input type="radio" name="cbv_secondary_option" value="{{ secondary_value | escape }}" class="visually-hidden" {% if current_variant.option2 == secondary_value or current_variant.option2 == blank and forloop.first %}checked{% endif %} data-cbv-secondary-input>
+                        <span class="cbv-choice-title">{{ secondary_value }}</span>
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" name="properties[{{ secondary_option.name | handleize }}]" value="{{ current_variant.option2 | default: secondary_option_values.first | escape }}" data-cbv-prop-secondary>
+            {%- endif -%}
 
             {%- if section.blocks.size > 0 -%}
-              <div class="cbv-simple-product__purchase-options" data-cbv-purchase-options>
+              <div class="cbv-purchase-options cbv-purchase-options--apps" data-cbv-purchase-options>
                 {%- for block in section.blocks -%}
-                  <div class="cbv-simple-product__purchase-option" {{ block.shopify_attributes }}>
+                  <div class="cbv-purchase-options__block" {{ block.shopify_attributes }}>
                     {% render block %}
                   </div>
                 {%- endfor -%}
@@ -112,20 +215,14 @@
 
             <div class="product-form__buttons">
               <button
-                id="ProductSubmitButton-{{ section.id }}"
                 type="submit"
                 name="add"
-                class="product-form__submit button button--primary cbv-simple-product__submit"
+                class="product-form__submit button button--primary cbv-builder__btn"
                 {% unless current_variant.available %}disabled{% endunless %}
                 data-cbv-submit
               >
-                <span>
-                  {% if current_variant.available %}
-                    {{ section.settings.cta_label }} · {{ current_variant.price | money }}
-                  {% else %}
-                    {{ 'products.product.sold_out' | t }}
-                  {% endif %}
-                </span>
+                <span class="cbv-btn-title">{{ section.settings.cta_label }}</span>
+                <span class="cbv-btn-price" data-cbv-btn-price> - {{ current_variant.price | money }}</span>
                 <div class="loading-overlay-spinner hidden">
                   <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
                     <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
@@ -137,11 +234,41 @@
         </product-form>
       </div>
     </div>
-  </div>
 
-  <script type="application/json" data-cbv-variants>
-    {{ product.variants | json }}
-  </script>
+    <script type="application/json" data-cbv-variants>
+      {{ product.variants | json }}
+    </script>
+
+    {%- paginate shop.metaobjects.fragrance.values by 250 -%}
+      <script
+        type="application/json"
+        data-cbv-fragrance-data
+        data-cbv-fragrance-page="{{ paginate.current_page }}"
+        data-cbv-fragrance-pages="{{ paginate.pages }}"
+        data-cbv-fragrance-page-param="{{ paginate.page_param }}"
+      >
+        [
+          {%- assign first_entry = true -%}
+          {%- for fragrance in shop.metaobjects.fragrance.values -%}
+            {%- liquid
+              assign scent_name = fragrance.name.value | default: fragrance.name
+              assign scent_family = fragrance.scent_family.value | default: fragrance.scent_family
+              assign scent_active = fragrance.is_active.value | default: fragrance.is_active
+            -%}
+            {%- if scent_name != blank and scent_active != false -%}
+              {%- unless first_entry -%},{%- endunless -%}
+              {
+                "name": {{ scent_name | json }},
+                "family": {{ scent_family | default: 'Uncategorized' | json }},
+                "handle": {{ fragrance.handle | json }}
+              }
+              {%- assign first_entry = false -%}
+            {%- endif -%}
+          {%- endfor -%}
+        ]
+      </script>
+    {%- endpaginate -%}
+  </div>
 </section>
 
 {% schema %}
@@ -152,13 +279,13 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "Wax melt collection"
+      "default": "Build your wax melts"
     },
     {
       "type": "text",
       "id": "supporting_text",
       "label": "Supporting text",
-      "default": "Choose your size and container for this wax melt shape."
+      "default": "Choose your vessel and fragrance, then add to cart."
     },
     {
       "type": "text",
