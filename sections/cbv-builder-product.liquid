@@ -39,6 +39,40 @@
             }}
           </div>
         {% endif %}
+
+        <!-- CONFIRMATION: THE POUR TICKET -->
+        <div class="cbv-pour-ticket cbv-pour-ticket--media" data-cbv-ticket>
+          <div class="cbv-ticket-header">Your Custom Pour</div>
+          <div class="cbv-ticket-grid">
+            <div class="cbv-ticket-row">
+              <span class="cbv-ticket-label">Jar Style</span>
+              <div class="cbv-ticket-value">
+                <span data-cbv-ticket-jar>{{ current_variant.title }}</span>
+              </div>
+            </div>
+            <div class="cbv-ticket-row">
+              <span class="cbv-ticket-label">Wax Color</span>
+              <div class="cbv-ticket-value">
+                <span class="cbv-ticket-swatch" data-cbv-ticket-swatch></span>
+                <span data-cbv-ticket-wax>Make selection</span>
+              </div>
+            </div>
+            <div class="cbv-ticket-row">
+              <span class="cbv-ticket-label">Fragrance</span>
+              <div class="cbv-ticket-value">
+                <span data-cbv-ticket-scent>Make selection</span>
+              </div>
+            </div>
+            {%- if has_wick_upgrade_option -%}
+              <div class="cbv-ticket-row">
+                <span class="cbv-ticket-label">Wick Upgrade</span>
+                <div class="cbv-ticket-value">
+                  <span data-cbv-ticket-wick>{{ current_variant.option2 | default: wick_upgrade_values.first }}</span>
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
       </div>
 
       <!-- Content Column -->
@@ -261,40 +295,6 @@
 
               <input type="hidden" name="properties[wick_upgrade]" value="{{ current_variant.option2 | default: wick_upgrade_values.first | escape }}" data-cbv-prop-wick-upgrade>
             {%- endif -%}
-
-            <!-- CONFIRMATION: THE POUR TICKET -->
-            <div class="cbv-pour-ticket" data-cbv-ticket hidden>
-              <div class="cbv-ticket-header">Your Custom Pour</div>
-              <div class="cbv-ticket-grid">
-                <div class="cbv-ticket-row">
-                  <span class="cbv-ticket-label">Jar Style</span>
-                  <div class="cbv-ticket-value">
-                    <span data-cbv-ticket-jar>{{ current_variant.title }}</span>
-                  </div>
-                </div>
-                <div class="cbv-ticket-row">
-                  <span class="cbv-ticket-label">Wax Color</span>
-                  <div class="cbv-ticket-value">
-                    <span class="cbv-ticket-swatch" data-cbv-ticket-swatch></span>
-                    <span data-cbv-ticket-wax>--</span>
-                  </div>
-                </div>
-                <div class="cbv-ticket-row">
-                  <span class="cbv-ticket-label">Fragrance</span>
-                  <div class="cbv-ticket-value">
-                    <span data-cbv-ticket-scent>--</span>
-                  </div>
-                </div>
-                {%- if has_wick_upgrade_option -%}
-                  <div class="cbv-ticket-row">
-                    <span class="cbv-ticket-label">Wick Upgrade</span>
-                    <div class="cbv-ticket-value">
-                      <span data-cbv-ticket-wick>{{ current_variant.option2 | default: wick_upgrade_values.first }}</span>
-                    </div>
-                  </div>
-                {%- endif -%}
-              </div>
-            </div>
 
             <!-- PURCHASE OPTIONS -->
             {%- if section.blocks.size > 0 -%}
