@@ -297,6 +297,16 @@
       renderResults();
     }
 
+    function clearSelectedScent() {
+      selectedScent = null;
+      scentProp.value = '';
+      familyProp.value = '';
+      if (selectedScentBanner) selectedScentBanner.hidden = true;
+      updateStepHeader(scentGroup, 'Choose scent');
+      updateTicket();
+      renderResults();
+    }
+
     function getFilteredScents(query = '') {
       return allScents.filter((scent) => {
         const scentFamily = normalizeFamily(scent.family);
@@ -337,14 +347,6 @@
         chip.textContent = family === 'All' ? 'All scents' : familyWithEmoji(family);
         chip.addEventListener('click', () => {
           selectedFamily = family;
-
-          if (selectedScent && family !== 'All' && normalize(selectedScent.family) !== normalize(family)) {
-            selectedScent = null;
-            scentProp.value = '';
-            familyProp.value = '';
-            if (selectedScentBanner) selectedScentBanner.hidden = true;
-            updateTicket();
-          }
 
           renderFamilyFilters();
           renderResults();
@@ -420,16 +422,20 @@
       });
     });
 
-    scentInput.addEventListener('input', () => {
-      if (selectedScent && normalize(scentInput.value) !== normalize(selectedScent.name)) {
-        selectedScent = null;
-        scentProp.value = '';
-        familyProp.value = '';
-        if (selectedScentBanner) selectedScentBanner.hidden = true;
-        updateTicket();
-      }
+    scentInput.addEventListener('input', renderResults);
+
+    scentInput.addEventListener('search', () => {
+      if (normalize(scentInput.value)) return;
       renderResults();
     });
+
+    const clearScentBtn = builderEl.querySelector('[data-cbv-clear-scent]');
+    if (clearScentBtn) {
+      clearScentBtn.addEventListener('click', () => {
+        scentInput.value = '';
+        clearSelectedScent();
+      });
+    }
 
     renderFamilyFilters();
 
@@ -445,7 +451,7 @@
       }
     }
 
-    scentInput.dispatchEvent(new Event('input'));
+    scentInput.value = '';
     renderResults();
     updateTicket();
     updatePricingUI();
