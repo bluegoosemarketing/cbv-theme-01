@@ -492,7 +492,7 @@ recharge-subscription-widget {
 }
 @media (min-width: 990px) {
   .cbv-builder__grid { grid-template-columns: 1fr 1.3fr; align-items: start; gap: 6rem; }
-  .cbv-builder__media { position: sticky; top: 3rem; }
+  .cbv-builder__media { position: sticky; top: calc(var(--cbv-sticky-height, 60px) + 3rem); }
   .cbv-footer-split { grid-template-columns: 1.2fr 0.8fr; gap: 8rem; }
 }
 
