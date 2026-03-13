@@ -3,31 +3,113 @@
     "editorial_faq": {
       "type": "faq-editorial",
       "blocks": {
-        "cat_candles": {
+        "cat_ingredients": {
           "type": "category",
           "settings": {
-            "title": "Candle Questions"
+            "title": "Our Wax & Ingredients"
           }
         },
-        "q_burn": {
+        "q_wax_type": {
           "type": "question",
           "settings": {
-            "title": "How long do CBV candles burn?",
-            "answer": "<p>Burn time depends on size and usage, but our candles are designed for long-lasting performance. For best results, allow a full melt pool on initial burns and trim your wick to 1/4 inch before each use.<\/p>"
+            "title": "What type of wax do you use?",
+            "answer": "<p>When making our container candles and melts, we use our special secret Paraffin blend of wax which is exceptionally soft and creamy. Our creamy blend of wax has many advantages, one being the amount of fragrance we can add to it—it holds a very high fragrance load which makes for extremely highly scented candles.<\/p><p>Another great advantage is that container candles require a low melting point to burn off the wax and not leave a ring of unburned wax around the inside of the container (known as \"wax hang up\"). With our soft wax, the scent molecules bind better and are easily released during burning. When you purchase a candle from Candles By Victoria, we guarantee you will get a complete, highly scented burn all the way to the bottom!<\/p>"
           }
         },
-        "q_throw": {
+        "q_veg_paraffin": {
           "type": "question",
           "settings": {
-            "title": "How strong is the scent throw?",
-            "answer": "<p>Our scented candles are formulated for a balanced scent throw that fills your space without overwhelming it. Room size, airflow, and fragrance profile can all influence perception.<\/p>"
+            "title": "What is the difference between vegetable wax and paraffin?",
+            "answer": "<p>There have been several misconceptions floating around regarding paraffin waxes vs. vegetable-based waxes. It is important to realize that both are safe, viable \"natural\" raw materials with differing chemical compositions, thus offering varied benefits depending on the end user applications.<\/p><p>Paraffin and vegetable-based waxes are derived from similar manufacturing processes where a base oil is refined to obtain a \"wax\" product. Both exhibit similar physical properties. Both paraffin and vegetable-based waxes have been found to be biodegradable, safe, and highly effective when used in well-designed products.<\/p>"
+          }
+        },
+        "q_health_test": {
+          "type": "question",
+          "settings": {
+            "title": "Are your fragrances tested for health effects?",
+            "answer": "<p>Yes. According to the requirements of U.S. and European governments, extensive health and safety studies are conducted on fragrance materials. These include toxicological, pharmacology, and skin contact tests. Because of this extensive testing, consumers can feel confident that scented candles are safe when used as directed.<\/p>"
+          }
+        },
+        "q_pollutants": {
+          "type": "question",
+          "settings": {
+            "title": "Do scented candles emit toxic pollutants into the air?",
+            "answer": "<p>No. A properly burning candle produces water vapor and carbon dioxide, the exact same materials we exhale when we breathe. Furthermore, the fragrances we use in the making of our candles are strictly Phthalate-Free.<\/p>"
+          }
+        },
+        "q_allergies": {
+          "type": "question",
+          "settings": {
+            "title": "Are scented candles triggers for asthma and allergies?",
+            "answer": "<p>Millions of Americans who use scented candles have incredibly positive responses to them. The small handful of consumers who may have a negative response should simply avoid burning candles with that particular scent profile and be sure to use their candles in a well-ventilated area.<\/p>"
+          }
+        },
+        "cat_care": {
+          "type": "category",
+          "settings": {
+            "title": "Candle Care & Safety"
+          }
+        },
+        "q_black_jar": {
+          "type": "question",
+          "settings": {
+            "title": "Why does my candle jar sometimes turn black at the top?",
+            "answer": "<p>The black you see is carbon. An excessively large flame will produce carbon due to a lack of sufficient oxygen from the air in the jar to provide complete combustion. The key for a perfect burning candle is wick maintenance.<\/p><p>Note: Burning a candle for longer periods of time than recommended can cause a wick to \"mushroom\" or produce a large black clump on the wick. Always keep your wicks trimmed to 1/4 inch and burn for only the recommended amount of time to prevent this effect.<\/p>"
+          }
+        },
+        "q_trim_wick": {
+          "type": "question",
+          "settings": {
+            "title": "What is the best way to trim a wick?",
+            "answer": "<p>There are several ways to trim a wick. The most popular ways are with a pair of scissors or nail clippers, but we highly recommend our wick trimmers. Our wick trimmers cut the wicks to the exact length each time and safely catch any wick debris. As a safety precaution, always make sure that all wick trimmings and foreign materials are removed from the jar before lighting.<\/p>"
+          }
+        },
+        "q_extinguish": {
+          "type": "question",
+          "settings": {
+            "title": "What is the best way to extinguish a candle?",
+            "answer": "<p>The best way to blow out a candle is to hold your finger in front of the flame and blow at your finger. The air will flow around your finger and extinguish the candle flame from both sides, preventing hot wax from spattering. To reduce after-burn wick smoldering, continue to blow until the wick glow is completely extinguished.<\/p><p>Never use water, as it can cause the hot wax to spatter and the glass container to break due to the sudden temperature change. Additionally, do not use the jar cover to extinguish the flame, as some lids have plastic filaments which may melt.<\/p>"
           }
         },
         "q_cure": {
           "type": "question",
           "settings": {
             "title": "Do candles need to cure before use?",
-            "answer": "<p>Many candle formulas benefit from additional cure time after pouring. If your candle arrives freshly poured, letting it rest for several days can improve hot throw and burn consistency.<\/p>"
+            "answer": "<p>Many candle formulas benefit from additional cure time after pouring. If your custom candle arrives freshly poured, letting it rest for several days before its first light can significantly improve the hot throw and burn consistency.<\/p>"
+          }
+        },
+        "cat_fragrance": {
+          "type": "category",
+          "settings": {
+            "title": "Fragrance & Performance"
+          }
+        },
+        "q_throw": {
+          "type": "question",
+          "settings": {
+            "title": "How strong is the scent throw?",
+            "answer": "<p>Our scented candles are formulated for a massive, balanced scent throw that fills your space beautifully. Room size, airflow, and the specific fragrance profile you choose can all influence the perception of the scent.<\/p>"
+          }
+        },
+        "q_burn": {
+          "type": "question",
+          "settings": {
+            "title": "How long do CBV candles burn?",
+            "answer": "<p>Burn time depends on the jar size and your burning habits, but our soft wax candles are designed for exceptionally long-lasting performance. For the best results, allow a full melt pool to reach the edges of the jar on your initial burn, and always trim your wick to 1/4 inch before each use.<\/p>"
+          }
+        },
+        "q_uncovered": {
+          "type": "question",
+          "settings": {
+            "title": "Will my candle lose its fragrance if the jar is left uncovered?",
+            "answer": "<p>No. This is a very common misunderstanding. Remember, a candle is a solid, not a liquid (most liquids will lose their fragrance if left uncovered, like perfumes). At Candles By Victoria, we thoroughly mix our fragrances within the wax and continue to agitate it throughout the filling process. This assures that the fragrance is captured deep within the very structure of the candle, waiting to be released.<\/p>"
+          }
+        },
+        "q_lose_scent": {
+          "type": "question",
+          "settings": {
+            "title": "Why do some candles lose their fragrance after a few hours?",
+            "answer": "<p>With mass-produced candles, it's likely that only the top layer of the candle was infused with scent. However, at Candles By Victoria, we blend the entire batch of wax with potent fragrance oils and colorants. This ensures a consistent and enduring fragrance release for the entire duration of the candle's life.<\/p>"
           }
         },
         "cat_custom": {
@@ -40,14 +122,14 @@
           "type": "question",
           "settings": {
             "title": "How does the custom candle builder work?",
-            "answer": "<p>On eligible products, choose your format, fragrance, and preferred options, then add to cart. The builder is designed to make custom candles easy while keeping the process guided and intuitive.<\/p>"
+            "answer": "<p>On eligible products, simply choose your format, fragrance, and preferred options, then add it to your cart. The builder is designed to make ordering bespoke, custom candles incredibly easy while keeping the process guided and intuitive.<\/p>"
           }
         },
         "q_wickless": {
           "type": "question",
           "settings": {
             "title": "Do you offer wickless options?",
-            "answer": "<p>Yes. Select products include wickless formats designed for wax warmers, giving you flame-free fragrance options with the same signature CBV scent experience.<\/p>"
+            "answer": "<p>Yes. Select products include wickless formats specifically designed for wax warmers, giving you flame-free fragrance options with the exact same signature CBV scent experience.<\/p>"
           }
         },
         "cat_melts": {
@@ -60,14 +142,14 @@
           "type": "question",
           "settings": {
             "title": "How do I use wax melts?",
-            "answer": "<p>Place 1–2 pieces in your approved wax warmer dish and allow the wax to melt completely. Add or replace wax as needed based on scent strength and warmer size.<\/p>"
+            "answer": "<p>Place 1–2 pieces in your approved wax warmer dish and allow the wax to melt completely. Add or replace the wax as needed based on your desired scent strength and the size of your warmer.<\/p>"
           }
         },
         "q_melts_diff": {
           "type": "question",
           "settings": {
             "title": "How are wax melts different from candles?",
-            "answer": "<p>Wax melts provide fragrance without an exposed flame and are ideal for layering scent throughout your home. Candles offer both ambiance and fragrance in one experience.<\/p>"
+            "answer": "<p>Wax melts provide fragrance without an exposed flame and are ideal for layering scent heavily throughout your home. Candles offer both beautiful glowing ambiance and fragrance in one traditional experience.<\/p>"
           }
         },
         "cat_subs": {
@@ -80,14 +162,14 @@
           "type": "question",
           "settings": {
             "title": "How do candle subscriptions work?",
-            "answer": "<p>Choose eligible custom candles, standard candles, or wax melts and select a recurring delivery frequency. Your orders are then processed automatically according to your selected schedule.<\/p>"
+            "answer": "<p>Choose eligible custom candles, standard candles, or wax melts and select a recurring delivery frequency. Your orders are then hand-poured and processed automatically according to your selected schedule so you never run out.<\/p>"
           }
         },
         "q_subs_cancel": {
           "type": "question",
           "settings": {
             "title": "Can I manage or cancel my subscription?",
-            "answer": "<p>Absolutely. You can update cadence, skip upcoming orders, swap products, pause, or cancel from your account portal at any time.<\/p>"
+            "answer": "<p>Absolutely. You can update your delivery cadence, skip upcoming orders, swap out products for new scents, pause, or cancel entirely from your account portal at any time. Zero friction.<\/p>"
           }
         },
         "cat_shipping": {
@@ -100,22 +182,34 @@
           "type": "question",
           "settings": {
             "title": "How long does processing take?",
-            "answer": "<p>Most orders are prepared within the processing window shown at checkout. During promotions or seasonal peaks, processing may take slightly longer as we maintain quality control.<\/p>"
+            "answer": "<p>Most orders are prepared within the processing window shown at checkout. During massive promotions or seasonal peaks, processing may take slightly longer as we refuse to rush and compromise our quality control.<\/p>"
           }
         },
         "q_ship_arrive": {
           "type": "question",
           "settings": {
             "title": "When will my order arrive?",
-            "answer": "<p>Shipping speed depends on the method selected at checkout and destination. You’ll receive tracking once your order ships so you can follow delivery progress in real time.<\/p>"
+            "answer": "<p>Shipping speed depends on the method selected at checkout and your destination. You’ll receive a tracking link once your order ships so you can follow its delivery progress in real time.<\/p>"
           }
         }
       },
       "block_order":[
-        "cat_candles",
-        "q_burn",
-        "q_throw",
+        "cat_ingredients",
+        "q_wax_type",
+        "q_veg_paraffin",
+        "q_health_test",
+        "q_pollutants",
+        "q_allergies",
+        "cat_care",
+        "q_black_jar",
+        "q_trim_wick",
+        "q_extinguish",
         "q_cure",
+        "cat_fragrance",
+        "q_throw",
+        "q_burn",
+        "q_uncovered",
+        "q_lose_scent",
         "cat_custom",
         "q_custom",
         "q_wickless",
@@ -136,7 +230,7 @@
         "hero_gradient": "linear-gradient(135deg, #f4f0eb 0%, #e3d7c8 100%)",
         "caption": "Support Center",
         "heading": "How can we help?",
-        "text": "<p>Find quick answers about our custom candles, massive scent library, and subscription services before you order, or track things down after delivery.<\/p>",
+        "text": "<p>Find quick answers about our wax, custom candles, massive scent library, and subscriptions before you order, or track things down after delivery.<\/p>",
         "cta_heading": "Still need a hand?",
         "cta_button_label": "Contact Support",
         "cta_button_link": "shopify:\/\/pages\/contact"
