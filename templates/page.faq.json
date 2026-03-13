@@ -1,360 +1,149 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
-
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
-    "hero": {
-      "type": "rich-text",
+    "editorial_faq": {
+      "type": "faq-editorial",
       "blocks": {
-        "caption": {
-          "type": "caption",
+        "cat_candles": {
+          "type": "category",
           "settings": {
-            "caption": "Support Center",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
+            "title": "Candle Questions"
           }
         },
-        "heading": {
-          "type": "heading",
+        "q_burn": {
+          "type": "question",
           "settings": {
-            "heading": "<p>Frequently asked questions about candles, wax melts, customization, and subscriptions.</p>",
-            "heading_size": "large",
-            "heading_style": "default",
-            "heading_tag": "h1",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
+            "title": "How long do CBV candles burn?",
+            "answer": "<p>Burn time depends on size and usage, but our candles are designed for long-lasting performance. For best results, allow a full melt pool on initial burns and trim your wick to 1/4 inch before each use.<\/p>"
           }
         },
-        "text": {
-          "type": "text",
+        "q_throw": {
+          "type": "question",
           "settings": {
-            "text": "<p>Find quick answers before you order, while your order is in progress, or after delivery. If you still need help, contact our support team anytime.</p>"
+            "title": "How strong is the scent throw?",
+            "answer": "<p>Our scented candles are formulated for a balanced scent throw that fills your space without overwhelming it. Room size, airflow, and fragrance profile can all influence perception.<\/p>"
+          }
+        },
+        "q_cure": {
+          "type": "question",
+          "settings": {
+            "title": "Do candles need to cure before use?",
+            "answer": "<p>Many candle formulas benefit from additional cure time after pouring. If your candle arrives freshly poured, letting it rest for several days can improve hot throw and burn consistency.<\/p>"
+          }
+        },
+        "cat_custom": {
+          "type": "category",
+          "settings": {
+            "title": "Customization"
+          }
+        },
+        "q_custom": {
+          "type": "question",
+          "settings": {
+            "title": "How does the custom candle builder work?",
+            "answer": "<p>On eligible products, choose your format, fragrance, and preferred options, then add to cart. The builder is designed to make custom candles easy while keeping the process guided and intuitive.<\/p>"
+          }
+        },
+        "q_wickless": {
+          "type": "question",
+          "settings": {
+            "title": "Do you offer wickless options?",
+            "answer": "<p>Yes. Select products include wickless formats designed for wax warmers, giving you flame-free fragrance options with the same signature CBV scent experience.<\/p>"
+          }
+        },
+        "cat_melts": {
+          "type": "category",
+          "settings": {
+            "title": "Wax Melts"
+          }
+        },
+        "q_melts_use": {
+          "type": "question",
+          "settings": {
+            "title": "How do I use wax melts?",
+            "answer": "<p>Place 1–2 pieces in your approved wax warmer dish and allow the wax to melt completely. Add or replace wax as needed based on scent strength and warmer size.<\/p>"
+          }
+        },
+        "q_melts_diff": {
+          "type": "question",
+          "settings": {
+            "title": "How are wax melts different from candles?",
+            "answer": "<p>Wax melts provide fragrance without an exposed flame and are ideal for layering scent throughout your home. Candles offer both ambiance and fragrance in one experience.<\/p>"
+          }
+        },
+        "cat_subs": {
+          "type": "category",
+          "settings": {
+            "title": "Subscriptions"
+          }
+        },
+        "q_subs_work": {
+          "type": "question",
+          "settings": {
+            "title": "How do candle subscriptions work?",
+            "answer": "<p>Choose eligible custom candles, standard candles, or wax melts and select a recurring delivery frequency. Your orders are then processed automatically according to your selected schedule.<\/p>"
+          }
+        },
+        "q_subs_cancel": {
+          "type": "question",
+          "settings": {
+            "title": "Can I manage or cancel my subscription?",
+            "answer": "<p>Absolutely. You can update cadence, skip upcoming orders, swap products, pause, or cancel from your account portal at any time.<\/p>"
+          }
+        },
+        "cat_shipping": {
+          "type": "category",
+          "settings": {
+            "title": "Orders & Shipping"
+          }
+        },
+        "q_ship_process": {
+          "type": "question",
+          "settings": {
+            "title": "How long does processing take?",
+            "answer": "<p>Most orders are prepared within the processing window shown at checkout. During promotions or seasonal peaks, processing may take slightly longer as we maintain quality control.<\/p>"
+          }
+        },
+        "q_ship_arrive": {
+          "type": "question",
+          "settings": {
+            "title": "When will my order arrive?",
+            "answer": "<p>Shipping speed depends on the method selected at checkout and destination. You’ll receive tracking once your order ships so you can follow delivery progress in real time.<\/p>"
           }
         }
       },
-      "block_order": [
-        "caption",
-        "heading",
-        "text"
+      "block_order":[
+        "cat_candles",
+        "q_burn",
+        "q_throw",
+        "q_cure",
+        "cat_custom",
+        "q_custom",
+        "q_wickless",
+        "cat_melts",
+        "q_melts_use",
+        "q_melts_diff",
+        "cat_subs",
+        "q_subs_work",
+        "q_subs_cancel",
+        "cat_shipping",
+        "q_ship_process",
+        "q_ship_arrive"
       ],
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 72,
-        "padding_bottom": 28,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "candles": {
-      "type": "collapsible-content",
-      "blocks": {
-        "r1": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "How long do CBV candles burn?",
-            "icon": "question_mark",
-            "row_content": "<p>Burn time depends on size and usage, but our candles are designed for long-lasting performance. For best results, allow a full melt pool on initial burns and trim your wick to 1/4 inch before each use.</p>",
-            "page": ""
-          }
-        },
-        "r2": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "How strong is the scent throw?",
-            "icon": "question_mark",
-            "row_content": "<p>Our scented candles are formulated for a balanced scent throw that fills your space without overwhelming it. Room size, airflow, and fragrance profile can all influence perception.</p>",
-            "page": ""
-          }
-        },
-        "r3": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "Do candles need to cure before use?",
-            "icon": "question_mark",
-            "row_content": "<p>Many candle formulas benefit from additional cure time after pouring. If your candle arrives freshly poured, letting it rest for several days can improve hot throw and burn consistency.</p>",
-            "page": ""
-          }
-        }
-      },
-      "block_order": [
-        "r1",
-        "r2",
-        "r3"
-      ],
-      "settings": {
-        "caption": "FAQ Category",
-        "text_style": "caption-with-letter-spacing",
-        "text_size": "medium",
-        "heading": "Candle Questions",
-        "heading_size": "medium",
-        "heading_style": "default",
-        "heading_tag": "h2",
-        "heading_alignment": "left",
-        "open_first_collapsible_row": false,
-        "open_all_collapsible_row": false,
-        "color_scheme": "option-1",
-        "color_scheme_1": "",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0
-      }
-    },
-    "custom": {
-      "type": "collapsible-content",
-      "blocks": {
-        "r1": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "How does the custom candle builder work?",
-            "icon": "question_mark",
-            "row_content": "<p>On eligible products, choose your format, fragrance, and preferred options, then add to cart. The builder is designed to make custom candles easy while keeping the process guided and intuitive.</p>",
-            "page": ""
-          }
-        },
-        "r2": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "Do you offer wickless options?",
-            "icon": "question_mark",
-            "row_content": "<p>Yes. Select products include wickless formats designed for wax warmers, giving you flame-free fragrance options with the same signature CBV scent experience.</p>",
-            "page": ""
-          }
-        }
-      },
-      "block_order": [
-        "r1",
-        "r2"
-      ],
-      "settings": {
-        "caption": "FAQ Category",
-        "text_style": "caption-with-letter-spacing",
-        "text_size": "medium",
-        "heading": "Customization",
-        "heading_size": "medium",
-        "heading_style": "default",
-        "heading_tag": "h2",
-        "heading_alignment": "left",
-        "open_first_collapsible_row": false,
-        "open_all_collapsible_row": false,
-        "color_scheme": "option-2",
-        "color_scheme_1": "",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0
-      }
-    },
-    "melts": {
-      "type": "collapsible-content",
-      "blocks": {
-        "r1": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "How do I use wax melts?",
-            "icon": "question_mark",
-            "row_content": "<p>Place 1\u20132 pieces in your approved wax warmer dish and allow the wax to melt completely. Add or replace wax as needed based on scent strength and warmer size.</p>",
-            "page": ""
-          }
-        },
-        "r2": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "How are wax melts different from candles?",
-            "icon": "question_mark",
-            "row_content": "<p>Wax melts provide fragrance without an exposed flame and are ideal for layering scent throughout your home. Candles offer both ambiance and fragrance in one experience.</p>",
-            "page": ""
-          }
-        }
-      },
-      "block_order": [
-        "r1",
-        "r2"
-      ],
-      "settings": {
-        "caption": "FAQ Category",
-        "text_style": "caption-with-letter-spacing",
-        "text_size": "medium",
-        "heading": "Wax Melts",
-        "heading_size": "medium",
-        "heading_style": "default",
-        "heading_tag": "h2",
-        "heading_alignment": "left",
-        "open_first_collapsible_row": false,
-        "open_all_collapsible_row": false,
-        "color_scheme": "option-1",
-        "color_scheme_1": "",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0
-      }
-    },
-    "subs": {
-      "type": "collapsible-content",
-      "blocks": {
-        "r1": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "How do candle subscriptions work?",
-            "icon": "question_mark",
-            "row_content": "<p>Choose eligible custom candles, standard candles, or wax melts and select a recurring delivery frequency. Your orders are then processed automatically according to your selected schedule.</p>",
-            "page": ""
-          }
-        },
-        "r2": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "Can I manage or cancel my subscription?",
-            "icon": "question_mark",
-            "row_content": "<p>Absolutely. You can update cadence, skip upcoming orders, swap products, pause, or cancel from your account portal at any time.</p>",
-            "page": ""
-          }
-        }
-      },
-      "block_order": [
-        "r1",
-        "r2"
-      ],
-      "settings": {
-        "caption": "FAQ Category",
-        "text_style": "caption-with-letter-spacing",
-        "text_size": "medium",
-        "heading": "Subscriptions",
-        "heading_size": "medium",
-        "heading_style": "default",
-        "heading_tag": "h2",
-        "heading_alignment": "left",
-        "open_first_collapsible_row": false,
-        "open_all_collapsible_row": false,
-        "color_scheme": "option-2",
-        "color_scheme_1": "",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0
-      }
-    },
-    "ship": {
-      "type": "collapsible-content",
-      "blocks": {
-        "r1": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "How long does processing take?",
-            "icon": "question_mark",
-            "row_content": "<p>Most orders are prepared within the processing window shown at checkout. During promotions or seasonal peaks, processing may take slightly longer as we maintain quality control.</p>",
-            "page": ""
-          }
-        },
-        "r2": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "When will my order arrive?",
-            "icon": "question_mark",
-            "row_content": "<p>Shipping speed depends on the method selected at checkout and destination. You\u2019ll receive tracking once your order ships so you can follow delivery progress in real time.</p>",
-            "page": ""
-          }
-        }
-      },
-      "block_order": [
-        "r1",
-        "r2"
-      ],
-      "settings": {
-        "caption": "FAQ Category",
-        "text_style": "caption-with-letter-spacing",
-        "text_size": "medium",
-        "heading": "Orders & Shipping",
-        "heading_size": "medium",
-        "heading_style": "default",
-        "heading_tag": "h2",
-        "heading_alignment": "left",
-        "open_first_collapsible_row": false,
-        "open_all_collapsible_row": false,
-        "color_scheme": "option-1",
-        "color_scheme_1": "",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0
-      }
-    },
-    "help": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Still need help?</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "button": {
-          "type": "button",
-          "settings": {
-            "button_label": "Contact Support",
-            "button_link": "/pages/contact",
-            "button_style_secondary": false,
-            "open_new_tab": false
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "button"
-      ],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "full_width": false,
-        "color_scheme": "option-3",
-        "padding_top": 40,
-        "padding_bottom": 64,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "center"
+        "bg_color": "#faf9f6",
+        "text_color": "#2c2c2c",
+        "accent_color": "#a68a6d",
+        "hero_gradient": "linear-gradient(135deg, #f4f0eb 0%, #e3d7c8 100%)",
+        "caption": "Support Center",
+        "heading": "How can we help?",
+        "text": "<p>Find quick answers about our custom candles, massive scent library, and subscription services before you order, or track things down after delivery.<\/p>",
+        "cta_heading": "Still need a hand?",
+        "cta_button_label": "Contact Support",
+        "cta_button_link": "shopify:\/\/pages\/contact"
       }
     }
   },
-  "order": [
-    "main",
-    "hero",
-    "candles",
-    "custom",
-    "melts",
-    "subs",
-    "ship",
-    "help"
+  "order":[
+    "editorial_faq"
   ]
 }

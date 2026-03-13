@@ -1,307 +1,75 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
-
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
-    "hero": {
-      "type": "rich-text",
+    "editorial_policy": {
+      "type": "policy-editorial",
       "blocks": {
-        "caption": {
-          "type": "caption",
+        "block_1": {
+          "type": "policy_block",
           "settings": {
-            "caption": "Policy Information",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
+            "title": "Website Use",
+            "text": "<p>By accessing this website, you agree to use it lawfully and in accordance with these terms. Content, product availability, and pricing may change without prior notice.<\/p>"
           }
         },
-        "heading": {
-          "type": "heading",
+        "block_2": {
+          "type": "policy_block",
           "settings": {
-            "heading": "<p>Terms of Service</p>",
-            "heading_size": "large",
-            "heading_style": "default",
-            "heading_tag": "h1",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
+            "title": "Product Information",
+            "text": "<p>We strive for accurate descriptions of scented candles, custom candles, wax melts, and subscriptions. Minor variation in color, finish, and fragrance perception may occur due to handcrafted production.<\/p>"
           }
         },
-        "text": {
-          "type": "text",
+        "block_3": {
+          "type": "policy_block",
           "settings": {
-            "text": "<p>These terms govern your use of the Candles By Victoria website and purchases.</p>"
+            "title": "Orders & Payments",
+            "text": "<p>Placing an order constitutes an offer to purchase. We reserve the right to cancel or limit orders at our discretion, including in cases of pricing errors, suspected fraud, or inventory limitations.<\/p>"
+          }
+        },
+        "block_4": {
+          "type": "policy_block",
+          "settings": {
+            "title": "Subscriptions",
+            "text": "<p>Subscription purchases renew automatically according to the selected interval unless canceled before the next billing date. You may manage subscription settings through your account portal.<\/p>"
+          }
+        },
+        "block_5": {
+          "type": "policy_block",
+          "settings": {
+            "title": "Limitation of Liability",
+            "text": "<p>Candles By Victoria is not liable for indirect, incidental, or consequential damages arising from use of this site or products, to the extent permitted by law.<\/p>"
+          }
+        },
+        "block_6": {
+          "type": "policy_block",
+          "settings": {
+            "title": "Contact",
+            "text": "<p>For questions about these terms, please contact our support team through the Contact page.<\/p>"
           }
         }
       },
-      "block_order": [
-        "caption",
-        "heading",
-        "text"
+      "block_order":[
+        "block_1",
+        "block_2",
+        "block_3",
+        "block_4",
+        "block_5",
+        "block_6"
       ],
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 72,
-        "padding_bottom": 24,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s1": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Website Use</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>By accessing this website, you agree to use it lawfully and in accordance with these terms. Content, product availability, and pricing may change without prior notice.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s2": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Product Information</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>We strive for accurate descriptions of scented candles, custom candles, wax melts, and subscriptions. Minor variation in color, finish, and fragrance perception may occur due to handcrafted production.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-2",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s3": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Orders & Payments</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Placing an order constitutes an offer to purchase. We reserve the right to cancel or limit orders at our discretion, including in cases of pricing errors, suspected fraud, or inventory limitations.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s4": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Subscriptions</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Subscription purchases renew automatically according to the selected interval unless canceled before the next billing date. You may manage subscription settings through your account portal.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-2",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s5": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Limitation of Liability</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Candles By Victoria is not liable for indirect, incidental, or consequential damages arising from use of this site or products, to the extent permitted by law.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s6": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Contact</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>For questions about these terms, contact our support team through the Contact page.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-2",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
+        "bg_color": "#faf9f6",
+        "text_color": "#2c2c2c",
+        "accent_color": "#a68a6d",
+        "hero_gradient": "linear-gradient(135deg, #f4f0eb 0%, #e3d7c8 100%)",
+        "caption": "Policy Information",
+        "heading": "Terms of Service",
+        "text": "<p>These terms govern your use of the Candles By Victoria website and purchases.<\/p>",
+        "show_cta": true,
+        "cta_heading": "Have a specific question?",
+        "cta_button_label": "Contact Support",
+        "cta_button_link": "shopify:\/\/pages\/contact"
       }
     }
   },
-  "order": [
-    "main",
-    "hero",
-    "s1",
-    "s2",
-    "s3",
-    "s4",
-    "s5",
-    "s6"
+  "order":[
+    "editorial_policy"
   ]
 }

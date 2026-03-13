@@ -1,268 +1,67 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
-
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
-    "hero": {
-      "type": "rich-text",
+    "editorial_policy": {
+      "type": "policy-editorial",
       "blocks": {
-        "caption": {
-          "type": "caption",
+        "block_1": {
+          "type": "policy_block",
           "settings": {
-            "caption": "Policy Information",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
+            "title": "Information We Collect",
+            "text": "<p>We collect information you provide directly, including contact, shipping, and order details. We also collect limited technical data through cookies and analytics tools to improve site performance and shopping experience.<\/p>"
           }
         },
-        "heading": {
-          "type": "heading",
+        "block_2": {
+          "type": "policy_block",
           "settings": {
-            "heading": "<p>Privacy Policy</p>",
-            "heading_size": "large",
-            "heading_style": "default",
-            "heading_tag": "h1",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
+            "title": "How We Use Information",
+            "text": "<p>Your information is used to process orders, provide customer support, send service communications, and improve our products and marketing. We do not sell your personal information.<\/p>"
           }
         },
-        "text": {
-          "type": "text",
+        "block_3": {
+          "type": "policy_block",
           "settings": {
-            "text": "<p>This policy explains what information Candles By Victoria collects and how we use and protect it.</p>"
+            "title": "Email & Marketing Preferences",
+            "text": "<p>If you subscribe to our emails, you may receive product updates, promotions, and fragrance launches. You can unsubscribe at any time using the link in any marketing email.<\/p>"
+          }
+        },
+        "block_4": {
+          "type": "policy_block",
+          "settings": {
+            "title": "Third-Party Services",
+            "text": "<p>We use trusted third-party providers for payments, shipping, analytics, and subscription management. These providers only access data needed to perform their services.<\/p>"
+          }
+        },
+        "block_5": {
+          "type": "policy_block",
+          "settings": {
+            "title": "Your Privacy Rights",
+            "text": "<p>Depending on your location, you may have rights related to access, correction, or deletion of personal data. Contact us to submit a privacy request.<\/p>"
           }
         }
       },
-      "block_order": [
-        "caption",
-        "heading",
-        "text"
+      "block_order":[
+        "block_1",
+        "block_2",
+        "block_3",
+        "block_4",
+        "block_5"
       ],
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 72,
-        "padding_bottom": 24,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s1": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Information We Collect</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>We collect information you provide directly, including contact, shipping, and order details. We also collect limited technical data through cookies and analytics tools to improve site performance and shopping experience.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s2": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>How We Use Information</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Your information is used to process orders, provide customer support, send service communications, and improve our products and marketing. We do not sell your personal information.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-2",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s3": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Email & Marketing Preferences</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>If you subscribe to our emails, you may receive product updates, promotions, and fragrance launches. You can unsubscribe at any time using the link in any marketing email.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s4": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Third-Party Services</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>We use trusted third-party providers for payments, shipping, analytics, and subscription management. These providers only access data needed to perform their services.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-2",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s5": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Your Privacy Rights</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Depending on your location, you may have rights related to access, correction, or deletion of personal data. Contact us to submit a privacy request.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
+        "bg_color": "#faf9f6",
+        "text_color": "#2c2c2c",
+        "accent_color": "#a68a6d",
+        "hero_gradient": "linear-gradient(135deg, #f4f0eb 0%, #e3d7c8 100%)",
+        "caption": "Policy Information",
+        "heading": "Privacy Policy",
+        "text": "<p>This policy explains what information Candles By Victoria collects and exactly how we use and protect it.<\/p>",
+        "show_cta": true,
+        "cta_heading": "Have a specific question?",
+        "cta_button_label": "Contact Support",
+        "cta_button_link": "shopify:\/\/pages\/contact"
       }
     }
   },
-  "order": [
-    "main",
-    "hero",
-    "s1",
-    "s2",
-    "s3",
-    "s4",
-    "s5"
+  "order":[
+    "editorial_policy"
   ]
 }

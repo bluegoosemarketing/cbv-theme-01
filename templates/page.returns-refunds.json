@@ -1,268 +1,67 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
-
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
-    "hero": {
-      "type": "rich-text",
+    "editorial_policy": {
+      "type": "policy-editorial",
       "blocks": {
-        "caption": {
-          "type": "caption",
+        "block_1": {
+          "type": "policy_block",
           "settings": {
-            "caption": "Policy Information",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
+            "title": "Return Eligibility",
+            "text": "<p>Due to the handcrafted and personal nature of our products, returns are handled on a case-by-case basis. Unused products in original condition may be eligible for return approval within 14 days of delivery.<\/p>"
           }
         },
-        "heading": {
-          "type": "heading",
+        "block_2": {
+          "type": "policy_block",
           "settings": {
-            "heading": "<p>Returns & Refunds</p>",
-            "heading_size": "large",
-            "heading_style": "default",
-            "heading_tag": "h1",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
+            "title": "Non-Returnable Items",
+            "text": "<p>Custom candles, made-to-order products, and used items are generally non-returnable unless there is a quality issue or shipping damage.<\/p>"
           }
         },
-        "text": {
-          "type": "text",
+        "block_3": {
+          "type": "policy_block",
           "settings": {
-            "text": "<p>We want you to love your Candles By Victoria order. This policy explains return and refund expectations.</p>"
+            "title": "Damaged or Incorrect Orders",
+            "text": "<p>If you receive a damaged, defective, or incorrect item, contact us within 5 days of delivery. Include your order number and clear photos so we can resolve the issue quickly.<\/p>"
+          }
+        },
+        "block_4": {
+          "type": "policy_block",
+          "settings": {
+            "title": "Refund Process",
+            "text": "<p>Approved refunds are issued to the original payment method after the item is received and inspected (if a return shipment is required). Your financial institution may require additional posting time.<\/p>"
+          }
+        },
+        "block_5": {
+          "type": "policy_block",
+          "settings": {
+            "title": "Exchanges & Replacements",
+            "text": "<p>When possible, we may offer replacement products or store credit as an alternative to refunds, depending on product availability and the nature of the issue.<\/p>"
           }
         }
       },
-      "block_order": [
-        "caption",
-        "heading",
-        "text"
+      "block_order":[
+        "block_1",
+        "block_2",
+        "block_3",
+        "block_4",
+        "block_5"
       ],
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 72,
-        "padding_bottom": 24,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s1": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Return Eligibility</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Due to the handcrafted and personal nature of our products, returns are handled on a case-by-case basis. Unused products in original condition may be eligible for return approval within 14 days of delivery.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s2": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Non-Returnable Items</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Custom candles, made-to-order products, and used items are generally non-returnable unless there is a quality issue or shipping damage.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-2",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s3": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Damaged or Incorrect Orders</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>If you receive a damaged, defective, or incorrect item, contact us within 5 days of delivery. Include your order number and clear photos so we can resolve the issue quickly.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s4": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Refund Process</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Approved refunds are issued to the original payment method after the item is received and inspected (if a return shipment is required). Your financial institution may require additional posting time.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-2",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "s5": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Exchanges & Replacements</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>When possible, we may offer replacement products or store credit as an alternative to refunds, depending on product availability and the nature of the issue.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "default",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
+        "bg_color": "#faf9f6",
+        "text_color": "#2c2c2c",
+        "accent_color": "#a68a6d",
+        "hero_gradient": "linear-gradient(135deg, #f4f0eb 0%, #e3d7c8 100%)",
+        "caption": "Policy Information",
+        "heading": "Returns & Refunds",
+        "text": "<p>We want you to love your Candles By Victoria order. This policy explains our return, replacement, and refund expectations.<\/p>",
+        "show_cta": true,
+        "cta_heading": "Need to process a return?",
+        "cta_button_label": "Contact Support",
+        "cta_button_link": "shopify:\/\/pages\/contact"
       }
     }
   },
-  "order": [
-    "main",
-    "hero",
-    "s1",
-    "s2",
-    "s3",
-    "s4",
-    "s5"
+  "order":[
+    "editorial_policy"
   ]
 }

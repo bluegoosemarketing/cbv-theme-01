@@ -1,0 +1,636 @@
+{% comment %}
+  Section: Contact Editorial
+  Description: A premium, split-panel contact page combining helpful support expectations with a bespoke contact form.
+{% endcomment %}
+
+<style>
+  /* CSS Reset & Scope Firewall */
+  .cbv-contact {
+    --color-bg: {{ section.settings.bg_color }};
+    --color-text: {{ section.settings.text_color }};
+    --color-accent: {{ section.settings.accent_color }};
+    --font-heading: var(--font-heading-family, "Playfair Display", Georgia, serif);
+    --font-body: var(--font-body-family, "Helvetica Neue", Arial, sans-serif);
+    
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    overflow: hidden;
+    position: relative;
+    font-size: 16px; 
+    box-sizing: border-box;
+  }
+
+  .cbv-contact * {
+    box-sizing: border-box;
+  }
+
+  /* Reveal Animations */
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .reveal-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Typography */
+  .cbv-contact h1, .cbv-contact h2, .cbv-contact h3, .cbv-contact h4 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    line-height: 1.15;
+    color: currentColor;
+    margin: 0 0 24px 0;
+  }
+  
+  .cbv-contact p {
+    font-family: var(--font-body);
+    line-height: 1.7;
+    margin: 0 0 24px 0;
+    font-size: clamp(15px, 1.2vw, 17px); 
+    letter-spacing: 0.3px;
+  }
+  .cbv-contact p:last-child { margin-bottom: 0; }
+  
+  .cbv-contact a {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    transition: border-color 0.3s ease;
+  }
+  .cbv-contact a:hover {
+    border-color: var(--color-accent);
+  }
+
+  .cbv-caption {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: block;
+    color: var(--color-accent);
+  }
+
+  /* Hero Section */
+  .cbv-contact__hero {
+    text-align: center;
+    padding: clamp(96px, 10vw, 128px) 32px;
+    background: {{ section.settings.hero_gradient }};
+  }
+  .cbv-contact__hero-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .cbv-contact__hero h1 {
+    font-size: clamp(40px, 5vw, 64px);
+    margin-bottom: 24px;
+  }
+
+  /* Main Split Layout */
+  .cbv-contact__wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: clamp(64px, 8vw, 128px);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: clamp(80px, 8vw, 128px) 32px;
+    align-items: start;
+  }
+
+  /* Left Panel: Direct Info & Expectations */
+  .cbv-contact__info {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+  
+  .cbv-contact__methods {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .cbv-contact__method h4 {
+    font-family: var(--font-body);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--color-accent);
+  }
+  .cbv-contact__method p {
+    font-size: clamp(16px, 1.5vw, 20px);
+    margin-bottom: 8px;
+  }
+  .cbv-contact__method .cbv-contact__subtext {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-top: 8px;
+    line-height: 1.5;
+    max-width: 400px;
+  }
+
+  .cbv-contact__expectations {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .cbv-contact__block {
+    border-left: 1px solid var(--color-accent);
+    padding-left: 24px;
+  }
+  .cbv-contact__block h3 {
+    font-size: clamp(20px, 2vw, 24px);
+    margin-bottom: 12px;
+  }
+
+  /* Right Panel: Luxury Form Container */
+  .cbv-contact__form-container {
+    background-color: #ffffff; 
+    padding: clamp(48px, 6vw, 80px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.04);
+  }
+  .cbv-contact__form-container h2 {
+    font-size: clamp(32px, 3.5vw, 48px);
+    margin-bottom: 16px;
+  }
+  .cbv-contact__form-text {
+    margin-bottom: clamp(48px, 6vw, 64px);
+    opacity: 0.8;
+  }
+  .cbv-contact__form-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Minimalist Luxury Form Elements */
+  .cbv-contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .cbv-contact__form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  
+  .cbv-contact__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cbv-contact__field label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+    color: rgba(0,0,0,0.6);
+    transition: color 0.3s ease;
+  }
+  .cbv-contact__field:focus-within label {
+    color: var(--color-accent);
+  }
+  
+  /* Bottom Border Input Reset */
+  .cbv-contact__input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    padding: 8px 0;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    border-radius: 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--color-text);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .cbv-contact__input:focus {
+    outline: none;
+    border-bottom-color: var(--color-accent);
+    box-shadow: 0 1px 0 0 var(--color-accent); /* crisp highlight */
+  }
+  .cbv-contact__input::placeholder {
+    color: rgba(0,0,0,0.25);
+  }
+  
+  textarea.cbv-contact__input {
+    min-height: 120px;
+    resize: vertical;
+    margin-top: 8px;
+  }
+
+  /* Custom UX Phone Wrapper */
+  .cbv-contact__phone-wrapper {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .cbv-contact__phone-wrapper:focus-within {
+    border-bottom-color: var(--color-accent);
+    box-shadow: 0 1px 0 0 var(--color-accent);
+  }
+  .cbv-contact__flag-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-right: 12px;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    margin-right: 12px;
+  }
+  .cbv-contact__flag-box span {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: rgba(0,0,0,0.6);
+  }
+  .cbv-contact__phone-wrapper input {
+    border: none !important;
+    box-shadow: none !important;
+    padding-left: 0;
+  }
+
+  /* Submit Button */
+  .cbv-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 40px;
+    background-color: var(--color-text);
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 12px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    border: 1px solid var(--color-text);
+    cursor: pointer;
+    margin-top: 16px;
+    width: 100%;
+  }
+  .cbv-btn:hover {
+    background-color: transparent;
+    color: var(--color-text);
+  }
+
+  /* Form Messages */
+  .cbv-contact__message {
+    padding: 16px;
+    margin-bottom: 32px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    text-align: center;
+  }
+  .cbv-contact__message--success {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #C8E6C9;
+  }
+  .cbv-contact__message--error {
+    background-color: #FFEBEE;
+    color: #C62828;
+    border: 1px solid #FFCDD2;
+  }
+  .cbv-contact__message--error ul {
+    margin: 8px 0 0 0;
+    padding-left: 20px;
+    text-align: left;
+  }
+
+  /* Responsive Adjustments */
+  @media screen and (max-width: 900px) {
+    .cbv-contact__wrapper {
+      grid-template-columns: 1fr;
+      gap: 64px;
+    }
+    .cbv-contact__form-container {
+      padding: 40px 24px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .cbv-contact__hero, .cbv-contact__wrapper {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    .cbv-contact__form-row {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+</style>
+
+<div class="cbv-contact">
+  
+  <!-- Hero Section -->
+  <section class="cbv-contact__hero">
+    <div class="cbv-contact__hero-inner reveal-up">
+      {% if section.settings.caption != blank %}
+        <span class="cbv-caption">{{ section.settings.caption }}</span>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h1>{{ section.settings.heading }}</h1>
+      {% endif %}
+      {% if section.settings.text != blank %}
+        <div>{{ section.settings.text }}</div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Main Split Content -->
+  <section class="cbv-contact__wrapper">
+    
+    <!-- Left: Direct Info & Expectations -->
+    <div class="cbv-contact__info">
+      
+      <!-- Direct Contact Methods -->
+      <div class="cbv-contact__methods reveal-up">
+        {% for block in section.blocks %}
+          {% if block.type == 'contact_method' %}
+            <div class="cbv-contact__method" {{ block.shopify_attributes }}>
+              <h4>{{ block.settings.title }}</h4>
+              <div>{{ block.settings.text }}</div>
+              {% if block.settings.subtext != blank %}
+                <div class="cbv-contact__subtext">{{ block.settings.subtext }}</div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- General Expectations -->
+      <div class="cbv-contact__expectations">
+        {% for block in section.blocks %}
+          {% if block.type == 'expectation' %}
+            <div class="cbv-contact__block reveal-up" style="transition-delay: {{ forloop.index | times: 0.1 }}s;" {{ block.shopify_attributes }}>
+              <h3>{{ block.settings.title }}</h3>
+              <div>{{ block.settings.text }}</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+    </div>
+
+    <!-- Right: Custom Contact Form -->
+    <div class="cbv-contact__form-container reveal-up" style="transition-delay: 0.2s;">
+      {% if section.settings.form_heading != blank %}
+        <h2>{{ section.settings.form_heading }}</h2>
+      {% endif %}
+      {% if section.settings.form_text != blank %}
+        <div class="cbv-contact__form-text">{{ section.settings.form_text }}</div>
+      {% endif %}
+
+      {%- form 'contact', id: 'ContactForm', class: 'cbv-contact__form' -%}
+        
+        {%- if form.posted_successfully? -%}
+          <div class="cbv-contact__message cbv-contact__message--success" tabindex="-1" autofocus>
+            Thank you! Your message has been sent successfully. Our team will be in touch soon.
+          </div>
+        {%- elsif form.errors -%}
+          <div class="cbv-contact__message cbv-contact__message--error" tabindex="-1" autofocus>
+            Please adjust the following:
+            <ul>
+              {%- for field in form.errors -%}
+                <li>
+                  {%- if field == 'form' -%}
+                    {{ form.errors.messages[field] }}
+                  {%- else -%}
+                    The {{ field | capitalize }} {{ form.errors.messages[field] }}
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        <div class="cbv-contact__form-row">
+          <div class="cbv-contact__field">
+            <label for="ContactForm-name">Name</label>
+            <input class="cbv-contact__input" autocomplete="name" type="text" id="ContactForm-name" name="contact[Name]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="Jane Doe" required>
+          </div>
+          <div class="cbv-contact__field">
+            <label for="ContactForm-email">Email <span aria-hidden="true">*</span></label>
+            <input autocomplete="email" type="email" id="ContactForm-email" class="cbv-contact__input" name="contact[email]" spellcheck="false" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" aria-required="true" placeholder="jane@example.com" required>
+          </div>
+        </div>
+
+        <div class="cbv-contact__form-row">
+          <div class="cbv-contact__field">
+            <label for="ContactForm-phone">Phone Number (Optional)</label>
+            <div class="cbv-contact__phone-wrapper">
+              <div class="cbv-contact__flag-box">
+                <svg viewBox="0 0 300 200" width="24" height="16" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="300" height="200" fill="#bf0a30"/>
+                  <rect width="300" height="15.38" y="15.38" fill="#fff"/>
+                  <rect width="300" height="15.38" y="46.15" fill="#fff"/>
+                  <rect width="300" height="15.38" y="76.92" fill="#fff"/>
+                  <rect width="300" height="15.38" y="107.69" fill="#fff"/>
+                  <rect width="300" height="15.38" y="138.46" fill="#fff"/>
+                  <rect width="300" height="15.38" y="169.23" fill="#fff"/>
+                  <rect width="120" height="107.69" fill="#002868"/>
+                  <pattern id="stars" width="20" height="15" patternUnits="userSpaceOnUse">
+                    <circle cx="5" cy="5" r="1.5" fill="#fff"/>
+                  </pattern>
+                  <rect width="120" height="107.69" fill="url(#stars)"/>
+                </svg>
+                <span>+1</span>
+              </div>
+              <input type="tel" id="ContactForm-phone" class="cbv-contact__input" autocomplete="tel" name="contact[Phone Number]" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" placeholder="(555) 019-8192">
+            </div>
+          </div>
+          <div class="cbv-contact__field">
+            <label for="ContactForm-order">Order Number (Optional)</label>
+            <input type="text" id="ContactForm-order" class="cbv-contact__input" name="contact[Order Number]" placeholder="#CBV-12345">
+          </div>
+        </div>
+
+        <div class="cbv-contact__field">
+          <label for="ContactForm-body">Message <span aria-hidden="true">*</span></label>
+          <textarea id="ContactForm-body" class="cbv-contact__input" name="contact[Message]" placeholder="How can we help you today?" required>{%- if form.body -%}{{ form.body }}{%- endif -%}</textarea>
+        </div>
+
+        <button type="submit" class="cbv-btn">
+          Send Message
+        </button>
+
+      {%- endform -%}
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function initContactLogic() {
+    // 1. Reveal Animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px"
+    });
+
+    document.querySelectorAll('.reveal-up:not(.is-visible)').forEach(el => observer.observe(el));
+    if (window.Shopify && window.Shopify.designMode) {
+      document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('is-visible'));
+    }
+
+    // 2. Phone Formatter UX
+    const phoneInput = document.getElementById('ContactForm-phone');
+    if (phoneInput) {
+      phoneInput.addEventListener('input', function (e) {
+        let raw = e.target.value.replace(/\D/g, ''); // strip all non-digits
+        let formatted = '';
+        
+        if (raw.length > 0) {
+          let match = raw.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
+          if (match) {
+            formatted = !match[2] ? match[1] : '(' + match[1] + ') ' + match[2] + (match[3] ? '-' + match[3] : '');
+          } else {
+            // Failsafe for copy-pasting super long numbers
+            formatted = raw.substring(0, 10);
+            let fallbackMatch = formatted.match(/^(\d{3})(\d{3})(\d{4})$/);
+            if (fallbackMatch) {
+              formatted = '(' + fallbackMatch[1] + ') ' + fallbackMatch[2] + '-' + fallbackMatch[3];
+            }
+          }
+        }
+        e.target.value = formatted;
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initContactLogic);
+  document.addEventListener('shopify:section:load', initContactLogic);
+</script>
+
+{% schema %}
+{
+  "name": "Contact Editorial",
+  "settings":[
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#2C2C2C"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#A68A6D"
+    },
+    {
+      "type": "color_background",
+      "id": "hero_gradient",
+      "label": "Hero Background Gradient",
+      "default": "linear-gradient(135deg, #F4F0EB 0%, #E3D7C8 100%)"
+    },
+    {
+      "type": "header",
+      "content": "Hero Content"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Caption",
+      "default": "Concierge Support"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "We're here to help."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Whether you need support with custom candles, wax melts, or subscriptions, our team is happy to assist.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Form Configuration"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form Heading",
+      "default": "Send us a message"
+    },
+    {
+      "type": "richtext",
+      "id": "form_text",
+      "label": "Form Text",
+      "default": "<p>Use the form below and our team will follow up as soon as possible.</p>"
+    }
+  ],
+  "blocks":[
+    {
+      "type": "contact_method",
+      "name": "Direct Contact Method",
+      "settings":[
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label (e.g. Email, Location)",
+          "default": "Email"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Primary Text",
+          "default": "<p>orders@candlesbyvictoria.com</p>"
+        },
+        {
+          "type": "textarea",
+          "id": "subtext",
+          "label": "Subtext / Instructions",
+          "info": "Optional small text below the main info."
+        }
+      ]
+    },
+    {
+      "type": "expectation",
+      "name": "Expectation Block",
+      "settings":[
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Response Times"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>We typically reply within 1-2 business days.</p>"
+        }
+      ]
+    }
+  ],
+  "presets":[
+    {
+      "name": "Contact Editorial"
+    }
+  ]
+}
+{% endschema %}
