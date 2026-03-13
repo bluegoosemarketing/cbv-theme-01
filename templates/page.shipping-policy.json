@@ -1,0 +1,268 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "hero": {
+      "type": "rich-text",
+      "blocks": {
+        "caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "Policy Information",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Shipping Policy</p>",
+            "heading_size": "large",
+            "heading_style": "default",
+            "heading_tag": "h1",
+            "highlight_option": "none",
+            "word_animation_color": "#d4c4d9"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>This page outlines how Candles By Victoria processes, ships, and supports your orders.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "caption",
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "left",
+        "full_width": false,
+        "color_scheme": "option-1",
+        "padding_top": 72,
+        "padding_bottom": 24,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "left"
+      }
+    },
+    "s1": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Processing Times</p>",
+            "heading_size": "medium",
+            "heading_style": "default",
+            "heading_tag": "h2",
+            "highlight_option": "none",
+            "word_animation_color": "#d4c4d9"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Orders are typically processed within 2\u20135 business days. During launches, promotions, and holiday periods, processing may take longer while we maintain quality and order accuracy.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "desktop_content_position": "default",
+        "content_alignment": "left",
+        "full_width": false,
+        "color_scheme": "option-1",
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "left"
+      }
+    },
+    "s2": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Shipping Methods & Transit</p>",
+            "heading_size": "medium",
+            "heading_style": "default",
+            "heading_tag": "h2",
+            "highlight_option": "none",
+            "word_animation_color": "#d4c4d9"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Transit time depends on the shipping service selected at checkout and destination. Delivery estimates shown at checkout are carrier-based and not guaranteed.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "desktop_content_position": "default",
+        "content_alignment": "left",
+        "full_width": false,
+        "color_scheme": "option-2",
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "left"
+      }
+    },
+    "s3": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Tracking & Delivery Updates</p>",
+            "heading_size": "medium",
+            "heading_style": "default",
+            "heading_tag": "h2",
+            "highlight_option": "none",
+            "word_animation_color": "#d4c4d9"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Once your order ships, you will receive a tracking link by email. Please allow up to 24 hours for tracking events to begin updating.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "desktop_content_position": "default",
+        "content_alignment": "left",
+        "full_width": false,
+        "color_scheme": "option-1",
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "left"
+      }
+    },
+    "s4": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Address Accuracy</p>",
+            "heading_size": "medium",
+            "heading_style": "default",
+            "heading_tag": "h2",
+            "highlight_option": "none",
+            "word_animation_color": "#d4c4d9"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Please verify shipping details before placing your order. Candles By Victoria is not responsible for delays caused by incorrect or incomplete address information submitted at checkout.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "desktop_content_position": "default",
+        "content_alignment": "left",
+        "full_width": false,
+        "color_scheme": "option-2",
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "left"
+      }
+    },
+    "s5": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Lost, Delayed, or Damaged Shipments</p>",
+            "heading_size": "medium",
+            "heading_style": "default",
+            "heading_tag": "h2",
+            "highlight_option": "none",
+            "word_animation_color": "#d4c4d9"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If your package appears lost, significantly delayed, or arrives damaged, contact us with your order number and photos (if applicable). We will help with next steps and carrier claims where appropriate.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "desktop_content_position": "default",
+        "content_alignment": "left",
+        "full_width": false,
+        "color_scheme": "option-1",
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "left"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "hero",
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5"
+  ]
+}

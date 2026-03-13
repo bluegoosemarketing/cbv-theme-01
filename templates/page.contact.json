@@ -7,6 +7,7 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
+
 {
   "sections": {
     "main": {
@@ -17,53 +18,136 @@
         "padding_bottom": 0
       }
     },
-    "contact-form": {
+    "hero": {
+      "type": "rich-text",
+      "blocks": {
+        "caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "Contact Candles By Victoria",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>We\u2019re here to help with orders, fragrance questions, and product recommendations.</p>",
+            "heading_size": "large",
+            "heading_style": "default",
+            "heading_tag": "h1",
+            "highlight_option": "none",
+            "word_animation_color": "#d4c4d9"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Whether you need support with custom candles, wax melts, or subscriptions, our team is happy to assist.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "caption",
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "left",
+        "full_width": false,
+        "color_scheme": "option-1",
+        "padding_top": 72,
+        "padding_bottom": 24,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "left"
+      }
+    },
+    "expectations": {
+      "type": "multicolumn",
+      "blocks": {
+        "e1": {
+          "type": "column",
+          "settings": {
+            "title": "Response Times",
+            "text": "<p>We typically reply within 1\u20132 business days, and often sooner during normal volume periods.</p>"
+          }
+        },
+        "e2": {
+          "type": "column",
+          "settings": {
+            "title": "Order Assistance",
+            "text": "<p>Include your order number for the fastest help with edits, shipping updates, and delivery questions.</p>"
+          }
+        },
+        "e3": {
+          "type": "column",
+          "settings": {
+            "title": "Fragrance Guidance",
+            "text": "<p>Not sure where to start? Tell us what scents you already love and we can suggest matching options.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "e1",
+        "e2",
+        "e3"
+      ],
+      "settings": {
+        "multicolumn_style": "default",
+        "enable_card_background": true,
+        "caption": "Support Expectations",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "title": "Helpful and personal support",
+        "heading_size": "medium",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "button_label": "",
+        "button_link": "",
+        "open_new_tab_2": false,
+        "color_scheme": "option-2",
+        "color_scheme_1": "",
+        "padding_top": 16,
+        "padding_bottom": 24,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    },
+    "contact": {
       "type": "contact-form",
       "settings": {
-        "hide_image": false,
-        "caption": "",
+        "contact_style": "column",
+        "image": "",
+        "image_height": "adapt",
+        "hide_image": true,
+        "caption": "Send us a message",
         "text_style": "caption-with-letter-spacing",
         "text_size": "medium",
         "heading": "Contact Us",
         "heading_size": "medium",
         "heading_style": "default",
         "heading_tag": "h2",
-        "text": "<p>We’d be delighted to connect with you! Our team is ready to assist. Reach out by filling in the email form below.</p>",
-        "button_label_1": "Contact us",
+        "text": "<p>Use the form below and our team will follow up as soon as possible.</p>",
+        "button_label_1": "",
         "button_link_1": "",
+        "open_new_tab_1": false,
         "button_style_secondary_1": false,
         "full_width": false,
-        "color_scheme": "option-2",
+        "hide_phone_field": false,
+        "color_scheme": "option-1",
         "color_scheme_1": "",
         "padding_top": 0,
-        "padding_bottom": 0,
+        "padding_bottom": 72,
         "ignore_spacing": false,
-        "margin_spacing": "positive",
-        "margin_top": 84
-      }
-    },
-    "location-map": {
-      "type": "location-map",
-      "settings": {
-        "caption": "",
-        "text_style": "caption-with-letter-spacing",
-        "text_size": "medium",
-        "title": "",
-        "heading_size": "medium",
-        "heading_style": "default",
-        "heading_tag": "h2",
-        "content": "",
-        "show_contact_form": false,
-        "hide_phone_field": true,
-        "api_key": "",
-        "zoom_level": 12,
-        "address": "New York, USA",
-        "marker_content": "<h3><strong>New York</strong></h3><p>132 Tower str,<br/>State Park, New York<br/>K43 745</p><p><strong>(777) 777-7777</strong></p>",
-        "layout": "full-width",
-        "color_scheme": "option-1",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "ignore_spacing": false,
+        "image_height_mobile": "small",
         "margin_spacing": "negative",
         "margin_top": 0
       }
@@ -71,7 +155,8 @@
   },
   "order": [
     "main",
-    "contact-form",
-    "location-map"
+    "hero",
+    "expectations",
+    "contact"
   ]
 }

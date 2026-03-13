@@ -1,0 +1,317 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "hero": {
+      "type": "rich-text",
+      "blocks": {
+        "caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "Candle Club",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Your favorite fragrances, <em>always in stock at home</em>.</p>",
+            "heading_size": "large",
+            "heading_style": "default",
+            "heading_tag": "h1",
+            "highlight_option": "underline-hand",
+            "word_animation_color": "#d4c4d9"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The Candles By Victoria Candle Club makes candle subscriptions effortless. Save on every order, discover new scents, and enjoy premium scented candles and wax melts delivered on your schedule.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Subscription-Eligible Products",
+            "button_link": "/collections/candles",
+            "button_style_secondary": false,
+            "open_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "caption",
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "left",
+        "full_width": false,
+        "color_scheme": "option-1",
+        "padding_top": 80,
+        "padding_bottom": 48,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "left"
+      }
+    },
+    "benefits": {
+      "type": "multicolumn",
+      "blocks": {
+        "b1": {
+          "type": "column",
+          "settings": {
+            "image": "",
+            "title": "Subscribe & Save",
+            "text": "<p>Enjoy preferred pricing on recurring deliveries of your signature custom candles and wax melts.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "b2": {
+          "type": "column",
+          "settings": {
+            "image": "",
+            "title": "Never Run Out",
+            "text": "<p>Keep your home stocked with your favorites, from everyday staples to seasonal fragrance picks.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "b3": {
+          "type": "column",
+          "settings": {
+            "image": "",
+            "title": "Flexible Delivery",
+            "text": "<p>Choose a cadence that fits your routine with options designed for real life, not rigid plans.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "b4": {
+          "type": "column",
+          "settings": {
+            "image": "",
+            "title": "Discover More Scents",
+            "text": "<p>Explore CBV's fragrance selection over time and uncover new favorites with each cycle.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "multicolumn_style": "default",
+        "enable_card_background": true,
+        "caption": "Why Join",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "title": "Why Join the Candle Club",
+        "heading_size": "large",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 4,
+        "column_alignment": "left",
+        "button_label": "",
+        "button_link": "",
+        "open_new_tab_2": false,
+        "color_scheme": "option-2",
+        "color_scheme_1": "",
+        "padding_top": 28,
+        "padding_bottom": 28,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    },
+    "how": {
+      "type": "multicolumn",
+      "blocks": {
+        "s1": {
+          "type": "column",
+          "settings": {
+            "title": "1. Choose Your Product",
+            "text": "<p>Select your custom candles, standard candles, or wax melts from the collections you already love.</p>"
+          }
+        },
+        "s2": {
+          "type": "column",
+          "settings": {
+            "title": "2. Pick Subscription Frequency",
+            "text": "<p>Select a delivery interval that works for your home and lifestyle.</p>"
+          }
+        },
+        "s3": {
+          "type": "column",
+          "settings": {
+            "title": "3. Receive Automatic Deliveries",
+            "text": "<p>We handcraft and ship your products so they arrive right when you need them.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "multicolumn_style": "grid",
+        "enable_card_background": false,
+        "caption": "How It Works",
+        "text_style": "caption-with-letter-spacing",
+        "text_size": "medium",
+        "title": "A simple 3-step candle subscription",
+        "heading_size": "medium",
+        "heading_style": "default",
+        "heading_tag": "h2",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "button_label": "",
+        "button_link": "",
+        "open_new_tab_2": false,
+        "color_scheme": "option-1",
+        "color_scheme_1": "",
+        "padding_top": 28,
+        "padding_bottom": 28,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0
+      }
+    },
+    "flexibility": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Built for flexibility \u2014 <em>pause, skip, or cancel anytime.</em></p>",
+            "heading_size": "medium",
+            "heading_style": "default",
+            "heading_tag": "h2",
+            "highlight_option": "underline",
+            "word_animation_color": "#d4c4d9"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Manage your candle subscriptions from your customer account in just a few clicks. Need to change scents, adjust shipment timing, or take a break? You stay fully in control.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "full_width": false,
+        "color_scheme": "option-2",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "left"
+      }
+    },
+    "cta": {
+      "type": "rich-text",
+      "blocks": {
+        "caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "Start Your Subscription",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Bring premium fragrance home, on repeat.</p>",
+            "heading_size": "medium",
+            "heading_style": "default",
+            "heading_tag": "h2",
+            "highlight_option": "none",
+            "word_animation_color": "#d4c4d9"
+          }
+        },
+        "button1": {
+          "type": "button",
+          "settings": {
+            "button_label": "Explore Candles",
+            "button_link": "/collections/candles",
+            "button_style_secondary": false,
+            "open_new_tab": false
+          }
+        },
+        "button2": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Wax Melts",
+            "button_link": "/collections/wax-melts",
+            "button_style_secondary": true,
+            "open_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "caption",
+        "heading",
+        "button1",
+        "button2"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "full_width": false,
+        "color_scheme": "option-3",
+        "padding_top": 56,
+        "padding_bottom": 72,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "center"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "hero",
+    "benefits",
+    "how",
+    "flexibility",
+    "cta"
+  ]
+}
