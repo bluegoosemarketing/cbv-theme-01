@@ -1,284 +1,78 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
-
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
-    "hero": {
-      "type": "rich-text",
+    "editorial": {
+      "type": "about-editorial",
       "blocks": {
-        "caption": {
-          "type": "caption",
+        "hero_1": {
+          "type": "hero",
           "settings": {
+            "gradient": "linear-gradient(135deg, #f4f0eb 0%, #e3d7c8 100%)",
+            "text_color": "#2c2c2c",
             "caption": "About Candles By Victoria",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
+            "heading": "Handcrafted fragrance for the true enthusiast.",
+            "text": "<p>Candles By Victoria creates premium scented candles and wax melts, defined by an expansive library of scent, bespoke customization, and a deeply personal handcrafted approach.</p>"
           }
         },
-        "heading": {
-          "type": "heading",
+        "story_1": {
+          "type": "story",
           "settings": {
-            "heading": "<p>Handcrafted fragrance experiences for people who truly love scent.</p>",
-            "heading_size": "large",
-            "heading_style": "default",
-            "heading_tag": "h1",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Candles By Victoria creates premium scented candles and wax melts with an expansive fragrance library, distinctive customization options, and a handcrafted approach that keeps every order personal.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "caption",
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-1",
-        "padding_top": 80,
-        "padding_bottom": 40,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "story": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Our Story",
-            "heading_size": "h1"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>CBV began with a simple idea: fragrance should feel personal, memorable, and full of character. What started as a passion for scent blending grew into a destination for customers looking beyond mass-produced candles.</p><p>Today, we continue that same spirit by pairing artisan-style craftsmanship with modern convenience, helping you build a fragrance ritual that feels unmistakably yours.</p>"
-          }
-        },
-        "button": {
-          "type": "button",
-          "settings": {
+            "heading": "A Passion for Scent",
+            "text": "<p>What began as a quiet passion for scent blending has blossomed into a destination for those seeking more than mass-produced fragrance. We believe a scent should tell a story, evoke a memory, and transform a room.<\/p><p>Today, we pair artisan craftsmanship with modern convenience, helping you curate a fragrance ritual that feels unmistakably yours.<\/p>",
             "button_label": "Shop Best Sellers",
-            "button_link": "/collections/all",
-            "button_style_secondary": false
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text",
-        "button"
-      ],
-      "settings": {
-        "image": "",
-        "video_url": "",
-        "caption": "",
-        "desktop_image_width": "medium",
-        "layout": "text_first",
-        "desktop_content_position": "center",
-        "desktop_content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-2",
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "diff": {
-      "type": "multicolumn",
-      "blocks": {
-        "d1": {
-          "type": "column",
-          "settings": {
-            "title": "Massive Fragrance Selection",
-            "text": "<p>From comforting bakery notes to elevated perfumery-inspired profiles, our fragrance selection is curated for every mood and season.</p>"
+            "button_link": "shopify:\/\/collections\/all"
           }
         },
-        "d2": {
-          "type": "column",
+        "pillars_1": {
+          "type": "pillars",
           "settings": {
-            "title": "Customization at the Core",
-            "text": "<p>Our custom candle builder gives you creative control so your products reflect your exact scent preferences.</p>"
+            "caption": "What Makes CBV Different",
+            "title": "Designed for true candle enthusiasts.",
+            "title_1": "Massive Selection",
+            "text_1": "<p>From comforting gourmands to refined perfumery, our collections are meticulously curated for every mood and season.<\/p>",
+            "title_2": "Bespoke Creations",
+            "text_2": "<p>Take creative control. Our custom builder allows you to tailor a scent profile that reflects your exact desires.<\/p>",
+            "title_3": "Artisan Handcrafted",
+            "text_3": "<p>Poured with intention. Each candle and melt is produced with care, delivering a sensory experience you can see and feel.<\/p>",
+            "title_4": "A Specialty Experience",
+            "text_4": "<p>Built for true fragrance lovers who demand depth, complexity, and a signature touch in their home.<\/p>"
           }
         },
-        "d3": {
-          "type": "column",
+        "banner_1": {
+          "type": "banner",
           "settings": {
-            "title": "Handcrafted Feel",
-            "text": "<p>Each candle and wax melt is produced with care, delivering quality you can see, smell, and enjoy throughout your home.</p>"
-          }
-        },
-        "d4": {
-          "type": "column",
-          "settings": {
-            "title": "Specialty Candle Experience",
-            "text": "<p>CBV is built for fragrance lovers who want more than basic candles \u2014 they want a signature, sensory experience.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "d1",
-        "d2",
-        "d3",
-        "d4"
-      ],
-      "settings": {
-        "multicolumn_style": "default",
-        "enable_card_background": true,
-        "caption": "What Makes CBV Different",
-        "text_style": "caption-with-letter-spacing",
-        "text_size": "medium",
-        "title": "Designed for true candle enthusiasts",
-        "heading_size": "large",
-        "heading_style": "default",
-        "heading_tag": "h2",
-        "image_width": "full",
-        "image_ratio": "adapt",
-        "columns_desktop": 4,
-        "column_alignment": "left",
-        "button_label": "",
-        "button_link": "",
-        "open_new_tab_2": false,
-        "color_scheme": "option-1",
-        "color_scheme_1": "",
-        "padding_top": 32,
-        "padding_bottom": 24,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0
-      }
-    },
-    "library": {
-      "type": "rich-text",
-      "blocks": {
-        "caption": {
-          "type": "caption",
-          "settings": {
+            "bg_color": "#2c2c2c",
+            "overlay_opacity": 90,
+            "text_color": "#faf9f6",
             "caption": "The Fragrance Library",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
+            "heading": "Explore the Scent Library.",
+            "text": "<p>Hundreds of scent possibilities await. Discover classics, seasonal highlights, and wildly creative blends.<\/p>",
+            "button_label": "Browse Scents",
+            "button_link": "shopify:\/\/pages\/scent-library"
           }
         },
-        "heading": {
-          "type": "heading",
+        "quote_1": {
+          "type": "quote",
           "settings": {
-            "heading": "<p>Hundreds of scent possibilities, from classics to creative blends.</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Our fragrance library is one of the defining parts of the CBV experience. Whether you love bright fruit, cozy gourmand, clean spa, or rich seasonal aromas, you will always have fresh options to explore.</p>"
-          }
-        },
-        "button": {
-          "type": "button",
-          "settings": {
-            "button_label": "Browse the Scent Library",
-            "button_link": "/pages/scent-library",
-            "button_style_secondary": true,
-            "open_new_tab": false
+            "quote": "<p>“We believe home fragrance should be both beautiful and deeply personal. Every scent is poured to help you build rituals you look forward to, every single day.”<\/p>",
+            "author": "The CBV Philosophy"
           }
         }
       },
-      "block_order": [
-        "caption",
-        "heading",
-        "text",
-        "button"
+      "block_order":[
+        "hero_1",
+        "story_1",
+        "pillars_1",
+        "banner_1",
+        "quote_1"
       ],
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "option-3",
-        "padding_top": 56,
-        "padding_bottom": 56,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
-      }
-    },
-    "philosophy": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>Our philosophy: craftsmanship, creativity, and customer delight.</p>",
-            "heading_size": "medium",
-            "heading_style": "default",
-            "heading_tag": "h2",
-            "highlight_option": "none",
-            "word_animation_color": "#d4c4d9"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>We believe home fragrance should be both beautiful and deeply personal. Every new scent, product format, and subscription option is created to help customers build rituals they look forward to every day.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "full_width": false,
-        "color_scheme": "option-2",
-        "padding_top": 28,
-        "padding_bottom": 72,
-        "ignore_spacing": false,
-        "margin_spacing": "negative",
-        "margin_top": 0,
-        "mobile_content_alignment": "left"
+        "bg_color": "#faf9f6",
+        "text_color": "#2c2c2c",
+        "accent_color": "#a68a6d"
       }
     }
   },
-  "order": [
-    "main",
-    "hero",
-    "story",
-    "diff",
-    "library",
-    "philosophy"
+  "order":[
+    "editorial"
   ]
 }

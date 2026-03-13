@@ -1,0 +1,539 @@
+{% comment %}
+  Section: About Editorial
+  Description: A premium, continuous storytelling section designed for luxury brand pages.
+{% endcomment %}
+
+<style>
+  /* CSS Reset & Scope Firewall for this Section */
+  .cbv-editorial {
+    --color-bg: {{ section.settings.bg_color }};
+    --color-text: {{ section.settings.text_color }};
+    --color-accent: {{ section.settings.accent_color }};
+    --font-heading: var(--font-heading-family, "Playfair Display", Georgia, serif);
+    --font-body: var(--font-body-family, "Helvetica Neue", Arial, sans-serif);
+    
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    overflow: hidden;
+    position: relative;
+    font-size: 16px; /* Establish strict baseline */
+    box-sizing: border-box;
+  }
+
+  .cbv-editorial * {
+    box-sizing: border-box;
+  }
+
+  /* Reveal Animations */
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .reveal-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+
+  /* Typography Reset */
+  .cbv-editorial h1, 
+  .cbv-editorial h2, 
+  .cbv-editorial h3 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    line-height: 1.15;
+    color: currentColor;
+    margin: 0 0 24px 0;
+    letter-spacing: normal;
+  }
+  
+  .cbv-editorial p {
+    font-family: var(--font-body);
+    line-height: 1.7;
+    margin: 0 0 24px 0;
+    font-size: clamp(16px, 1.2vw, 18px); 
+    letter-spacing: 0.3px;
+  }
+
+  .cbv-editorial p:last-child {
+    margin-bottom: 0;
+  }
+
+  .cbv-caption {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: block;
+    color: var(--color-accent);
+  }
+
+  .cbv-btn {
+    display: inline-block;
+    padding: 16px 40px;
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: 1px solid var(--color-text);
+    margin-top: 16px;
+  }
+
+  .cbv-btn:hover {
+    background-color: transparent;
+    color: var(--color-text);
+  }
+
+  .cbv-btn-secondary {
+    background-color: transparent;
+    color: var(--color-text);
+  }
+
+  .cbv-btn-secondary:hover {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  /* Hero Block (Gradient) */
+  .cbv-hero {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 64px 32px;
+  }
+  .cbv-hero__content {
+    position: relative;
+    z-index: 3;
+    max-width: 800px;
+  }
+  .cbv-hero h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    margin-bottom: 24px;
+  }
+
+  /* Story Block */
+  .cbv-story {
+    padding: 128px 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+    align-items: center;
+  }
+  .cbv-story__images {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .cbv-story__img-main,
+  .cbv-story__img-offset {
+    display: block;
+    max-width: 100%;
+    background-color: rgba(0,0,0,0.03); 
+  }
+  .cbv-story__img-main {
+    width: 80%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    border-radius: 2px;
+  }
+  .cbv-story__img-offset {
+    position: absolute;
+    bottom: -15%;
+    right: 0;
+    width: 50%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+  }
+  .cbv-story h2 {
+    font-size: clamp(36px, 4.5vw, 56px);
+    margin-bottom: 32px;
+  }
+
+  /* Pillars Block */
+  .cbv-pillars {
+    padding: 96px 32px;
+    background-color: rgba(0,0,0,0.02);
+  }
+  .cbv-pillars__header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 80px;
+  }
+  .cbv-pillars__header h2 {
+    font-size: clamp(32px, 3.5vw, 48px);
+  }
+  .cbv-pillars__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .cbv-pillar {
+    border-top: 1px solid var(--color-accent);
+    padding-top: 32px;
+  }
+  .cbv-pillar__num {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    color: var(--color-accent);
+    margin-bottom: 16px;
+    display: block;
+    font-style: italic;
+  }
+  .cbv-pillar h3 {
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .cbv-pillar p {
+    font-size: 15px;
+    opacity: 0.85;
+  }
+
+  /* Banner Block */
+  .cbv-banner {
+    padding: 160px 32px;
+    text-align: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    overflow: hidden;
+  }
+  .cbv-banner__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    background-color: #e5e5e5; /* Base fallback */
+  }
+  .cbv-banner__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+  .cbv-banner__content {
+    position: relative;
+    z-index: 3;
+    max-width: 700px;
+  }
+  .cbv-banner h2 {
+    font-size: clamp(36px, 5vw, 64px);
+    margin-bottom: 24px;
+  }
+  .cbv-banner .cbv-btn {
+    margin-top: 32px;
+  }
+
+  /* Quote Block */
+  .cbv-quote {
+    padding: 128px 32px;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .cbv-quote blockquote {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: clamp(28px, 3.5vw, 48px);
+    line-height: 1.3;
+    font-style: italic;
+    color: var(--color-text);
+  }
+
+  /* Responsive Adjustments */
+  @media screen and (max-width: 900px) {
+    .cbv-story {
+      grid-template-columns: 1fr;
+      gap: 64px;
+      padding: 80px 24px;
+    }
+    .cbv-story__images {
+      margin-bottom: 32px;
+    }
+    .cbv-story__img-offset {
+      bottom: -10%;
+    }
+    .cbv-pillars__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+    .cbv-banner {
+      padding: 96px 24px;
+    }
+    .cbv-quote {
+      padding: 80px 24px;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .cbv-pillars__grid {
+      grid-template-columns: 1fr;
+    }
+    .cbv-hero {
+      padding: 48px 24px;
+    }
+  }
+</style>
+
+<div class="cbv-editorial">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      
+      {% when 'hero' %}
+        <section class="cbv-hero" style="background: {{ block.settings.gradient }};" {{ block.shopify_attributes }}>
+          <div class="cbv-hero__content reveal-up">
+            {% if block.settings.caption != blank %}
+              <span class="cbv-caption">{{ block.settings.caption }}</span>
+            {% endif %}
+            {% if block.settings.heading != blank %}
+              <h1 style="color: {{ block.settings.text_color }}">{{ block.settings.heading }}</h1>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <div style="color: {{ block.settings.text_color }}">{{ block.settings.text }}</div>
+            {% endif %}
+          </div>
+        </section>
+
+      {% when 'story' %}
+        <section class="cbv-story" {{ block.shopify_attributes }}>
+          <div class="cbv-story__images reveal-up">
+            {% if block.settings.image_1 != blank %}
+              <img src="{{ block.settings.image_1 | img_url: '1000x' }}" class="cbv-story__img-main" alt="Story Image 1" loading="lazy">
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag: 'cbv-story__img-main' }}
+            {% endif %}
+            
+            {% if block.settings.image_2 != blank %}
+              <img src="{{ block.settings.image_2 | img_url: '800x' }}" class="cbv-story__img-offset reveal-up reveal-delay-2" alt="Story Image 2" loading="lazy">
+            {% else %}
+              {{ 'collection-1' | placeholder_svg_tag: 'cbv-story__img-offset reveal-up reveal-delay-2' }}
+            {% endif %}
+          </div>
+          <div class="cbv-story__text reveal-up reveal-delay-1">
+            {% if block.settings.heading != blank %}
+              <h2>{{ block.settings.heading }}</h2>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <div>{{ block.settings.text }}</div>
+            {% endif %}
+            {% if block.settings.button_label != blank %}
+              <a href="{{ block.settings.button_link }}" class="cbv-btn">{{ block.settings.button_label }}</a>
+            {% endif %}
+          </div>
+        </section>
+
+      {% when 'pillars' %}
+        <section class="cbv-pillars" {{ block.shopify_attributes }}>
+          <div class="cbv-pillars__header reveal-up">
+            {% if block.settings.caption != blank %}
+              <span class="cbv-caption">{{ block.settings.caption }}</span>
+            {% endif %}
+            {% if block.settings.title != blank %}
+              <h2>{{ block.settings.title }}</h2>
+            {% endif %}
+          </div>
+          <div class="cbv-pillars__grid">
+            {% for i in (1..4) %}
+              {% capture title_key %}title_{{ i }}{% endcapture %}
+              {% capture text_key %}text_{{ i }}{% endcapture %}
+              {% assign p_title = block.settings[title_key] %}
+              {% assign p_text = block.settings[text_key] %}
+              
+              {% if p_title != blank %}
+                <div class="cbv-pillar reveal-up" style="transition-delay: {{ i | times: 0.1 }}s;">
+                  <span class="cbv-pillar__num">0{{ i }}</span>
+                  <h3>{{ p_title }}</h3>
+                  <div>{{ p_text }}</div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </section>
+
+      {% when 'banner' %}
+        <section class="cbv-banner" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <img src="{{ block.settings.image | img_url: '2000x' }}" alt="" class="cbv-banner__bg" loading="lazy">
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'cbv-banner__bg' }}
+          {% endif %}
+          
+          <div class="cbv-banner__overlay" style="background-color: {{ block.settings.bg_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+          
+          <div class="cbv-banner__content reveal-up">
+            {% if block.settings.caption != blank %}
+              <span class="cbv-caption" style="color: {{ block.settings.text_color }}">{{ block.settings.caption }}</span>
+            {% endif %}
+            {% if block.settings.heading != blank %}
+              <h2 style="color: {{ block.settings.text_color }}">{{ block.settings.heading }}</h2>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <div style="color: {{ block.settings.text_color }}">{{ block.settings.text }}</div>
+            {% endif %}
+            {% if block.settings.button_label != blank %}
+              <a href="{{ block.settings.button_link }}" class="cbv-btn cbv-btn-secondary" style="border-color: {{ block.settings.text_color }}; color: {{ block.settings.text_color }};">{{ block.settings.button_label }}</a>
+            {% endif %}
+          </div>
+        </section>
+
+      {% when 'quote' %}
+        <section class="cbv-quote reveal-up" {{ block.shopify_attributes }}>
+          {% if block.settings.quote != blank %}
+            <blockquote>{{ block.settings.quote }}</blockquote>
+          {% endif %}
+          {% if block.settings.author != blank %}
+            <span class="cbv-caption" style="margin-top: 32px;">{{ block.settings.author }}</span>
+          {% endif %}
+        </section>
+
+    {% endcase %}
+  {% endfor %}
+</div>
+
+<script>
+  function initEditorialAnimations() {
+    // If we are in the Shopify editor, instantly reveal to prevent invisible blocks during editing
+    if (window.Shopify && window.Shopify.designMode) {
+      document.querySelectorAll('.reveal-up').forEach(el => {
+        el.classList.add('is-visible');
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        el.style.transition = 'none';
+      });
+      return;
+    }
+
+    // Standard scroll animation for live site
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: "0px 0px -50px 0px"
+    });
+
+    document.querySelectorAll('.reveal-up:not(.is-visible)').forEach(el => observer.observe(el));
+  }
+
+  document.addEventListener('DOMContentLoaded', initEditorialAnimations);
+  // Re-trigger inside Shopify Theme Editor when saving/loading blocks
+  document.addEventListener('shopify:section:load', initEditorialAnimations);
+</script>
+
+{% schema %}
+{
+  "name": "About Editorial",
+  "settings":[
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#2C2C2C"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#A68A6D"
+    }
+  ],
+  "blocks":[
+    {
+      "type": "hero",
+      "name": "Gradient Hero",
+      "settings":[
+        { "type": "color_background", "id": "gradient", "label": "Gradient Background", "default": "linear-gradient(135deg, #F4F0EB 0%, #E3D7C8 100%)" },
+        { "type": "color", "id": "text_color", "label": "Text Color", "default": "#2C2C2C" },
+        { "type": "text", "id": "caption", "label": "Caption", "default": "About Candles By Victoria" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Handcrafted fragrance for the true enthusiast." },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Premium scented candles and wax melts defined by a massive scent library.</p>" }
+      ]
+    },
+    {
+      "type": "story",
+      "name": "Editorial Story",
+      "settings":[
+        { "type": "image_picker", "id": "image_1", "label": "Main Image" },
+        { "type": "image_picker", "id": "image_2", "label": "Offset Image" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Our Story" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>What began as a passion for scent blending grew into a destination.</p>" },
+        { "type": "text", "id": "button_label", "label": "Button Label", "default": "Shop Best Sellers" },
+        { "type": "url", "id": "button_link", "label": "Button Link" }
+      ]
+    },
+    {
+      "type": "pillars",
+      "name": "Value Pillars",
+      "settings":[
+        { "type": "text", "id": "caption", "label": "Caption", "default": "What Makes CBV Different" },
+        { "type": "text", "id": "title", "label": "Heading", "default": "Designed for true candle enthusiasts." },
+        { "type": "text", "id": "title_1", "label": "Pillar 1 Title", "default": "Massive Selection" },
+        { "type": "richtext", "id": "text_1", "label": "Pillar 1 Text", "default": "<p>Curated for every mood and season.</p>" },
+        { "type": "text", "id": "title_2", "label": "Pillar 2 Title", "default": "Bespoke Creations" },
+        { "type": "richtext", "id": "text_2", "label": "Pillar 2 Text", "default": "<p>Custom control for your exact scent preferences.</p>" },
+        { "type": "text", "id": "title_3", "label": "Pillar 3 Title", "default": "Artisan Handcrafted" },
+        { "type": "richtext", "id": "text_3", "label": "Pillar 3 Text", "default": "<p>Produced with care, delivering quality you can see and smell.</p>" },
+        { "type": "text", "id": "title_4", "label": "Pillar 4 Title", "default": "Specialty Experience" },
+        { "type": "richtext", "id": "text_4", "label": "Pillar 4 Text", "default": "<p>Built for those who want a signature sensory experience.</p>" }
+      ]
+    },
+    {
+      "type": "banner",
+      "name": "Library Banner",
+      "settings":[
+        { "type": "image_picker", "id": "image", "label": "Background Image" },
+        { "type": "color", "id": "bg_color", "label": "Background Color Overlay", "default": "#2C2C2C" },
+        { "type": "range", "id": "overlay_opacity", "min": 0, "max": 100, "step": 5, "label": "Overlay Opacity", "default": 80 },
+        { "type": "color", "id": "text_color", "label": "Text Color", "default": "#FAF9F6" },
+        { "type": "text", "id": "caption", "label": "Caption", "default": "The Fragrance Library" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Hundreds of scent possibilities." },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Discover classics to creative blends.</p>" },
+        { "type": "text", "id": "button_label", "label": "Button Label", "default": "Browse Library" },
+        { "type": "url", "id": "button_link", "label": "Button Link" }
+      ]
+    },
+    {
+      "type": "quote",
+      "name": "Philosophy Quote",
+      "settings":[
+        { "type": "richtext", "id": "quote", "label": "Quote", "default": "<p>We believe home fragrance should be both beautiful and deeply personal.</p>" },
+        { "type": "text", "id": "author", "label": "Author/Signature", "default": "The CBV Philosophy" }
+      ]
+    }
+  ],
+  "presets":[
+    {
+      "name": "About Editorial"
+    }
+  ]
+}
+{% endschema %}
