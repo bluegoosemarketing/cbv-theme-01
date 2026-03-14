@@ -804,48 +804,40 @@
               <div>
                 <span class="cbv-col-title">Candles</span>
                 <ul class="cbv-menu-links">
-                  <li><a href="/collections/all-products" class="cbv-link-highlight">Shop All Candles</a></li>
+                  <li><a href="/collections/candles" class="cbv-link-highlight">Build Your Candle</a></li>
+                  <li><a href="/collections/all-products">Standard Candles</a></li>
                   <li><a href="/collections/best-sellers">Best Sellers <span style="color:#d32f2f;font-size:10px;font-weight:800;margin-left:4px;">HOT</span></a></li>
                   <li><a href="/collections/new-arrivals">New Arrivals</a></li>
-                  <li><a href="/pages/the-jar-bar-custom">Custom Jars</a></li>
-                </ul>
-                <span class="cbv-sub-header">By Size</span>
-                <ul class="cbv-menu-links">
-                  <li><a href="/collections/15oz-wickless">15oz Wickless</a></li>
-                  <li><a href="/collections/18oz-large">18oz Large (1-Wick)</a></li>
-                  <li><a href="/collections/30oz-victorian">30oz Victorian (3-Wick)</a></li>
-                  <li><a href="/collections/70oz-5-wick">70oz Massive (5-Wick)</a></li>
                 </ul>
               </div>
               <div>
-                <span class="cbv-col-title">Flameless</span>
-                <span class="cbv-sub-header" style="margin-top:0;">Wax Melts</span>
+                <span class="cbv-col-title">Wax Melts</span>
                 <ul class="cbv-menu-links">
+                  <li><a href="/collections/wax-melts" class="cbv-link-highlight">Shop Wax Melts</a></li>
                   <li><a href="/collections/break-away-melts">Break-Away Melts</a></li>
                   <li><a href="/collections/cube-melts">Cube Melts</a></li>
-                  <li><a href="/pages/create-your-own-melt">Create Your Own Melt</a></li>
                 </ul>
-                <span class="cbv-sub-header">Scent Shots</span>
+                <span class="cbv-sub-header">Shop by Collection</span>
                 <ul class="cbv-menu-links">
-                  <li><a href="/collections/scent-shots">Shop All Shots</a></li>
-                  <li><a href="/products/scent-shots-3-pack">3-Pack Bundle</a></li>
-                  <li><a href="/products/scent-shots-6-pack">6-Pack Bundle</a></li>
-                  <li><a href="/pages/custom-scent-shot-pack">Custom Pack</a></li>
+                  <li><a href="/collections/bake-shoppe">Bake Shop Candles</a></li>
+                  <li><a href="/collections/sweet-treats">Sweet Treats Candles</a></li>
+                  <li><a href="/collections/seasonal-collection">Seasonal</a></li>
+                  <li><a href="/products/gift-card">Gift Cards</a></li>
                 </ul>
               </div>
               <div>
-                <span class="cbv-col-title">Bundles & Sets</span>
+                <span class="cbv-col-title">Bundles</span>
                 <ul class="cbv-menu-links">
                   <li><a href="/collections/sampler-packs">Sampler Packs</a></li>
                   <li><a href="/pages/build-your-own-packs">Build Your Own Packs</a></li>
                   <li><a href="/collections/category-boxes">Category Boxes</a></li>
                   <li><a href="/collections/mystery-boxes">Mystery Boxes</a></li>
                 </ul>
-                <span class="cbv-col-title" style="margin-top:30px;">Collections</span>
+                <span class="cbv-col-title" style="margin-top:30px;">Quick Links</span>
                 <ul class="cbv-menu-links">
-                  <li><a href="/collections/seasonal-collection">Seasonal Collection</a></li>
+                  <li><a href="/collections/all-products">Shop All Products</a></li>
                   <li><a href="/collections/limited-drops">Limited Drops</a></li>
-                  <li><a href="{{ routes.all_products_collection_url | default: '/products/gift-card' }}">Gift Cards</a></li>
+                  <li><a href="/collections/sale">Sale</a></li>
                 </ul>
               </div>
               <a class="cbv-featured-card" href="{{ section.settings.shop_feature_link | default: '/collections/seasonal-collection' }}">
@@ -901,8 +893,10 @@
           </div>
         </li>
 
-        <li class="cbv-nav-item"><a href="/pages/subscribe" class="cbv-nav-link">Subscribe & Save</a></li>
-        <li class="cbv-nav-item"><a href="/pages/about-victoria" class="cbv-nav-link">About Victoria</a></li>
+        <li class="cbv-nav-item"><a href="/pages/candle-club" class="cbv-nav-link">Candle Club</a></li>
+        <li class="cbv-nav-item"><a href="/pages/about" class="cbv-nav-link">About</a></li>
+        <li class="cbv-nav-item"><a href="/pages/faqs" class="cbv-nav-link">FAQ</a></li>
+        <li class="cbv-nav-item"><a href="/pages/contact" class="cbv-nav-link">Contact</a></li>
         <li class="cbv-nav-item"><a href="/collections/sale" class="cbv-nav-link" style="color:#d32f2f;">Sale</a></li>
       </ul>
     </nav>
@@ -929,40 +923,37 @@
       </button>
       <div class="cbv-mobile-submenu">
         <span class="cbv-mob-cat-title">Candles</span>
-        <a href="/collections/all-products" class="cbv-mob-link cbv-link-highlight">Shop All Candles</a>
+        <a href="/collections/candles" class="cbv-mob-link cbv-link-highlight">Build Your Candle</a>
+        <a href="/collections/all-products" class="cbv-mob-link">Standard Candles</a>
         <a href="/collections/best-sellers" class="cbv-mob-link">Best Sellers 🔥</a>
         <a href="/collections/new-arrivals" class="cbv-mob-link">New Arrivals</a>
-        <a href="/pages/the-jar-bar-custom" class="cbv-mob-link">The Jar Bar Custom</a>
-
-        <span class="cbv-mob-sub-title">By Size</span>
-        <a href="/collections/15oz-wickless" class="cbv-mob-link-sub">15oz Wickless</a>
-        <a href="/collections/18oz-large" class="cbv-mob-link-sub">18oz Large (1-Wick)</a>
-        <a href="/collections/30oz-victorian" class="cbv-mob-link-sub">30oz Victorian (3-Wick)</a>
-        <a href="/collections/70oz-5-wick" class="cbv-mob-link-sub">70oz Massive (5-Wick)</a>
 
         <div class="cbv-mobile-divider"></div>
 
-        <span class="cbv-mob-cat-title">Flameless</span>
-        <span class="cbv-mob-sub-title">Wax Melts</span>
+        <span class="cbv-mob-cat-title">Wax Melts</span>
+        <a href="/collections/wax-melts" class="cbv-mob-link">Shop Wax Melts</a>
         <a href="/collections/break-away-melts" class="cbv-mob-link-sub">Break-Away Melts</a>
         <a href="/collections/cube-melts" class="cbv-mob-link-sub">Cube Melts</a>
-        <a href="/pages/create-your-own-melt" class="cbv-mob-link-sub">Create Your Own Melt</a>
-        <span class="cbv-mob-sub-title">Scent Shots</span>
-        <a href="/collections/scent-shots" class="cbv-mob-link-sub">Shop All Shots</a>
-        <a href="/products/scent-shots-3-pack" class="cbv-mob-link-sub">3-Pack Bundle</a>
-        <a href="/products/scent-shots-6-pack" class="cbv-mob-link-sub">6-Pack Bundle</a>
-        <a href="/pages/custom-scent-shot-pack" class="cbv-mob-link-sub">Custom Pack</a>
 
         <div class="cbv-mobile-divider"></div>
-        <span class="cbv-mob-cat-title">Bundles & Sets</span>
+
+        <span class="cbv-mob-cat-title">Shop by Collection</span>
+        <a href="/collections/bake-shoppe" class="cbv-mob-link">Bake Shop Candles</a>
+        <a href="/collections/sweet-treats" class="cbv-mob-link">Sweet Treats Candles</a>
+        <a href="/collections/seasonal-collection" class="cbv-mob-link-sub">Seasonal</a>
+        <a href="/products/gift-card" class="cbv-mob-link-sub">Gift Cards</a>
+
+        <div class="cbv-mobile-divider"></div>
+
+        <span class="cbv-mob-cat-title">Bundles</span>
         <a href="/collections/sampler-packs" class="cbv-mob-link">Sampler Packs</a>
         <a href="/pages/build-your-own-packs" class="cbv-mob-link">Build Your Own Packs</a>
         <a href="/collections/category-boxes" class="cbv-mob-link">Category Boxes</a>
         <a href="/collections/mystery-boxes" class="cbv-mob-link">Mystery Boxes</a>
-        <span class="cbv-mob-sub-title">Collections</span>
-        <a href="/collections/seasonal-collection" class="cbv-mob-link-sub">Seasonal Collection</a>
+        <span class="cbv-mob-sub-title">Quick Links</span>
+        <a href="/collections/all-products" class="cbv-mob-link-sub">Shop All Products</a>
         <a href="/collections/limited-drops" class="cbv-mob-link-sub">Limited Drops</a>
-        <a href="/products/gift-card" class="cbv-mob-link-sub">Gift Cards</a>
+        <a href="/collections/sale" class="cbv-mob-link-sub">Sale</a>
       </div>
     </div>
 
@@ -986,8 +977,10 @@
       </div>
     </div>
 
-    <div class="cbv-mobile-item"><a href="/pages/subscribe" class="cbv-mobile-link-head">Subscribe & Save</a></div>
-    <div class="cbv-mobile-item"><a href="/pages/about-victoria" class="cbv-mobile-link-head">About Victoria</a></div>
+    <div class="cbv-mobile-item"><a href="/pages/candle-club" class="cbv-mobile-link-head">Candle Club</a></div>
+    <div class="cbv-mobile-item"><a href="/pages/about" class="cbv-mobile-link-head">About</a></div>
+    <div class="cbv-mobile-item"><a href="/pages/faqs" class="cbv-mobile-link-head">FAQ</a></div>
+    <div class="cbv-mobile-item"><a href="/pages/contact" class="cbv-mobile-link-head">Contact</a></div>
     <div class="cbv-mobile-item"><a href="/collections/sale" class="cbv-mobile-link-head" style="color:#d32f2f;">Sale</a></div>
 
     <div class="cbv-drawer-footer">
