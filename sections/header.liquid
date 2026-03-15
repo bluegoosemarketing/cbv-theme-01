@@ -124,15 +124,6 @@
     padding: 20px 0;
     transition: padding var(--cbv-duration) var(--cbv-ease);
   }
-  
-  .cbv-header-fixed-group.is-scrolled .cbv-header-top {
-    padding: 0;
-    height: var(--cbv-sticky-height); /* Lock height to 60px */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 3px; /* Optical vertical center adjustment */
-  }
 
   /* --- LEFT COLUMN WRAPPER --- */
   .cbv-header-left {
@@ -179,16 +170,6 @@
   .cbv-search-input::placeholder { color: #999; }
   .cbv-search-bar .cbv-icon { stroke: var(--cbv-header-text); }
 
-  /* SCROLLED: Hide Search */
-  .cbv-header-fixed-group.is-scrolled .cbv-search-bar {
-    width: 0;
-    max-width: 0;
-    padding: 0;
-    opacity: 0;
-    margin-right: 0;
-    border: 0;
-  }
-
   /* --- LOGO STYLES (Shared) --- */
   .cbv-logo-main, .cbv-logo-sub { display: block; line-height: 1; }
   .cbv-logo-main {
@@ -218,15 +199,6 @@
   .cbv-logo-center .cbv-logo-sub { font-size: 11px; margin-top: 6px; }
   .cbv-logo-center .cbv-logo-image { max-height: 72px; width: auto; }
 
-  /* SCROLLED: Hide Center Logo */
-  .cbv-header-fixed-group.is-scrolled .cbv-logo-center {
-    opacity: 0;
-    transform: scale(0.9);
-    pointer-events: none;
-    height: 0;
-    overflow: hidden;
-  }
-
   /* --- STICKY LOGO (Left) --- */
   .cbv-logo-sticky {
     display: block;
@@ -242,13 +214,6 @@
   }
   .cbv-logo-sticky .cbv-logo-main { font-size: 20px; }
   .cbv-logo-sticky .cbv-logo-image { max-height: 32px; width: auto; } /* Smaller sticky logo */
-
-  /* SCROLLED: Show Sticky Logo */
-  .cbv-header-fixed-group.is-scrolled .cbv-logo-sticky {
-    opacity: 1;
-    width: auto;
-    overflow: visible;
-  }
 
   /* --- ICONS (Right) --- */
   .cbv-icons {
@@ -348,48 +313,11 @@
   .cbv-nav-item:hover .cbv-nav-link { color: var(--cbv-header-accent); }
   .cbv-nav-item:hover .cbv-nav-link::after { width: 100%; }
 
-  /* --- SCROLLED NAV (Absolute Center without Transform) --- */
-  .cbv-header-fixed-group.is-scrolled .cbv-nav-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    z-index: 10;
-    
-    /* Flex Center instead of Transform (Fixes Mega Menu Width Issue) */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 3px; /* Optical vertical center adjustment */
-    pointer-events: none; /* Allow clicks to pass through empty space to logo/icons */
-  }
-  
-  .cbv-header-fixed-group.is-scrolled .cbv-nav-item {
-    padding: 0; 
-    height: var(--cbv-sticky-height);
-    display: flex;
-    align-items: center;
-    pointer-events: auto; /* Re-enable clicks on links */
-  }
-
-  /* Ensure Header Top (Logo/Icons) stays clickable above Nav Container */
-  .cbv-header-fixed-group.is-scrolled .cbv-header-top {
-    position: relative;
-    z-index: 20;
-    pointer-events: none; /* Allow click-through on wrapper */
-  }
-  .cbv-header-fixed-group.is-scrolled .cbv-header-left,
-  .cbv-header-fixed-group.is-scrolled .cbv-icons {
-    pointer-events: auto; /* Re-enable clicks on content */
-  }
-
   /* ========================================= */
-  /*    MEGA MENU (Optimized for Both States)  */
+  /*    MEGA MENU (Optimized)                  */
   /* ========================================= */
 
-  /* STANDARD STATE: Absolute to the Nav Container (which is 100% width) */
+  /* STANDARD STATE */
   .cbv-mega-menu {
     position: absolute;
     top: 100%;
@@ -405,19 +333,6 @@
     z-index: 6000;
     pointer-events: none;
     will-change: opacity, transform;
-  }
-
-  /* SCROLLED STATE: Reset to Standard Absolute */
-  /* Because the container is now 100% width and has NO transform, 
-     we don't need position:fixed. Absolute 100% works perfectly. */
-  .cbv-header-fixed-group.is-scrolled .cbv-mega-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    margin: 0;
-    transform: none !important;
-    border-top: 1px solid rgba(0,0,0,0.05);
   }
 
   /* Bridge to keep menu open (Critical for sticky state) */
@@ -554,6 +469,84 @@
     padding-bottom: 4px; display: inline-block;
   }
 
+  /* ========================================= */
+  /*    DESKTOP ONLY SCROLLED/STICKY STATE     */
+  /* ========================================= */
+  @media (min-width: 1025px) {
+    .cbv-header-fixed-group.is-scrolled .cbv-header-top {
+      padding: 0;
+      height: var(--cbv-sticky-height); /* Lock height to 60px */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 3px; /* Optical vertical center adjustment */
+      position: relative;
+      z-index: 20;
+      pointer-events: none; /* Allow click-through on wrapper */
+    }
+
+    .cbv-header-fixed-group.is-scrolled .cbv-search-bar {
+      width: 0;
+      max-width: 0;
+      padding: 0;
+      opacity: 0;
+      margin-right: 0;
+      border: 0;
+    }
+
+    .cbv-header-fixed-group.is-scrolled .cbv-logo-center {
+      opacity: 0;
+      transform: scale(0.9);
+      pointer-events: none;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .cbv-header-fixed-group.is-scrolled .cbv-logo-sticky {
+      opacity: 1;
+      width: auto;
+      overflow: visible;
+    }
+
+    .cbv-header-fixed-group.is-scrolled .cbv-nav-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 3px;
+      pointer-events: none;
+    }
+
+    .cbv-header-fixed-group.is-scrolled .cbv-nav-item {
+      padding: 0; 
+      height: var(--cbv-sticky-height);
+      display: flex;
+      align-items: center;
+      pointer-events: auto; /* Re-enable clicks on links */
+    }
+
+    .cbv-header-fixed-group.is-scrolled .cbv-header-left,
+    .cbv-header-fixed-group.is-scrolled .cbv-icons {
+      pointer-events: auto; /* Re-enable clicks on content */
+    }
+
+    .cbv-header-fixed-group.is-scrolled .cbv-mega-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      margin: 0;
+      transform: none !important;
+      border-top: 1px solid rgba(0,0,0,0.05);
+    }
+  }
+
   /* --- MOBILE STYLES --- */
   .cbv-mobile-header, .cbv-mobile-drawer, .cbv-mobile-overlay { display: none; }
   .cbv-hamburger, .cbv-drawer-close, .cbv-mobile-link-head {
@@ -561,16 +554,18 @@
   }
 
   @media (max-width: 1024px) {
-    .cbv-header-top, .cbv-nav-container { display: none; }
+    /* Critical Fix: Prevent desktop logic from overriding mobile layout via specificity */
+    .cbv-header-top, .cbv-nav-container { display: none !important; }
     
     .cbv-header {
-      padding: 0 20px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom-color: var(--cbv-border-color);
-    }
+    padding: 0 20px;
+    height: 70px;
+    display: flex;
+    flex-direction: row; /* <-- Resets desktop column layout to correctly center vertically */
+    align-items: center;
+    justify-content: space-between;
+    border-bottom-color: var(--cbv-border-color);
+  }
 
     .cbv-mobile-header {
       display: flex;
@@ -605,7 +600,7 @@
       position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(4px);
-      z-index: 1001;
+      z-index: 6001; /* Layered over site header */
       opacity: 0; pointer-events: none;
       transition: opacity 0.3s ease;
     }
@@ -615,7 +610,7 @@
       display: flex; flex-direction: column;
       position: fixed; top: 0; left: 0;
       width: 90%; max-width: 420px; height: 100vh;
-      background: #fdfbf7; z-index: 1002;
+      background: #fdfbf7; z-index: 6002; /* Layered over overlay and site header */
       transform: translateX(-100%);
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
@@ -702,18 +697,19 @@
       display: block; padding: 10px; font-size: 14px; color: #595550; text-decoration: none;
     }
   }
-  /* FORCE HEADER ON TOP */
-#shopify-section-header, 
-.shopify-section-header, 
-.section-header {
-  position: relative !important;
-  z-index: 99999 !important;
-}
 
-/* Lower the Scent Library relative to header */
-.cbv-lib-controls {
-  z-index: 10 !important; 
-}
+  /* FORCE HEADER ON TOP */
+  #shopify-section-header, 
+  .shopify-section-header, 
+  .section-header {
+    position: relative !important;
+    z-index: 99999 !important;
+  }
+
+  /* Lower the Scent Library relative to header */
+  .cbv-lib-controls {
+    z-index: 10 !important; 
+  }
 {% endstyle %}
 
 <div class="cbv-header-fixed-group color-{{ section.settings.color_scheme }} gradient">
@@ -733,7 +729,7 @@
 
         <a href="{{ routes.root_url }}" class="cbv-logo-sticky" aria-label="{{ shop.name }}">
           {%- if settings.logo != blank -%}
-            {{ settings.logo | image_url: width: 300 | image_tag: class: 'cbv-logo-image', loading: 'lazy', alt: shop.name }}
+            {{ settings.logo | image_url: width: 300 | image_tag: class: 'cbv-logo-image', preload: true, alt: shop.name }}
           {%- else -%}
             <span class="cbv-logo-main">Candles By Victoria</span>
           {%- endif -%}
@@ -743,7 +739,7 @@
       <!-- CENTER COLUMN: Main Logo -->
       <a href="{{ routes.root_url }}" class="cbv-logo-center" aria-label="{{ shop.name }}">
         {%- if settings.logo != blank -%}
-          {{ settings.logo | image_url: width: 600 | image_tag: class: 'cbv-logo-image', loading: 'lazy', alt: shop.name }}
+          {{ settings.logo | image_url: width: 600 | image_tag: class: 'cbv-logo-image', preload: true, alt: shop.name }}
         {%- else -%}
           <span class="cbv-logo-main">Candles By Victoria</span>
           <span class="cbv-logo-sub">EST. 1999</span>
@@ -778,7 +774,7 @@
 
       <a href="{{ routes.root_url }}" class="cbv-logo-container cbv-mobile-logo" aria-label="{{ shop.name }}">
         {%- if settings.logo != blank -%}
-          {{ settings.logo | image_url: width: 400 | image_tag: class: 'cbv-logo-image', loading: 'lazy', alt: shop.name }}
+          {{ settings.logo | image_url: width: 400 | image_tag: class: 'cbv-logo-image', preload: true, alt: shop.name }}
         {%- else -%}
           <span class="cbv-logo-main">Candles By Victoria</span>
           <span class="cbv-logo-sub">EST. 1999</span>
@@ -1023,19 +1019,20 @@
         });
       }
 
-      // 2. Fixed Header Morph Logic
+      // 2. Fixed Header Morph & dynamic page padding Logic
       const fixedGroup = document.querySelector('.cbv-header-fixed-group');
       if (!fixedGroup) return;
 
-      const setOffset = () => {
-        // Only update offset when NOT scrolled to prevent jumps
-        if (!fixedGroup.classList.contains('is-scrolled')) {
-           document.documentElement.style.setProperty('--cbv-header-offset', `${fixedGroup.offsetHeight}px`);
+      // Replaces manual offset setup with robust ResizeObserver 
+      // This protects against custom fonts/images dynamically expanding the header.
+      const headerObserver = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          if (!fixedGroup.classList.contains('is-scrolled')) {
+            document.documentElement.style.setProperty('--cbv-header-offset', `${entry.target.offsetHeight}px`);
+          }
         }
-      };
-
-      setOffset();
-      window.addEventListener('resize', setOffset);
+      });
+      headerObserver.observe(fixedGroup);
 
       // Scroll Handler
       let ticking = false;
