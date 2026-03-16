@@ -17,6 +17,9 @@
 {{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}
 <noscript>{{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}</noscript>
 
+{% assign is_builder_flow = false %}
+{% if template.suffix == 'builder' or request.path contains 'custom-candles' %}{% assign is_builder_flow = true %}{% endif %}
+
 {% style %}
   :root {
     /* --- ELITE COLOR PALETTE --- */
@@ -710,10 +713,116 @@
   .cbv-lib-controls {
     z-index: 10 !important; 
   }
+
+  /* --- MINIMAL BUILDER HEADER --- */
+  .cbv-header-fixed-group--minimal {
+    background: #fdfbf7;
+  }
+
+  .cbv-header-fixed-group--minimal .cbv-header {
+    padding: 0 40px;
+  }
+
+  .cbv-header-fixed-group--minimal .cbv-header-top {
+    padding: 14px 0;
+    min-height: 76px;
+  }
+
+  .cbv-header-fixed-group--minimal .cbv-builder-exit {
+    color: #666;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    transition: color var(--cbv-duration) var(--cbv-ease);
+  }
+
+  .cbv-header-fixed-group--minimal .cbv-builder-exit:hover {
+    color: #111;
+  }
+
+  .cbv-header-fixed-group--minimal .cbv-builder-progress {
+    display: block;
+    margin-top: 6px;
+    font-size: 10px;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+    color: var(--cbv-header-accent);
+    font-weight: 700;
+  }
+
+  .cbv-header-fixed-group--minimal .cbv-icons {
+    gap: 0;
+  }
+
+  .cbv-header-fixed-group--minimal.is-scrolled .cbv-header-top {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: auto;
+    padding: 12px 0;
+    pointer-events: auto;
+  }
+
+  .cbv-header-fixed-group--minimal.is-scrolled .cbv-logo-center {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    height: auto;
+    overflow: visible;
+  }
+
+  .cbv-header-fixed-group--minimal.is-scrolled .cbv-logo-sticky {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+  }
+
+  .cbv-header-fixed-group--minimal.is-scrolled .cbv-header-left,
+  .cbv-header-fixed-group--minimal.is-scrolled .cbv-icons {
+    pointer-events: auto;
+  }
+
+  @media (max-width: 1024px) {
+    .cbv-header-fixed-group--minimal .cbv-header {
+      padding: 0 20px;
+      height: 72px;
+      border-bottom: 1px solid var(--cbv-border-color);
+    }
+
+    .cbv-header-fixed-group--minimal .cbv-mobile-header {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      column-gap: 8px;
+    }
+
+    .cbv-header-fixed-group--minimal .cbv-mobile-logo {
+      flex: initial;
+      min-width: 0;
+    }
+
+    .cbv-header-fixed-group--minimal .cbv-mobile-logo .cbv-builder-progress {
+      margin-top: 4px;
+      font-size: 8px;
+      letter-spacing: 1.4px;
+      text-align: center;
+    }
+
+    .cbv-header-fixed-group--minimal .cbv-mobile-icons {
+      justify-content: flex-end;
+    }
+
+    .cbv-header-fixed-group--minimal .cbv-builder-exit {
+      font-size: 12px;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+  }
 {% endstyle %}
 
-<div class="cbv-header-fixed-group color-{{ section.settings.color_scheme }} gradient">
-  {%- if section.settings.announcement_text != blank -%}
+<div class="cbv-header-fixed-group color-{{ section.settings.color_scheme }} gradient {% if is_builder_flow %}cbv-header-fixed-group--minimal{% endif %}">
+  {%- if section.settings.announcement_text != blank and is_builder_flow == false -%}
     <div class="cbv-announcement">{{ section.settings.announcement_text }}</div>
   {%- endif -%}
 
@@ -722,10 +831,14 @@
       
       <!-- LEFT COLUMN: Search & Sticky Logo -->
       <div class="cbv-header-left">
-        <form action="{{ routes.search_url }}" method="get" role="search" class="cbv-search-bar">
-          <svg class="cbv-icon" viewBox="0 0 24 24" style="opacity:0.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="search" name="q" class="cbv-search-input" placeholder="Search scents..." />
-        </form>
+        {% if is_builder_flow %}
+          <a href="/collections/all-products" class="cbv-builder-exit" aria-label="Exit Builder">← Exit Builder</a>
+        {% else %}
+          <form action="{{ routes.search_url }}" method="get" role="search" class="cbv-search-bar">
+            <svg class="cbv-icon" viewBox="0 0 24 24" style="opacity:0.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="search" name="q" class="cbv-search-input" placeholder="Search scents..." />
+          </form>
+        {% endif %}
 
         <a href="{{ routes.root_url }}" class="cbv-logo-sticky" aria-label="{{ shop.name }}">
           {%- if settings.logo != blank -%}
@@ -740,15 +853,16 @@
       <a href="{{ routes.root_url }}" class="cbv-logo-center" aria-label="{{ shop.name }}">
         {%- if settings.logo != blank -%}
           {{ settings.logo | image_url: width: 600 | image_tag: class: 'cbv-logo-image', preload: true, alt: shop.name }}
+          {% if is_builder_flow %}<span class="cbv-builder-progress">Custom Pour In Progress</span>{% endif %}
         {%- else -%}
           <span class="cbv-logo-main">Candles By Victoria</span>
-          <span class="cbv-logo-sub">EST. 1999</span>
+          <span class="cbv-logo-sub">{% if is_builder_flow %}Custom Pour In Progress{% else %}EST. 1999{% endif %}</span>
         {%- endif -%}
       </a>
 
       <!-- RIGHT COLUMN: Icons -->
       <div class="cbv-icons">
-        {%- if shop.customer_accounts_enabled -%}
+        {%- if shop.customer_accounts_enabled and is_builder_flow == false -%}
           <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="cbv-icon-link" title="Account" aria-label="Account">
             <svg class="cbv-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
           </a>
@@ -764,20 +878,25 @@
 
     <!-- MOBILE HEADER -->
     <div class="cbv-mobile-header">
-      <button class="cbv-hamburger" type="button" data-cbv-toggle-drawer aria-label="Open menu">
-        <svg class="cbv-icon" viewBox="0 0 24 24">
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
+      {% if is_builder_flow %}
+        <a href="/collections/all-products" class="cbv-builder-exit" aria-label="Exit Builder">← Exit Builder</a>
+      {% else %}
+        <button class="cbv-hamburger" type="button" data-cbv-toggle-drawer aria-label="Open menu">
+          <svg class="cbv-icon" viewBox="0 0 24 24">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      {% endif %}
 
       <a href="{{ routes.root_url }}" class="cbv-logo-container cbv-mobile-logo" aria-label="{{ shop.name }}">
         {%- if settings.logo != blank -%}
           {{ settings.logo | image_url: width: 400 | image_tag: class: 'cbv-logo-image', preload: true, alt: shop.name }}
+          {% if is_builder_flow %}<span class="cbv-builder-progress">Custom Pour In Progress</span>{% endif %}
         {%- else -%}
           <span class="cbv-logo-main">Candles By Victoria</span>
-          <span class="cbv-logo-sub">EST. 1999</span>
+          <span class="cbv-logo-sub">{% if is_builder_flow %}Custom Pour In Progress{% else %}EST. 1999{% endif %}</span>
         {%- endif -%}
       </a>
 
@@ -791,6 +910,7 @@
       </div>
     </div>
 
+    {% if is_builder_flow == false %}
     <nav class="cbv-nav-container" aria-label="Primary">
       <ul class="cbv-nav-list">
         <li class="cbv-nav-item">
@@ -896,9 +1016,11 @@
         <li class="cbv-nav-item"><a href="/collections/sale" class="cbv-nav-link" style="color:#d32f2f;">Sale</a></li>
       </ul>
     </nav>
+    {% endif %}
   </header>
 </div>
 
+{% if is_builder_flow == false %}
 <div class="cbv-mobile-overlay" data-cbv-mobile-overlay></div>
 <div class="cbv-mobile-drawer" data-cbv-mobile-drawer>
   <div class="cbv-drawer-header">
@@ -988,6 +1110,7 @@
     </div>
   </div>
 </div>
+{% endif %}
 
 {% javascript %}
   (() => {
