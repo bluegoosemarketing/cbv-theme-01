@@ -23,7 +23,7 @@
 {% style %}
   :root {
     /* --- ELITE COLOR PALETTE --- */
-    --cbv-header-offset: 180px; 
+    --cbv-header-offset: 160px; /* Reduced for sleeker default height */
     
     /* COLORS */
     --cbv-header-bg: #F2F0EB; 
@@ -36,10 +36,10 @@
 
     /* ANIMATION PHYSICS */
     --cbv-ease: cubic-bezier(0.19, 1, 0.22, 1);
-    --cbv-duration: 0.5s;
+    --cbv-duration: 0.4s;
     
     /* DIMENSIONS */
-    --cbv-sticky-height: 60px; /* TIGHTER STICKY HEIGHT */
+    --cbv-sticky-height: 56px; /* Slashed for ultra-sleek sticky state */
   }
 
   #MainContent {
@@ -55,7 +55,6 @@
   }
 
   /* --- FIXED HEADER GROUP --- */
-  /* This is the reference parent for the Mega Menu width */
   .cbv-header-fixed-group {
     position: fixed;
     top: 0;
@@ -65,11 +64,18 @@
     isolation: isolate;
     background: var(--cbv-header-bg);
     border-bottom: 1px solid transparent;
-    transition: border-bottom 0.3s ease;
+    transition: background var(--cbv-duration) var(--cbv-ease), 
+                box-shadow var(--cbv-duration) var(--cbv-ease),
+                border-bottom var(--cbv-duration) var(--cbv-ease);
   }
   
+  /* WORLD CLASS: Frosted Glass Sticky Header */
   .cbv-header-fixed-group.is-scrolled {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(242, 240, 235, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
   }
 
   .shopify-section-header {
@@ -91,9 +97,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    
-    /* Morph Logic */
-    height: 40px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 1;
     transition: all var(--cbv-duration) var(--cbv-ease);
   }
@@ -108,7 +115,6 @@
   .cbv-header {
     background-color: transparent;
     padding: 0 40px;
-    /* Important: Static position allows Mega Menu to reference the Group parent for 100% width */
     position: static; 
     display: flex;
     flex-direction: column;
@@ -124,8 +130,8 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    padding: 20px 0;
-    transition: padding var(--cbv-duration) var(--cbv-ease);
+    padding: 12px 0; /* Tightened from 20px to save vertical space */
+    transition: padding var(--cbv-duration) var(--cbv-ease), min-height var(--cbv-duration) var(--cbv-ease);
   }
 
   /* --- LEFT COLUMN WRAPPER --- */
@@ -135,28 +141,26 @@
     justify-content: flex-start;
   }
 
-  /* --- SEARCH BAR --- */
+  /* --- WORLD CLASS SEARCH BAR --- */
   .cbv-search-bar {
     display: flex;
     align-items: center;
-    background: #FFFFFF;
+    background: #FDFBF7;
     padding: 8px 16px;
     border-radius: 50px;
     width: 240px;
-    border: 1px solid transparent;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-    
-    /* Morph Logic */
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
     opacity: 1;
     max-width: 300px;
     overflow: hidden;
-    transition: all var(--cbv-duration) var(--cbv-ease);
+    transition: all 0.3s ease;
   }
 
   .cbv-search-bar:focus-within {
     background: #FFFFFF;
     border-color: var(--cbv-header-accent);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 0 0 1px var(--cbv-header-accent), 0 4px 12px rgba(58, 77, 63, 0.08);
   }
 
   .cbv-search-input {
@@ -166,131 +170,151 @@
     width: 100%;
     outline: none;
     font-size: 13px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: var(--cbv-header-text);
   }
   
-  .cbv-search-input::placeholder { color: #999; }
-  .cbv-search-bar .cbv-icon { stroke: var(--cbv-header-text); }
+  .cbv-search-input::placeholder { color: #aaa; }
+  .cbv-search-bar .cbv-icon { color: #888; }
+  .cbv-search-bar:focus-within .cbv-icon { color: var(--cbv-header-accent); }
 
   /* --- LOGO STYLES (Shared) --- */
-  .cbv-logo-main, .cbv-logo-sub { display: block; line-height: 1; }
+  .cbv-logo-main, .cbv-logo-sub { display: block; line-height: 1.2; text-align: center; }
   .cbv-logo-main {
     font-family: "Georgia", "Times New Roman", serif;
-    letter-spacing: -0.5px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
     color: var(--cbv-header-text);
   }
   .cbv-logo-sub {
-    letter-spacing: 3px;
-    color: var(--cbv-header-accent);
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 600;
+    letter-spacing: 2.5px;
+    color: var(--cbv-header-text);
+    font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 9px;
+    margin-top: 4px;
+    opacity: 0.7;
   }
 
   /* --- MAIN LOGO (Center) --- */
   .cbv-logo-center {
-    text-align: center;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
     transition: all var(--cbv-duration) var(--cbv-ease);
     opacity: 1;
     transform: scale(1);
-    height: auto;
   }
-  .cbv-logo-center .cbv-logo-main { font-size: 32px; }
-  .cbv-logo-center .cbv-logo-sub { font-size: 11px; margin-top: 6px; }
-  .cbv-logo-center .cbv-logo-image { max-height: 72px; width: auto; }
+  
+  .cbv-logo-center .cbv-logo-main { font-size: 26px; }
+  /* MAJOR FIX: Slash max-height to eliminate huge header gaps */
+  .cbv-logo-center .cbv-logo-image { max-height: 48px; width: auto; object-fit: contain; }
+
+  /* Sleek Builder Pill Badge */
+  .cbv-builder-progress {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 9px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--cbv-header-accent);
+    background: rgba(58, 77, 63, 0.08);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+  }
 
   /* --- STICKY LOGO (Left) --- */
   .cbv-logo-sticky {
     display: block;
     text-decoration: none;
     text-align: left;
-    
-    /* Hidden by default */
     opacity: 0;
     width: 0;
     overflow: hidden;
     white-space: nowrap;
     transition: all var(--cbv-duration) var(--cbv-ease);
   }
-  .cbv-logo-sticky .cbv-logo-main { font-size: 20px; }
-  .cbv-logo-sticky .cbv-logo-image { max-height: 32px; width: auto; } /* Smaller sticky logo */
+  .cbv-logo-sticky .cbv-logo-main { font-size: 18px; }
+  .cbv-logo-sticky .cbv-logo-image { max-height: 28px; width: auto; object-fit: contain; }
 
   /* --- ICONS (Right) --- */
   .cbv-icons {
     display: flex;
     justify-content: flex-end;
-    gap: 25px;
+    gap: 22px;
     align-items: center;
   }
 
   .cbv-icon-link {
     position: relative;
     cursor: pointer;
-    color: #595550;
+    color: #444;
     display: inline-flex;
     align-items: center;
     text-decoration: none;
-    transition: color 0.2s;
+    transition: color 0.2s, transform 0.2s;
   }
 
-  .cbv-icon-link:hover { color: var(--cbv-header-accent); }
+  .cbv-icon-link:hover { color: var(--cbv-header-accent); transform: translateY(-1px); }
 
   .cbv-icon {
     width: 22px;
     height: 22px;
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.5;
+    stroke-width: 1.4; /* Thinner, more elegant stroke */
     stroke-linecap: round;
     stroke-linejoin: round;
   }
 
   .cbv-cart-count {
     position: absolute;
-    top: -6px;
-    right: -8px;
+    top: -5px;
+    right: -7px;
     background: var(--cbv-header-accent);
     color: #fff;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
-    width: 16px;
-    height: 16px;
+    width: 17px;
+    height: 17px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
 
   /* --- NAVIGATION CONTAINER --- */
   .cbv-nav-container {
     width: 100%;
     border-top: 1px solid var(--cbv-border-color);
-    position: static; /* Important for full width mega menu */
+    position: static; 
     transition: all var(--cbv-duration) var(--cbv-ease);
   }
 
   .cbv-nav-list {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 45px;
     max-width: 1400px;
     margin: 0 auto;
     list-style: none;
     padding: 0;
-    position: static; /* Important */
+    position: static;
   }
 
   .cbv-nav-item {
-    padding: 18px 0;
-    position: static; /* Important */
+    padding: 16px 0;
+    position: static; 
     transition: padding var(--cbv-duration) var(--cbv-ease);
   }
 
   .cbv-nav-link {
-    font-size: 13px;
+    font-size: 12px;
+    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: 700;
@@ -319,26 +343,23 @@
   /* ========================================= */
   /*    MEGA MENU (Optimized)                  */
   /* ========================================= */
-
-  /* STANDARD STATE */
   .cbv-mega-menu {
     position: absolute;
-    top: 100%;
+    top: calc(100% - 16px); /* Pulls the menu up perfectly flush with the nav text */
     left: 0;
     width: 100%;
     background: #ffffff;
     border-top: 1px solid var(--cbv-border-color);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.06);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.04);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.25s ease;
+    transform: translateY(8px) scale(0.99);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 6000;
     pointer-events: none;
     will-change: opacity, transform;
   }
 
-  /* Bridge to keep menu open (Critical for sticky state) */
   .cbv-mega-menu::before {
     content: "";
     position: absolute;
@@ -352,14 +373,14 @@
   .cbv-nav-item:hover .cbv-mega-menu {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     pointer-events: auto;
   }
 
   .cbv-mega-inner {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 50px 40px;
+    padding: 40px;
     display: grid;
     gap: 60px;
   }
@@ -369,7 +390,7 @@
 
   .cbv-col-title {
     font-family: "Georgia", "Times New Roman", serif;
-    font-size: 18px;
+    font-size: 17px;
     margin-bottom: 16px;
     color: var(--cbv-header-accent);
     font-weight: 700;
@@ -381,11 +402,11 @@
   }
 
   .cbv-sub-header {
-    font-size: 13px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 700;
-    color: var(--cbv-header-text);
+    color: #888;
     margin-top: 25px;
     margin-bottom: 12px;
     display: block;
@@ -394,53 +415,55 @@
   .cbv-menu-links { list-style: none; padding: 0; margin: 0; }
   .cbv-menu-links li { margin-bottom: 8px; }
   .cbv-menu-links a {
-    font-size: 15px;
-    color: #595550;
+    font-size: 14px;
+    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    color: #555;
     display: block;
     padding: 2px 0;
-    transition: transform 0.2s;
+    transition: color 0.2s, transform 0.2s;
     text-decoration: none;
   }
   .cbv-menu-links a:hover {
     color: var(--cbv-header-accent);
-    transform: translateX(5px);
+    transform: translateX(4px);
   }
 
-  .cbv-link-highlight { color: #1f1c18 !important; font-weight: 600; }
+  .cbv-link-highlight { color: #111 !important; font-weight: 600; }
 
   .cbv-scent-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
+    gap: 12px;
   }
 
   .cbv-scent-pill {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+    gap: 10px;
+    padding: 10px 14px;
     border: 1px solid #e8e4dd;
-    border-radius: 8px;
+    border-radius: 6px;
     background: #fdfbf7;
-    font-size: 14px;
+    font-size: 13px;
+    font-family: "Avenir Next", sans-serif;
     font-weight: 500;
-    color: #1f1c18;
+    color: #333;
     transition: all 0.2s;
     text-decoration: none;
   }
   .cbv-scent-pill:hover {
     border-color: var(--cbv-header-accent);
     background: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(58, 77, 63, 0.05);
     color: var(--cbv-header-accent);
     transform: translateY(-2px);
   }
 
   .cbv-featured-card {
     position: relative;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
-    height: 400px;
+    height: 380px;
     width: 100%;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   }
@@ -448,29 +471,30 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .cbv-featured-card:hover .cbv-featured-img { transform: scale(1.05); }
   .cbv-featured-overlay {
     position: absolute;
     bottom: 0; left: 0; width: 100%;
     padding: 30px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
     color: #fff;
     text-align: center;
   }
   .cbv-feat-label {
-    font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
-    margin-bottom: 8px; display: block; opacity: 0.9;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 8px; display: block; opacity: 0.8;
   }
   .cbv-feat-title {
-    font-family: "Georgia", "Times New Roman", serif; font-size: 26px; margin-bottom: 15px;
+    font-family: "Georgia", "Times New Roman", serif; font-size: 24px; margin-bottom: 12px;
   }
   .cbv-btn-link {
-    font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
-    font-weight: 700; border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-    padding-bottom: 4px; display: inline-block;
+    font-size: 11px; font-family: "Avenir Next", sans-serif; text-transform: uppercase; letter-spacing: 1px;
+    font-weight: 700; border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    padding-bottom: 4px; display: inline-block; transition: border-color 0.3s;
   }
+  .cbv-featured-card:hover .cbv-btn-link { border-color: #fff; }
 
   /* ========================================= */
   /*    DESKTOP ONLY SCROLLED/STICKY STATE     */
@@ -478,14 +502,13 @@
   @media (min-width: 1025px) {
     .cbv-header-fixed-group.is-scrolled .cbv-header-top {
       padding: 0;
-      height: var(--cbv-sticky-height); /* Lock height to 60px */
+      height: var(--cbv-sticky-height);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 3px; /* Optical vertical center adjustment */
       position: relative;
       z-index: 20;
-      pointer-events: none; /* Allow click-through on wrapper */
+      pointer-events: none;
     }
 
     .cbv-header-fixed-group.is-scrolled .cbv-search-bar {
@@ -522,7 +545,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-top: 3px;
       pointer-events: none;
     }
 
@@ -531,12 +553,12 @@
       height: var(--cbv-sticky-height);
       display: flex;
       align-items: center;
-      pointer-events: auto; /* Re-enable clicks on links */
+      pointer-events: auto;
     }
 
     .cbv-header-fixed-group.is-scrolled .cbv-header-left,
     .cbv-header-fixed-group.is-scrolled .cbv-icons {
-      pointer-events: auto; /* Re-enable clicks on content */
+      pointer-events: auto;
     }
 
     .cbv-header-fixed-group.is-scrolled .cbv-mega-menu {
@@ -546,29 +568,28 @@
       width: 100%;
       margin: 0;
       transform: none !important;
-      border-top: 1px solid rgba(0,0,0,0.05);
+      border-top: 1px solid rgba(0,0,0,0.04);
     }
   }
 
   /* --- MOBILE STYLES --- */
   .cbv-mobile-header, .cbv-mobile-drawer, .cbv-mobile-overlay { display: none; }
   .cbv-hamburger, .cbv-drawer-close, .cbv-mobile-link-head {
-    background: none; border: 0; font: inherit; color: inherit; cursor: pointer;
+    background: none; border: 0; font: inherit; color: inherit; cursor: pointer; outline: none;
   }
 
   @media (max-width: 1024px) {
-    /* Critical Fix: Prevent desktop logic from overriding mobile layout via specificity */
     .cbv-header-top, .cbv-nav-container { display: none !important; }
     
     .cbv-header {
-    padding: 0 20px;
-    height: 70px;
-    display: flex;
-    flex-direction: row; /* <-- Resets desktop column layout to correctly center vertically */
-    align-items: center;
-    justify-content: space-between;
-    border-bottom-color: var(--cbv-border-color);
-  }
+      padding: 0 20px;
+      height: 64px; /* Slimmed down for mobile */
+      display: flex;
+      flex-direction: row; 
+      align-items: center;
+      justify-content: space-between;
+      border-bottom-color: var(--cbv-border-color);
+    }
 
     .cbv-mobile-header {
       display: flex;
@@ -578,83 +599,80 @@
     }
 
     .cbv-hamburger {
-      width: 28px; height: 28px;
+      width: 24px; height: 24px;
       display: flex; align-items: center; justify-content: center;
       color: var(--cbv-header-text);
     }
-    .cbv-hamburger .cbv-icon { width: 28px; height: 28px; }
-
-    /* MOBILE LOGO CONSTRAINT */
+    
     .cbv-mobile-logo {
-        flex: 1; display: flex; justify-content: center; overflow: hidden;
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; text-decoration: none;
     }
-    .cbv-mobile-logo .cbv-logo-main { font-size: 18px; color: var(--cbv-header-text); }
-    .cbv-mobile-logo .cbv-logo-sub {
-      font-size: 8px; margin-top: 2px; letter-spacing: 2px; color: var(--cbv-header-accent);
-    }
+    .cbv-mobile-logo .cbv-logo-main { font-size: 20px; color: var(--cbv-header-text); }
+    .cbv-mobile-logo .cbv-logo-sub { display: none; } /* Hide subtext on mobile default to save space */
     .cbv-mobile-logo .cbv-logo-image {
-        max-height: 40px; max-width: 180px; width: auto; object-fit: contain;
+        max-height: 36px; max-width: 180px; width: auto; object-fit: contain;
     }
 
-    .cbv-mobile-icons { display: flex; gap: 20px; }
+    .cbv-mobile-icons { display: flex; gap: 18px; }
     .cbv-mobile-icons .cbv-icon-link { color: var(--cbv-header-text); }
 
     .cbv-mobile-overlay {
       position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
-      z-index: 6001; /* Layered over site header */
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(6px); /* Better blur */
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 6001; 
       opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.4s ease;
     }
     .cbv-mobile-overlay.is-active { opacity: 1; pointer-events: auto; display: block; }
 
     .cbv-mobile-drawer {
       display: flex; flex-direction: column;
       position: fixed; top: 0; left: 0;
-      width: 90%; max-width: 420px; height: 100vh;
-      background: #fdfbf7; z-index: 6002; /* Layered over overlay and site header */
+      width: 90%; max-width: 400px; height: 100vh;
+      background: #ffffff; z-index: 6002;
       transform: translateX(-100%);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 10px 0 40px rgba(0, 0, 0, 0.08);
       overflow-y: auto;
     }
     .cbv-mobile-drawer.is-open { transform: translateX(0); }
 
+    /* UNIFIED DRAWER LOGO HEADER */
     .cbv-drawer-header {
-      padding: 20px 25px;
+      padding: 18px 25px;
       display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid #e8e4dd;
+      border-bottom: 1px solid #f0eee9;
       background: #fff; position: sticky; top: 0; z-index: 10;
     }
-    .cbv-drawer-title {
-      font-family: "Georgia", "Times New Roman", serif; font-size: 20px; color: var(--cbv-header-accent);
-    }
     .cbv-drawer-close {
-      font-size: 28px; line-height: 1; color: #595550; padding: 5px;
+      color: #999; padding: 5px; display: flex; align-items: center; transition: color 0.2s;
     }
+    .cbv-drawer-close:hover { color: #111; }
     .cbv-drawer-content { padding: 0 25px 40px; }
     
     .cbv-mobile-search { margin: 25px 0 20px; position: relative; }
     .cbv-mobile-search input {
-      width: 100%; padding: 14px 14px 14px 45px;
-      border: 1px solid #e8e4dd; border-radius: 8px;
-      font-size: 16px; background: #fff; color: #1f1c18;
+      width: 100%; padding: 12px 14px 12px 42px;
+      border: 1px solid #e8e4dd; border-radius: 6px;
+      font-size: 15px; background: #fdfbf7; color: #1f1c18; font-family: "Avenir Next", sans-serif;
     }
+    .cbv-mobile-search input:focus { outline: none; border-color: var(--cbv-header-accent); background: #fff; }
     .cbv-mobile-search .cbv-icon {
       position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-      color: #999; stroke: currentColor;
+      color: #aaa; width: 18px; height: 18px;
     }
 
-    .cbv-mobile-item { border-bottom: 1px solid #e8e4dd; }
+    .cbv-mobile-item { border-bottom: 1px solid #f0eee9; }
     .cbv-mobile-link-head {
       display: flex; justify-content: space-between; align-items: center;
-      width: 100%; padding: 20px 0;
-      font-family: "Georgia", "Times New Roman", serif; font-size: 22px;
-      color: #1f1c18; text-align: left; text-decoration: none;
+      width: 100%; padding: 18px 0;
+      font-family: "Georgia", "Times New Roman", serif; font-size: 20px;
+      color: #111; text-align: left; text-decoration: none;
     }
     .cbv-mobile-link-head .cbv-icon {
-      transition: transform 0.3s ease; width: 18px; color: #595550;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); width: 18px; color: #888;
     }
     .cbv-mobile-item.is-expanded .cbv-mobile-link-head .cbv-icon {
       transform: rotate(180deg); color: var(--cbv-header-accent);
@@ -668,40 +686,39 @@
       max-height: 2500px; margin-bottom: 25px;
     }
     .cbv-mob-cat-title {
-      font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+      font-size: 12px; font-family: "Avenir Next", sans-serif; text-transform: uppercase; letter-spacing: 1px;
       color: var(--cbv-header-accent); font-weight: 800;
-      margin: 25px 0 12px; display: block; border-bottom: 1px solid #e8e4dd; padding-bottom: 5px;
+      margin: 20px 0 10px; display: block; border-bottom: 1px solid #f0eee9; padding-bottom: 5px;
     }
     .cbv-mob-sub-title {
-      font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
-      color: #595550; font-weight: 700; margin: 15px 0 8px; display: block; padding-left: 10px;
+      font-size: 11px; font-family: "Avenir Next", sans-serif; text-transform: uppercase; letter-spacing: 1px;
+      color: #888; font-weight: 700; margin: 15px 0 8px; display: block; padding-left: 10px;
     }
     .cbv-mob-link {
-      font-size: 17px; display: block; padding: 8px 0; color: #1f1c18; text-decoration: none;
+      font-size: 15px; font-family: "Avenir Next", sans-serif; display: block; padding: 8px 0; color: #333; text-decoration: none;
     }
     .cbv-mob-link-sub {
-      font-size: 16px; display: block; padding: 6px 0 6px 10px;
-      color: #595550; border-left: 2px solid transparent; text-decoration: none;
+      font-size: 14px; font-family: "Avenir Next", sans-serif; display: block; padding: 6px 0 6px 10px;
+      color: #666; border-left: 2px solid transparent; text-decoration: none; transition: color 0.2s;
     }
     .cbv-mob-link-sub:hover {
       color: var(--cbv-header-accent); border-left-color: var(--cbv-header-accent);
     }
     .cbv-mobile-divider {
-      height: 1px; background: #e8e4dd; margin: 20px 0; width: 100%; display: block; opacity: 0.5;
+      height: 1px; background: #f0eee9; margin: 15px 0; width: 100%; display: block;
     }
     .cbv-mobile-scent-grid {
-      display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px;
+      display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 15px;
     }
-    .cbv-mobile-scent-grid .cbv-scent-pill { background: #fff; border-color: #eee; }
+    .cbv-mobile-scent-grid .cbv-scent-pill { background: #fdfbf7; border-color: #f0eee9; }
     .cbv-drawer-footer {
-      margin-top: 40px; padding-top: 30px; border-top: 1px solid #e8e4dd; text-align: center;
+      margin-top: 30px; padding-top: 25px; border-top: 1px solid #f0eee9; text-align: center;
     }
     .cbv-drawer-footer a {
-      display: block; padding: 10px; font-size: 14px; color: #595550; text-decoration: none;
+      display: block; padding: 10px; font-size: 13px; font-family: "Avenir Next", sans-serif; color: #666; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
     }
   }
 
-  /* FORCE HEADER ON TOP */
   #shopify-section-header, 
   .shopify-section-header, 
   .section-header {
@@ -709,12 +726,11 @@
     z-index: 99999 !important;
   }
 
-  /* Lower the Scent Library relative to header */
   .cbv-lib-controls {
     z-index: 10 !important; 
   }
 
-  /* --- MINIMAL BUILDER HEADER --- */
+  /* --- MINIMAL BUILDER HEADER (The "Checkout Flow" Focus) --- */
   .cbv-header-fixed-group--minimal {
     background: #fdfbf7;
   }
@@ -724,31 +740,27 @@
   }
 
   .cbv-header-fixed-group--minimal .cbv-header-top {
-    padding: 14px 0;
-    min-height: 76px;
+    padding: 8px 0;
+    min-height: 64px;
   }
 
   .cbv-header-fixed-group--minimal .cbv-builder-exit {
-    color: #666;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #888;
     text-decoration: none;
-    font-size: 13px;
+    font-size: 12px;
+    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
     font-weight: 600;
-    letter-spacing: 0.6px;
-    transition: color var(--cbv-duration) var(--cbv-ease);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s ease, transform 0.2s ease;
   }
 
   .cbv-header-fixed-group--minimal .cbv-builder-exit:hover {
     color: #111;
-  }
-
-  .cbv-header-fixed-group--minimal .cbv-builder-progress {
-    display: block;
-    margin-top: 6px;
-    font-size: 10px;
-    letter-spacing: 2.2px;
-    text-transform: uppercase;
-    color: var(--cbv-header-accent);
-    font-weight: 700;
+    transform: translateX(-3px);
   }
 
   .cbv-header-fixed-group--minimal .cbv-icons {
@@ -760,7 +772,7 @@
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     height: auto;
-    padding: 12px 0;
+    padding: 8px 0;
     pointer-events: auto;
   }
 
@@ -786,7 +798,7 @@
   @media (max-width: 1024px) {
     .cbv-header-fixed-group--minimal .cbv-header {
       padding: 0 20px;
-      height: 72px;
+      height: 64px;
       border-bottom: 1px solid var(--cbv-border-color);
     }
 
@@ -803,10 +815,11 @@
     }
 
     .cbv-header-fixed-group--minimal .cbv-mobile-logo .cbv-builder-progress {
+      display: block; /* Show pill on mobile minimal */
       margin-top: 4px;
       font-size: 8px;
-      letter-spacing: 1.4px;
-      text-align: center;
+      letter-spacing: 1px;
+      padding: 3px 8px;
     }
 
     .cbv-header-fixed-group--minimal .cbv-mobile-icons {
@@ -814,10 +827,12 @@
     }
 
     .cbv-header-fixed-group--minimal .cbv-builder-exit {
-      font-size: 12px;
-      letter-spacing: 0.3px;
+      font-size: 11px;
+      letter-spacing: 0.5px;
       white-space: nowrap;
     }
+    
+    .cbv-header-fixed-group--minimal .cbv-builder-exit span { display: none; } /* Hide text, just show arrow on mobile */
   }
 {% endstyle %}
 
@@ -829,13 +844,16 @@
   <header class="cbv-header" role="banner">
     <div class="cbv-header-top">
       
-      <!-- LEFT COLUMN: Search & Sticky Logo -->
+      <!-- LEFT COLUMN: Search / Exit Link & Sticky Logo -->
       <div class="cbv-header-left">
         {% if is_builder_flow %}
-          <a href="/collections/all-products" class="cbv-builder-exit" aria-label="Exit Builder">← Exit Builder</a>
+          <a href="/collections/all-products" class="cbv-builder-exit" aria-label="Exit Builder">
+            <svg class="cbv-icon" viewBox="0 0 24 24" width="18" height="18"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            <span>Exit Builder</span>
+          </a>
         {% else %}
           <form action="{{ routes.search_url }}" method="get" role="search" class="cbv-search-bar">
-            <svg class="cbv-icon" viewBox="0 0 24 24" style="opacity:0.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <svg class="cbv-icon" viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             <input type="search" name="q" class="cbv-search-input" placeholder="Search scents..." />
           </form>
         {% endif %}
@@ -853,10 +871,11 @@
       <a href="{{ routes.root_url }}" class="cbv-logo-center" aria-label="{{ shop.name }}">
         {%- if settings.logo != blank -%}
           {{ settings.logo | image_url: width: 600 | image_tag: class: 'cbv-logo-image', preload: true, alt: shop.name }}
-          {% if is_builder_flow %}<span class="cbv-builder-progress">Custom Pour In Progress</span>{% endif %}
         {%- else -%}
           <span class="cbv-logo-main">Candles By Victoria</span>
-          <span class="cbv-logo-sub">{% if is_builder_flow %}Custom Pour In Progress{% else %}EST. 1999{% endif %}</span>
+          {% if is_builder_flow == false %}
+            <span class="cbv-logo-sub">EST. 1999</span>
+          {% endif %}
         {%- endif -%}
       </a>
 
@@ -879,7 +898,10 @@
     <!-- MOBILE HEADER -->
     <div class="cbv-mobile-header">
       {% if is_builder_flow %}
-        <a href="/collections/all-products" class="cbv-builder-exit" aria-label="Exit Builder">← Exit Builder</a>
+        <a href="/collections/all-products" class="cbv-builder-exit" aria-label="Exit Builder">
+          <svg class="cbv-icon" viewBox="0 0 24 24" width="20" height="20"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>Exit</span>
+        </a>
       {% else %}
         <button class="cbv-hamburger" type="button" data-cbv-toggle-drawer aria-label="Open menu">
           <svg class="cbv-icon" viewBox="0 0 24 24">
@@ -893,10 +915,11 @@
       <a href="{{ routes.root_url }}" class="cbv-logo-container cbv-mobile-logo" aria-label="{{ shop.name }}">
         {%- if settings.logo != blank -%}
           {{ settings.logo | image_url: width: 400 | image_tag: class: 'cbv-logo-image', preload: true, alt: shop.name }}
-          {% if is_builder_flow %}<span class="cbv-builder-progress">Custom Pour In Progress</span>{% endif %}
         {%- else -%}
           <span class="cbv-logo-main">Candles By Victoria</span>
-          <span class="cbv-logo-sub">{% if is_builder_flow %}Custom Pour In Progress{% else %}EST. 1999{% endif %}</span>
+          {% if is_builder_flow == false %}
+            <span class="cbv-logo-sub">EST. 1999</span>
+          {% endif %}
         {%- endif -%}
       </a>
 
@@ -990,7 +1013,7 @@
                   <a href="/collections/luxury-spa" class="cbv-scent-pill">🧖‍♀️ Luxury Spa</a>
                 </div>
                 <div style="margin-top:25px;">
-                  <a href="{{ section.settings.scents_az_link }}" style="font-size:14px;color:#8b5e3c;font-weight:600;text-decoration:underline;">View Full Scent List (A-Z) →</a>
+                  <a href="{{ section.settings.scents_az_link }}" style="font-size:13px;font-family:'Avenir Next',sans-serif;color:#8b5e3c;font-weight:600;text-decoration:underline;">View Full Scent List (A-Z) →</a>
                 </div>
               </div>
               <a class="cbv-featured-card" href="{{ section.settings.scents_feature_link | default: '/pages/scent-library' }}">
@@ -1023,9 +1046,19 @@
 {% if is_builder_flow == false %}
 <div class="cbv-mobile-overlay" data-cbv-mobile-overlay></div>
 <div class="cbv-mobile-drawer" data-cbv-mobile-drawer>
+  
+  <!-- WORLD CLASS: Unified Dynamic Drawer Logo -->
   <div class="cbv-drawer-header">
-    <span class="cbv-drawer-title">Candles By Victoria</span>
-    <button class="cbv-drawer-close" type="button" data-cbv-toggle-drawer aria-label="Close menu">&times;</button>
+    <a href="{{ routes.root_url }}" class="cbv-mobile-logo" style="align-items: flex-start; margin: 0; text-decoration: none;">
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 300 | image_tag: class: 'cbv-logo-image', style: 'max-height: 28px;', alt: shop.name }}
+      {%- else -%}
+        <span class="cbv-logo-main" style="font-size: 18px;">Candles By Victoria</span>
+      {%- endif -%}
+    </a>
+    <button class="cbv-drawer-close" type="button" data-cbv-toggle-drawer aria-label="Close menu">
+      <svg class="cbv-icon" viewBox="0 0 24 24" width="24" height="24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
   </div>
 
   <div class="cbv-drawer-content">

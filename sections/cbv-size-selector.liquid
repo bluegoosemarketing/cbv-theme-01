@@ -2,11 +2,11 @@
 
 {%- style -%}
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
-  @media screen and (min-width: 750px) {
+  @media screen and (min-width: 990px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
@@ -34,57 +34,48 @@
 
 <section class="cbv-size-selector section-{{ section.id }}-padding" data-section-id="{{ section.id }}">
   <div class="page-width">
-    
-    <header class="cbv-size-selector__header">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="cbv-size-selector__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-      {%- endif -%}
-      <h1 class="cbv-size-selector__collection-title">{{ collection.title | default: 'Custom Candles' }}</h1>
-      {%- if section.settings.intro != blank -%}
-        <div class="cbv-size-selector__intro rte">{{ section.settings.intro }}</div>
-      {%- elsif collection.description != blank -%}
-        <div class="cbv-size-selector__intro rte">{{ collection.description }}</div>
-      {%- endif -%}
-    </header>
-
     {%- if section.blocks.size > 0 -%}
-      <div class="cbv-size-selector__grid" data-size-selector>
+      <div class="cbv-size-selector__layout">
         
-        <!-- LEFT: VISUAL -->
-        <div class="cbv-size-selector__visual-panel">
-          {%- if default_block.settings.image != blank -%}
-            {{
-              default_block.settings.image
-              | image_url: width: 1400
-              | image_tag:
-                loading: 'eager',
-                widths: '400, 600, 800, 1000, 1200, 1400',
-                class: 'cbv-size-selector__image',
-                alt: default_title
-            }}
-          {%- else -%}
-            {{ 'product-1' | placeholder_svg_tag: 'cbv-size-selector__placeholder' }}
-          {%- endif -%}
+        <!-- LEFT: EDITORIAL VISUAL PANEL -->
+        <div class="cbv-size-selector__media-col">
+          <div class="cbv-size-selector__media-wrapper">
+            <div class="cbv-media-badge">Step 1: Size</div>
+            {%- if default_block.settings.image != blank -%}
+              {{
+                default_block.settings.image
+                | image_url: width: 1400
+                | image_tag:
+                  loading: 'eager',
+                  widths: '400, 600, 800, 1000, 1200',
+                  class: 'cbv-size-image',
+                  alt: default_title
+              }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'cbv-size-image cbv-placeholder' }}
+            {%- endif -%}
+          </div>
         </div>
 
-        <!-- RIGHT: INFO & SELECTION -->
-        <div class="cbv-size-selector__info">
-          <h2 class="cbv-size-selector__title" data-size-title>{{ default_title | escape }}</h2>
-
-          <div class="cbv-size-selector__badge" data-size-room-badge {% if default_block.settings.room_recommendation == blank %}style="display:none;"{% endif %}>
-            Ideal for: <span data-size-room>{{ default_block.settings.room_recommendation | escape }}</span>
+        <!-- RIGHT: FOCUSED ACTION PANEL -->
+        <div class="cbv-size-selector__content-col">
+          
+          <div class="cbv-content-header">
+            <p class="cbv-eyebrow">{{ section.settings.eyebrow | escape | default: 'Custom Candle Builder' }}</p>
+            <h1 class="cbv-title" data-size-title>{{ default_title | escape }}</h1>
           </div>
 
-          <p class="cbv-size-selector__description" data-size-description>{{ default_block.settings.description | escape }}</p>
-
-          <div class="cbv-size-selector__controls">
-            <span class="cbv-size-selector__label">Select Candle Size</span>
-            <div class="cbv-size-selector__button-grid">
+          <!-- CORE ACTION PULLED TO THE TOP -->
+          <div class="cbv-selection-area">
+            <div class="cbv-selection-header">
+              <span class="cbv-label">Select Candle Size</span>
+            </div>
+            <div class="cbv-size-grid">
               {%- for block in section.blocks -%}
                 {%- assign button_label = block.settings.size_label | default: block.settings.title -%}
                 <button
                   type="button"
-                  class="cbv-size-selector__size-btn{% if forloop.index0 == default_index %} is-active{% endif %}"
+                  class="cbv-size-btn{% if forloop.index0 == default_index %} is-active{% endif %}"
                   data-size-button
                   data-size-index="{{ forloop.index0 }}"
                   aria-pressed="{% if forloop.index0 == default_index %}true{% else %}false{% endif %}"
@@ -96,42 +87,57 @@
             </div>
           </div>
 
-          <!-- AVAILABLE STYLES -->
-          <div class="cbv-size-selector__styles-box">
-            <div class="cbv-size-selector__styles-header">
-              <h3>Jar Styles Available</h3>
-              <p>{{ section.settings.styles_note | escape }}</p>
+          <!-- CONSOLIDATED INFO CARD -->
+          <div class="cbv-info-card">
+            <div class="cbv-info-card__header">
+              <div class="cbv-badge" data-size-room-badge {% if default_block.settings.room_recommendation == blank %}style="display:none;"{% endif %}>
+                Ideal for: <span data-size-room>{{ default_block.settings.room_recommendation | escape }}</span>
+              </div>
+              <p class="cbv-description" data-size-description>{{ default_block.settings.description | escape }}</p>
             </div>
-            <div class="cbv-size-selector__styles-list" data-size-styles>
-              <!-- JS Populated -->
+
+            <div class="cbv-info-card__divider"></div>
+
+            <div class="cbv-specs-row">
+              <div class="cbv-spec-item">
+                <div class="cbv-spec-text">
+                  <span class="cbv-spec-label">Wick Count</span>
+                  <strong data-size-wicks>{{ default_block.settings.wick_count | escape }}</strong>
+                </div>
+              </div>
+              <div class="cbv-spec-item">
+                <div class="cbv-spec-text">
+                  <span class="cbv-spec-label">Wood Wick Option</span>
+                  <strong data-size-wood>{{ default_block.settings.wood_wick | escape }}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="cbv-styles-preview">
+              <div class="cbv-styles-header">
+                <span class="cbv-spec-label">Jar Styles Available</span>
+                <span class="cbv-styles-note">{{ section.settings.styles_note | escape }}</span>
+              </div>
+              <div class="cbv-styles-list" data-size-styles>
+                <!-- JS Populated -->
+              </div>
             </div>
           </div>
 
-          <!-- SPECS -->
-          <div class="cbv-size-selector__specs-grid">
-            <div class="cbv-size-selector__spec-item">
-              <h4>Wick Count</h4>
-              <p data-size-wicks>{{ default_block.settings.wick_count | escape }}</p>
-            </div>
-            <div class="cbv-size-selector__spec-item">
-              <h4>Wood Wick Option</h4>
-              <p data-size-wood>{{ default_block.settings.wood_wick | escape }}</p>
-            </div>
-          </div>
-
+          <!-- PRIMARY CTA -->
           <a
-            class="cbv-size-selector__cta{% if default_block.settings.builder_link == blank %} is-disabled{% endif %}"
+            class="cbv-grand-cta{% if default_block.settings.builder_link == blank %} is-disabled{% endif %}"
             data-size-cta
             href="{% if default_block.settings.builder_link != blank %}{{ default_block.settings.builder_link }}{% else %}#{% endif %}"
           >
-            {{ section.settings.cta_label | escape }}
+            <span>{{ section.settings.cta_label | escape | default: 'Next Step: Customize' }}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </a>
         </div>
       </div>
 
       <!-- JS DATA -->
-      <script type="application/json" data-size-data>
-        [
+      <script type="application/json" data-size-data>[
           {%- for block in section.blocks -%}
             {
               "label": {{ block.settings.size_label | default: block.settings.title | json }},
@@ -167,7 +173,7 @@
           try { options = JSON.parse(dataScript.textContent); } catch (e) { return; }
           if (!Array.isArray(options) || !options.length) return;
 
-          const imageEl = sectionEl.querySelector('.cbv-size-selector__image');
+          const imageEl = sectionEl.querySelector('.cbv-size-image');
           const titleEl = sectionEl.querySelector('[data-size-title]');
           const roomBadgeEl = sectionEl.querySelector('[data-size-room-badge]');
           const roomEl = sectionEl.querySelector('[data-size-room]');
@@ -181,16 +187,14 @@
 
           const appendScentParam = (url) => {
             if (!url || !scentParam) return url;
-
             const [base, hash = ''] = url.split('#');
             const joiner = base.includes('?') ? '&' : '?';
             const nextUrl = `${base}${joiner}scent=${encodeURIComponent(scentParam)}`;
-
             return hash ? `${nextUrl}#${hash}` : nextUrl;
           };
 
           const parseStyles = (styles) => {
-            if (!styles) return [];
+            if (!styles) return[];
             return styles.split(/[\n,]/).map(s => s.trim()).filter(Boolean);
           };
 
@@ -200,14 +204,14 @@
             const entries = parseStyles(styles);
             if (!entries.length) {
               const empty = document.createElement('span');
-              empty.className = 'cbv-size-selector__style-tag is-empty';
+              empty.className = 'cbv-style-pill is-empty';
               empty.textContent = 'None listed';
               stylesListEl.appendChild(empty);
               return;
             }
             entries.forEach(style => {
               const tag = document.createElement('span');
-              tag.className = 'cbv-size-selector__style-tag';
+              tag.className = 'cbv-style-pill';
               tag.textContent = style;
               stylesListEl.appendChild(tag);
             });
@@ -222,7 +226,6 @@
                     imageEl.src = image.src;
                     imageEl.alt = image.alt || '';
                 }
-                
                 imageEl.onload = () => imageEl.classList.remove('is-changing');
                 setTimeout(() => imageEl.classList.remove('is-changing'), 200);
             }, 150);
@@ -232,33 +235,28 @@
             const selected = options[index];
             if (!selected) return;
 
-            // Buttons
             buttons.forEach((btn, idx) => {
               const active = idx === index;
               btn.classList.toggle('is-active', active);
               btn.setAttribute('aria-pressed', active);
             });
 
-            // Content
             if (titleEl) titleEl.textContent = selected.title;
             if (descriptionEl) descriptionEl.textContent = selected.description;
             if (wicksEl) wicksEl.textContent = selected.wicks;
             if (woodEl) woodEl.textContent = selected.woodWick;
 
-            // Room Badge
             if (roomBadgeEl) {
                 if (selected.room) {
-                    roomBadgeEl.style.display = 'inline-block';
+                    roomBadgeEl.style.display = 'inline-flex';
                     if (roomEl) roomEl.textContent = selected.room;
                 } else {
                     roomBadgeEl.style.display = 'none';
                 }
             }
 
-            // Styles
             renderStyles(selected.styles);
 
-            // CTA
             if (ctaEl) {
                 if (selected.builderLink) {
                     ctaEl.href = appendScentParam(selected.builderLink);
@@ -269,21 +267,18 @@
                 }
             }
 
-            // Image
             updateImage(selected.image);
           };
 
-          // Init Events
           buttons.forEach(btn => {
             btn.addEventListener('click', () => select(Number(btn.dataset.sizeIndex)));
           });
 
-          // Run Init
           select({{ default_index }});
         });
       </script>
     {%- else -%}
-      <p class="cbv-size-selector__empty">Please add size blocks in the theme editor.</p>
+      <div class="cbv-size-empty">Please add size blocks in the theme editor.</div>
     {%- endif -%}
   </div>
 </section>
@@ -293,30 +288,24 @@
   "name": "CBV Size Selector",
   "tag": "section",
   "class": "section",
-  "settings": [
+  "settings":[
     {
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow Text",
-      "default": "STEP 1 · CHOOSE YOUR SIZE"
-    },
-    {
-      "type": "richtext",
-      "id": "intro",
-      "label": "Intro Copy",
-      "default": "<p>Select your candle size to begin building your custom pour.</p>"
+      "default": "Step 1: Choose Your Size"
     },
     {
       "type": "text",
       "id": "cta_label",
       "label": "CTA Button Label",
-      "default": "Build This Candle →"
+      "default": "Next Step: Customize"
     },
     {
       "type": "text",
       "id": "styles_note",
       "label": "Styles Note",
-      "default": "Selection happens in the next step"
+      "default": "(Selection happens in the next step)"
     },
     {
       "type": "text",
@@ -333,7 +322,7 @@
       "step": 4,
       "unit": "px",
       "label": "Top Padding",
-      "default": 40
+      "default": 32
     },
     {
       "type": "range",
@@ -346,11 +335,11 @@
       "default": 80
     }
   ],
-  "blocks": [
+  "blocks":[
     {
       "type": "size_option",
       "name": "Size Option",
-      "settings": [
+      "settings":[
         {
           "type": "text",
           "id": "size_label",
@@ -373,7 +362,7 @@
           "type": "textarea",
           "id": "description",
           "label": "Description",
-          "default": "Perfectly balanced proportions."
+          "default": "Our most beloved size. Perfectly balanced proportions for living rooms."
         },
         {
           "type": "text",
@@ -397,7 +386,7 @@
           "id": "jar_styles",
           "label": "Jar Styles List",
           "info": "Enter one style per line or comma separated",
-          "default": "Clear Glass\nSeafoam\nBlush"
+          "default": "Clear Glass\nSeafoam\nBlush\nIridescent"
         },
         {
           "type": "url",
@@ -407,13 +396,14 @@
       ]
     }
   ],
-  "presets": [
+  "presets":[
     {
       "name": "CBV Size Selector",
-      "blocks": [
+      "blocks":[
         { "type": "size_option", "settings": { "size_label": "4oz", "title": "4oz Candle" } },
+        { "type": "size_option", "settings": { "size_label": "9oz", "title": "9oz Candle" } },
         { "type": "size_option", "settings": { "size_label": "12oz", "title": "12oz Candle" } },
-        { "type": "size_option", "settings": { "size_label": "30oz", "title": "30oz Candle" } }
+        { "type": "size_option", "settings": { "size_label": "16oz", "title": "16oz Candle" } }
       ]
     }
   ]
