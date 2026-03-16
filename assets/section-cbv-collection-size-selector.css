@@ -382,6 +382,15 @@
     flex-direction: column;
     gap: 20px;
   }
+
+  /* --- WORLD CLASS MOBILE STICKY CTA --- */
+  .cbv-grand-cta {
+    position: -webkit-sticky; /* For iOS Safari */
+    position: sticky;
+    bottom: max(20px, env(safe-area-inset-bottom)); /* Respects the iPhone home bar */
+    z-index: 100;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.05), 0 15px 35px rgba(0,0,0,0.2) !important;
+  }
 }
 
 @media (max-width: 480px) {
