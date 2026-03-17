@@ -13,6 +13,7 @@
 
 .cart-item-quantity-wrapper {
   display: flex;
+  align-items: center; 
 }
 
 .cart-item-totals {
@@ -75,12 +76,12 @@
   background-repeat: no-repeat;
   background-position: bottom left;
   padding-bottom: 5px;
-  text-decoration: none;
   transition: all .4s ease, text-decoration 0s ease;
+  font-weight: 500;
+  display: inline-block;
 }
 
 .cart-item-name:hover {
-  background-image: linear-gradient(transparent calc( 100% - 1px ), currentColor 5px);
   background-size: 100%;
 }
 
@@ -112,67 +113,70 @@
   line-height: calc(1 + 0.5 / var(--font-body-scale));
 }
 
-
+/* ====== WORLD CLASS LINE-ITEM META REDESIGN ====== */
 #main-cart-items .cart-item-meta {
-  margin-top: 1rem;
-  padding: 1rem 1.2rem;
-  border: 0.1rem solid rgb(var(--color-base-border-1));
-  border-radius: 1rem;
-  background: rgba(var(--color-background), 0.5);
+  margin-top: 1.6rem; /* Creates healthy gap below the product price */
+  max-width: 100%; 
 }
 
 #main-cart-items .cart-item-meta-list {
   margin: 0;
   display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
+  flex-wrap: wrap;
+  gap: 0.8rem; /* Slightly increased gap between pills */
 }
 
 #main-cart-items .cart-item-meta-row {
-  display: grid;
-  grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr);
-  align-items: start;
-  column-gap: 1rem;
-  row-gap: 0.2rem;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0.5rem 1rem; /* Plumper internal spacing for the pill */
+  background: rgba(var(--color-foreground), 0.03);
+  border: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  border-radius: 0.5rem;
+  column-gap: 0.4rem;
+  row-gap: 0;
+  margin-top: 0 !important; 
 }
 
 #main-cart-items .cart-item-meta-label,
 #main-cart-items .cart-item-meta-value {
   margin: 0;
-  display: block;
+  font-size: 1.15rem;
+  line-height: 1.4;
   word-break: break-word;
+  display: inline-block;
 }
 
 #main-cart-items .cart-item-meta-label {
   color: rgba(var(--color-foreground), 0.65);
-  font-size: 1.3rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: capitalize; 
+}
+
+#main-cart-items .cart-item-meta-label::after {
+  content: ":";
 }
 
 #main-cart-items .cart-item-meta-value {
-  font-size: 1.45rem;
   color: rgb(var(--color-foreground));
+  font-weight: 500;
 }
 
 @media screen and (max-width: 749px) {
-  #main-cart-items .cart-item-meta {
-    padding: 0.8rem 1rem;
+  #main-cart-items .cart-item-meta-list {
+    gap: 0.6rem;
   }
-
+  
   #main-cart-items .cart-item-meta-row {
-    grid-template-columns: 1fr;
-    row-gap: 0.1rem;
+    padding: 0.4rem 0.8rem;
   }
 
-  #main-cart-items .cart-item-meta-label {
-    font-size: 1.15rem;
-  }
-
+  #main-cart-items .cart-item-meta-label,
   #main-cart-items .cart-item-meta-value {
-    font-size: 1.35rem;
+    font-size: 1.05rem;
   }
 }
+/* ================================================ */
 
 .cart-item cart-remove-button {
   display: flex;
@@ -261,12 +265,10 @@ cart-remove-button .icon-remove {
   background-repeat: no-repeat;
   background-position: bottom left;
   padding-bottom: 5px;
-  text-decoration: none;
   transition: all .4s ease, text-decoration 0s ease;
 }
   
 .title-wrapper-with-link a:hover {
-  background-image: linear-gradient(transparent calc( 100% - 1px ), currentColor 5px);
   background-size: 100%;
 }
 
@@ -405,6 +407,7 @@ cart-remove-button .icon-remove {
 
   .cart-items td {
     padding-top: 3rem;
+    padding-bottom: 3rem; /* Prevents pills from colliding with bottom border */
   }
 
   .cart-page .cart-items td {
@@ -463,7 +466,6 @@ cart-remove-button .icon-remove {
     font-size: 1.4rem;
   }
 }
-
 
 @media screen and (min-width: 990px) {
   .cart-item .cart-item-quantity,
