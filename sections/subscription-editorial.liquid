@@ -162,12 +162,13 @@
   }
   .cbv-typo-plaque__main {
     font-family: var(--font-heading);
-    font-size: clamp(36px, 10vw, 72px);
+    font-size: clamp(36px, 8vw, 64px);
     line-height: 1.05;
     display: block;
     font-style: italic;
     margin-bottom: clamp(24px, 5vw, 32px);
-    word-break: break-word; /* Prevents long single words from breaking layout */
+    word-break: normal;
+    overflow-wrap: normal;
   }
   .cbv-typo-plaque__bottom {
     font-family: var(--font-body);
