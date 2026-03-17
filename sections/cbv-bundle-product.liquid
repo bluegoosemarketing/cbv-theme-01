@@ -1,0 +1,386 @@
+{{ 'section-cbv-bundle-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'cbv-bundle-product.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign product_form_id = 'cbv-bundle-product-form-' | append: section.id
+  assign current_variant = product.selected_or_first_available_variant
+  assign current_media = current_variant.featured_media | default: product.featured_media
+  assign bundle_mode = section.settings.bundle_mode
+
+  assign scent_options_raw = section.settings.scent_options | strip
+  if scent_options_raw == blank and product.metafields.custom.bundle_scent_options != blank
+    assign scent_options_raw = product.metafields.custom.bundle_scent_options.value | default: product.metafields.custom.bundle_scent_options
+  endif
+  assign scent_options = scent_options_raw | newline_to_br | split: '<br />'
+
+  assign category_options_raw = section.settings.category_options | strip
+  if category_options_raw == blank and product.metafields.custom.bundle_category_options != blank
+    assign category_options_raw = product.metafields.custom.bundle_category_options.value | default: product.metafields.custom.bundle_category_options
+  endif
+  assign category_options = category_options_raw | newline_to_br | split: '<br />'
+
+  assign color_options_raw = section.settings.color_options | strip
+  if color_options_raw == blank and product.metafields.custom.bundle_color_options != blank
+    assign color_options_raw = product.metafields.custom.bundle_color_options.value | default: product.metafields.custom.bundle_color_options
+  endif
+  assign color_options = color_options_raw | newline_to_br | split: '<br />'
+-%}
+
+<section
+  class="cbv-bundle color-{{ section.settings.color_scheme }} gradient"
+  data-cbv-bundle
+  data-section-id="{{ section.id }}"
+  data-bundle-mode="{{ bundle_mode }}"
+  data-required-slots="{{ section.settings.required_slots }}"
+  data-require-scent="{{ section.settings.show_scent_picker }}"
+  data-require-category="{{ section.settings.show_category_picker }}"
+  data-require-color="{{ section.settings.show_color_picker }}"
+>
+  <div class="page-width section-{{ section.id }}-padding">
+    <div class="cbv-bundle__grid">
+      <div class="cbv-bundle__media-column">
+        {% if current_media %}
+          <div class="cbv-bundle__media" style="--ratio-percent: {{ 1 | divided_by: current_media.aspect_ratio | times: 100 }}%;">
+            {{
+              current_media
+              | image_url: width: 1400
+              | image_tag:
+                class: 'cbv-bundle__main-image',
+                loading: 'lazy',
+                widths: '480, 760, 980, 1200, 1400',
+                sizes: '(min-width: 990px) 55vw, 100vw',
+                data-cbv-main-image: ''
+            }}
+          </div>
+        {% endif %}
+
+        <div class="cbv-bundle__summary" data-cbv-summary>
+          <h3 class="cbv-bundle__summary-title">Bundle summary</h3>
+          <p class="cbv-bundle__summary-line" data-cbv-summary-status>Complete selections to unlock add to cart.</p>
+          <ul class="cbv-bundle__summary-list" data-cbv-summary-list></ul>
+        </div>
+      </div>
+
+      <div class="cbv-bundle__content">
+        {% if section.settings.eyebrow != blank %}
+          <p class="cbv-bundle__eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+
+        <h1 class="cbv-bundle__title">{{ product.title | escape }}</h1>
+        <p class="cbv-bundle__price" data-cbv-price>{{ current_variant.price | money_without_trailing_zeros }}</p>
+
+        {% if section.settings.bundle_intro != blank %}
+          <div class="cbv-bundle__intro rte">{{ section.settings.bundle_intro }}</div>
+        {% elsif product.description != blank %}
+          <div class="cbv-bundle__intro rte">{{ product.description }}</div>
+        {% endif %}
+
+        {% if section.settings.fixed_bundle_contents != blank and bundle_mode == 'fixed' %}
+          <div class="cbv-bundle__fixed-contents rte">
+            <h2>What's included</h2>
+            {{ section.settings.fixed_bundle_contents }}
+          </div>
+        {% endif %}
+
+        <product-form class="product-form" data-section-id="{{ section.id }}">
+          <div class="product-form__error-message-wrapper" role="alert" hidden>
+            <span class="product-form__error-message"></span>
+          </div>
+
+          {%- form 'product', product, id: product_form_id, class: 'form cbv-bundle__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}" data-cbv-variant-id>
+            <input type="hidden" name="properties[_bundle_mode]" value="{{ bundle_mode }}">
+            <input type="hidden" name="properties[_bundle_summary]" value="" data-cbv-prop-summary>
+
+            {% unless product.has_only_default_variant %}
+              <div class="cbv-bundle__variant-wrap" data-cbv-option-wrap>
+                {% for option in product.options_with_values %}
+                  <div class="cbv-bundle__option-group">
+                    <label class="cbv-bundle__option-label" for="CBVBundleOption-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+                    <div class="select">
+                      <select
+                        id="CBVBundleOption-{{ section.id }}-{{ forloop.index0 }}"
+                        class="select__select"
+                        data-cbv-option
+                        data-option-position="{{ option.position }}"
+                      >
+                        {% for value in option.values %}
+                          <option value="{{ value | escape }}" {% if value == option.selected_value %}selected{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                      </select>
+                      {% render 'icon-caret' %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endunless %}
+
+            {% if section.settings.show_category_picker and bundle_mode != 'multi_slot' %}
+              <div class="cbv-bundle__group" data-cbv-group="category">
+                <div class="cbv-bundle__group-head">
+                  <h2>Choose your collection</h2>
+                  {% if section.settings.category_supporting_text != blank %}
+                    <p>{{ section.settings.category_supporting_text }}</p>
+                  {% endif %}
+                </div>
+                <input type="hidden" name="properties[bundle_category]" value="" data-cbv-prop-category>
+                <div class="cbv-bundle__chips" data-cbv-category-options>
+                  {% for category in category_options %}
+                    {% assign category_clean = category | strip %}
+                    {% if category_clean != blank %}
+                      {% assign parts = category_clean | split: '|' %}
+                      {% assign label = parts[0] | strip %}
+                      {% assign detail = parts[1] | strip %}
+                      <button type="button" class="cbv-bundle__chip" data-cbv-category="{{ label | escape }}">
+                        <span>{{ label }}</span>
+                        {% if detail != blank %}
+                          <small>{{ detail }}</small>
+                        {% endif %}
+                      </button>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+
+            {% if section.settings.show_color_picker %}
+              <div class="cbv-bundle__group" data-cbv-group="color">
+                <div class="cbv-bundle__group-head">
+                  <h2>Choose your color</h2>
+                </div>
+                <input type="hidden" name="properties[bundle_color]" value="" data-cbv-prop-color>
+                <div class="cbv-bundle__chips" data-cbv-color-options>
+                  {% for color in color_options %}
+                    {% assign color_clean = color | strip %}
+                    {% if color_clean != blank %}
+                      <button type="button" class="cbv-bundle__chip" data-cbv-color="{{ color_clean | escape }}">{{ color_clean }}</button>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+
+            {% if section.settings.show_scent_picker and bundle_mode == 'multi_slot' %}
+              <div class="cbv-bundle__group" data-cbv-group="slots">
+                <div class="cbv-bundle__group-head">
+                  <h2>Choose each fragrance</h2>
+                  <p>Select all {{ section.settings.required_slots }} slots to continue.</p>
+                </div>
+
+                <div class="cbv-bundle__slots" data-cbv-slots>
+                  {%- for i in (1..12) -%}
+                    {% if i <= section.settings.required_slots %}
+                      <div class="cbv-bundle__slot" data-cbv-slot="{{ i }}">
+                        <div class="cbv-bundle__slot-head">
+                          <strong>Slot {{ i }}</strong>
+                          <span data-cbv-slot-state>Required</span>
+                        </div>
+                        <label class="visually-hidden" for="CBVBundleSlot-{{ section.id }}-{{ i }}">Fragrance for slot {{ i }}</label>
+                        <div class="select">
+                          <select id="CBVBundleSlot-{{ section.id }}-{{ i }}" class="select__select" data-cbv-slot-select data-slot-index="{{ i }}">
+                            <option value="">Select fragrance</option>
+                            {% for scent in scent_options %}
+                              {% assign scent_clean = scent | strip %}
+                              {% if scent_clean != blank %}
+                                <option value="{{ scent_clean | escape }}">{{ scent_clean }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                          {% render 'icon-caret' %}
+                        </div>
+                        <input type="hidden" name="properties[bundle_slot_{{ i }}]" value="" data-cbv-prop-slot="{{ i }}">
+                      </div>
+                    {% endif %}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {% elsif section.settings.show_scent_picker and bundle_mode == 'category' %}
+              <div class="cbv-bundle__group" data-cbv-group="info">
+                <p class="cbv-bundle__hint">This sampler is curated from your selected category so your set stays balanced and fulfillment-friendly.</p>
+              </div>
+            {% endif %}
+
+            {% if section.blocks.size > 0 %}
+              <div class="cbv-bundle__purchase-options" data-cbv-purchase-options>
+                {% for block in section.blocks %}
+                  <div class="cbv-bundle__purchase-option" {{ block.shopify_attributes }}>
+                    {% render block %}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="product-form__buttons">
+              <button
+                type="submit"
+                name="add"
+                class="product-form__submit button button--primary cbv-bundle__submit"
+                {% unless current_variant.available %}disabled{% endunless %}
+                data-cbv-submit
+              >
+                <span data-cbv-submit-label>
+                  {% if current_variant.available %}
+                    {{ section.settings.cta_label }} · {{ current_variant.price | money }}
+                  {% else %}
+                    {{ 'products.product.sold_out' | t }}
+                  {% endif %}
+                </span>
+                <div class="loading-overlay-spinner hidden">
+                  <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                  </svg>
+                </div>
+              </button>
+              <p class="cbv-bundle__validation" data-cbv-validation></p>
+            </div>
+          {%- endform -%}
+        </product-form>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-cbv-variants>{{ product.variants | json }}</script>
+</section>
+
+{% schema %}
+{
+  "name": "CBV Bundle product",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Candles By Victoria"
+    },
+    {
+      "type": "select",
+      "id": "bundle_mode",
+      "label": "Bundle mode",
+      "default": "multi_slot",
+      "options": [
+        { "value": "multi_slot", "label": "Multi-slot fragrance selection" },
+        { "value": "category", "label": "Category-based selection" },
+        { "value": "fixed", "label": "Fixed/predefined kit" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "required_slots",
+      "label": "Required slots (multi-slot mode)",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scent_picker",
+      "label": "Enable scent picker",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_category_picker",
+      "label": "Enable category picker",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color_picker",
+      "label": "Enable color picker",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "bundle_intro",
+      "label": "Intro copy"
+    },
+    {
+      "type": "richtext",
+      "id": "fixed_bundle_contents",
+      "label": "Fixed bundle contents (fixed mode)",
+      "info": "Used when mode is fixed to explain exactly what is included."
+    },
+    {
+      "type": "textarea",
+      "id": "scent_options",
+      "label": "Scent options (one per line)",
+      "info": "Optional: if empty, uses product metafield custom.bundle_scent_options when available."
+    },
+    {
+      "type": "textarea",
+      "id": "category_options",
+      "label": "Category options (one per line)",
+      "info": "Use format Label|Support text. Optional fallback: metafield custom.bundle_category_options."
+    },
+    {
+      "type": "text",
+      "id": "category_supporting_text",
+      "label": "Category picker helper text",
+      "default": "We curate scents inside the category you choose for a balanced set."
+    },
+    {
+      "type": "textarea",
+      "id": "color_options",
+      "label": "Color options (one per line)",
+      "info": "Optional fallback: metafield custom.bundle_color_options."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Add to cart label",
+      "default": "Add bundle"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "option-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "CBV Bundle product"
+    }
+  ]
+}
+{% endschema %}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
