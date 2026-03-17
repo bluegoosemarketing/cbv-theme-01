@@ -129,50 +129,68 @@
                         </div>
                       {%- endif -%}
 
+                      {%- liquid
+                        assign has_public_properties = false
+                        for property in item.properties
+                          assign property_first_char = property.first | slice: 0
+                          if property.last != blank and property_first_char != '_'
+                            assign has_public_properties = true
+                            break
+                          endif
+                        endfor
+                      -%}
+
                       {%- if item.product.has_only_default_variant == false
-                        or item.properties.size != 0
+                        or has_public_properties
                         or item.selling_plan_allocation != null
                       -%}
-                        <dl>
-                          {%- if item.product.has_only_default_variant == false -%}
-                            {%- for option in item.options_with_values -%}
-                              <div class="product-option">
-                                <dt>{{ option.name }}:</dt>
-                                <dd>{{ option.value }}</dd>
-                              </div>
-                            {%- endfor -%}
-                          {%- endif -%}
+                        <div class="cart-item-meta" aria-label="Line item details">
+                          <dl class="cart-item-meta-list">
+                            {%- if item.product.has_only_default_variant == false -%}
+                              {%- for option in item.options_with_values -%}
+                                <div class="product-option cart-item-meta-row">
+                                  <dt class="cart-item-meta-label">{{ option.name }}</dt>
+                                  <dd class="cart-item-meta-value">{{ option.value }}</dd>
+                                </div>
+                              {%- endfor -%}
+                            {%- endif -%}
 
-                          {%- for property in item.properties -%}
-                            {%- assign property_first_char = property.first | slice: 0 -%}
-                            {%- if property.last != blank and property_first_char != '_' -%}
-                              {%- liquid
-                                assign property_label = property.first
-                                if property.first == 'wax_color'
-                                  assign property_label = 'Wax color'
-                                elsif property.first == 'scent_1'
-                                  assign property_label = 'Scent'
-                                elsif property.first == 'scent_family'
-                                  assign property_label = 'Family'
-                                endif
-                              -%}
-                              <div class="product-option">
-                                <dt>{{ property_label }}:</dt>
-                                <dd>
-                                  {%- if property.last contains '/uploads/' -%}
-                                    <a href="{{ property.last }}" class="link" target="_blank">
-                                      {{ property.last | split: '/' | last }}
-                                    </a>
-                                  {%- else -%}
-                                    {{ property.last }}
-                                  {%- endif -%}
-                                </dd>
+                            {%- for property in item.properties -%}
+                              {%- assign property_first_char = property.first | slice: 0 -%}
+                              {%- if property.last != blank and property_first_char != '_' -%}
+                                {%- liquid
+                                  assign property_label = property.first
+                                  if property.first == 'wax_color'
+                                    assign property_label = 'Wax color'
+                                  elsif property.first == 'scent_1'
+                                    assign property_label = 'Scent'
+                                  elsif property.first == 'scent_family'
+                                    assign property_label = 'Family'
+                                  endif
+                                -%}
+                                <div class="product-option cart-item-meta-row">
+                                  <dt class="cart-item-meta-label">{{ property_label }}</dt>
+                                  <dd class="cart-item-meta-value">
+                                    {%- if property.last contains '/uploads/' -%}
+                                      <a href="{{ property.last }}" class="link" target="_blank">
+                                        {{ property.last | split: '/' | last }}
+                                      </a>
+                                    {%- else -%}
+                                      {{ property.last }}
+                                    {%- endif -%}
+                                  </dd>
+                                </div>
+                              {%- endif -%}
+                            {%- endfor -%}
+
+                            {%- if item.selling_plan_allocation != null -%}
+                              <div class="product-option cart-item-meta-row">
+                                <dt class="cart-item-meta-label">Plan</dt>
+                                <dd class="cart-item-meta-value">{{ item.selling_plan_allocation.selling_plan.name }}</dd>
                               </div>
                             {%- endif -%}
-                          {%- endfor -%}
-                        </dl>
-
-                        <p class="product-option">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                          </dl>
+                        </div>
                       {%- endif -%}
 
                       <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
