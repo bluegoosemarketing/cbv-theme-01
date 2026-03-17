@@ -1,0 +1,46 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cbv-bundle-product",
+      "blocks": {
+        "recharge_subscriptions_subscription_widget_v2_bundle": {
+          "type": "shopify://apps/recharge-subscriptions/blocks/subscription-widget-v2/371eed76-0b44-4869-9813-730372ea378e",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "recharge_subscriptions_subscription_widget_v2_bundle"
+      ],
+      "settings": {
+        "eyebrow": "Candles By Victoria",
+        "bundle_mode": "multi_slot",
+        "required_slots": 6,
+        "show_scent_picker": true,
+        "show_category_picker": false,
+        "show_color_picker": false,
+        "bundle_intro": "",
+        "fixed_bundle_contents": "",
+        "scent_options": "",
+        "category_options": "Bakery|Sweet and gourmand favorites\nClean|Fresh, bright and airy picks\nFloral|Soft blooms and botanical blends\nVariety|A balanced mix across families",
+        "category_supporting_text": "We curate scents inside the category you choose for a balanced set.",
+        "color_options": "",
+        "cta_label": "Add bundle",
+        "color_scheme": "option-1",
+        "padding_top": 32,
+        "padding_bottom": 48
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
