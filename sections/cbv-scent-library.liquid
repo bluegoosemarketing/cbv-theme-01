@@ -583,6 +583,8 @@
       letter: 'all'
     };
 
+    const normalizeFamilyValue = (value) => (value || '').trim().toLowerCase();
+
     // 1. Initialize Families
     const families = [...new Set(scents.map(s => s.family))].sort();
     families.forEach(fam => {
@@ -592,6 +594,32 @@
       btn.dataset.filter = fam;
       familyContainer.appendChild(btn);
     });
+
+    const familyLookup = new Map(families.map((family) => [normalizeFamilyValue(family), family]));
+    const legacyFamilyLookup = {
+      'bakery-gourmand': 'Bakery',
+      'floral-garden': 'Floral',
+      'fruity-citrus': 'Fruity',
+      'clean-fresh': 'Clean',
+      'earthy-woody': 'Earthy',
+      'holiday-seasonal': 'Christmas',
+      'perfume-dupes': 'Perfume & Cologne',
+      'luxury-spa': 'Luxury Spa',
+      'tropical': 'Tropical'
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestedFamily = urlParams.get('family') || urlParams.get('scent_family');
+
+    if (requestedFamily) {
+      const normalizedRequestedFamily = normalizeFamilyValue(requestedFamily);
+      const canonicalFromLegacy = legacyFamilyLookup[normalizedRequestedFamily];
+      const resolvedFamily = familyLookup.get(normalizedRequestedFamily) || familyLookup.get(normalizeFamilyValue(canonicalFromLegacy));
+
+      if (resolvedFamily) {
+        state.family = resolvedFamily;
+      }
+    }
 
     // 2. Initialize Alphabet
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');

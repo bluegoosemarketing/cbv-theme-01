@@ -1,0 +1,16 @@
+{%- liquid
+  assign scent_library_url = '/pages/scent-library'
+
+  assign scent_family_menu_items = '🧁 Bakery / Gourmand|Bakery||🌸 Floral & Garden|Floral||🍋 Fruity & Citrus|Fruity||🧼 Clean & Fresh|Clean||🌿 Earthy & Woody|Earthy||🎄 Holiday & Seasonal|Christmas||💄 Perfume Dupes|Perfume & Cologne||🍹 Tropical|Tropical||🧖‍♀️ Luxury Spa|Luxury Spa' | split: '||'
+-%}
+
+{%- for item in scent_family_menu_items -%}
+  {%- assign parts = item | split: '|' -%}
+  {%- assign display_label = parts[0] | strip -%}
+  {%- assign canonical_family = parts[1] | strip -%}
+  <a
+    href="{{ scent_library_url }}?family={{ canonical_family | url_encode }}"
+    class="{{ class | default: 'cbv-scent-pill' }}"
+    data-scent-family="{{ canonical_family | escape }}"
+  >{{ display_label }}</a>
+{%- endfor -%}

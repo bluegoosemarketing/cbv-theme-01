@@ -1002,15 +1002,7 @@
               <div>
                 <span class="cbv-col-title">Browse by Family</span>
                 <div class="cbv-scent-grid">
-                  <a href="/collections/bakery-gourmand" class="cbv-scent-pill">🧁 Bakery / Gourmand</a>
-                  <a href="/collections/floral-garden" class="cbv-scent-pill">🌸 Floral & Garden</a>
-                  <a href="/collections/fruity-citrus" class="cbv-scent-pill">🍋 Fruity & Citrus</a>
-                  <a href="/collections/clean-fresh" class="cbv-scent-pill">🧼 Clean & Fresh</a>
-                  <a href="/collections/earthy-woody" class="cbv-scent-pill">🌿 Earthy & Woody</a>
-                  <a href="/collections/holiday-seasonal" class="cbv-scent-pill">🎄 Holiday & Seasonal</a>
-                  <a href="/collections/perfume-dupes" class="cbv-scent-pill">💄 Perfume Dupes</a>
-                  <a href="/collections/tropical" class="cbv-scent-pill">🍹 Tropical</a>
-                  <a href="/collections/luxury-spa" class="cbv-scent-pill">🧖‍♀️ Luxury Spa</a>
+                  {% render 'cbv-scent-family-nav-links', class: 'cbv-scent-pill' %}
                 </div>
                 <div style="margin-top:25px;">
                   <a href="{{ section.settings.scents_az_link }}" style="font-size:13px;font-family:'Avenir Next',sans-serif;color:#8b5e3c;font-weight:600;text-decoration:underline;">View Full Scent List (A-Z) →</a>
@@ -1115,14 +1107,7 @@
       </button>
       <div class="cbv-mobile-submenu">
         <div class="cbv-mobile-scent-grid">
-          <a href="/collections/bakery-gourmand" class="cbv-scent-pill">🧁 Bakery / Gourmand</a>
-          <a href="/collections/floral-garden" class="cbv-scent-pill">🌸 Floral & Garden</a>
-          <a href="/collections/fruity-citrus" class="cbv-scent-pill">🍋 Fruity & Citrus</a>
-          <a href="/collections/clean-fresh" class="cbv-scent-pill">🧼 Clean & Fresh</a>
-          <a href="/collections/earthy-woody" class="cbv-scent-pill">🌿 Earthy & Woody</a>
-          <a href="/collections/holiday-seasonal" class="cbv-scent-pill">🎄 Holiday & Seasonal</a>
-          <a href="/collections/perfume-dupes" class="cbv-scent-pill">💄 Perfume Dupes</a>
-          <a href="/collections/tropical" class="cbv-scent-pill">🍹 Tropical</a>
+          {% render 'cbv-scent-family-nav-links', class: 'cbv-scent-pill' %}
         </div>
         <a href="{{ section.settings.scents_az_link }}" class="cbv-mob-link" style="margin-top:15px;font-weight:700;color:#8b5e3c;">View All A-Z →</a>
       </div>
