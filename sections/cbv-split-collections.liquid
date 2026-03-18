@@ -1,6 +1,8 @@
 {%- style -%}
   .cbv-split-{{ section.id }} {
     --ink: #2D241E;
+    --card-bg: {{ section.settings.card_bg }};
+    --card-border: rgba(45, 36, 30, 0.08); /* Very subtle ink border */
     padding: 0 5vw 8rem;
     background-color: #FFF;
   }
@@ -8,19 +10,36 @@
   .cbv-split__container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: 3.5rem;
     max-width: 1600px;
     margin: 0 auto;
   }
 
+  /* --- The Unified Card --- */
   .cbv-split-block {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    width: 100%;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    overflow: hidden;
+  }
+
+  .cbv-split-block:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px -10px rgba(45, 36, 30, 0.12);
+  }
+
+  /* --- Image Container --- */
+  .cbv-split-block__media {
     position: relative;
     width: 100%;
-    aspect-ratio: 4 / 3.5;
+    aspect-ratio: 4 / 3.2;
     overflow: hidden;
-    text-decoration: none;
-    display: block;
-    background: #F9F6F0;
+    /* This border line separates the dark image from the card footer beautifully */
+    border-bottom: 1px solid var(--card-border); 
   }
 
   .cbv-split-block__img {
@@ -29,75 +48,90 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s ease;
+    transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
   .cbv-split-block:hover .cbv-split-block__img {
-    transform: scale(1.04);
+    transform: scale(1.05);
   }
 
-  /* Dark gradient to ensure text readability like Yankee's bottom text */
-  .cbv-split-block__overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.6) 100%);
-    z-index: 1;
-  }
-
-  .cbv-split-block__content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 4rem;
-    z-index: 2;
+  /* --- Grounded Text Row (Footer) --- */
+  .cbv-split-block__footer {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center; /* Vertically locks the button to the middle of multi-line text */
+    padding: 3.5rem 4rem; /* Generous padding completely eliminates the "floating" look */
+    width: 100%;
+    gap: 2rem;
+    flex-grow: 1; /* Ensures both cards match height */
   }
 
   .cbv-split-block__title {
     font-family: var(--font-heading-family, 'Playfair Display', serif) !important;
-    font-size: clamp(2.6rem, 2.5vw, 3.8rem);
-    color: #FFF;
+    font-size: clamp(2.4rem, 2.5vw, 3.4rem);
+    color: var(--ink);
     margin: 0;
     font-weight: 400;
+    line-height: 1.15;
+    transition: opacity 0.3s ease;
+  }
+
+  .cbv-split-block:hover .cbv-split-block__title {
+    opacity: 0.8;
   }
 
   .cbv-split-block__btn {
-    background: #FFF;
-    color: var(--ink);
-    padding: 1.2rem 2.8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.4rem 3.2rem;
     font-family: 'Outfit', sans-serif !important;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     white-space: nowrap;
-    transition: background 0.3s ease;
+    background: var(--ink);
+    color: #FFFFFF;
+    border: 1px solid var(--ink);
+    transition: all 0.3s ease;
+    flex-shrink: 0; /* Prevents the button from being squeezed by long titles */
   }
 
   .cbv-split-block:hover .cbv-split-block__btn {
-    background: #EFE8DF;
+    background: transparent;
+    color: var(--ink);
+  }
+
+  /* --- Responsive Adjustments --- */
+  @media screen and (max-width: 1100px) {
+    .cbv-split-block__footer {
+      padding: 3rem 2.5rem;
+    }
   }
 
   @media screen and (max-width: 990px) {
     .cbv-split__container {
       grid-template-columns: 1fr;
+      gap: 4rem;
     }
-    .cbv-split-block {
-      aspect-ratio: 16 / 10;
+    .cbv-split-block__media {
+      aspect-ratio: 16 / 9;
     }
   }
 
   @media screen and (max-width: 600px) {
-    .cbv-split-block__content {
+    .cbv-split-block__footer {
       flex-direction: column;
       align-items: flex-start;
       gap: 2rem;
       padding: 3rem 2rem;
     }
-    .cbv-split-block {
-      aspect-ratio: 4 / 4;
+    .cbv-split-block__media {
+      aspect-ratio: 4 / 3.5;
+    }
+    .cbv-split-block__title {
+      font-size: 2.8rem;
     }
   }
 {%- endstyle -%}
@@ -106,16 +140,22 @@
   <div class="cbv-split__container">
     {%- for block in section.blocks -%}
       <a href="{{ block.settings.link }}" class="cbv-split-block" {{ block.shopify_attributes }}>
-        {%- if block.settings.image != blank -%}
-          {{ block.settings.image | image_url: width: 1000 | image_tag: class: 'cbv-split-block__img', loading: 'lazy' }}
-        {%- endif -%}
         
-        <div class="cbv-split-block__overlay"></div>
-        
-        <div class="cbv-split-block__content">
+        <!-- Image Box -->
+        <div class="cbv-split-block__media">
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 1000 | image_tag: class: 'cbv-split-block__img', loading: 'lazy' }}
+          {%- else -%}
+            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #888;">Select Image</div>
+          {%- endif -%}
+        </div>
+
+        <!-- Grounded Text Row -->
+        <div class="cbv-split-block__footer">
           <h3 class="cbv-split-block__title">{{ block.settings.title }}</h3>
           <span class="cbv-split-block__btn">{{ block.settings.btn_label }}</span>
         </div>
+
       </a>
     {%- endfor -%}
   </div>
@@ -126,6 +166,15 @@
   "name": "CBV Split Collections",
   "tag": "section",
   "max_blocks": 2,
+  "settings":[
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background Color",
+      "default": "#F9F6F0",
+      "info": "This frames the text block at the bottom, eliminating the floating look."
+    }
+  ],
   "blocks":[
     {
       "type": "collection",
