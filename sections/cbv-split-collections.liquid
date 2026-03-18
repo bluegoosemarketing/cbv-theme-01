@@ -1,0 +1,169 @@
+{%- style -%}
+  .cbv-split-{{ section.id }} {
+    --ink: #2D241E;
+    padding: 0 5vw 8rem;
+    background-color: #FFF;
+  }
+
+  .cbv-split__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .cbv-split-block {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3.5;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    background: #F9F6F0;
+  }
+
+  .cbv-split-block__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+
+  .cbv-split-block:hover .cbv-split-block__img {
+    transform: scale(1.04);
+  }
+
+  /* Dark gradient to ensure text readability like Yankee's bottom text */
+  .cbv-split-block__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.6) 100%);
+    z-index: 1;
+  }
+
+  .cbv-split-block__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 4rem;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .cbv-split-block__title {
+    font-family: var(--font-heading-family, 'Playfair Display', serif) !important;
+    font-size: clamp(2.6rem, 2.5vw, 3.8rem);
+    color: #FFF;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .cbv-split-block__btn {
+    background: #FFF;
+    color: var(--ink);
+    padding: 1.2rem 2.8rem;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    white-space: nowrap;
+    transition: background 0.3s ease;
+  }
+
+  .cbv-split-block:hover .cbv-split-block__btn {
+    background: #EFE8DF;
+  }
+
+  @media screen and (max-width: 990px) {
+    .cbv-split__container {
+      grid-template-columns: 1fr;
+    }
+    .cbv-split-block {
+      aspect-ratio: 16 / 10;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .cbv-split-block__content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2rem;
+      padding: 3rem 2rem;
+    }
+    .cbv-split-block {
+      aspect-ratio: 4 / 4;
+    }
+  }
+{%- endstyle -%}
+
+<section class="cbv-split-{{ section.id }}">
+  <div class="cbv-split__container">
+    {%- for block in section.blocks -%}
+      <a href="{{ block.settings.link }}" class="cbv-split-block" {{ block.shopify_attributes }}>
+        {%- if block.settings.image != blank -%}
+          {{ block.settings.image | image_url: width: 1000 | image_tag: class: 'cbv-split-block__img', loading: 'lazy' }}
+        {%- endif -%}
+        
+        <div class="cbv-split-block__overlay"></div>
+        
+        <div class="cbv-split-block__content">
+          <h3 class="cbv-split-block__title">{{ block.settings.title }}</h3>
+          <span class="cbv-split-block__btn">{{ block.settings.btn_label }}</span>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CBV Split Collections",
+  "tag": "section",
+  "max_blocks": 2,
+  "blocks":[
+    {
+      "type": "collection",
+      "name": "Collection Block",
+      "settings":[
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "New Collection"
+        },
+        {
+          "type": "text",
+          "id": "btn_label",
+          "label": "Button Label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets":[
+    {
+      "name": "CBV Split Collections",
+      "blocks":[
+        { "type": "collection" },
+        { "type": "collection" }
+      ]
+    }
+  ]
+}
+{% endschema %}

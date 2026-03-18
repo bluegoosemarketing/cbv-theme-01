@@ -1,0 +1,179 @@
+{%- style -%}
+  .cbv-hero-full-{{ section.id }} {
+    --ink: #2D241E;
+    --bg-overlay: rgba(255, 248, 240, 0.85); /* Warm cream overlay */
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .cbv-hero-full__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transform: scale(1.02);
+    transition: transform 10s ease-out;
+  }
+
+  .cbv-hero-full-{{ section.id }}:hover .cbv-hero-full__bg {
+    transform: scale(1.05);
+  }
+
+  /* Gradient scrim for better text readability on mobile */
+  .cbv-hero-full__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
+    z-index: 2;
+  }
+
+  .cbv-hero-full__content {
+    position: relative;
+    z-index: 3;
+    background: var(--bg-overlay);
+    padding: 5rem 6rem;
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(45, 36, 30, 0.1);
+  }
+
+  .cbv-hero-full__eyebrow {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .cbv-hero-full__headline {
+    /* Matches your Candle Club elegant serif */
+    font-family: var(--font-heading-family, 'Playfair Display', serif) !important;
+    font-size: clamp(3.2rem, 4vw, 5.2rem);
+    line-height: 1.1;
+    color: var(--ink);
+    margin: 0 0 1.5rem 0;
+    font-weight: 400;
+  }
+
+  .cbv-hero-full__text {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 1.6rem;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 3.5rem;
+    opacity: 0.9;
+  }
+
+  .cbv-hero-full__btn {
+    display: inline-block;
+    background-color: var(--ink);
+    color: #fff;
+    padding: 1.4rem 4rem;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .cbv-hero-full__btn:hover {
+    background-color: #000;
+  }
+
+  @media screen and (max-width: 768px) {
+    .cbv-hero-full__content {
+      padding: 4rem 2.5rem;
+    }
+    .cbv-hero-full-{{ section.id }} {
+      height: 70vh;
+    }
+  }
+{%- endstyle -%}
+
+<section class="cbv-hero-full-{{ section.id }}">
+  {%- if section.settings.image != blank -%}
+    {{ section.settings.image | image_url: width: 2000 | image_tag: class: 'cbv-hero-full__bg', loading: 'eager' }}
+  {%- else -%}
+    <div style="position: absolute; inset: 0; background: #EFE8DF; z-index: 1;"></div>
+  {%- endif -%}
+  
+  <div class="cbv-hero-full__scrim"></div>
+
+  <div class="cbv-hero-full__content">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="cbv-hero-full__eyebrow">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+    
+    <h2 class="cbv-hero-full__headline">{{ section.settings.headline }}</h2>
+    
+    {%- if section.settings.text != blank -%}
+      <div class="cbv-hero-full__text">{{ section.settings.text }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.btn_label != blank -%}
+      <a href="{{ section.settings.btn_link }}" class="cbv-hero-full__btn">{{ section.settings.btn_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CBV Full Hero",
+  "tag": "section",
+  "settings":[
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Spring Collection"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Your signature scents, reimagined."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Body Text",
+      "default": "Discover new artisan scents and enjoy premium handcrafted candles delivered exactly on your schedule."
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets":[
+    {
+      "name": "CBV Full Hero"
+    }
+  ]
+}
+{% endschema %}
