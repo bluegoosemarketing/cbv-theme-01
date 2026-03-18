@@ -156,8 +156,19 @@
                             {%- endif -%}
 
                             {%- for property in item.properties -%}
-                              {%- assign property_first_char = property.first | slice: 0 -%}
-                              {%- if property.last != blank and property_first_char != '_' -%}
+                              {%- liquid
+                                assign property_first_char = property.first | slice: 0
+                                assign hide_property = false
+                                if property.first == 'wick_upgrade'
+                                  for option in item.options_with_values
+                                    if option.name == 'Wick Upgrade'
+                                      assign hide_property = true
+                                      break
+                                    endif
+                                  endfor
+                                endif
+                              -%}
+                              {%- if property.last != blank and property_first_char != '_' and hide_property == false -%}
                                 {%- liquid
                                   assign property_label = property.first
                                   if property.first == 'wax_color'
@@ -166,6 +177,8 @@
                                     assign property_label = 'Scent'
                                   elsif property.first == 'scent_family'
                                     assign property_label = 'Family'
+                                  elsif property.first == 'wick_upgrade'
+                                    assign property_label = 'Wick Upgrade'
                                   endif
                                 -%}
                                 <div class="product-option cart-item-meta-row">
