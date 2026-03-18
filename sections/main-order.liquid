@@ -80,10 +80,33 @@
                       {%- endunless -%}
                       {%- if property_size != 0 -%}
                         {%- for property in line_item.properties -%}
-                          {% assign property_first_char = property.first | slice: 0 %}
-                          {%- if property.last != blank and property_first_char != '_' -%}
+                          {%- liquid
+                            assign property_first_char = property.first | slice: 0
+                            assign hide_property = false
+                            if property.first == 'wick_upgrade'
+                              for option in line_item.options_with_values
+                                if option.name == 'Wick Upgrade'
+                                  assign hide_property = true
+                                  break
+                                endif
+                              endfor
+                            endif
+                          -%}
+                          {%- if property.last != blank and property_first_char != '_' and hide_property == false -%}
+                            {%- liquid
+                              assign property_label = property.first
+                              if property.first == 'wax_color'
+                                assign property_label = 'Wax color'
+                              elsif property.first == 'scent_1'
+                                assign property_label = 'Scent'
+                              elsif property.first == 'scent_family'
+                                assign property_label = 'Family'
+                              elsif property.first == 'wick_upgrade'
+                                assign property_label = 'Wick Upgrade'
+                              endif
+                            -%}
                             <span>
-                              {{ property.first }}:&nbsp;
+                              {{ property_label }}:&nbsp;
                               {%- if property.last contains '/uploads/' -%}
                                 <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
                               {%- else -%}
