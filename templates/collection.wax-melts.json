@@ -1,0 +1,67 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "shape_selector": {
+      "type": "cbv-collection-format-grid",
+      "settings": {
+        "eyebrow": "Step 1 · Choose your melt shape",
+        "intro": "<p>Start by selecting the wax melt shape or format you want to build. Once inside, you'll choose your fragrance and any final options.</p>",
+        "card_source": "collection_products",
+        "default_cta_label": "Build this melt",
+        "collection_products_limit": 6,
+        "description_word_limit": 18,
+        "color_scheme": "option-1",
+        "padding_top": 52,
+        "padding_bottom": 32,
+        "show_best_sellers": false,
+        "best_sellers_heading": "Popular in wax melts",
+        "best_sellers_limit": 4,
+        "best_sellers_cta_label": "Shop now"
+      }
+    },
+    "product_grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 24,
+        "columns_desktop": 4,
+        "pagination": "pagination",
+        "load_button": "Load more",
+        "product_card_style": "collection-three",
+        "image_ratio": "square",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "enable_quick_add": true,
+        "enable_quick_buy": false,
+        "list_color_variants_in_collection": false,
+        "list_size_variants_in_collection": false,
+        "hide_unavailable": false,
+        "quick_add_position": "overlay",
+        "enable_filtering": true,
+        "enable_switcher": true,
+        "filter_type": "horizontal",
+        "open_filter": "all",
+        "enable_sorting": true,
+        "product_count": false,
+        "color_scheme": "option-3",
+        "color_scheme_1": "option-4",
+        "columns_mobile": "2",
+        "disable_quick_add": true,
+        "padding_top": 12,
+        "padding_bottom": 72,
+        "ignore_spacing": true
+      }
+    }
+  },
+  "order": [
+    "shape_selector",
+    "product_grid"
+  ]
+}

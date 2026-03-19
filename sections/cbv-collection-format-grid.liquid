@@ -36,49 +36,91 @@
     </header>
 
     <div class="cbv-format-grid__cards" role="list">
-      {%- for block in section.blocks -%}
-        {%- liquid
-          assign card_title = block.settings.title | default: block.settings.format_size
-          assign card_link = block.settings.link
-          assign card_cta = block.settings.cta_label | default: section.settings.default_cta_label
-          assign card_tag = 'div'
-          if card_link != blank
-            assign card_tag = 'a'
-          endif
-        -%}
+      {%- if section.settings.card_source == 'collection_products' -%}
+        {%- for product in collection.products limit: section.settings.collection_products_limit -%}
+          {%- liquid
+            assign card_title = product.title
+            assign card_link = product.url
+            assign card_cta = section.settings.default_cta_label
+            assign card_description = product.description | strip_html | truncatewords: section.settings.description_word_limit
+          -%}
 
-        <{{ card_tag }}
-          {% if card_link != blank %}href="{{ card_link }}"{% endif %}
-          class="cbv-format-card"
-          {{ block.shopify_attributes }}
-          role="listitem"
-        >
-          <div class="cbv-format-card__media">
-            {%- if block.settings.image != blank -%}
-              {{
-                block.settings.image
-                | image_url: width: 900
-                | image_tag:
-                  loading: 'lazy',
-                  widths: '280, 420, 560, 720, 900',
-                  sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
-                  class: 'cbv-format-card__image',
-                  alt: card_title
-              }}
-            {%- else -%}
-              {{ 'lifestyle-1' | placeholder_svg_tag: 'cbv-format-card__placeholder' }}
-            {%- endif -%}
-          </div>
+          <a
+            href="{{ card_link }}"
+            class="cbv-format-card"
+            role="listitem"
+          >
+            <div class="cbv-format-card__media">
+              {%- if product.featured_media -%}
+                {{
+                  product.featured_media
+                  | image_url: width: 900
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '280, 420, 560, 720, 900',
+                    sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                    class: 'cbv-format-card__image',
+                    alt: card_title
+                }}
+              {%- else -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'cbv-format-card__placeholder' }}
+              {%- endif -%}
+            </div>
 
-          <div class="cbv-format-card__content">
-            <h2 class="cbv-format-card__title">{{ card_title | escape }}</h2>
-            {%- if block.settings.description != blank -%}
-              <p class="cbv-format-card__description">{{ block.settings.description }}</p>
-            {%- endif -%}
-            <span class="cbv-format-card__cta">{{ card_cta | escape }}</span>
-          </div>
-        </{{ card_tag }}>
-      {%- endfor -%}
+            <div class="cbv-format-card__content">
+              <h2 class="cbv-format-card__title">{{ card_title | escape }}</h2>
+              {%- if card_description != blank -%}
+                <p class="cbv-format-card__description">{{ card_description }}</p>
+              {%- endif -%}
+              <span class="cbv-format-card__cta">{{ card_cta | escape }}</span>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign card_title = block.settings.title | default: block.settings.format_size
+            assign card_link = block.settings.link
+            assign card_cta = block.settings.cta_label | default: section.settings.default_cta_label
+            assign card_tag = 'div'
+            if card_link != blank
+              assign card_tag = 'a'
+            endif
+          -%}
+
+          <{{ card_tag }}
+            {% if card_link != blank %}href="{{ card_link }}"{% endif %}
+            class="cbv-format-card"
+            {{ block.shopify_attributes }}
+            role="listitem"
+          >
+            <div class="cbv-format-card__media">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 900
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '280, 420, 560, 720, 900',
+                    sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                    class: 'cbv-format-card__image',
+                    alt: card_title
+                }}
+              {%- else -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'cbv-format-card__placeholder' }}
+              {%- endif -%}
+            </div>
+
+            <div class="cbv-format-card__content">
+              <h2 class="cbv-format-card__title">{{ card_title | escape }}</h2>
+              {%- if block.settings.description != blank -%}
+                <p class="cbv-format-card__description">{{ block.settings.description }}</p>
+              {%- endif -%}
+              <span class="cbv-format-card__cta">{{ card_cta | escape }}</span>
+            </div>
+          </{{ card_tag }}>
+        {%- endfor -%}
+      {%- endif -%}
     </div>
 
     {%- if section.settings.show_best_sellers and featured_collection != blank and featured_collection.products_count > 0 -%}
@@ -137,10 +179,44 @@
       "default": "<p>Choose your vessel, then enter our candle builder to pour your scent memory.</p>"
     },
     {
+      "type": "select",
+      "id": "card_source",
+      "label": "Card source",
+      "default": "blocks",
+      "options": [
+        {
+          "value": "blocks",
+          "label": "Section blocks"
+        },
+        {
+          "value": "collection_products",
+          "label": "Collection products"
+        }
+      ]
+    },
+    {
       "type": "text",
       "id": "default_cta_label",
       "label": "Default card CTA label",
       "default": "Build Yours"
+    },
+    {
+      "type": "range",
+      "id": "collection_products_limit",
+      "label": "Collection products to feature",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "description_word_limit",
+      "label": "Collection product description length",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "default": 18
     },
     {
       "type": "color_scheme",
