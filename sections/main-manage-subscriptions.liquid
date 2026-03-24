@@ -1,9 +1,7 @@
 {%- comment -%}
-  Deprecated path: legacy customer account template implementation for subscriptions.
-  Active Phase 1 path now uses templates/page.manage-subscriptions.json + sections/main-manage-subscriptions.liquid.
+  CBV Phase 1 subscription dashboard rendered on a standard storefront page.
+  Phase 2 TODO: Replace mocked records and button hrefs with real Recharge/customer data/actions.
 {%- endcomment -%}
-
-{{ 'customer.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -202,7 +200,7 @@
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
-  <section class="customer cbv-subscriptions section-{{ section.id }}-padding" aria-labelledby="cbv-subscriptions-title">
+  <section class="cbv-subscriptions section-{{ section.id }}-padding" aria-labelledby="cbv-subscriptions-title">
     <header class="cbv-subscriptions__header">
       <p class="cbv-subscriptions__eyebrow">Candle Club</p>
       <h1 id="cbv-subscriptions-title" class="cbv-subscriptions__title heading-bold">My Subscriptions</h1>
@@ -278,7 +276,7 @@
 
 {% schema %}
 {
-  "name": "CBV account subscriptions",
+  "name": "CBV manage subscriptions",
   "settings": [
     {
       "type": "header",

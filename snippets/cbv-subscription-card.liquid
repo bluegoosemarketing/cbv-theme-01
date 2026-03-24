@@ -1,6 +1,7 @@
 {%- liquid
   assign builder_type_normalized = builder_type | downcase
   assign status_normalized = status | downcase
+  assign customer_email_display = customer.email | default: 'Signed-in customer email (Phase 2)'
 
   assign status_class = 'cbv-subscriptions-card__status--active'
   if status_normalized == 'paused'
@@ -45,7 +46,7 @@
     </div>
     <div class="cbv-subscriptions-card__meta-item">
       <p class="cbv-subscriptions-card__meta-label">Customer</p>
-      <p class="cbv-subscriptions-card__meta-value">{{ customer.email }}</p>
+      <p class="cbv-subscriptions-card__meta-value">{{ customer_email_display }}</p>
     </div>
   </div>
 
