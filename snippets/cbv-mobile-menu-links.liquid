@@ -113,9 +113,8 @@
         </li>
       {%- endfor -%}
     {%- when 'SUBSCRIBE' -%}
-      {%- assign subscribe_links = 'Program Overview|Subscription Bundles|Manage Subscription' | split: '|' -%}
-      {%- for subscribe_link in subscribe_links -%}
-        <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">{{ subscribe_link }}</a></li>
-      {%- endfor -%}
+      <li><a href="/pages/candle-club" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Program Overview</a></li>
+      <li><a href="#" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Subscription Bundles</a></li>
+      <li><a href="/account?view=subscriptions" class="menu-drawer__menu-item link link--text list-menu__item focus-inset">Manage Subscription</a></li>
   {%- endcase -%}
 </ul>

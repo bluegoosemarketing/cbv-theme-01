@@ -1,0 +1,320 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  .cbv-subscriptions {
+    max-width: 108rem;
+    margin: 0 auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .cbv-subscriptions__header {
+    margin-bottom: 2.4rem;
+  }
+
+  .cbv-subscriptions__eyebrow {
+    margin: 0;
+    font-size: 1.2rem;
+    letter-spacing: 0.16rem;
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground), 0.62);
+  }
+
+  .cbv-subscriptions__title {
+    margin: 0.8rem 0 0;
+    font-size: clamp(2.8rem, 4vw, 4rem);
+    line-height: 1.05;
+  }
+
+  .cbv-subscriptions__subtitle {
+    margin: 1.2rem 0 0;
+    max-width: 64rem;
+    color: rgba(var(--color-foreground), 0.72);
+  }
+
+  .cbv-subscriptions__list {
+    display: grid;
+    gap: 1.6rem;
+  }
+
+  .cbv-subscriptions-card {
+    border: 0.1rem solid rgba(var(--color-foreground), 0.1);
+    border-radius: 1.6rem;
+    background: rgba(var(--color-background), 0.98);
+    box-shadow: 0 0.8rem 2.6rem rgba(0, 0, 0, 0.04);
+    padding: 2rem;
+    display: grid;
+    gap: 1.6rem;
+  }
+
+  .cbv-subscriptions-card__top {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .cbv-subscriptions-card__name {
+    margin: 0;
+    font-size: 2.1rem;
+    line-height: 1.2;
+  }
+
+  .cbv-subscriptions-card__type {
+    margin-top: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.45rem 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.08rem;
+    text-transform: uppercase;
+    background: rgba(var(--color-foreground), 0.07);
+  }
+
+  .cbv-subscriptions-card__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 999px;
+    padding: 0.45rem 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .cbv-subscriptions-card__status-dot {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .cbv-subscriptions-card__status--active {
+    color: #1b7f3b;
+    background: rgba(27, 127, 59, 0.14);
+  }
+
+  .cbv-subscriptions-card__status--paused {
+    color: #8f5c00;
+    background: rgba(143, 92, 0, 0.16);
+  }
+
+  .cbv-subscriptions-card__meta {
+    display: grid;
+    gap: 1.2rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cbv-subscriptions-card__meta-item {
+    border-radius: 1rem;
+    background: rgba(var(--color-foreground), 0.04);
+    padding: 1rem 1.2rem;
+  }
+
+  .cbv-subscriptions-card__meta-label {
+    margin: 0;
+    font-size: 1.1rem;
+    letter-spacing: 0.08rem;
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground), 0.62);
+  }
+
+  .cbv-subscriptions-card__meta-value {
+    margin: 0.35rem 0 0;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .cbv-subscriptions-card__config {
+    margin: 0;
+    padding: 1.1rem 1.3rem;
+    border-left: 0.3rem solid rgba(var(--color-foreground), 0.25);
+    border-radius: 0.8rem;
+    background: rgba(var(--color-foreground), 0.03);
+    color: rgba(var(--color-foreground), 0.84);
+  }
+
+  .cbv-subscriptions-card__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  .cbv-subscriptions-card__actions .button {
+    width: 100%;
+    min-height: 4rem;
+  }
+
+  .cbv-subscriptions__empty {
+    padding: 2.8rem 2rem;
+    text-align: center;
+    border: 0.1rem dashed rgba(var(--color-foreground), 0.2);
+    border-radius: 1.6rem;
+    background: rgba(var(--color-foreground), 0.03);
+  }
+
+  .cbv-subscriptions__empty h2 {
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+  }
+
+  .cbv-subscriptions__empty p {
+    margin: 0 auto 1.8rem;
+    max-width: 48rem;
+    color: rgba(var(--color-foreground), 0.72);
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    .cbv-subscriptions__header {
+      margin-bottom: 3.2rem;
+    }
+
+    .cbv-subscriptions-card {
+      padding: 2.4rem;
+      gap: 2rem;
+    }
+
+    .cbv-subscriptions-card__meta {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .cbv-subscriptions-card__actions {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <section class="customer cbv-subscriptions section-{{ section.id }}-padding" aria-labelledby="cbv-subscriptions-title">
+    <header class="cbv-subscriptions__header">
+      <p class="cbv-subscriptions__eyebrow">Candle Club</p>
+      <h1 id="cbv-subscriptions-title" class="cbv-subscriptions__title heading-bold">My Subscriptions</h1>
+      <p class="cbv-subscriptions__subtitle">
+        Manage your recurring candle and wax melt deliveries in one place. Update billing, skip, pause, or prep your next scent drop.
+      </p>
+    </header>
+
+    {%- liquid
+      assign has_mock_subscriptions = true
+      if section.settings.show_empty_state
+        assign has_mock_subscriptions = false
+      endif
+    -%}
+
+    {%- if has_mock_subscriptions -%}
+      {%- comment -%}
+        Phase 1 mocked data only.
+        Phase 2 TODO: Replace these assignments with Recharge/customer subscription records.
+      {%- endcomment -%}
+      {%- liquid
+        assign candle_subscription_name = 'Custom Candle Club'
+        assign candle_subscription_builder_type = 'Candle'
+        assign candle_subscription_status = 'Active'
+        assign candle_subscription_next_charge = 'April 18, 2026'
+        assign candle_subscription_frequency = 'Every 30 days'
+        assign candle_subscription_scent_primary = 'Vanilla Bean'
+        assign candle_subscription_scent_secondary = 'Laundry Day'
+        assign candle_subscription_wax_color = 'White Wax'
+        assign candle_subscription_vessel = '18oz Jar'
+      -%}
+
+      {%- liquid
+        assign wax_subscription_name = 'Wax Melt Club'
+        assign wax_subscription_builder_type = 'Wax Melt'
+        assign wax_subscription_status = 'Paused'
+        assign wax_subscription_next_charge = 'May 2, 2026'
+        assign wax_subscription_frequency = 'Every 45 days'
+        assign wax_subscription_scent_primary = 'Lavender'
+        assign wax_subscription_scent_secondary = 'Clean Cotton'
+        assign wax_subscription_pack = '6-pack'
+      -%}
+
+      <div class="cbv-subscriptions__list">
+        {% render 'cbv-subscription-card',
+          subscription_name: candle_subscription_name,
+          builder_type: candle_subscription_builder_type,
+          status: candle_subscription_status,
+          next_charge_date: candle_subscription_next_charge,
+          frequency: candle_subscription_frequency,
+          candle_scent_primary: candle_subscription_scent_primary,
+          candle_scent_secondary: candle_subscription_scent_secondary,
+          candle_wax_color: candle_subscription_wax_color,
+          candle_vessel: candle_subscription_vessel
+        %}
+
+        {% render 'cbv-subscription-card',
+          subscription_name: wax_subscription_name,
+          builder_type: wax_subscription_builder_type,
+          status: wax_subscription_status,
+          next_charge_date: wax_subscription_next_charge,
+          frequency: wax_subscription_frequency,
+          wax_scent_primary: wax_subscription_scent_primary,
+          wax_scent_secondary: wax_subscription_scent_secondary,
+          wax_pack: wax_subscription_pack
+        %}
+      </div>
+    {%- else -%}
+      {% render 'cbv-subscriptions-empty-state' %}
+    {%- endif -%}
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "CBV account subscriptions",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "option-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_empty_state",
+      "label": "Show empty state",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ]
+}
+{% endschema %}
