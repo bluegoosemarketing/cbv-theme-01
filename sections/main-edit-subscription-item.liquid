@@ -1,0 +1,498 @@
+{{ 'section-cbv-builder-product.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  .cbv-subscription-edit {
+    max-width: 108rem;
+    margin: 0 auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .cbv-subscription-edit__header {
+    display: grid;
+    gap: 0.8rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .cbv-subscription-edit__back {
+    width: fit-content;
+    text-decoration: none;
+    color: rgba(var(--color-foreground), 0.84);
+  }
+
+  .cbv-subscription-edit__title {
+    margin: 0;
+    font-size: clamp(2.6rem, 4vw, 3.8rem);
+  }
+
+  .cbv-subscription-edit__summary {
+    margin-bottom: 1.6rem;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.1);
+    border-radius: 1.6rem;
+    background: rgba(var(--color-background), 0.98);
+    padding: 1.6rem;
+  }
+
+  .cbv-subscription-edit__summary-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cbv-subscription-edit__meta {
+    border-radius: 1rem;
+    background: rgba(var(--color-foreground), 0.04);
+    padding: 1rem;
+  }
+
+  .cbv-subscription-edit__meta-label {
+    margin: 0;
+    font-size: 1.1rem;
+    letter-spacing: 0.08rem;
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground), 0.62);
+  }
+
+  .cbv-subscription-edit__meta-value {
+    margin: 0.3rem 0 0;
+    font-weight: 600;
+  }
+
+  .cbv-subscription-edit__config {
+    margin: 1rem 0 0;
+    padding: 1rem;
+    border-left: 0.3rem solid rgba(var(--color-foreground), 0.25);
+    background: rgba(var(--color-foreground), 0.03);
+    border-radius: 0.8rem;
+  }
+
+  .cbv-subscription-edit__actions {
+    margin-top: 1.4rem;
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cbv-subscription-edit [hidden] {
+    display: none !important;
+  }
+
+  .cbv-subscription-edit .cbv-builder__group + .cbv-builder__group {
+    margin-top: 1rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    .cbv-subscription-edit__summary-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .cbv-subscription-edit__actions {
+      grid-template-columns: repeat(2, minmax(0, 14rem));
+      justify-content: end;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <section class="cbv-subscription-edit section-{{ section.id }}-padding" data-cbv-subscription-edit>
+    <header class="cbv-subscription-edit__header">
+      <a class="cbv-subscription-edit__back" href="/pages/manage-subscriptions">← Back to subscriptions</a>
+      <h1 class="cbv-subscription-edit__title heading-bold">Edit Next Item</h1>
+    </header>
+
+    <article class="cbv-subscription-edit__summary" aria-live="polite">
+      <div class="cbv-subscription-edit__summary-grid">
+        <div class="cbv-subscription-edit__meta">
+          <p class="cbv-subscription-edit__meta-label">Subscription</p>
+          <p class="cbv-subscription-edit__meta-value" data-cbv-summary-name></p>
+        </div>
+        <div class="cbv-subscription-edit__meta">
+          <p class="cbv-subscription-edit__meta-label">Builder type</p>
+          <p class="cbv-subscription-edit__meta-value" data-cbv-summary-type></p>
+        </div>
+        <div class="cbv-subscription-edit__meta">
+          <p class="cbv-subscription-edit__meta-label">Next charge</p>
+          <p class="cbv-subscription-edit__meta-value" data-cbv-summary-charge></p>
+        </div>
+        <div class="cbv-subscription-edit__meta">
+          <p class="cbv-subscription-edit__meta-label">Frequency</p>
+          <p class="cbv-subscription-edit__meta-value" data-cbv-summary-frequency></p>
+        </div>
+      </div>
+      <p class="cbv-subscription-edit__config" data-cbv-summary-config></p>
+    </article>
+
+    <form class="cbv-builder__form" data-cbv-subscription-edit-form>
+      <div class="cbv-builder__group" data-cbv-group="vessel">
+        <div class="cbv-builder__group-header">
+          <label class="cbv-builder__label"><span class="cbv-step-title" data-cbv-vessel-label>Vessel / Jar</span></label>
+        </div>
+        <div class="cbv-step-content">
+          <div class="cbv-choice-grid" data-cbv-vessel-options></div>
+        </div>
+      </div>
+
+      <div class="cbv-builder__group" data-cbv-group="wax-color" hidden>
+        <div class="cbv-builder__group-header">
+          <label class="cbv-builder__label"><span class="cbv-step-title">Choose Wax Color</span></label>
+        </div>
+        <div class="cbv-step-content">
+          <div class="cbv-builder__wax-options" data-cbv-wax-options>
+            {%- for wax in shop.metaobjects.wax_color.values -%}
+              {%- liquid
+                assign wax_name = wax.name.value | default: wax.name
+                assign wax_active = wax.is_active.value | default: wax.is_active
+                assign wax_hex = wax.color.value | default: wax.hex_code.value | default: wax.color_hex.value | default: wax.hex.value | default: '#f5f5f5'
+              -%}
+              {%- if wax_name != blank and wax_active != false -%}
+                <label class="cbv-builder__wax-item" title="{{ wax_name | escape }}">
+                  <input type="radio" name="cbv_wax_color" value="{{ wax_name | escape }}" class="cbv-builder__wax-input" data-cbv-field="wax_color" data-cbv-wax-input data-hex="{{ wax_hex }}">
+                  <span class="cbv-builder__wax-swatch" style="--cbv-wax-color: {{ wax_hex }};"></span>
+                  <span class="cbv-builder__wax-name visually-hidden">{{ wax_name }}</span>
+                </label>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+
+      <div class="cbv-builder__group cbv-scent" data-cbv-group="scent">
+        <div class="cbv-builder__group-header">
+          <label class="cbv-builder__label" for="CBVSubEditScent-{{ section.id }}"><span class="cbv-step-title">Choose Scent</span></label>
+        </div>
+        <div class="cbv-step-content">
+          <div class="cbv-search-wrapper">
+            <input id="CBVSubEditScent-{{ section.id }}" type="text" class="cbv-builder__input" data-cbv-scent-input placeholder="Search scent name..." autocomplete="off">
+          </div>
+          <div class="cbv-scent__results-window">
+            <div class="cbv-scent__results" data-cbv-scent-results></div>
+            <p class="cbv-scent__empty" data-cbv-scent-empty hidden>No scents found matching your search.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cbv-builder__group" data-cbv-group="secondary" hidden>
+        <div class="cbv-builder__group-header">
+          <label class="cbv-builder__label"><span class="cbv-step-title" data-cbv-secondary-label>Secondary Option</span></label>
+        </div>
+        <div class="cbv-step-content">
+          <div class="cbv-choice-grid" data-cbv-secondary-options></div>
+        </div>
+      </div>
+
+      <input type="hidden" name="properties[scent_1]" data-cbv-prop="scent_1" value="">
+      <input type="hidden" name="properties[scent_family]" data-cbv-prop="scent_family" value="">
+      <input type="hidden" name="properties[wax_color]" data-cbv-prop="wax_color" value="">
+      <input type="hidden" name="properties[vessel]" data-cbv-prop="vessel" value="">
+      <input type="hidden" name="properties[vessel_format]" data-cbv-prop="vessel_format" value="">
+      <input type="hidden" name="properties[wick_upgrade]" data-cbv-prop="wick_upgrade" value="">
+      <input type="hidden" data-cbv-dynamic-secondary-prop value="">
+
+      <div class="cbv-subscription-edit__actions">
+        <a class="button button--secondary" href="/pages/manage-subscriptions">Cancel</a>
+        <button class="button button--primary" type="submit">Save Changes</button>
+      </div>
+    </form>
+
+    <script type="application/json" data-cbv-subscription-mocks>
+      {
+        "candle": {
+          "mock-candle-1": {
+            "subscription_name": "Custom Candle Club",
+            "builder_family": "candle",
+            "builder_type": "Candle",
+            "next_charge_date": "April 18, 2026",
+            "frequency": "Every 30 days",
+            "product": {
+              "handle": "custom-candle-club",
+              "id": "mock-product-candle-1"
+            },
+            "product_context": {
+              "vessel_label": "Vessel / Jar",
+              "vessel_values": ["9oz Jar", "18oz Jar", "22oz Jar"],
+              "secondary_label": "Wick Upgrade",
+              "secondary_values": ["Standard", "Wood Wick"],
+              "secondary_prop_key": "wick_upgrade"
+            },
+            "properties": {
+              "scent_1": "Vanilla Bean",
+              "scent_family": "Bakery",
+              "wax_color": "White Wax",
+              "vessel": "18oz Jar",
+              "wick_upgrade": "Standard"
+            }
+          }
+        },
+        "wax-melt": {
+          "mock-wax-1": {
+            "subscription_name": "Wax Melt Club",
+            "builder_family": "wax-melt",
+            "builder_type": "Wax Melt",
+            "next_charge_date": "May 2, 2026",
+            "frequency": "Every 45 days",
+            "product": {
+              "handle": "wax-melt-club",
+              "id": "mock-product-wax-1"
+            },
+            "product_context": {
+              "vessel_label": "Vessel / Format",
+              "vessel_values": ["Clamshell", "Breakaway Bar", "Cube Pack"],
+              "secondary_label": "Pack Size",
+              "secondary_values": ["6-pack", "12-pack"],
+              "secondary_prop_key": "pack_size"
+            },
+            "properties": {
+              "scent_1": "Lavender",
+              "scent_family": "Floral",
+              "vessel_format": "Clamshell",
+              "pack_size": "6-pack"
+            }
+          }
+        }
+      }
+    </script>
+
+    {%- paginate shop.metaobjects.fragrance.values by 250 -%}
+      <script type="application/json" data-cbv-fragrance-data>
+        [
+          {%- assign first_entry = true -%}
+          {%- for fragrance in shop.metaobjects.fragrance.values -%}
+            {%- liquid
+              assign scent_name = fragrance.name.value | default: fragrance.name
+              assign scent_family = fragrance.scent_family.value | default: fragrance.scent_family
+              assign scent_active = fragrance.is_active.value | default: fragrance.is_active
+            -%}
+            {%- if scent_name != blank and scent_active != false -%}
+              {%- unless first_entry -%},{%- endunless -%}
+              { "name": {{ scent_name | json }}, "family": {{ scent_family | default: 'Uncategorized' | json }} }
+              {%- assign first_entry = false -%}
+            {%- endif -%}
+          {%- endfor -%}
+        ]
+      </script>
+    {%- endpaginate -%}
+  </section>
+</div>
+
+<script>
+  (() => {
+    const root = document.querySelector('[data-cbv-subscription-edit]');
+    if (!root) return;
+
+    const mocks = JSON.parse(root.querySelector('[data-cbv-subscription-mocks]')?.textContent || '{}');
+    const fragrances = JSON.parse(root.querySelector('[data-cbv-fragrance-data]')?.textContent || '[]');
+
+    const params = new URLSearchParams(window.location.search);
+    const rawType = (params.get('type') || 'candle').toLowerCase().trim();
+    const requestedType = rawType === 'wax melt' ? 'wax-melt' : rawType;
+    const requestedId = (params.get('id') || '').trim();
+
+    const records = mocks[requestedType] || mocks.candle || {};
+    const item = records[requestedId] || records[Object.keys(records)[0]];
+    if (!item) return;
+
+    const itemType = item.builder_family || requestedType;
+    const isWax = itemType === 'wax-melt';
+    const context = item.product_context || {};
+
+    const vesselLabel = root.querySelector('[data-cbv-vessel-label]');
+    const secondaryLabel = root.querySelector('[data-cbv-secondary-label]');
+    const vesselOptions = root.querySelector('[data-cbv-vessel-options]');
+    const secondaryGroup = root.querySelector('[data-cbv-group="secondary"]');
+    const secondaryOptions = root.querySelector('[data-cbv-secondary-options]');
+    const waxGroup = root.querySelector('[data-cbv-group="wax-color"]');
+
+    const summaryName = root.querySelector('[data-cbv-summary-name]');
+    const summaryType = root.querySelector('[data-cbv-summary-type]');
+    const summaryCharge = root.querySelector('[data-cbv-summary-charge]');
+    const summaryFrequency = root.querySelector('[data-cbv-summary-frequency]');
+    const summaryConfig = root.querySelector('[data-cbv-summary-config]');
+
+    const scentInput = root.querySelector('[data-cbv-scent-input]');
+    const scentResults = root.querySelector('[data-cbv-scent-results]');
+    const scentEmpty = root.querySelector('[data-cbv-scent-empty]');
+    const dynamicSecondaryProp = root.querySelector('[data-cbv-dynamic-secondary-prop]');
+
+    const state = { ...item.properties };
+
+    function withFallback(values, fallbackValue) {
+      const base = Array.isArray(values) ? values.filter(Boolean) : [];
+      return base.length ? base : (fallbackValue ? [fallbackValue] : []);
+    }
+
+    function renderChoiceCards(target, fieldKey, values, inputName) {
+      target.innerHTML = '';
+      values.forEach((value) => {
+        const label = document.createElement('label');
+        label.className = 'cbv-choice-card';
+        label.innerHTML = `<input class="visually-hidden" type="radio" name="${inputName}" value="${value}" data-cbv-field="${fieldKey}"><span class="cbv-choice-title">${value}</span>`;
+        target.appendChild(label);
+      });
+    }
+
+    function syncChoiceCards() {
+      root.querySelectorAll('.cbv-choice-card').forEach((card) => {
+        const input = card.querySelector('input');
+        card.classList.toggle('is-selected', Boolean(input?.checked));
+      });
+    }
+
+    function syncFields() {
+      root.querySelectorAll('[data-cbv-field]').forEach((field) => {
+        const key = field.dataset.cbvField;
+        if (!key || state[key] == null) return;
+        if (field.type === 'radio') field.checked = field.value === state[key];
+      });
+      scentInput.value = state.scent_1 || '';
+      syncChoiceCards();
+    }
+
+    function syncHiddenProps() {
+      root.querySelectorAll('[data-cbv-prop]').forEach((input) => {
+        const key = input.dataset.cbvProp;
+        input.value = state[key] || '';
+      });
+
+      const secondaryKey = context.secondary_prop_key;
+      if (secondaryKey) {
+        dynamicSecondaryProp.name = `properties[${secondaryKey}]`;
+        dynamicSecondaryProp.value = state[secondaryKey] || '';
+      }
+    }
+
+    function updateSummary() {
+      summaryName.textContent = item.subscription_name;
+      summaryType.textContent = item.builder_type;
+      summaryCharge.textContent = item.next_charge_date;
+      summaryFrequency.textContent = item.frequency;
+
+      if (isWax) {
+        summaryConfig.textContent = [state.scent_1, state.vessel_format, state[context.secondary_prop_key]].filter(Boolean).join(' · ');
+      } else {
+        summaryConfig.textContent = [state.scent_1, state.wax_color, state.vessel, state.wick_upgrade].filter(Boolean).join(' · ');
+      }
+    }
+
+    function renderScentResults(query = '') {
+      const q = query.trim().toLowerCase();
+      const filtered = fragrances.filter((item) => {
+        if (!item?.name) return false;
+        const name = item.name.toLowerCase();
+        const family = (item.family || '').toLowerCase();
+        return !q || name.includes(q) || family.includes(q);
+      }).slice(0, 100);
+
+      scentResults.innerHTML = '';
+      filtered.forEach((fragrance) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'cbv-scent__result';
+        if ((state.scent_1 || '').toLowerCase() === fragrance.name.toLowerCase()) button.classList.add('is-selected');
+        button.innerHTML = `<span>${fragrance.name}</span><span class="cbv-scent__family">${fragrance.family || 'Uncategorized'}</span>`;
+        button.addEventListener('click', () => {
+          state.scent_1 = fragrance.name;
+          state.scent_family = fragrance.family || '';
+          scentInput.value = fragrance.name;
+          renderScentResults(scentInput.value);
+          syncHiddenProps();
+          updateSummary();
+        });
+        scentResults.appendChild(button);
+      });
+
+      scentEmpty.hidden = filtered.length > 0;
+    }
+
+    const vesselKey = isWax ? 'vessel_format' : 'vessel';
+    const vesselValues = withFallback(context.vessel_values, state[vesselKey]);
+    renderChoiceCards(vesselOptions, vesselKey, vesselValues, 'cbv_vessel');
+    vesselLabel.textContent = context.vessel_label || (isWax ? 'Vessel / Format' : 'Vessel / Jar');
+
+    const secondaryKey = context.secondary_prop_key;
+    const secondaryValues = withFallback(context.secondary_values, secondaryKey ? state[secondaryKey] : '');
+    if (secondaryKey && secondaryValues.length > 0) {
+      renderChoiceCards(secondaryOptions, secondaryKey, secondaryValues, 'cbv_secondary');
+      secondaryLabel.textContent = context.secondary_label || 'Secondary Option';
+      secondaryGroup.hidden = false;
+    } else {
+      secondaryGroup.hidden = true;
+    }
+
+    waxGroup.hidden = isWax;
+
+    syncFields();
+    syncHiddenProps();
+    updateSummary();
+    renderScentResults(state.scent_1 || '');
+
+    root.addEventListener('change', (event) => {
+      const field = event.target.closest('[data-cbv-field]');
+      if (!field) return;
+      state[field.dataset.cbvField] = field.value;
+      syncChoiceCards();
+      syncHiddenProps();
+      updateSummary();
+    });
+
+    scentInput.addEventListener('input', () => {
+      const value = scentInput.value || '';
+      state.scent_1 = value;
+      const matched = fragrances.find((entry) => (entry.name || '').toLowerCase() === value.toLowerCase());
+      state.scent_family = matched?.family || state.scent_family || '';
+      renderScentResults(value);
+      syncHiddenProps();
+      updateSummary();
+    });
+
+    root.querySelector('[data-cbv-subscription-edit-form]')?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      // TODO (Phase 2B): replace mocked item lookup with Recharge/customer subscription item payload load.
+      // TODO (Phase 2B): send updated builder properties for this item to CBV subscription save endpoint.
+      // TODO (Phase 2B): run Recharge mutation with saved item payload and show success/error UI states.
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "CBV edit subscription item",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "option-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ]
+}
+{% endschema %}

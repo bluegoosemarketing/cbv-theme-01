@@ -1,18 +1,19 @@
 {%- liquid
   assign builder_type_normalized = builder_type | downcase
   assign status_normalized = status | downcase
-  assign customer_email_display = customer.email | default: 'Signed-in customer email (Phase 2)'
 
   assign status_class = 'cbv-subscriptions-card__status--active'
   if status_normalized == 'paused'
     assign status_class = 'cbv-subscriptions-card__status--paused'
   endif
 
+  assign edit_type = builder_type_normalized | replace: ' ', '-'
+
   case builder_type_normalized
     when 'candle'
-      assign configuration_summary = candle_scent_primary | append: ' + ' | append: candle_scent_secondary | append: ' · ' | append: candle_wax_color | append: ' · ' | append: candle_vessel
+      assign configuration_summary = candle_scent_1 | append: ' · ' | append: candle_wax_color | append: ' · ' | append: candle_vessel | append: ' · ' | append: candle_wick_upgrade
     when 'wax melt'
-      assign configuration_summary = wax_scent_primary | append: ' + ' | append: wax_scent_secondary | append: ' · ' | append: wax_pack
+      assign configuration_summary = wax_scent_1 | append: ' · ' | append: wax_vessel_format | append: ' · ' | append: wax_secondary_value
     else
       assign configuration_summary = 'Configuration details available soon.'
   endcase
@@ -44,10 +45,6 @@
       <p class="cbv-subscriptions-card__meta-label">Builder flow</p>
       <p class="cbv-subscriptions-card__meta-value">{{ builder_type }} Builder</p>
     </div>
-    <div class="cbv-subscriptions-card__meta-item">
-      <p class="cbv-subscriptions-card__meta-label">Customer</p>
-      <p class="cbv-subscriptions-card__meta-value">{{ customer_email_display }}</p>
-    </div>
   </div>
 
   <p class="cbv-subscriptions-card__config">{{ configuration_summary }}</p>
@@ -56,8 +53,8 @@
     {%- comment -%} TODO (Phase 2): connect to Recharge billing portal/deep links. {%- endcomment -%}
     <a class="button button--secondary" href="#">Manage Billing</a>
 
-    {%- comment -%} TODO (Phase 2): route into builder-specific edit-next-item flow. {%- endcomment -%}
-    <a class="button button--secondary" href="#">Edit Next Item</a>
+    {%- comment -%} Phase 2A: mocked builder-specific edit-next-item flow. {%- endcomment -%}
+    <a class="button button--secondary" href="/pages/edit-subscription-item?type={{ edit_type | url_encode }}&id={{ subscription_id | default: 'mock-subscription' | url_encode }}">Edit Next Item</a>
 
     {%- comment -%} TODO (Phase 2): invoke subscription skip mutation and success/error UI. {%- endcomment -%}
     <a class="button button--secondary" href="#">Skip Next Order</a>
