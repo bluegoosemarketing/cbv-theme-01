@@ -227,10 +227,11 @@
         assign candle_subscription_status = 'Active'
         assign candle_subscription_next_charge = 'April 18, 2026'
         assign candle_subscription_frequency = 'Every 30 days'
-        assign candle_subscription_scent_primary = 'Vanilla Bean'
-        assign candle_subscription_scent_secondary = 'Laundry Day'
+        assign candle_subscription_scent_1 = 'Vanilla Bean'
         assign candle_subscription_wax_color = 'White Wax'
         assign candle_subscription_vessel = '18oz Jar'
+        assign candle_subscription_wick_upgrade = 'Standard'
+        assign candle_subscription_id = 'mock-candle-1'
       -%}
 
       {%- liquid
@@ -239,9 +240,10 @@
         assign wax_subscription_status = 'Paused'
         assign wax_subscription_next_charge = 'May 2, 2026'
         assign wax_subscription_frequency = 'Every 45 days'
-        assign wax_subscription_scent_primary = 'Lavender'
-        assign wax_subscription_scent_secondary = 'Clean Cotton'
-        assign wax_subscription_pack = '6-pack'
+        assign wax_subscription_scent_1 = 'Lavender'
+        assign wax_subscription_vessel_format = 'Clamshell'
+        assign wax_subscription_secondary_value = '6-pack'
+        assign wax_subscription_id = 'mock-wax-1'
       -%}
 
       <div class="cbv-subscriptions__list">
@@ -251,10 +253,11 @@
           status: candle_subscription_status,
           next_charge_date: candle_subscription_next_charge,
           frequency: candle_subscription_frequency,
-          candle_scent_primary: candle_subscription_scent_primary,
-          candle_scent_secondary: candle_subscription_scent_secondary,
+          candle_scent_1: candle_subscription_scent_1,
           candle_wax_color: candle_subscription_wax_color,
-          candle_vessel: candle_subscription_vessel
+          candle_vessel: candle_subscription_vessel,
+          candle_wick_upgrade: candle_subscription_wick_upgrade,
+          subscription_id: candle_subscription_id
         %}
 
         {% render 'cbv-subscription-card',
@@ -263,9 +266,10 @@
           status: wax_subscription_status,
           next_charge_date: wax_subscription_next_charge,
           frequency: wax_subscription_frequency,
-          wax_scent_primary: wax_subscription_scent_primary,
-          wax_scent_secondary: wax_subscription_scent_secondary,
-          wax_pack: wax_subscription_pack
+          wax_scent_1: wax_subscription_scent_1,
+          wax_vessel_format: wax_subscription_vessel_format,
+          wax_secondary_value: wax_subscription_secondary_value,
+          subscription_id: wax_subscription_id
         %}
       </div>
     {%- else -%}
