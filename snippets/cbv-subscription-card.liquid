@@ -1,0 +1,67 @@
+{%- liquid
+  assign builder_type_normalized = builder_type | downcase
+  assign status_normalized = status | downcase
+
+  assign status_class = 'cbv-subscriptions-card__status--active'
+  if status_normalized == 'paused'
+    assign status_class = 'cbv-subscriptions-card__status--paused'
+  endif
+
+  case builder_type_normalized
+    when 'candle'
+      assign configuration_summary = candle_scent_primary | append: ' + ' | append: candle_scent_secondary | append: ' · ' | append: candle_wax_color | append: ' · ' | append: candle_vessel
+    when 'wax melt'
+      assign configuration_summary = wax_scent_primary | append: ' + ' | append: wax_scent_secondary | append: ' · ' | append: wax_pack
+    else
+      assign configuration_summary = 'Configuration details available soon.'
+  endcase
+-%}
+
+<article class="cbv-subscriptions-card" aria-label="{{ subscription_name | escape }}">
+  <div class="cbv-subscriptions-card__top">
+    <div>
+      <h2 class="cbv-subscriptions-card__name heading-bold">{{ subscription_name }}</h2>
+      <span class="cbv-subscriptions-card__type">{{ builder_type }}</span>
+    </div>
+
+    <span class="cbv-subscriptions-card__status {{ status_class }}">
+      <span class="cbv-subscriptions-card__status-dot" aria-hidden="true"></span>
+      {{ status }}
+    </span>
+  </div>
+
+  <div class="cbv-subscriptions-card__meta">
+    <div class="cbv-subscriptions-card__meta-item">
+      <p class="cbv-subscriptions-card__meta-label">Next charge</p>
+      <p class="cbv-subscriptions-card__meta-value">{{ next_charge_date }}</p>
+    </div>
+    <div class="cbv-subscriptions-card__meta-item">
+      <p class="cbv-subscriptions-card__meta-label">Frequency</p>
+      <p class="cbv-subscriptions-card__meta-value">{{ frequency }}</p>
+    </div>
+    <div class="cbv-subscriptions-card__meta-item">
+      <p class="cbv-subscriptions-card__meta-label">Builder flow</p>
+      <p class="cbv-subscriptions-card__meta-value">{{ builder_type }} Builder</p>
+    </div>
+    <div class="cbv-subscriptions-card__meta-item">
+      <p class="cbv-subscriptions-card__meta-label">Customer</p>
+      <p class="cbv-subscriptions-card__meta-value">{{ customer.email }}</p>
+    </div>
+  </div>
+
+  <p class="cbv-subscriptions-card__config">{{ configuration_summary }}</p>
+
+  <div class="cbv-subscriptions-card__actions" aria-label="Subscription actions">
+    {%- comment -%} TODO (Phase 2): connect to Recharge billing portal/deep links. {%- endcomment -%}
+    <a class="button button--secondary" href="#">Manage Billing</a>
+
+    {%- comment -%} TODO (Phase 2): route into builder-specific edit-next-item flow. {%- endcomment -%}
+    <a class="button button--secondary" href="#">Edit Next Item</a>
+
+    {%- comment -%} TODO (Phase 2): invoke subscription skip mutation and success/error UI. {%- endcomment -%}
+    <a class="button button--secondary" href="#">Skip Next Order</a>
+
+    {%- comment -%} TODO (Phase 2): invoke pause endpoint with confirmation. {%- endcomment -%}
+    <a class="button button--secondary" href="#">Pause Subscription</a>
+  </div>
+</article>
