@@ -263,7 +263,13 @@
     </script>
 
     {%- paginate shop.metaobjects.fragrance.values by 250 -%}
-      <script type="application/json" data-cbv-fragrance-data>
+      <script
+        type="application/json"
+        data-cbv-fragrance-data
+        data-cbv-fragrance-page="{{ paginate.current_page }}"
+        data-cbv-fragrance-pages="{{ paginate.pages }}"
+        data-cbv-fragrance-page-param="{{ paginate.page_param }}"
+      >
         [
           {%- assign first_entry = true -%}
           {%- for fragrance in shop.metaobjects.fragrance.values -%}
@@ -274,7 +280,11 @@
             -%}
             {%- if scent_name != blank and scent_active != false -%}
               {%- unless first_entry -%},{%- endunless -%}
-              { "name": {{ scent_name | json }}, "family": {{ scent_family | default: 'Uncategorized' | json }} }
+              {
+                "name": {{ scent_name | json }},
+                "family": {{ scent_family | default: 'Uncategorized' | json }},
+                "handle": {{ fragrance.handle | json }}
+              }
               {%- assign first_entry = false -%}
             {%- endif -%}
           {%- endfor -%}
@@ -286,180 +296,251 @@
 
 <script>
   (() => {
-    const root = document.querySelector('[data-cbv-subscription-edit]');
-    if (!root) return;
+    const MAX_RESULTS = 300;
 
-    const mocks = JSON.parse(root.querySelector('[data-cbv-subscription-mocks]')?.textContent || '{}');
-    const fragrances = JSON.parse(root.querySelector('[data-cbv-fragrance-data]')?.textContent || '[]');
-
-    const params = new URLSearchParams(window.location.search);
-    const rawType = (params.get('type') || 'candle').toLowerCase().trim();
-    const requestedType = rawType === 'wax melt' ? 'wax-melt' : rawType;
-    const requestedId = (params.get('id') || '').trim();
-
-    const records = mocks[requestedType] || mocks.candle || {};
-    const item = records[requestedId] || records[Object.keys(records)[0]];
-    if (!item) return;
-
-    const itemType = item.builder_family || requestedType;
-    const isWax = itemType === 'wax-melt';
-    const context = item.product_context || {};
-
-    const vesselLabel = root.querySelector('[data-cbv-vessel-label]');
-    const secondaryLabel = root.querySelector('[data-cbv-secondary-label]');
-    const vesselOptions = root.querySelector('[data-cbv-vessel-options]');
-    const secondaryGroup = root.querySelector('[data-cbv-group="secondary"]');
-    const secondaryOptions = root.querySelector('[data-cbv-secondary-options]');
-    const waxGroup = root.querySelector('[data-cbv-group="wax-color"]');
-
-    const summaryName = root.querySelector('[data-cbv-summary-name]');
-    const summaryType = root.querySelector('[data-cbv-summary-type]');
-    const summaryCharge = root.querySelector('[data-cbv-summary-charge]');
-    const summaryFrequency = root.querySelector('[data-cbv-summary-frequency]');
-    const summaryConfig = root.querySelector('[data-cbv-summary-config]');
-
-    const scentInput = root.querySelector('[data-cbv-scent-input]');
-    const scentResults = root.querySelector('[data-cbv-scent-results]');
-    const scentEmpty = root.querySelector('[data-cbv-scent-empty]');
-    const dynamicSecondaryProp = root.querySelector('[data-cbv-dynamic-secondary-prop]');
-
-    const state = { ...item.properties };
-
-    function withFallback(values, fallbackValue) {
-      const base = Array.isArray(values) ? values.filter(Boolean) : [];
-      return base.length ? base : (fallbackValue ? [fallbackValue] : []);
+    function normalize(value) {
+      return (value || '').toString().trim().toLowerCase();
     }
 
-    function renderChoiceCards(target, fieldKey, values, inputName) {
-      target.innerHTML = '';
-      values.forEach((value) => {
-        const label = document.createElement('label');
-        label.className = 'cbv-choice-card';
-        label.innerHTML = `<input class="visually-hidden" type="radio" name="${inputName}" value="${value}" data-cbv-field="${fieldKey}"><span class="cbv-choice-title">${value}</span>`;
-        target.appendChild(label);
-      });
+    function normalizeFamily(value) {
+      return (value || '').toString().trim() || 'Uncategorized';
     }
 
-    function syncChoiceCards() {
-      root.querySelectorAll('.cbv-choice-card').forEach((card) => {
-        const input = card.querySelector('input');
-        card.classList.toggle('is-selected', Boolean(input?.checked));
-      });
+    function parseFragrancePayload(scriptEl) {
+      try {
+        return JSON.parse(scriptEl?.textContent || '[]');
+      } catch (error) {
+        console.error('CBV edit subscription: invalid fragrance data', error);
+        return [];
+      }
     }
 
-    function syncFields() {
-      root.querySelectorAll('[data-cbv-field]').forEach((field) => {
-        const key = field.dataset.cbvField;
-        if (!key || state[key] == null) return;
-        if (field.type === 'radio') field.checked = field.value === state[key];
+    async function loadAllScents(scriptEl) {
+      const firstPage = parseFragrancePayload(scriptEl);
+      const totalPages = Number(scriptEl?.dataset.cbvFragrancePages || 1);
+      const currentPage = Number(scriptEl?.dataset.cbvFragrancePage || 1);
+      const pageParam = scriptEl?.dataset.cbvFragrancePageParam;
+
+      if (!totalPages || totalPages <= 1 || !pageParam) return firstPage;
+
+      const requests = [];
+      for (let page = 1; page <= totalPages; page += 1) {
+        if (page === currentPage) continue;
+        const url = new URL(window.location.href);
+        url.searchParams.set('section_id', '{{ section.id }}');
+        url.searchParams.set(pageParam, page);
+        requests.push(fetch(url.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' } }));
+      }
+
+      const loadedPages = await Promise.all(
+        requests.map(async (request) => {
+          try {
+            const response = await request;
+            if (!response.ok) return [];
+            const html = await response.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const pageScript = doc.querySelector('[data-cbv-fragrance-data]');
+            if (!pageScript) return [];
+            return parseFragrancePayload(pageScript);
+          } catch (error) {
+            console.warn('CBV edit subscription: failed to load a fragrance page', error);
+            return [];
+          }
+        })
+      );
+
+      const combined = [...firstPage, ...loadedPages.flat()];
+      const scentByHandle = new Map();
+      combined.forEach((scent) => {
+        if (!scent?.name) return;
+        const key = normalize(scent.handle || scent.name);
+        if (scentByHandle.has(key)) return;
+        scentByHandle.set(key, { ...scent, family: normalizeFamily(scent.family) });
       });
-      scentInput.value = state.scent_1 || '';
-      syncChoiceCards();
+
+      return [...scentByHandle.values()].sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    function syncHiddenProps() {
-      root.querySelectorAll('[data-cbv-prop]').forEach((input) => {
-        const key = input.dataset.cbvProp;
-        input.value = state[key] || '';
-      });
+    async function init() {
+      const root = document.querySelector('[data-cbv-subscription-edit]');
+      if (!root) return;
+
+      const mocks = JSON.parse(root.querySelector('[data-cbv-subscription-mocks]')?.textContent || '{}');
+      const fragranceScript = root.querySelector('[data-cbv-fragrance-data]');
+      const fragrances = await loadAllScents(fragranceScript);
+
+      const params = new URLSearchParams(window.location.search);
+      const rawType = (params.get('type') || 'candle').toLowerCase().trim();
+      const requestedType = rawType === 'wax melt' ? 'wax-melt' : rawType;
+      const requestedId = (params.get('id') || '').trim();
+
+      const records = mocks[requestedType] || mocks.candle || {};
+      const item = records[requestedId] || records[Object.keys(records)[0]];
+      if (!item) return;
+
+      const itemType = item.builder_family || requestedType;
+      const isWax = itemType === 'wax-melt';
+      const context = item.product_context || {};
+
+      const vesselLabel = root.querySelector('[data-cbv-vessel-label]');
+      const secondaryLabel = root.querySelector('[data-cbv-secondary-label]');
+      const vesselOptions = root.querySelector('[data-cbv-vessel-options]');
+      const secondaryGroup = root.querySelector('[data-cbv-group="secondary"]');
+      const secondaryOptions = root.querySelector('[data-cbv-secondary-options]');
+      const waxGroup = root.querySelector('[data-cbv-group="wax-color"]');
+
+      const summaryName = root.querySelector('[data-cbv-summary-name]');
+      const summaryType = root.querySelector('[data-cbv-summary-type]');
+      const summaryCharge = root.querySelector('[data-cbv-summary-charge]');
+      const summaryFrequency = root.querySelector('[data-cbv-summary-frequency]');
+      const summaryConfig = root.querySelector('[data-cbv-summary-config]');
+
+      const scentInput = root.querySelector('[data-cbv-scent-input]');
+      const scentResults = root.querySelector('[data-cbv-scent-results]');
+      const scentEmpty = root.querySelector('[data-cbv-scent-empty]');
+      const dynamicSecondaryProp = root.querySelector('[data-cbv-dynamic-secondary-prop]');
+
+      const state = { ...item.properties };
+
+      function withFallback(values, fallbackValue) {
+        const base = Array.isArray(values) ? values.filter(Boolean) : [];
+        return base.length ? base : (fallbackValue ? [fallbackValue] : []);
+      }
+
+      function renderChoiceCards(target, fieldKey, values, inputName) {
+        target.innerHTML = '';
+        values.forEach((value) => {
+          const label = document.createElement('label');
+          label.className = 'cbv-choice-card';
+          label.innerHTML = `<input class="visually-hidden" type="radio" name="${inputName}" value="${value}" data-cbv-field="${fieldKey}"><span class="cbv-choice-title">${value}</span>`;
+          target.appendChild(label);
+        });
+      }
+
+      function syncChoiceCards() {
+        root.querySelectorAll('.cbv-choice-card').forEach((card) => {
+          const input = card.querySelector('input');
+          card.classList.toggle('is-selected', Boolean(input?.checked));
+        });
+      }
+
+      function syncFields() {
+        root.querySelectorAll('[data-cbv-field]').forEach((field) => {
+          const key = field.dataset.cbvField;
+          if (!key || state[key] == null) return;
+          if (field.type === 'radio') field.checked = field.value === state[key];
+        });
+        scentInput.value = state.scent_1 || '';
+        syncChoiceCards();
+      }
+
+      function syncHiddenProps() {
+        root.querySelectorAll('[data-cbv-prop]').forEach((input) => {
+          const key = input.dataset.cbvProp;
+          input.value = state[key] || '';
+        });
+
+        const secondaryKey = context.secondary_prop_key;
+        if (secondaryKey) {
+          dynamicSecondaryProp.name = `properties[${secondaryKey}]`;
+          dynamicSecondaryProp.value = state[secondaryKey] || '';
+        }
+      }
+
+      function updateSummary() {
+        summaryName.textContent = item.subscription_name;
+        summaryType.textContent = item.builder_type;
+        summaryCharge.textContent = item.next_charge_date;
+        summaryFrequency.textContent = item.frequency;
+
+        if (isWax) {
+          summaryConfig.textContent = [state.scent_1, state.vessel_format, state[context.secondary_prop_key]].filter(Boolean).join(' · ');
+        } else {
+          summaryConfig.textContent = [state.scent_1, state.wax_color, state.vessel, state.wick_upgrade].filter(Boolean).join(' · ');
+        }
+      }
+
+      function renderScentResults(query = '') {
+        const q = normalize(query);
+        const filtered = fragrances.filter((entry) => {
+          if (!entry?.name) return false;
+          const name = normalize(entry.name);
+          const family = normalize(entry.family);
+          return !q || name.includes(q) || family.includes(q);
+        });
+        const visible = filtered.slice(0, MAX_RESULTS);
+
+        scentResults.innerHTML = '';
+        visible.forEach((fragrance) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'cbv-scent__result';
+          if (normalize(state.scent_1) === normalize(fragrance.name)) button.classList.add('is-selected');
+          button.innerHTML = `<span>${fragrance.name}</span><span class="cbv-scent__family">${fragrance.family || 'Uncategorized'}</span>`;
+          button.addEventListener('click', () => {
+            state.scent_1 = fragrance.name;
+            state.scent_family = fragrance.family || '';
+            scentInput.value = fragrance.name;
+            renderScentResults(scentInput.value);
+            syncHiddenProps();
+            updateSummary();
+          });
+          scentResults.appendChild(button);
+        });
+
+        scentEmpty.hidden = visible.length > 0;
+      }
+
+      const vesselKey = isWax ? 'vessel_format' : 'vessel';
+      const vesselValues = withFallback(context.vessel_values, state[vesselKey]);
+      renderChoiceCards(vesselOptions, vesselKey, vesselValues, 'cbv_vessel');
+      vesselLabel.textContent = context.vessel_label || (isWax ? 'Vessel / Format' : 'Vessel / Jar');
 
       const secondaryKey = context.secondary_prop_key;
-      if (secondaryKey) {
-        dynamicSecondaryProp.name = `properties[${secondaryKey}]`;
-        dynamicSecondaryProp.value = state[secondaryKey] || '';
-      }
-    }
-
-    function updateSummary() {
-      summaryName.textContent = item.subscription_name;
-      summaryType.textContent = item.builder_type;
-      summaryCharge.textContent = item.next_charge_date;
-      summaryFrequency.textContent = item.frequency;
-
-      if (isWax) {
-        summaryConfig.textContent = [state.scent_1, state.vessel_format, state[context.secondary_prop_key]].filter(Boolean).join(' · ');
+      const secondaryValues = withFallback(context.secondary_values, secondaryKey ? state[secondaryKey] : '');
+      if (secondaryKey && secondaryValues.length > 0) {
+        renderChoiceCards(secondaryOptions, secondaryKey, secondaryValues, 'cbv_secondary');
+        secondaryLabel.textContent = context.secondary_label || 'Secondary Option';
+        secondaryGroup.hidden = false;
       } else {
-        summaryConfig.textContent = [state.scent_1, state.wax_color, state.vessel, state.wick_upgrade].filter(Boolean).join(' · ');
+        secondaryGroup.hidden = true;
       }
-    }
 
-    function renderScentResults(query = '') {
-      const q = query.trim().toLowerCase();
-      const filtered = fragrances.filter((item) => {
-        if (!item?.name) return false;
-        const name = item.name.toLowerCase();
-        const family = (item.family || '').toLowerCase();
-        return !q || name.includes(q) || family.includes(q);
-      }).slice(0, 100);
+      waxGroup.hidden = isWax;
 
-      scentResults.innerHTML = '';
-      filtered.forEach((fragrance) => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'cbv-scent__result';
-        if ((state.scent_1 || '').toLowerCase() === fragrance.name.toLowerCase()) button.classList.add('is-selected');
-        button.innerHTML = `<span>${fragrance.name}</span><span class="cbv-scent__family">${fragrance.family || 'Uncategorized'}</span>`;
-        button.addEventListener('click', () => {
-          state.scent_1 = fragrance.name;
-          state.scent_family = fragrance.family || '';
-          scentInput.value = fragrance.name;
-          renderScentResults(scentInput.value);
-          syncHiddenProps();
-          updateSummary();
-        });
-        scentResults.appendChild(button);
+      syncFields();
+      syncHiddenProps();
+      updateSummary();
+      renderScentResults(state.scent_1 || '');
+
+      root.addEventListener('change', (event) => {
+        const field = event.target.closest('[data-cbv-field]');
+        if (!field) return;
+        state[field.dataset.cbvField] = field.value;
+        syncChoiceCards();
+        syncHiddenProps();
+        updateSummary();
       });
 
-      scentEmpty.hidden = filtered.length > 0;
+      scentInput.addEventListener('input', () => {
+        const value = scentInput.value || '';
+        state.scent_1 = value;
+        const matched = fragrances.find((entry) => normalize(entry.name) === normalize(value));
+        state.scent_family = matched?.family || state.scent_family || '';
+        renderScentResults(value);
+        syncHiddenProps();
+        updateSummary();
+      });
+
+      root.querySelector('[data-cbv-subscription-edit-form]')?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        // TODO (Phase 2B): replace mocked item lookup with Recharge/customer subscription item payload load.
+        // TODO (Phase 2B): send updated builder properties for this item to CBV subscription save endpoint.
+        // TODO (Phase 2B): run Recharge mutation with saved item payload and show success/error UI states.
+      });
     }
 
-    const vesselKey = isWax ? 'vessel_format' : 'vessel';
-    const vesselValues = withFallback(context.vessel_values, state[vesselKey]);
-    renderChoiceCards(vesselOptions, vesselKey, vesselValues, 'cbv_vessel');
-    vesselLabel.textContent = context.vessel_label || (isWax ? 'Vessel / Format' : 'Vessel / Jar');
-
-    const secondaryKey = context.secondary_prop_key;
-    const secondaryValues = withFallback(context.secondary_values, secondaryKey ? state[secondaryKey] : '');
-    if (secondaryKey && secondaryValues.length > 0) {
-      renderChoiceCards(secondaryOptions, secondaryKey, secondaryValues, 'cbv_secondary');
-      secondaryLabel.textContent = context.secondary_label || 'Secondary Option';
-      secondaryGroup.hidden = false;
-    } else {
-      secondaryGroup.hidden = true;
-    }
-
-    waxGroup.hidden = isWax;
-
-    syncFields();
-    syncHiddenProps();
-    updateSummary();
-    renderScentResults(state.scent_1 || '');
-
-    root.addEventListener('change', (event) => {
-      const field = event.target.closest('[data-cbv-field]');
-      if (!field) return;
-      state[field.dataset.cbvField] = field.value;
-      syncChoiceCards();
-      syncHiddenProps();
-      updateSummary();
-    });
-
-    scentInput.addEventListener('input', () => {
-      const value = scentInput.value || '';
-      state.scent_1 = value;
-      const matched = fragrances.find((entry) => (entry.name || '').toLowerCase() === value.toLowerCase());
-      state.scent_family = matched?.family || state.scent_family || '';
-      renderScentResults(value);
-      syncHiddenProps();
-      updateSummary();
-    });
-
-    root.querySelector('[data-cbv-subscription-edit-form]')?.addEventListener('submit', (event) => {
-      event.preventDefault();
-      // TODO (Phase 2B): replace mocked item lookup with Recharge/customer subscription item payload load.
-      // TODO (Phase 2B): send updated builder properties for this item to CBV subscription save endpoint.
-      // TODO (Phase 2B): run Recharge mutation with saved item payload and show success/error UI states.
-    });
+    init();
   })();
 </script>
 
