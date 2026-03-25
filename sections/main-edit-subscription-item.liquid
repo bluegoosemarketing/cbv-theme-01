@@ -78,6 +78,28 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .cbv-subscription-edit__feedback {
+    margin-top: 1rem;
+    padding: 1rem 1.2rem;
+    border-radius: 1rem;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.14);
+    background: rgba(var(--color-foreground), 0.03);
+  }
+
+  .cbv-subscription-edit__feedback[hidden] {
+    display: none !important;
+  }
+
+  .cbv-subscription-edit__feedback.is-error {
+    border-color: rgba(181, 53, 53, 0.45);
+    background: rgba(181, 53, 53, 0.1);
+  }
+
+  .cbv-subscription-edit__feedback.is-success {
+    border-color: rgba(27, 127, 59, 0.35);
+    background: rgba(27, 127, 59, 0.12);
+  }
+
   .cbv-subscription-edit [hidden] {
     display: none !important;
   }
@@ -200,14 +222,22 @@
 
       <div class="cbv-subscription-edit__actions">
         <a class="button button--secondary" href="/pages/manage-subscriptions">Cancel</a>
-        <button class="button button--primary" type="submit">Save Changes</button>
+        <button class="button button--primary" type="submit" data-cbv-save-button>Save Changes</button>
       </div>
+      <p class="cbv-subscription-edit__feedback" data-cbv-form-feedback hidden aria-live="polite"></p>
     </form>
 
+    <script type="application/json" data-cbv-subscription-api-config>
+      {
+        "api_base_path": {{ section.settings.api_base_path | strip | default: '/apps/cbv-subscriptions' | json }},
+        "data_mode": {{ section.settings.data_mode | default: 'mock' | json }}
+      }
+    </script>
     <script type="application/json" data-cbv-subscription-mocks>
       {
         "candle": {
           "mock-candle-1": {
+            "id": "mock-candle-1",
             "subscription_name": "Custom Candle Club",
             "builder_family": "candle",
             "builder_type": "Candle",
@@ -235,6 +265,7 @@
         },
         "wax-melt": {
           "mock-wax-1": {
+            "id": "mock-wax-1",
             "subscription_name": "Wax Melt Club",
             "builder_family": "wax-melt",
             "builder_type": "Wax Melt",
@@ -306,6 +337,11 @@
       return (value || '').toString().trim() || 'Uncategorized';
     }
 
+    function normalizeBuilderFamily(value) {
+      const normalized = (value || '').toString().trim().toLowerCase();
+      return normalized === 'wax melt' ? 'wax-melt' : normalized;
+    }
+
     function parseFragrancePayload(scriptEl) {
       try {
         return JSON.parse(scriptEl?.textContent || '[]');
@@ -365,7 +401,18 @@
       const root = document.querySelector('[data-cbv-subscription-edit]');
       if (!root) return;
 
-      const mocks = JSON.parse(root.querySelector('[data-cbv-subscription-mocks]')?.textContent || '{}');
+      let apiConfig = {};
+      try {
+        apiConfig = JSON.parse(root.querySelector('[data-cbv-subscription-api-config]')?.textContent || '{}');
+      } catch (error) {
+        console.error('CBV edit subscription: invalid API config', error);
+      }
+      let mockRecords = {};
+      try {
+        mockRecords = JSON.parse(root.querySelector('[data-cbv-subscription-mocks]')?.textContent || '{}');
+      } catch (error) {
+        console.error('CBV edit subscription: invalid mock records', error);
+      }
       const fragranceScript = root.querySelector('[data-cbv-fragrance-data]');
       const fragrances = await loadAllScents(fragranceScript);
 
@@ -373,12 +420,77 @@
       const rawType = (params.get('type') || 'candle').toLowerCase().trim();
       const requestedType = rawType === 'wax melt' ? 'wax-melt' : rawType;
       const requestedId = (params.get('id') || '').trim();
+      const mode = (apiConfig.data_mode || 'mock').toLowerCase();
 
-      const records = mocks[requestedType] || mocks.candle || {};
-      const item = records[requestedId] || records[Object.keys(records)[0]];
-      if (!item) return;
+      const feedbackEl = root.querySelector('[data-cbv-form-feedback]');
+      const saveButton = root.querySelector('[data-cbv-save-button]');
+      const form = root.querySelector('[data-cbv-subscription-edit-form]');
 
-      const itemType = item.builder_family || requestedType;
+      function setFeedback(message, tone = '') {
+        if (!feedbackEl) return;
+        if (!message) {
+          feedbackEl.hidden = true;
+          feedbackEl.textContent = '';
+          feedbackEl.classList.remove('is-error', 'is-success');
+          return;
+        }
+        feedbackEl.hidden = false;
+        feedbackEl.textContent = message;
+        feedbackEl.classList.toggle('is-error', tone === 'error');
+        feedbackEl.classList.toggle('is-success', tone === 'success');
+      }
+
+      async function fetchLiveItem() {
+        const apiBasePath = (apiConfig.api_base_path || '/apps/cbv-subscriptions').replace(/\/$/, '');
+        const itemUrl = `${apiBasePath}/items/${encodeURIComponent(requestedId)}?type=${encodeURIComponent(requestedType)}`;
+        const response = await fetch(itemUrl, {
+          method: 'GET',
+          headers: { Accept: 'application/json' },
+          credentials: 'same-origin'
+        });
+        if (!response.ok) throw new Error(`Unable to load subscription item (${response.status})`);
+        const payload = await response.json();
+        return payload?.item || null;
+      }
+
+      function fetchMockItem() {
+        const records = mockRecords[requestedType] || mockRecords.candle || {};
+        if (requestedId && records[requestedId]) return records[requestedId];
+        return records[Object.keys(records)[0]] || null;
+      }
+
+      if (!requestedId) {
+        setFeedback('Missing subscription item id. Please return to Manage Subscriptions and choose an item.', 'error');
+        return;
+      }
+
+      let item;
+      let itemSource = 'live';
+      if (mode === 'mock') {
+        item = fetchMockItem();
+        itemSource = 'mock';
+      } else {
+        try {
+          item = await fetchLiveItem();
+        } catch (error) {
+          console.error('CBV edit subscription: failed to load selected item', error);
+          if (mode === 'auto') {
+            item = fetchMockItem();
+            itemSource = 'mock';
+            setFeedback('Live data is unavailable. You are editing demo subscription data.', 'error');
+          } else {
+            setFeedback('We could not load this subscription item right now. Please refresh and try again.', 'error');
+            return;
+          }
+        }
+      }
+
+      if (!item) {
+        setFeedback('The selected subscription item was not found for your account.', 'error');
+        return;
+      }
+
+      const itemType = normalizeBuilderFamily(item.builder_family || requestedType || 'candle');
       const isWax = itemType === 'wax-melt';
       const context = item.product_context || {};
 
@@ -400,7 +512,7 @@
       const scentEmpty = root.querySelector('[data-cbv-scent-empty]');
       const dynamicSecondaryProp = root.querySelector('[data-cbv-dynamic-secondary-prop]');
 
-      const state = { ...item.properties };
+      const state = { ...(item.properties || {}) };
 
       function withFallback(values, fallbackValue) {
         const base = Array.isArray(values) ? values.filter(Boolean) : [];
@@ -532,11 +644,78 @@
         updateSummary();
       });
 
-      root.querySelector('[data-cbv-subscription-edit-form]')?.addEventListener('submit', (event) => {
+      form?.addEventListener('submit', async (event) => {
         event.preventDefault();
-        // TODO (Phase 2B): replace mocked item lookup with Recharge/customer subscription item payload load.
-        // TODO (Phase 2B): send updated builder properties for this item to CBV subscription save endpoint.
-        // TODO (Phase 2B): run Recharge mutation with saved item payload and show success/error UI states.
+
+        const secondaryPropKey = context.secondary_prop_key;
+        const payloadProperties = {
+          scent_1: state.scent_1 || '',
+          scent_family: state.scent_family || '',
+          wax_color: isWax ? '' : (state.wax_color || ''),
+          vessel: isWax ? '' : (state.vessel || ''),
+          vessel_format: isWax ? (state.vessel_format || '') : '',
+          wick_upgrade: isWax ? '' : (state.wick_upgrade || '')
+        };
+
+        if (secondaryPropKey) {
+          payloadProperties[secondaryPropKey] = state[secondaryPropKey] || '';
+        }
+
+        if (!payloadProperties.scent_1) {
+          setFeedback('Please select a scent before saving.', 'error');
+          return;
+        }
+        if (!isWax && !payloadProperties.vessel) {
+          setFeedback('Please select a vessel before saving.', 'error');
+          return;
+        }
+        if (isWax && !payloadProperties.vessel_format) {
+          setFeedback('Please select a vessel format before saving.', 'error');
+          return;
+        }
+
+        const apiBasePath = (apiConfig.api_base_path || '/apps/cbv-subscriptions').replace(/\/$/, '');
+        if (itemSource === 'mock') {
+          setFeedback('Demo mode: changes saved locally for preview only. Live subscription was not updated.', 'success');
+          return;
+        }
+
+        setFeedback('Saving changes…');
+        if (saveButton) {
+          saveButton.disabled = true;
+          saveButton.setAttribute('aria-busy', 'true');
+        }
+
+        try {
+          const response = await fetch(`${apiBasePath}/items/${encodeURIComponent(requestedId)}`, {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin',
+            body: JSON.stringify({
+              action: 'update_properties',
+              builder_family: itemType,
+              properties: payloadProperties
+            })
+          });
+
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || result?.ok === false) {
+            throw new Error(result?.error || `Unable to save changes (${response.status})`);
+          }
+
+          setFeedback('Your next subscription item has been updated successfully.', 'success');
+        } catch (error) {
+          console.error('CBV edit subscription: failed to save updated properties', error);
+          setFeedback(error?.message || 'We could not save your changes. Please try again.', 'error');
+        } finally {
+          if (saveButton) {
+            saveButton.disabled = false;
+            saveButton.removeAttribute('aria-busy');
+          }
+        }
       });
     }
 
@@ -553,6 +732,33 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "option-1"
+    },
+    {
+      "type": "select",
+      "id": "data_mode",
+      "label": "Subscription data mode",
+      "default": "mock",
+      "options": [
+        {
+          "value": "mock",
+          "label": "Mock (safe default)"
+        },
+        {
+          "value": "live",
+          "label": "Live API only"
+        },
+        {
+          "value": "auto",
+          "label": "Auto (live, fallback to mock)"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "api_base_path",
+      "label": "Subscriptions API base path",
+      "default": "/apps/cbv-subscriptions",
+      "info": "Theme calls {base}/items/:id to load and save customer-owned subscription item properties."
     },
     {
       "type": "range",
