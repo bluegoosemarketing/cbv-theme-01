@@ -1,6 +1,5 @@
 {%- comment -%}
-  CBV Phase 1 subscription dashboard rendered on a standard storefront page.
-  Phase 2 TODO: Replace mocked records and button hrefs with real Recharge/customer data/actions.
+  Subscription dashboard for customer-owned Recharge subscriptions.
 {%- endcomment -%}
 
 {%- style -%}
@@ -174,6 +173,19 @@
     color: rgba(var(--color-foreground), 0.72);
   }
 
+  .cbv-subscriptions__status {
+    margin: 0 0 1.6rem;
+    padding: 1rem 1.2rem;
+    border-radius: 1rem;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.1);
+    background: rgba(var(--color-foreground), 0.03);
+    color: rgba(var(--color-foreground), 0.78);
+  }
+
+  .cbv-subscriptions__status[hidden] {
+    display: none !important;
+  }
+
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
@@ -209,74 +221,216 @@
       </p>
     </header>
 
-    {%- liquid
-      assign has_mock_subscriptions = true
-      if section.settings.show_empty_state
-        assign has_mock_subscriptions = false
-      endif
-    -%}
-
-    {%- if has_mock_subscriptions -%}
-      {%- comment -%}
-        Phase 1 mocked data only.
-        Phase 2 TODO: Replace these assignments with Recharge/customer subscription records.
-      {%- endcomment -%}
-      {%- liquid
-        assign candle_subscription_name = 'Custom Candle Club'
-        assign candle_subscription_builder_type = 'Candle'
-        assign candle_subscription_status = 'Active'
-        assign candle_subscription_next_charge = 'April 18, 2026'
-        assign candle_subscription_frequency = 'Every 30 days'
-        assign candle_subscription_scent_1 = 'Vanilla Bean'
-        assign candle_subscription_wax_color = 'White Wax'
-        assign candle_subscription_vessel = '18oz Jar'
-        assign candle_subscription_wick_upgrade = 'Standard'
-        assign candle_subscription_id = 'mock-candle-1'
-      -%}
-
-      {%- liquid
-        assign wax_subscription_name = 'Wax Melt Club'
-        assign wax_subscription_builder_type = 'Wax Melt'
-        assign wax_subscription_status = 'Paused'
-        assign wax_subscription_next_charge = 'May 2, 2026'
-        assign wax_subscription_frequency = 'Every 45 days'
-        assign wax_subscription_scent_1 = 'Lavender'
-        assign wax_subscription_vessel_format = 'Clamshell'
-        assign wax_subscription_secondary_value = '6-pack'
-        assign wax_subscription_id = 'mock-wax-1'
-      -%}
-
-      <div class="cbv-subscriptions__list">
-        {% render 'cbv-subscription-card',
-          subscription_name: candle_subscription_name,
-          builder_type: candle_subscription_builder_type,
-          status: candle_subscription_status,
-          next_charge_date: candle_subscription_next_charge,
-          frequency: candle_subscription_frequency,
-          candle_scent_1: candle_subscription_scent_1,
-          candle_wax_color: candle_subscription_wax_color,
-          candle_vessel: candle_subscription_vessel,
-          candle_wick_upgrade: candle_subscription_wick_upgrade,
-          subscription_id: candle_subscription_id
-        %}
-
-        {% render 'cbv-subscription-card',
-          subscription_name: wax_subscription_name,
-          builder_type: wax_subscription_builder_type,
-          status: wax_subscription_status,
-          next_charge_date: wax_subscription_next_charge,
-          frequency: wax_subscription_frequency,
-          wax_scent_1: wax_subscription_scent_1,
-          wax_vessel_format: wax_subscription_vessel_format,
-          wax_secondary_value: wax_subscription_secondary_value,
-          subscription_id: wax_subscription_id
-        %}
-      </div>
+    {%- if customer -%}
+      <p class="cbv-subscriptions__status" data-cbv-subscriptions-status aria-live="polite">Loading your subscriptions…</p>
+      <div class="cbv-subscriptions__list" data-cbv-subscriptions-list></div>
+      <script type="application/json" data-cbv-subscriptions-api-config>
+        {
+          "api_base_path": {{ section.settings.api_base_path | strip | default: '/apps/cbv-subscriptions' | json }},
+          "empty_state_enabled": {{ section.settings.show_empty_state | json }},
+          "data_mode": {{ section.settings.data_mode | default: 'mock' | json }}
+        }
+      </script>
+      <script type="application/json" data-cbv-subscriptions-mock-items>
+        {
+          "items": [
+            {
+              "id": "mock-candle-1",
+              "subscription_name": "Custom Candle Club",
+              "status": "Active",
+              "builder_family": "candle",
+              "builder_type": "Candle",
+              "next_charge_date": "April 18, 2026",
+              "frequency": "Every 30 days",
+              "properties": {
+                "scent_1": "Vanilla Bean",
+                "wax_color": "White Wax",
+                "vessel": "18oz Jar",
+                "wick_upgrade": "Standard"
+              }
+            },
+            {
+              "id": "mock-wax-1",
+              "subscription_name": "Wax Melt Club",
+              "status": "Paused",
+              "builder_family": "wax-melt",
+              "builder_type": "Wax Melt",
+              "next_charge_date": "May 2, 2026",
+              "frequency": "Every 45 days",
+              "product_context": {
+                "secondary_prop_key": "pack_size"
+              },
+              "properties": {
+                "scent_1": "Lavender",
+                "vessel_format": "Clamshell",
+                "pack_size": "6-pack"
+              }
+            }
+          ]
+        }
+      </script>
     {%- else -%}
-      {% render 'cbv-subscriptions-empty-state' %}
+      <div class="cbv-subscriptions__empty">
+        <h2 class="heading-bold">Sign in to manage subscriptions</h2>
+        <p>Please sign in to load your Candle Club and wax melt subscription items.</p>
+        <a class="button button--primary" href="/account/login">Sign in</a>
+      </div>
     {%- endif -%}
   </section>
 </div>
+
+<script>
+  (() => {
+    const root = document.querySelector('[data-cbv-subscriptions-list]')?.closest('[aria-labelledby="cbv-subscriptions-title"]');
+    if (!root) return;
+
+    const statusEl = root.querySelector('[data-cbv-subscriptions-status]');
+    const listEl = root.querySelector('[data-cbv-subscriptions-list]');
+    const configScript = root.querySelector('[data-cbv-subscriptions-api-config]');
+    const mocksScript = root.querySelector('[data-cbv-subscriptions-mock-items]');
+
+    function readConfig() {
+      try {
+        return JSON.parse(configScript?.textContent || '{}');
+      } catch (error) {
+        console.error('CBV subscriptions: invalid API config JSON', error);
+        return {};
+      }
+    }
+
+    function readMocks() {
+      try {
+        return JSON.parse(mocksScript?.textContent || '{"items":[]}');
+      } catch (error) {
+        console.error('CBV subscriptions: invalid mock JSON', error);
+        return { items: [] };
+      }
+    }
+
+    function escapeHtml(value) {
+      return (value || '').toString().replace(/[&<>"']/g, (char) => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char] || char
+      ));
+    }
+
+    function normalizeFamily(value) {
+      const normalized = (value || '').toString().trim().toLowerCase();
+      return normalized === 'wax melt' ? 'wax-melt' : normalized;
+    }
+
+    function summaryForItem(item) {
+      const props = item.properties || {};
+      const builderFamily = normalizeFamily(item.builder_family);
+      if (builderFamily === 'wax-melt') {
+        const secondaryKey = item.product_context?.secondary_prop_key;
+        return [props.scent_1, props.vessel_format, secondaryKey ? props[secondaryKey] : ''].filter(Boolean).join(' · ');
+      }
+      return [props.scent_1, props.wax_color, props.vessel, props.wick_upgrade].filter(Boolean).join(' · ');
+    }
+
+    function renderCard(item) {
+      const builderFamily = normalizeFamily(item.builder_family);
+      const builderType = item.builder_type || (builderFamily === 'wax-melt' ? 'Wax Melt' : 'Candle');
+      const status = (item.status || 'Active').toString();
+      const statusClass = status.toLowerCase() === 'paused'
+        ? 'cbv-subscriptions-card__status--paused'
+        : 'cbv-subscriptions-card__status--active';
+      const id = encodeURIComponent(item.id || '');
+      const type = encodeURIComponent(builderFamily || 'candle');
+      const summary = summaryForItem(item) || 'Configuration details available soon.';
+
+      return `
+        <article class="cbv-subscriptions-card" aria-label="${escapeHtml(item.subscription_name || item.product_title || 'Subscription item')}">
+          <div class="cbv-subscriptions-card__top">
+            <div>
+              <h2 class="cbv-subscriptions-card__name heading-bold">${escapeHtml(item.subscription_name || item.product_title || 'Subscription item')}</h2>
+              <span class="cbv-subscriptions-card__type">${escapeHtml(builderType)}</span>
+            </div>
+            <span class="cbv-subscriptions-card__status ${statusClass}">
+              <span class="cbv-subscriptions-card__status-dot" aria-hidden="true"></span>
+              ${escapeHtml(status)}
+            </span>
+          </div>
+          <div class="cbv-subscriptions-card__meta">
+            <div class="cbv-subscriptions-card__meta-item">
+              <p class="cbv-subscriptions-card__meta-label">Next charge</p>
+              <p class="cbv-subscriptions-card__meta-value">${escapeHtml(item.next_charge_date || '—')}</p>
+            </div>
+            <div class="cbv-subscriptions-card__meta-item">
+              <p class="cbv-subscriptions-card__meta-label">Frequency</p>
+              <p class="cbv-subscriptions-card__meta-value">${escapeHtml(item.frequency || '—')}</p>
+            </div>
+            <div class="cbv-subscriptions-card__meta-item">
+              <p class="cbv-subscriptions-card__meta-label">Builder flow</p>
+              <p class="cbv-subscriptions-card__meta-value">${escapeHtml(builderType)} Builder</p>
+            </div>
+          </div>
+          <p class="cbv-subscriptions-card__config">${escapeHtml(summary)}</p>
+          <div class="cbv-subscriptions-card__actions" aria-label="Subscription actions">
+            <a class="button button--secondary" href="${escapeHtml(item.billing_management_url || '#')}">Manage Billing</a>
+            <a class="button button--secondary" href="/pages/edit-subscription-item?type=${type}&id=${id}">Edit Next Item</a>
+            <a class="button button--secondary" href="#">Skip Next Order</a>
+            <a class="button button--secondary" href="#">Pause Subscription</a>
+          </div>
+        </article>
+      `;
+    }
+
+    async function init() {
+      const config = readConfig();
+      const mocks = readMocks();
+      const mode = (config.data_mode || 'mock').toLowerCase();
+      const apiBasePath = (config.api_base_path || '/apps/cbv-subscriptions').replace(/\/$/, '');
+      const mockItems = Array.isArray(mocks?.items) ? mocks.items : [];
+
+      function renderItems(items, source) {
+        if (items.length === 0) {
+          if (config.empty_state_enabled) {
+            listEl.innerHTML = `<div class="cbv-subscriptions__empty"><h2 class="heading-bold">No subscriptions yet</h2><p>It looks like you do not have any active subscription items right now.</p></div>`;
+          } else {
+            listEl.innerHTML = '';
+          }
+          statusEl.hidden = true;
+          return;
+        }
+
+        listEl.innerHTML = items.map(renderCard).join('');
+        statusEl.hidden = source !== 'mock-fallback';
+        if (source === 'mock-fallback') {
+          statusEl.textContent = 'Live subscriptions are temporarily unavailable. Showing demo subscriptions.';
+        }
+      }
+
+      if (mode === 'mock') {
+        renderItems(mockItems, 'mock');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${apiBasePath}/items`, {
+          method: 'GET',
+          headers: { Accept: 'application/json' },
+          credentials: 'same-origin'
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const payload = await response.json();
+        const items = Array.isArray(payload?.items) ? payload.items : [];
+        renderItems(items, 'live');
+      } catch (error) {
+        console.error('CBV subscriptions: failed to load customer subscription items', error);
+        if (mode === 'auto') {
+          renderItems(mockItems, 'mock-fallback');
+          return;
+        }
+        statusEl.hidden = false;
+        statusEl.textContent = 'We could not load your live subscriptions right now. Please refresh and try again.';
+      }
+    }
+
+    init();
+  })();
+</script>
 
 {% schema %}
 {
@@ -297,6 +451,33 @@
       "id": "show_empty_state",
       "label": "Show empty state",
       "default": false
+    },
+    {
+      "type": "select",
+      "id": "data_mode",
+      "label": "Subscription data mode",
+      "default": "mock",
+      "options": [
+        {
+          "value": "mock",
+          "label": "Mock (safe default)"
+        },
+        {
+          "value": "live",
+          "label": "Live API only"
+        },
+        {
+          "value": "auto",
+          "label": "Auto (live, fallback to mock)"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "api_base_path",
+      "label": "Subscriptions API base path",
+      "default": "/apps/cbv-subscriptions",
+      "info": "Theme will call {base}/items for customer-owned subscription items."
     },
     {
       "type": "header",
