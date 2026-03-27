@@ -230,7 +230,11 @@
     <script type="application/json" data-cbv-subscription-api-config>
       {
         "api_base_path": {{ section.settings.api_base_path | strip | default: '/apps/cbv-subscriptions' | json }},
-        "data_mode": {{ section.settings.data_mode | default: 'mock' | json }}
+        "data_mode": {{ section.settings.data_mode | default: 'mock' | json }},
+        "builder_handles": {
+          "candle": "cbv-builder",
+          "wax-melt": "wax-melts-builder"
+        }
       }
     </script>
     <script type="application/json" data-cbv-subscription-mocks>
@@ -459,6 +463,17 @@
         return records[Object.keys(records)[0]] || null;
       }
 
+      async function fetchBuilderProduct(handle) {
+        if (!handle) return null;
+        const response = await fetch(`/products/${encodeURIComponent(handle)}.js`, {
+          method: 'GET',
+          headers: { Accept: 'application/json' },
+          credentials: 'same-origin'
+        });
+        if (!response.ok) throw new Error(`Unable to load builder product (${response.status})`);
+        return response.json();
+      }
+
       if (!requestedId) {
         setFeedback('Missing subscription item id. Please return to Manage Subscriptions and choose an item.', 'error');
         return;
@@ -493,6 +508,16 @@
       const itemType = normalizeBuilderFamily(item.builder_family || requestedType || 'candle');
       const isWax = itemType === 'wax-melt';
       const context = item.product_context || {};
+      const builderHandle = apiConfig?.builder_handles?.[itemType] || (isWax ? 'wax-melts-builder' : 'cbv-builder');
+
+      let builderProduct = null;
+      try {
+        builderProduct = await fetchBuilderProduct(builderHandle);
+      } catch (error) {
+        console.error('CBV edit subscription: failed to load builder product variants', error);
+      }
+
+      const builderVariants = Array.isArray(builderProduct?.variants) ? builderProduct.variants : [];
 
       const vesselLabel = root.querySelector('[data-cbv-vessel-label]');
       const secondaryLabel = root.querySelector('[data-cbv-secondary-label]');
@@ -513,6 +538,72 @@
       const dynamicSecondaryProp = root.querySelector('[data-cbv-dynamic-secondary-prop]');
 
       const state = { ...(item.properties || {}) };
+
+      function resolveLiveVariantId() {
+        const candidate = state.variant_id
+          || item.variant_id
+          || item.shopify_variant_id
+          || item.product_variant_id
+          || item.external_variant_id;
+        const parsed = Number(candidate);
+        return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+      }
+
+      function getUniqueOptionValues(optionKey) {
+        if (!builderVariants.length) return [];
+        const seen = new Set();
+        const values = [];
+        builderVariants.forEach((variant) => {
+          const value = (variant?.[optionKey] || '').toString().trim();
+          const normalizedValue = normalize(value);
+          if (!value || seen.has(normalizedValue)) return;
+          seen.add(normalizedValue);
+          values.push(value);
+        });
+        return values;
+      }
+
+      function findVariantForState() {
+        if (!builderVariants.length) return null;
+
+        const exactId = Number(state.variant_id);
+        if (Number.isFinite(exactId) && exactId > 0) {
+          const byId = builderVariants.find((variant) => Number(variant.id) === exactId);
+          if (byId) return byId;
+        }
+
+        const vesselKey = isWax ? 'vessel_format' : 'vessel';
+        const vesselValue = normalize(state[vesselKey]);
+        const secondaryKey = context.secondary_prop_key;
+        const secondaryValue = normalize(secondaryKey ? state[secondaryKey] : '');
+
+        let matched = builderVariants.find((variant) => {
+          if (vesselValue && normalize(variant.option1) !== vesselValue) return false;
+          if (!secondaryKey || !secondaryValue) return true;
+          return normalize(variant.option2) === secondaryValue;
+        });
+
+        if (!matched && vesselValue) {
+          matched = builderVariants.find((variant) => normalize(variant.option1) === vesselValue);
+        }
+
+        return matched || builderVariants[0] || null;
+      }
+
+      function syncStateFromVariant(variant) {
+        if (!variant) return;
+        state.variant_id = String(variant.id || '');
+        if (isWax) {
+          state.vessel_format = variant.option1 || state.vessel_format || '';
+        } else {
+          state.vessel = variant.option1 || state.vessel || '';
+        }
+
+        const secondaryKey = context.secondary_prop_key;
+        if (secondaryKey && variant.option2) {
+          state[secondaryKey] = variant.option2;
+        }
+      }
 
       function withFallback(values, fallbackValue) {
         const base = Array.isArray(values) ? values.filter(Boolean) : [];
@@ -572,6 +663,15 @@
         }
       }
 
+      function syncVariantFromState() {
+        const matchedVariant = findVariantForState();
+        if (matchedVariant) {
+          syncStateFromVariant(matchedVariant);
+        } else {
+          state.variant_id = '';
+        }
+      }
+
       function renderScentResults(query = '') {
         const q = normalize(query);
         const filtered = fragrances.filter((entry) => {
@@ -603,13 +703,22 @@
         scentEmpty.hidden = visible.length > 0;
       }
 
+      state.variant_id = state.variant_id || resolveLiveVariantId() || '';
+      syncVariantFromState();
+
       const vesselKey = isWax ? 'vessel_format' : 'vessel';
-      const vesselValues = withFallback(context.vessel_values, state[vesselKey]);
+      const variantVesselValues = getUniqueOptionValues('option1');
+      const vesselValues = variantVesselValues.length
+        ? withFallback(variantVesselValues, state[vesselKey])
+        : withFallback(context.vessel_values, state[vesselKey]);
       renderChoiceCards(vesselOptions, vesselKey, vesselValues, 'cbv_vessel');
       vesselLabel.textContent = context.vessel_label || (isWax ? 'Vessel / Format' : 'Vessel / Jar');
 
       const secondaryKey = context.secondary_prop_key;
-      const secondaryValues = withFallback(context.secondary_values, secondaryKey ? state[secondaryKey] : '');
+      const variantSecondaryValues = getUniqueOptionValues('option2');
+      const secondaryValues = variantSecondaryValues.length
+        ? withFallback(variantSecondaryValues, secondaryKey ? state[secondaryKey] : '')
+        : withFallback(context.secondary_values, secondaryKey ? state[secondaryKey] : '');
       if (secondaryKey && secondaryValues.length > 0) {
         renderChoiceCards(secondaryOptions, secondaryKey, secondaryValues, 'cbv_secondary');
         secondaryLabel.textContent = context.secondary_label || 'Secondary Option';
@@ -629,6 +738,7 @@
         const field = event.target.closest('[data-cbv-field]');
         if (!field) return;
         state[field.dataset.cbvField] = field.value;
+        syncVariantFromState();
         syncChoiceCards();
         syncHiddenProps();
         updateSummary();
@@ -665,14 +775,12 @@
           setFeedback('Please select a scent before saving.', 'error');
           return;
         }
-        if (!isWax && !payloadProperties.vessel) {
-          setFeedback('Please select a vessel before saving.', 'error');
+        const selectedVariant = findVariantForState();
+        if (!selectedVariant || !selectedVariant.id) {
+          setFeedback('Please select a valid product variant before saving.', 'error');
           return;
         }
-        if (isWax && !payloadProperties.vessel_format) {
-          setFeedback('Please select a vessel format before saving.', 'error');
-          return;
-        }
+        payloadProperties.variant_id = String(selectedVariant.id);
 
         const apiBasePath = (apiConfig.api_base_path || '/apps/cbv-subscriptions').replace(/\/$/, '');
         if (itemSource === 'mock') {
