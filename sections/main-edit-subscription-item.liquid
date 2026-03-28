@@ -593,16 +593,40 @@
       const isWax = itemType === 'wax-melt';
       const context = item.product_context || {};
       const liveProductHandle = normalizeHandle(item?.product?.handle);
-      const handleFromType = apiConfig?.builder_handles?.[itemType];
-      const builderHandle = normalizeHandle(handleFromType || (isWax ? 'wax-melts-builder' : 'cbv-builder'));
+      const handleFromType = normalizeHandle(apiConfig?.builder_handles?.[itemType]);
+      const configuredFallbackHandle = normalizeHandle(isWax ? 'wax-melts-builder' : 'cbv-builder');
+      const handleCandidates = [
+        context.builder_product_handle,
+        context.builder_handle,
+        item.builder_product_handle,
+        item.builder_handle,
+        liveProductHandle,
+        handleFromType,
+        configuredFallbackHandle
+      ]
+        .map((value) => normalizeHandle(value))
+        .filter(Boolean)
+        .filter((value, index, list) => list.indexOf(value) === index);
 
       let builderProduct = null;
-      try {
-        builderProduct = await fetchBuilderProduct(builderHandle);
-      } catch (error) {
-        console.error('CBV edit subscription: failed to load builder product variants', error);
-        setBuilderIssue(`Unable to load builder configuration from /products/${builderHandle}.js.`);
-        setFeedback(`Unable to load builder product ${builderHandle}. Please refresh and try again.`, 'error');
+      let builderHandle = '';
+      let loadError = null;
+
+      for (const candidateHandle of handleCandidates) {
+        try {
+          builderProduct = await fetchBuilderProduct(candidateHandle);
+          builderHandle = candidateHandle;
+          break;
+        } catch (error) {
+          loadError = error;
+        }
+      }
+
+      if (!builderProduct || !builderHandle) {
+        console.error('CBV edit subscription: failed to load builder product variants', loadError);
+        const attemptedHandles = handleCandidates.length ? handleCandidates.join(', ') : '(none)';
+        setBuilderIssue(`Unable to load builder configuration. Tried: ${attemptedHandles}.`);
+        setFeedback('Unable to load product configuration for this subscription item. Please refresh and try again.', 'error');
         if (saveButton) saveButton.disabled = true;
         return;
       }
