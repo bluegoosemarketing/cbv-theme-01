@@ -100,6 +100,25 @@
     background: rgba(27, 127, 59, 0.12);
   }
 
+  .cbv-subscription-edit__feedback.is-warning {
+    border-color: rgba(176, 118, 24, 0.45);
+    background: rgba(176, 118, 24, 0.12);
+  }
+
+  .cbv-subscription-edit__builder-issue {
+    margin-top: 0.8rem;
+    padding: 0.9rem 1rem;
+    border-radius: 0.8rem;
+    border: 0.1rem solid rgba(181, 53, 53, 0.45);
+    background: rgba(181, 53, 53, 0.08);
+    color: rgb(122, 29, 29);
+    font-size: 1.3rem;
+  }
+
+  .cbv-subscription-edit__builder-issue[hidden] {
+    display: none !important;
+  }
+
   .cbv-subscription-edit [hidden] {
     display: none !important;
   }
@@ -161,6 +180,7 @@
         </div>
         <div class="cbv-step-content">
           <div class="cbv-choice-grid" data-cbv-vessel-options></div>
+          <p class="cbv-subscription-edit__builder-issue" data-cbv-builder-issue hidden></p>
         </div>
       </div>
 
@@ -343,7 +363,63 @@
 
     function normalizeBuilderFamily(value) {
       const normalized = (value || '').toString().trim().toLowerCase();
-      return normalized === 'wax melt' ? 'wax-melt' : normalized;
+      if (normalized === 'wax melt' || normalized === 'wax_melt' || normalized === 'waxmelt') return 'wax-melt';
+      return normalized;
+    }
+
+    function normalizeHandle(value) {
+      return (value || '')
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    function deriveBuilderOptionMeta(builderProduct, isWax) {
+      const optionNames = Array.isArray(builderProduct?.options) ? builderProduct.options : [];
+      const variants = Array.isArray(builderProduct?.variants) ? builderProduct.variants : [];
+      const hasVariants = variants.length > 0;
+
+      if (!hasVariants) {
+        return { error: 'Builder product has no variants.' };
+      }
+
+      if (variants.length <= 1) {
+        return { error: 'Builder product has only one default variant and cannot render vessel choices.' };
+      }
+
+      if (!optionNames.length) {
+        return { error: 'Builder product options are missing or malformed.' };
+      }
+
+      const vesselIndex = 0;
+      const vesselKey = 'option1';
+      const vesselValues = new Set(
+        variants.map((variant) => normalize(variant?.[vesselKey])).filter(Boolean)
+      );
+      if (!vesselValues.size) {
+        return { error: 'Builder product does not expose vessel values in option1.' };
+      }
+
+      const secondaryIndex = optionNames.length > 1 ? 1 : -1;
+      const secondaryKey = secondaryIndex >= 0 ? 'option2' : '';
+      const secondaryValues = secondaryKey
+        ? new Set(variants.map((variant) => normalize(variant?.[secondaryKey])).filter(Boolean))
+        : new Set();
+      const hasSecondaryOption = secondaryIndex >= 0 && secondaryValues.size > 0;
+
+      const vesselLabel = optionNames[vesselIndex] || (isWax ? 'Vessel / Format' : 'Vessel / Jar');
+      const secondaryLabel = hasSecondaryOption ? (optionNames[secondaryIndex] || 'Secondary Option') : '';
+      return {
+        vesselIndex,
+        vesselKey,
+        vesselLabel,
+        secondaryIndex: hasSecondaryOption ? secondaryIndex : -1,
+        secondaryKey: hasSecondaryOption ? secondaryKey : '',
+        secondaryLabel,
+        hasSecondaryOption
+      };
     }
 
     function parseFragrancePayload(scriptEl) {
@@ -429,19 +505,27 @@
       const feedbackEl = root.querySelector('[data-cbv-form-feedback]');
       const saveButton = root.querySelector('[data-cbv-save-button]');
       const form = root.querySelector('[data-cbv-subscription-edit-form]');
+      const builderIssueEl = root.querySelector('[data-cbv-builder-issue]');
+
+      function setBuilderIssue(message) {
+        if (!builderIssueEl) return;
+        builderIssueEl.hidden = !message;
+        builderIssueEl.textContent = message || '';
+      }
 
       function setFeedback(message, tone = '') {
         if (!feedbackEl) return;
         if (!message) {
           feedbackEl.hidden = true;
           feedbackEl.textContent = '';
-          feedbackEl.classList.remove('is-error', 'is-success');
+          feedbackEl.classList.remove('is-error', 'is-success', 'is-warning');
           return;
         }
         feedbackEl.hidden = false;
         feedbackEl.textContent = message;
         feedbackEl.classList.toggle('is-error', tone === 'error');
         feedbackEl.classList.toggle('is-success', tone === 'success');
+        feedbackEl.classList.toggle('is-warning', tone === 'warning');
       }
 
       async function fetchLiveItem() {
@@ -508,16 +592,36 @@
       const itemType = normalizeBuilderFamily(item.builder_family || requestedType || 'candle');
       const isWax = itemType === 'wax-melt';
       const context = item.product_context || {};
-      const builderHandle = apiConfig?.builder_handles?.[itemType] || (isWax ? 'wax-melts-builder' : 'cbv-builder');
+      const liveProductHandle = normalizeHandle(item?.product?.handle);
+      const handleFromType = apiConfig?.builder_handles?.[itemType];
+      const builderHandle = normalizeHandle(handleFromType || (isWax ? 'wax-melts-builder' : 'cbv-builder'));
 
       let builderProduct = null;
       try {
         builderProduct = await fetchBuilderProduct(builderHandle);
       } catch (error) {
         console.error('CBV edit subscription: failed to load builder product variants', error);
+        setBuilderIssue(`Unable to load builder configuration from /products/${builderHandle}.js.`);
+        setFeedback(`Unable to load builder product ${builderHandle}. Please refresh and try again.`, 'error');
+        if (saveButton) saveButton.disabled = true;
+        return;
       }
 
       const builderVariants = Array.isArray(builderProduct?.variants) ? builderProduct.variants : [];
+      if (!builderVariants.length) {
+        setBuilderIssue(`Builder product ${builderHandle} returned no variants.`);
+        setFeedback(`Builder product ${builderHandle} has no variants. Please contact support.`, 'error');
+        if (saveButton) saveButton.disabled = true;
+        return;
+      }
+
+      const optionMeta = deriveBuilderOptionMeta(builderProduct, isWax);
+      if (optionMeta?.error) {
+        setBuilderIssue(optionMeta.error);
+        setFeedback(optionMeta.error, 'error');
+        if (saveButton) saveButton.disabled = true;
+        return;
+      }
 
       const vesselLabel = root.querySelector('[data-cbv-vessel-label]');
       const secondaryLabel = root.querySelector('[data-cbv-secondary-label]');
@@ -538,6 +642,14 @@
       const dynamicSecondaryProp = root.querySelector('[data-cbv-dynamic-secondary-prop]');
 
       const state = { ...(item.properties || {}) };
+      state.builder_product_handle = builderHandle;
+      const resolvedSecondaryPropKey = context.secondary_prop_key || (optionMeta.secondaryLabel ? normalizeHandle(optionMeta.secondaryLabel).replace(/-/g, '_') : '');
+      if (liveProductHandle && liveProductHandle !== builderHandle) {
+        console.warn('CBV edit subscription: item product handle differs from builder handle', {
+          item_product_handle: liveProductHandle,
+          builder_handle: builderHandle
+        });
+      }
 
       function resolveLiveVariantId() {
         const candidate = state.variant_id
@@ -547,6 +659,26 @@
           || item.external_variant_id;
         const parsed = Number(candidate);
         return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+      }
+
+      function warnIfMissingLiveVariantId() {
+        const rawCandidate = state.variant_id
+          || item.variant_id
+          || item.shopify_variant_id
+          || item.product_variant_id
+          || item.external_variant_id;
+        const numericCandidate = Number(rawCandidate);
+        if (!Number.isFinite(numericCandidate) || numericCandidate <= 0) return;
+        const exists = builderVariants.some((variant) => Number(variant.id) === numericCandidate);
+        if (exists) return;
+        console.warn('CBV edit subscription: live subscription variant id not found in builder product', {
+          candidate_variant_id: numericCandidate,
+          builder_handle: builderHandle
+        });
+        setFeedback(
+          `Saved subscription variant (${numericCandidate}) is no longer in ${builderHandle}. Please choose a replacement option before saving.`,
+          'warning'
+        );
       }
 
       function getUniqueOptionValues(optionKey) {
@@ -572,19 +704,19 @@
           if (byId) return byId;
         }
 
-        const vesselKey = isWax ? 'vessel_format' : 'vessel';
-        const vesselValue = normalize(state[vesselKey]);
-        const secondaryKey = context.secondary_prop_key;
-        const secondaryValue = normalize(secondaryKey ? state[secondaryKey] : '');
+        const vesselFieldKey = isWax ? 'vessel_format' : 'vessel';
+        const vesselValue = normalize(state[vesselFieldKey] || state.vessel || state.vessel_format);
+        const dynamicSecondaryKey = resolvedSecondaryPropKey;
+        const secondaryValue = normalize(dynamicSecondaryKey ? state[dynamicSecondaryKey] : '');
 
         let matched = builderVariants.find((variant) => {
-          if (vesselValue && normalize(variant.option1) !== vesselValue) return false;
-          if (!secondaryKey || !secondaryValue) return true;
-          return normalize(variant.option2) === secondaryValue;
+          if (vesselValue && normalize(variant[optionMeta.vesselKey]) !== vesselValue) return false;
+          if (!optionMeta.secondaryKey || !secondaryValue) return true;
+          return normalize(variant[optionMeta.secondaryKey]) === secondaryValue;
         });
 
         if (!matched && vesselValue) {
-          matched = builderVariants.find((variant) => normalize(variant.option1) === vesselValue);
+          matched = builderVariants.find((variant) => normalize(variant[optionMeta.vesselKey]) === vesselValue);
         }
 
         return matched || builderVariants[0] || null;
@@ -594,14 +726,16 @@
         if (!variant) return;
         state.variant_id = String(variant.id || '');
         if (isWax) {
-          state.vessel_format = variant.option1 || state.vessel_format || '';
+          state.vessel_format = variant[optionMeta.vesselKey] || state.vessel_format || '';
+          state.vessel = '';
         } else {
-          state.vessel = variant.option1 || state.vessel || '';
+          state.vessel = variant[optionMeta.vesselKey] || state.vessel || '';
+          state.vessel_format = '';
         }
 
-        const secondaryKey = context.secondary_prop_key;
-        if (secondaryKey && variant.option2) {
-          state[secondaryKey] = variant.option2;
+        const secondaryKey = resolvedSecondaryPropKey;
+        if (secondaryKey && optionMeta.secondaryKey && variant[optionMeta.secondaryKey]) {
+          state[secondaryKey] = variant[optionMeta.secondaryKey];
         }
       }
 
@@ -643,7 +777,7 @@
           input.value = state[key] || '';
         });
 
-        const secondaryKey = context.secondary_prop_key;
+        const secondaryKey = resolvedSecondaryPropKey;
         if (secondaryKey) {
           dynamicSecondaryProp.name = `properties[${secondaryKey}]`;
           dynamicSecondaryProp.value = state[secondaryKey] || '';
@@ -657,9 +791,9 @@
         summaryFrequency.textContent = item.frequency;
 
         if (isWax) {
-          summaryConfig.textContent = [state.scent_1, state.vessel_format, state[context.secondary_prop_key]].filter(Boolean).join(' · ');
+          summaryConfig.textContent = [state.scent_1, state.vessel_format, state[resolvedSecondaryPropKey]].filter(Boolean).join(' · ');
         } else {
-          summaryConfig.textContent = [state.scent_1, state.wax_color, state.vessel, state.wick_upgrade].filter(Boolean).join(' · ');
+          summaryConfig.textContent = [state.scent_1, state.wax_color, state.vessel, state[resolvedSecondaryPropKey] || state.wick_upgrade].filter(Boolean).join(' · ');
         }
       }
 
@@ -704,24 +838,25 @@
       }
 
       state.variant_id = state.variant_id || resolveLiveVariantId() || '';
+      warnIfMissingLiveVariantId();
       syncVariantFromState();
 
       const vesselKey = isWax ? 'vessel_format' : 'vessel';
-      const variantVesselValues = getUniqueOptionValues('option1');
+      const variantVesselValues = getUniqueOptionValues(optionMeta.vesselKey);
       const vesselValues = variantVesselValues.length
         ? withFallback(variantVesselValues, state[vesselKey])
         : withFallback(context.vessel_values, state[vesselKey]);
       renderChoiceCards(vesselOptions, vesselKey, vesselValues, 'cbv_vessel');
-      vesselLabel.textContent = context.vessel_label || (isWax ? 'Vessel / Format' : 'Vessel / Jar');
+      vesselLabel.textContent = optionMeta.vesselLabel || context.vessel_label || (isWax ? 'Vessel / Format' : 'Vessel / Jar');
 
-      const secondaryKey = context.secondary_prop_key;
-      const variantSecondaryValues = getUniqueOptionValues('option2');
+      const secondaryKey = resolvedSecondaryPropKey;
+      const variantSecondaryValues = optionMeta.secondaryKey ? getUniqueOptionValues(optionMeta.secondaryKey) : [];
       const secondaryValues = variantSecondaryValues.length
         ? withFallback(variantSecondaryValues, secondaryKey ? state[secondaryKey] : '')
         : withFallback(context.secondary_values, secondaryKey ? state[secondaryKey] : '');
       if (secondaryKey && secondaryValues.length > 0) {
         renderChoiceCards(secondaryOptions, secondaryKey, secondaryValues, 'cbv_secondary');
-        secondaryLabel.textContent = context.secondary_label || 'Secondary Option';
+        secondaryLabel.textContent = optionMeta.secondaryLabel || context.secondary_label || 'Secondary Option';
         secondaryGroup.hidden = false;
       } else {
         secondaryGroup.hidden = true;
@@ -757,7 +892,7 @@
       form?.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const secondaryPropKey = context.secondary_prop_key;
+        const secondaryPropKey = resolvedSecondaryPropKey;
         const payloadProperties = {
           scent_1: state.scent_1 || '',
           scent_family: state.scent_family || '',
@@ -771,10 +906,6 @@
           payloadProperties[secondaryPropKey] = state[secondaryPropKey] || '';
         }
 
-        if (!payloadProperties.scent_1) {
-          setFeedback('Please select a scent before saving.', 'error');
-          return;
-        }
         const selectedVariant = findVariantForState();
         if (!selectedVariant || !selectedVariant.id) {
           setFeedback('Please select a valid product variant before saving.', 'error');
