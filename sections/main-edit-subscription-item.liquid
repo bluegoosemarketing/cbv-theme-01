@@ -558,6 +558,16 @@
         return response.json();
       }
 
+      function slugifyHandle(value) {
+        if (typeof value !== 'string') return '';
+        return value
+          .toLowerCase()
+          .trim()
+          .replace(/['’"]/g, '')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+
       if (!requestedId) {
         setFeedback('Missing subscription item id. Please return to Manage Subscriptions and choose an item.', 'error');
         return;
@@ -593,16 +603,16 @@
       const isWax = itemType === 'wax-melt';
       const context = item.product_context || {};
       const liveProductHandle = normalizeHandle(item?.product?.handle);
+      const titleDerivedHandle = normalizeHandle(slugifyHandle(item?.product_title));
       const handleFromType = normalizeHandle(apiConfig?.builder_handles?.[itemType]);
-      const configuredFallbackHandle = normalizeHandle(isWax ? 'wax-melts-builder' : 'cbv-builder');
       const handleCandidates = [
         context.builder_product_handle,
         context.builder_handle,
         item.builder_product_handle,
         item.builder_handle,
         liveProductHandle,
+        titleDerivedHandle,
         handleFromType,
-        configuredFallbackHandle
       ]
         .map((value) => normalizeHandle(value))
         .filter(Boolean)
