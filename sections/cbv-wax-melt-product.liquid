@@ -162,9 +162,23 @@
               </div>
 
               <div class="cbv-step-content">
-                <div class="cbv-scent__search-wrap">
-                  <input type="search" class="cbv-scent__search" placeholder="Search fragrance name or family" aria-label="Search scents" data-cbv-scent-input>
-                  <button type="button" class="cbv-scent__clear" data-cbv-clear-scent>Clear</button>
+                <div class="cbv-search-wrapper">
+                  <svg class="cbv-search-icon" aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input
+                    id="CBVWaxScent-{{ section.id }}"
+                    type="text"
+                    class="cbv-builder__input"
+                    placeholder="Search for a memory (e.g. Banana Nut Bread)..."
+                    autocomplete="off"
+                    role="combobox"
+                    aria-expanded="false"
+                    aria-autocomplete="list"
+                    aria-controls="CBVWaxScentResults-{{ section.id }}"
+                    data-cbv-scent-input
+                  >
                 </div>
 
                 <div class="cbv-scent__families" data-cbv-family-filters></div>

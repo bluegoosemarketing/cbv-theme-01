@@ -396,6 +396,12 @@
 /* --- RECHARGE HOST (LIGHT DOM) OVERRIDES --- */
 .cbv-purchase-options { margin-bottom: 3rem; }
 
+/* Hide duplicate GPO scent dropdowns on wax-melt custom builder.
+   The custom CBV scent picker is the intended selector in this flow. */
+.cbv-builder--wax-melt .gpo-group.gpo-form__group.gpo-col-12 {
+  display: none !important;
+}
+
 /* 1. Reset the outer wrappers completely */
 .cbv-purchase-options--apps,
 .cbv-purchase-options--apps .shopify-block,
