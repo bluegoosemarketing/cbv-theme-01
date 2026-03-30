@@ -25,6 +25,10 @@
 {% if template.name == 'collection' or template.name == 'product' %}{% assign is_collection_or_product_flow = true %}{% endif %}
 {% assign is_optimized_flow_header = false %}
 {% if is_builder_flow or is_cart_flow or is_collection_or_product_flow %}{% assign is_optimized_flow_header = true %}{% endif %}
+{% assign cbv_back_fallback_url = '/collections' %}
+{% if template.name == 'product' and collection %}
+  {% assign cbv_back_fallback_url = collection.url %}
+{% endif %}
 
 {% style %}
   :root {
@@ -891,9 +895,9 @@
       <!-- LEFT COLUMN: Search / Exit Link & Sticky Logo -->
       <div class="cbv-header-left">
         {% if is_optimized_flow_header %}
-          <a href="/collections/all-products" class="cbv-builder-exit" aria-label="{% if is_cart_flow %}Continue shopping{% elsif is_builder_flow %}Exit Builder{% else %}Shop all products{% endif %}">
+          <a href="{{ cbv_back_fallback_url }}" class="cbv-builder-exit" data-cbv-back-link data-fallback-url="{{ cbv_back_fallback_url }}" aria-label="{% if is_cart_flow %}Continue shopping{% elsif is_builder_flow %}Exit Builder{% else %}Go back{% endif %}">
             <svg class="cbv-icon" viewBox="0 0 24 24" width="18" height="18"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            <span>{% if is_cart_flow %}Keep Shopping{% elsif is_builder_flow %}Exit Builder{% else %}Shop All{% endif %}</span>
+            <span>{% if is_cart_flow %}Keep Shopping{% elsif is_builder_flow %}Exit Builder{% else %}Back{% endif %}</span>
           </a>
         {% else %}
           <form action="{{ routes.search_url }}" method="get" role="search" class="cbv-search-bar">
@@ -948,9 +952,9 @@
     <!-- MOBILE HEADER -->
     <div class="cbv-mobile-header">
       {% if is_optimized_flow_header %}
-        <a href="/collections/all-products" class="cbv-builder-exit" aria-label="{% if is_cart_flow %}Continue shopping{% elsif is_builder_flow %}Exit Builder{% else %}Shop all products{% endif %}">
+        <a href="{{ cbv_back_fallback_url }}" class="cbv-builder-exit" data-cbv-back-link data-fallback-url="{{ cbv_back_fallback_url }}" aria-label="{% if is_cart_flow %}Continue shopping{% elsif is_builder_flow %}Exit Builder{% else %}Go back{% endif %}">
           <svg class="cbv-icon" viewBox="0 0 24 24" width="20" height="20"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-          <span>{% if is_cart_flow %}Shop{% elsif is_builder_flow %}Exit{% else %}All{% endif %}</span>
+          <span>{% if is_cart_flow %}Shop{% elsif is_builder_flow %}Exit{% else %}Back{% endif %}</span>
         </a>
       {% else %}
         <button class="cbv-hamburger" type="button" data-cbv-toggle-drawer aria-label="Open menu">
@@ -1179,6 +1183,31 @@
   </div>
 </div>
 {% endif %}
+
+<script>
+  (() => {
+    const backLinks = document.querySelectorAll('[data-cbv-back-link]');
+    if (!backLinks.length) return;
+
+    const canUseHistoryBack = () => {
+      if (window.history.length <= 1 || !document.referrer) return false;
+      try {
+        const referrer = new URL(document.referrer);
+        return referrer.origin === window.location.origin;
+      } catch (error) {
+        return false;
+      }
+    };
+
+    backLinks.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        if (!canUseHistoryBack()) return;
+        event.preventDefault();
+        window.history.back();
+      });
+    });
+  })();
+</script>
 
 {% schema %}
 {
