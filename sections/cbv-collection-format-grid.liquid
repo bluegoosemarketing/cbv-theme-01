@@ -180,6 +180,28 @@
 {% comment %} Script for Instant Quick Search Filter {% endcomment %}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    const scentParam = new URLSearchParams(window.location.search).get('scent');
+    const appendScentParam = (url) => {
+      if (!url || !scentParam) return url;
+      const [base, hash = ''] = url.split('#');
+      if (!base) return url;
+
+      try {
+        const parsedUrl = new URL(base, window.location.origin);
+        parsedUrl.searchParams.set('scent', scentParam);
+        const nextUrl = `${parsedUrl.pathname}${parsedUrl.search}`;
+        return hash ? `${nextUrl}#${hash}` : nextUrl;
+      } catch (error) {
+        return url;
+      }
+    };
+
+    if (scentParam) {
+      document.querySelectorAll('.cbv-format-card[href], .cbv-best-seller[href]').forEach((link) => {
+        link.href = appendScentParam(link.getAttribute('href'));
+      });
+    }
+
     const searchInput = document.getElementById('cbv-format-search');
     const cards = document.querySelectorAll('.cbv-format-card');
     const emptyState = document.getElementById('cbv-format-empty');
