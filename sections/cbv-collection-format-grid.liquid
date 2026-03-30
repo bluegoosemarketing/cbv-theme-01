@@ -21,21 +21,33 @@
   endif
 -%}
 
-<section class="cbv-format-grid color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+<section class="cbv-format-grid section-{{ section.id }}-padding">
   <div class="page-width">
-    <header class="cbv-format-grid__hero">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="cbv-format-grid__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-      {%- endif -%}
-      <h1 class="cbv-format-grid__title">{{ collection.title | escape }}</h1>
-      {%- if section.settings.intro != blank -%}
-        <div class="cbv-format-grid__intro rte">{{ section.settings.intro }}</div>
-      {%- elsif collection.description != blank -%}
-        <div class="cbv-format-grid__intro rte">{{ collection.description }}</div>
-      {%- endif -%}
-    </header>
+    
+    <div class="cbv-format-grid__top-bar">
+      <div class="cbv-format-grid__header-text">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="cbv-format-grid__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h1 class="cbv-format-grid__title">{{ collection.title | escape }}</h1>
+        {%- if section.settings.intro != blank -%}
+          <div class="cbv-format-grid__intro rte">{{ section.settings.intro }}</div>
+        {%- elsif collection.description != blank -%}
+          <div class="cbv-format-grid__intro rte">{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
 
-    <div class="cbv-format-grid__cards" role="list">
+      <div class="cbv-format-grid__toolbar">
+        <div class="cbv-quick-search">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+          <input type="text" id="cbv-format-search" placeholder="Search formats (e.g. Animal, Loaf)..." aria-label="Search formats">
+        </div>
+      </div>
+    </div>
+
+    <div class="cbv-format-grid__cards" id="cbv-format-cards" role="list">
       {%- if section.settings.card_source == 'collection_products' -%}
         {%- for product in collection.products limit: section.settings.collection_products_limit -%}
           {%- liquid
@@ -45,11 +57,7 @@
             assign card_description = product.description | strip_html | truncatewords: section.settings.description_word_limit
           -%}
 
-          <a
-            href="{{ card_link }}"
-            class="cbv-format-card"
-            role="listitem"
-          >
+          <a href="{{ card_link }}" class="cbv-format-card" role="listitem">
             <div class="cbv-format-card__media">
               {%- if product.featured_media -%}
                 {{
@@ -72,7 +80,12 @@
               {%- if card_description != blank -%}
                 <p class="cbv-format-card__description">{{ card_description }}</p>
               {%- endif -%}
-              <span class="cbv-format-card__cta">{{ card_cta | escape }}</span>
+              <span class="cbv-format-card__cta">
+                {{ card_cta | escape }}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                </svg>
+              </span>
             </div>
           </a>
         {%- endfor -%}
@@ -82,18 +95,14 @@
             assign card_title = block.settings.title | default: block.settings.format_size
             assign card_link = block.settings.link
             assign card_cta = block.settings.cta_label | default: section.settings.default_cta_label
+            assign card_description = block.settings.description | strip_html | truncatewords: section.settings.description_word_limit
             assign card_tag = 'div'
             if card_link != blank
               assign card_tag = 'a'
             endif
           -%}
 
-          <{{ card_tag }}
-            {% if card_link != blank %}href="{{ card_link }}"{% endif %}
-            class="cbv-format-card"
-            {{ block.shopify_attributes }}
-            role="listitem"
-          >
+          <{{ card_tag }} {% if card_link != blank %}href="{{ card_link }}"{% endif %} class="cbv-format-card" {{ block.shopify_attributes }} role="listitem">
             <div class="cbv-format-card__media">
               {%- if block.settings.image != blank -%}
                 {{
@@ -113,14 +122,23 @@
 
             <div class="cbv-format-card__content">
               <h2 class="cbv-format-card__title">{{ card_title | escape }}</h2>
-              {%- if block.settings.description != blank -%}
-                <p class="cbv-format-card__description">{{ block.settings.description }}</p>
+              {%- if card_description != blank -%}
+                <p class="cbv-format-card__description">{{ card_description }}</p>
               {%- endif -%}
-              <span class="cbv-format-card__cta">{{ card_cta | escape }}</span>
+              <span class="cbv-format-card__cta">
+                {{ card_cta | escape }}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                </svg>
+              </span>
             </div>
           </{{ card_tag }}>
         {%- endfor -%}
       {%- endif -%}
+
+      <div id="cbv-format-empty" class="cbv-format-empty-state">
+        No formats matched your search. Try another term!
+      </div>
     </div>
 
     {%- if section.settings.show_best_sellers and featured_collection != blank and featured_collection.products_count > 0 -%}
@@ -159,13 +177,47 @@
   </div>
 </section>
 
+{% comment %} Script for Instant Quick Search Filter {% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('cbv-format-search');
+    const cards = document.querySelectorAll('.cbv-format-card');
+    const emptyState = document.getElementById('cbv-format-empty');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function(e) {
+        const term = e.target.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+          const title = card.querySelector('.cbv-format-card__title').textContent.toLowerCase();
+          const desc = card.querySelector('.cbv-format-card__description')?.textContent.toLowerCase() || '';
+          
+          if (title.includes(term) || desc.includes(term)) {
+            card.style.display = '';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (visibleCount === 0) {
+          emptyState.style.display = 'block';
+        } else {
+          emptyState.style.display = 'none';
+        }
+      });
+    }
+  });
+</script>
+
 {% schema %}
 {
   "name": "CBV format grid",
   "tag": "section",
   "class": "section",
   "max_blocks": 12,
-  "settings": [
+  "settings":[
     {
       "type": "text",
       "id": "eyebrow",
@@ -183,7 +235,7 @@
       "id": "card_source",
       "label": "Card source",
       "default": "blocks",
-      "options": [
+      "options":[
         {
           "value": "blocks",
           "label": "Section blocks"
@@ -213,16 +265,10 @@
       "type": "range",
       "id": "description_word_limit",
       "label": "Collection product description length",
-      "min": 8,
+      "min": 5,
       "max": 40,
       "step": 1,
-      "default": 18
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "option-1"
+      "default": 10
     },
     {
       "type": "range",
@@ -281,11 +327,11 @@
       "default": "Shop now"
     }
   ],
-  "blocks": [
+  "blocks":[
     {
       "type": "format_card",
       "name": "Format card",
-      "settings": [
+      "settings":[
         {
           "type": "text",
           "id": "format_size",
@@ -321,10 +367,10 @@
       ]
     }
   ],
-  "presets": [
+  "presets":[
     {
       "name": "CBV format grid",
-      "blocks": [
+      "blocks":[
         {
           "type": "format_card",
           "settings": {
