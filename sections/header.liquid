@@ -997,9 +997,9 @@
               <div>
                 <span class="cbv-col-title">Custom Creations</span>
                 <ul class="cbv-menu-links">
-                  <li><a href="{{ section.settings.custom_candles_link }}" class="cbv-link-highlight">Custom Candles</a></li>
-                  <li><a href="{{ section.settings.custom_wax_melts_link }}" class="cbv-link-highlight">Custom Wax Melts</a></li>
-                  <li><a href="{{ section.settings.scent_shots_link }}" class="cbv-link-highlight">Scent Shots</a></li>
+                  <li><a href="{{ section.settings.custom_candles_link | default: '/collections/custom-candles' }}" class="cbv-link-highlight">Custom Candles</a></li>
+                  <li><a href="{{ section.settings.custom_wax_melts_link | default: '/collections/melts' }}" class="cbv-link-highlight">Custom Wax Melts</a></li>
+                  <li><a href="{{ section.settings.scent_shots_link | default: '/collections/scent-shots' }}" class="cbv-link-highlight">Scent Shots</a></li>
                 </ul>
               </div>
               <div>
@@ -1056,7 +1056,7 @@
                   {% render 'cbv-scent-family-nav-links', class: 'cbv-scent-pill' %}
                 </div>
                 <div style="margin-top:25px;">
-                  <a href="{{ section.settings.scents_az_link }}" style="font-size:13px;font-family:'Avenir Next',sans-serif;color:#8b5e3c;font-weight:600;text-decoration:underline;">View Full Scent List (A-Z) →</a>
+                  <a href="{{ section.settings.scents_az_link | default: '/pages/scent-library' }}" style="font-size:13px;font-family:'Avenir Next',sans-serif;color:#8b5e3c;font-weight:600;text-decoration:underline;">View Full Scent List (A-Z) →</a>
                 </div>
               </div>
               <a class="cbv-featured-card" href="{{ section.settings.scents_feature_link | default: '/pages/scent-library' }}">
@@ -1117,9 +1117,9 @@
       </button>
       <div class="cbv-mobile-submenu">
         <span class="cbv-mob-cat-title">Custom Creations</span>
-        <a href="{{ section.settings.custom_candles_link }}" class="cbv-mob-link cbv-link-highlight">Custom Candles</a>
-        <a href="{{ section.settings.custom_wax_melts_link }}" class="cbv-mob-link cbv-link-highlight">Custom Wax Melts</a>
-        <a href="{{ section.settings.scent_shots_link }}" class="cbv-mob-link cbv-link-highlight">Scent Shots</a>
+        <a href="{{ section.settings.custom_candles_link | default: '/collections/custom-candles' }}" class="cbv-mob-link cbv-link-highlight">Custom Candles</a>
+        <a href="{{ section.settings.custom_wax_melts_link | default: '/collections/melts' }}" class="cbv-mob-link cbv-link-highlight">Custom Wax Melts</a>
+        <a href="{{ section.settings.scent_shots_link | default: '/collections/scent-shots' }}" class="cbv-mob-link cbv-link-highlight">Scent Shots</a>
 
         <div class="cbv-mobile-divider"></div>
 
@@ -1157,7 +1157,7 @@
         <div class="cbv-mobile-scent-grid">
           {% render 'cbv-scent-family-nav-links', class: 'cbv-scent-pill' %}
         </div>
-        <a href="{{ section.settings.scents_az_link }}" class="cbv-mob-link" style="margin-top:15px;font-weight:700;color:#8b5e3c;">View All A-Z →</a>
+        <a href="{{ section.settings.scents_az_link | default: '/pages/scent-library' }}" class="cbv-mob-link" style="margin-top:15px;font-weight:700;color:#8b5e3c;">View All A-Z →</a>
       </div>
     </div>
 
@@ -1202,20 +1202,17 @@
     {
       "type": "url",
       "id": "custom_candles_link",
-      "label": "Custom candles link",
-      "default": "/collections/custom-candles"
+      "label": "Custom candles link"
     },
     {
       "type": "url",
       "id": "custom_wax_melts_link",
-      "label": "Custom wax melts link",
-      "default": "/collections/melts"
+      "label": "Custom wax melts link"
     },
     {
       "type": "url",
       "id": "scent_shots_link",
-      "label": "Scent shots link",
-      "default": "/collections/scent-shots"
+      "label": "Scent shots link"
     },
     {
       "type": "header",
@@ -1229,8 +1226,7 @@
     {
       "type": "url",
       "id": "shop_feature_link",
-      "label": "Link",
-      "default": "/collections/seasonal-collection"
+      "label": "Link"
     },
     {
       "type": "text",
@@ -1257,8 +1253,7 @@
     {
       "type": "url",
       "id": "scents_az_link",
-      "label": "A-Z scent list link",
-      "default": "/pages/scent-library"
+      "label": "A-Z scent list link"
     },
     {
       "type": "image_picker",
@@ -1268,8 +1263,7 @@
     {
       "type": "url",
       "id": "scents_feature_link",
-      "label": "Featured link",
-      "default": "/pages/scent-library"
+      "label": "Featured link"
     },
     {
       "type": "text",
