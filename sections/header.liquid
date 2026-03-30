@@ -997,9 +997,9 @@
               <div>
                 <span class="cbv-col-title">Custom Creations</span>
                 <ul class="cbv-menu-links">
-                  <li><a href="/collections/custom-candles" class="cbv-link-highlight">Custom Candles</a></li>
-                  <li><a href="/collections/wax-melts" class="cbv-link-highlight">Custom Wax Melts</a></li>
-                  <li><a href="/collections/scent-shots" class="cbv-link-highlight">Scent Shots</a></li>
+                  <li><a href="{{ section.settings.custom_candles_link }}" class="cbv-link-highlight">Custom Candles</a></li>
+                  <li><a href="{{ section.settings.custom_wax_melts_link }}" class="cbv-link-highlight">Custom Wax Melts</a></li>
+                  <li><a href="{{ section.settings.scent_shots_link }}" class="cbv-link-highlight">Scent Shots</a></li>
                 </ul>
               </div>
               <div>
@@ -1117,9 +1117,9 @@
       </button>
       <div class="cbv-mobile-submenu">
         <span class="cbv-mob-cat-title">Custom Creations</span>
-        <a href="/collections/custom-candles" class="cbv-mob-link cbv-link-highlight">Custom Candles</a>
-        <a href="/collections/wax-melts" class="cbv-mob-link cbv-link-highlight">Custom Wax Melts</a>
-        <a href="/collections/scent-shots" class="cbv-mob-link cbv-link-highlight">Scent Shots</a>
+        <a href="{{ section.settings.custom_candles_link }}" class="cbv-mob-link cbv-link-highlight">Custom Candles</a>
+        <a href="{{ section.settings.custom_wax_melts_link }}" class="cbv-mob-link cbv-link-highlight">Custom Wax Melts</a>
+        <a href="{{ section.settings.scent_shots_link }}" class="cbv-mob-link cbv-link-highlight">Scent Shots</a>
 
         <div class="cbv-mobile-divider"></div>
 
@@ -1177,6 +1177,122 @@
   </div>
 </div>
 {% endif %}
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "Free shipping on orders over $75"
+    },
+    {
+      "type": "header",
+      "content": "Custom creation links"
+    },
+    {
+      "type": "url",
+      "id": "custom_candles_link",
+      "label": "Custom candles link",
+      "default": "/collections/custom-candles"
+    },
+    {
+      "type": "url",
+      "id": "custom_wax_melts_link",
+      "label": "Custom wax melts link",
+      "default": "/collections/melts"
+    },
+    {
+      "type": "url",
+      "id": "scent_shots_link",
+      "label": "Scent shots link",
+      "default": "/collections/scent-shots"
+    },
+    {
+      "type": "header",
+      "content": "Shop featured card"
+    },
+    {
+      "type": "image_picker",
+      "id": "shop_feature_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "shop_feature_link",
+      "label": "Link",
+      "default": "/collections/seasonal-collection"
+    },
+    {
+      "type": "text",
+      "id": "shop_feature_label",
+      "label": "Label",
+      "default": "Featured"
+    },
+    {
+      "type": "text",
+      "id": "shop_feature_title",
+      "label": "Title",
+      "default": "Spring Collection"
+    },
+    {
+      "type": "text",
+      "id": "shop_feature_cta",
+      "label": "CTA",
+      "default": "Shop now"
+    },
+    {
+      "type": "header",
+      "content": "Scent library links"
+    },
+    {
+      "type": "url",
+      "id": "scents_az_link",
+      "label": "A-Z scent list link",
+      "default": "/pages/scent-library"
+    },
+    {
+      "type": "image_picker",
+      "id": "scents_feature_image",
+      "label": "Featured image"
+    },
+    {
+      "type": "url",
+      "id": "scents_feature_link",
+      "label": "Featured link",
+      "default": "/pages/scent-library"
+    },
+    {
+      "type": "text",
+      "id": "scents_feature_label",
+      "label": "Featured label",
+      "default": "Featured scent"
+    },
+    {
+      "type": "text",
+      "id": "scents_feature_title",
+      "label": "Featured title",
+      "default": "Scent of the month"
+    },
+    {
+      "type": "text",
+      "id": "scents_feature_cta",
+      "label": "Featured CTA",
+      "default": "Explore now"
+    }
+  ]
+}
+{% endschema %}
+
 
 {% javascript %}
   (() => {
