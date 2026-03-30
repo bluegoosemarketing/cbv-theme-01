@@ -13,6 +13,8 @@
       "type": "main-edit-subscription-item",
       "settings": {
         "color_scheme": "option-1",
+        "data_mode": "live",
+        "api_base_path": "/apps/cbv-subscriptions",
         "padding_top": 32,
         "padding_bottom": 48
       }
