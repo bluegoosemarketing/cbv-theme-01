@@ -15,7 +15,7 @@
         "eyebrow": "Step 1 · Choose your melt shape",
         "intro": "<p>Start by selecting the wax melt shape or format you want to build. Once inside, you'll choose your fragrance and any final options.</p>",
         "card_source": "collection_products",
-        "default_cta_label": "Build this melt",
+        "default_cta_label": "Choose scent",
         "collection_products_limit": 6,
         "description_word_limit": 18,
         "padding_top": 52,

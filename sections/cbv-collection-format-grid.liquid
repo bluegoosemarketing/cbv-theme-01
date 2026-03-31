@@ -30,9 +30,10 @@
           <p class="cbv-format-grid__eyebrow">{{ section.settings.eyebrow | escape }}</p>
         {%- endif -%}
         {%- assign display_title = collection.metafields.theme.display_title | default: collection.title -%}
+        {%- assign display_description = collection.metafields.theme.display_description | default: collection.description -%}
         <h1 class="cbv-format-grid__title">{{ display_title | escape }}</h1>
-        {%- if collection.description != blank -%}
-          <div class="cbv-format-grid__intro rte">{{ collection.description }}</div>
+        {%- if display_description != blank -%}
+          <div class="cbv-format-grid__intro rte">{{ display_description }}</div>
         {%- elsif section.settings.intro != blank -%}
           <div class="cbv-format-grid__intro rte">{{ section.settings.intro }}</div>
         {%- endif -%}
@@ -247,7 +248,7 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "Craft your candle"
+      "default": ""
     },
     {
       "type": "richtext",
