@@ -18,7 +18,6 @@
         "default_cta_label": "Build this melt",
         "collection_products_limit": 6,
         "description_word_limit": 18,
-        "color_scheme": "option-1",
         "padding_top": 52,
         "padding_bottom": 32,
         "show_best_sellers": false,
