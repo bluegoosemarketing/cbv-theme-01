@@ -50,7 +50,7 @@
 
     <div class="cbv-format-grid__cards" id="cbv-format-cards" role="list">
       {%- if section.settings.card_source == 'collection_products' -%}
-        {%- for product in collection.products -%}
+        {%- for product in collection.products limit: section.settings.collection_products_limit -%}
           {%- liquid
             assign card_title = product.title
             assign card_link = product.url
@@ -257,7 +257,7 @@
       "type": "select",
       "id": "card_source",
       "label": "Card source",
-      "default": "blocks",
+      "default": "collection_products",
       "options":[
         {
           "value": "blocks",
