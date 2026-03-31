@@ -50,7 +50,8 @@
 
     <div class="cbv-format-grid__cards" id="cbv-format-cards" role="list">
       {%- if section.settings.card_source == 'collection_products' -%}
-        {%- for product in collection.products limit: section.settings.collection_products_limit -%}
+        {%- paginate collection.products by 1000 -%}
+        {%- for product in collection.products -%}
           {%- liquid
             assign card_title = product.title
             assign card_link = product.url
@@ -90,6 +91,7 @@
             </div>
           </a>
         {%- endfor -%}
+      {%- endpaginate -%}
       {%- else -%}
         {%- for block in section.blocks -%}
           {%- liquid
