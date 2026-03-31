@@ -29,11 +29,12 @@
         {%- if section.settings.eyebrow != blank -%}
           <p class="cbv-format-grid__eyebrow">{{ section.settings.eyebrow | escape }}</p>
         {%- endif -%}
-        <h1 class="cbv-format-grid__title">{{ collection.title | escape }}</h1>
-        {%- if section.settings.intro != blank -%}
-          <div class="cbv-format-grid__intro rte">{{ section.settings.intro }}</div>
-        {%- elsif collection.description != blank -%}
+        {%- assign display_title = collection.metafields.theme.display_title | default: collection.title -%}
+        <h1 class="cbv-format-grid__title">{{ display_title | escape }}</h1>
+        {%- if collection.description != blank -%}
           <div class="cbv-format-grid__intro rte">{{ collection.description }}</div>
+        {%- elsif section.settings.intro != blank -%}
+          <div class="cbv-format-grid__intro rte">{{ section.settings.intro }}</div>
         {%- endif -%}
       </div>
 
@@ -42,7 +43,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
           </svg>
-          <input type="text" id="cbv-format-search" placeholder="Search formats (e.g. Animal, Loaf)..." aria-label="Search formats">
+          <input type="text" id="cbv-format-search" placeholder="Search {{ collection.title | escape }}" aria-label="Search {{ collection.title | escape }}">
         </div>
       </div>
     </div>
@@ -137,7 +138,7 @@
       {%- endif -%}
 
       <div id="cbv-format-empty" class="cbv-format-empty-state">
-        No formats matched your search. Try another term!
+        No {{ collection.title | escape }} products matched your search. Try another term!
       </div>
     </div>
 
