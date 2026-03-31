@@ -194,6 +194,35 @@
       });
     }
 
+    function findExactVariant(jarValue, wickUpgradeValue) {
+      const normalizedJar = normalize(jarValue);
+      const normalizedUpgrade = normalize(wickUpgradeValue);
+      return allVariants.find((variant) => normalize(variant.option1) === normalizedJar && normalize(variant.option2) === normalizedUpgrade) || null;
+    }
+
+    function findBaseJarVariant(jarValue) {
+      const normalizedJar = normalize(jarValue);
+      return (
+        allVariants.find((variant) => normalize(variant.option1) === normalizedJar && normalize(variant.option2) === 'standard') ||
+        allVariants.find((variant) => normalize(variant.option1) === normalizedJar) ||
+        null
+      );
+    }
+
+    function updateWickUpgradeCallouts() {
+      if (!wickUpgradeInputs.length) return;
+      const baseVariant = findBaseJarVariant(selectedJar);
+      wickUpgradeInputs.forEach((input) => {
+        const card = input.closest('[data-cbv-wick-upgrade-card]');
+        const calloutEl = card?.querySelector('[data-cbv-wick-upgrade-callout]');
+        if (!calloutEl || !baseVariant) return;
+
+        const upgradeVariant = findExactVariant(selectedJar, input.value) || findVariant(selectedJar, input.value);
+        const delta = Math.max(0, (upgradeVariant?.price || 0) - baseVariant.price);
+        calloutEl.textContent = delta > 0 ? `Adds ${formatMoney(delta)}` : 'Included';
+      });
+    }
+
     function applyVariant(variant) {
       if (!variant) return;
       selectedVariant = variant;
@@ -235,6 +264,7 @@
           input.checked = normalize(input.value) === normalize(selectedWickUpgrade);
         });
         syncChoiceCards(wickUpgradeInputs);
+        updateWickUpgradeCallouts();
       }
 
       updateStepHeader(jarGroup, selectedJar);

@@ -287,6 +287,7 @@
                       <label class="cbv-choice-card {% if current_variant.option2 == wick_value or current_variant.option2 == blank and forloop.first %}is-selected{% endif %}" data-cbv-wick-upgrade-card>
                         <input type="radio" name="cbv_wick_upgrade" value="{{ wick_value | escape }}" class="visually-hidden" {% if current_variant.option2 == wick_value or current_variant.option2 == blank and forloop.first %}checked{% endif %} data-cbv-wick-upgrade-input>
                         <span class="cbv-choice-title">{{ wick_value }}</span>
+                        <span class="cbv-choice-upgrade-callout" data-cbv-wick-upgrade-callout>Included</span>
                       </label>
                     {%- endfor -%}
                   </div>
