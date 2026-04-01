@@ -596,27 +596,56 @@ recharge-subscription-widget {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.6rem;
+  padding: 0.6rem 1rem;
+  text-align: left;
 }
 
 .cbv-scent-slot.is-filled {
   border-style: solid;
   background: #eaf6e8;
-  font-size: 1.2rem;
-  line-height: 1.2;
+  font-size: 1.25rem;
+  line-height: 1.25;
   position: relative;
+  justify-content: flex-start;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cbv-scent-slot.is-filled:hover {
+  background: #e1f1df;
+  border-color: #6f9f75;
+}
+
+.cbv-scent-slot.is-filled:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(63, 127, 77, 0.25);
 }
 
 .cbv-scent-slot__remove {
   position: absolute;
-  top: 0.4rem;
-  right: 0.8rem;
-  font-size: 1.8rem;
+  top: 50%;
+  right: 0.7rem;
+  transform: translateY(-50%);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid rgba(47, 106, 57, 0.35);
+  background: #fff;
+  color: #2f6a39;
+  font-size: 1.35rem;
+  font-weight: 700;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cbv-scent-slot__name {
-  padding-right: 1.2rem;
+  padding-right: 2.8rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cbv-bulk-family {
@@ -669,13 +698,31 @@ recharge-subscription-widget {
   background: #2f6a39;
   color: #fff;
   border-radius: 999px;
-  padding: 0.5rem 1rem;
+  padding: 0.55rem 1rem;
   font-size: 1.2rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .cbv-scent-shot-result__btn.is-ghost {
   background: #fff;
   color: #2f6a39;
+}
+
+.cbv-scent-shot-result__btn:hover {
+  background: #25572f;
+  border-color: #25572f;
+}
+
+.cbv-scent-shot-result__btn.is-ghost:hover {
+  background: #eef7ed;
+  color: #25572f;
+  border-color: #25572f;
+}
+
+.cbv-scent-shot-result__btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(63, 127, 77, 0.25);
 }
 
 .cbv-validation-message {
@@ -688,5 +735,21 @@ recharge-subscription-widget {
   .cbv-scent-tray {
     position: sticky;
     top: 0.6rem;
+  }
+
+  .cbv-scent-slot {
+    min-height: 6.4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .cbv-scent-slot__name {
+    font-size: 1.15rem;
+  }
+
+  .cbv-scent-slot__remove {
+    width: 1.8rem;
+    height: 1.8rem;
+    right: 0.6rem;
   }
 }
