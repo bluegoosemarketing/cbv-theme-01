@@ -307,6 +307,7 @@
       resultsEl.innerHTML = '';
 
       visible.forEach((scent) => {
+        const alreadyAdded = selectedSlots.some((selected) => normalize(selected) === normalize(scent.name));
         const card = document.createElement('div');
         card.className = 'cbv-scent-shot-result';
         card.innerHTML = `
@@ -316,7 +317,11 @@
           </div>
           <div class="cbv-scent-shot-result__actions">
             <button type="button" class="cbv-scent-shot-result__btn" data-action="add">Add</button>
-            <button type="button" class="cbv-scent-shot-result__btn is-ghost" data-action="again">+ Add again</button>
+            ${
+              alreadyAdded
+                ? '<button type="button" class="cbv-scent-shot-result__btn is-ghost" data-action="again">+ Add again</button>'
+                : ''
+            }
           </div>
         `;
 
