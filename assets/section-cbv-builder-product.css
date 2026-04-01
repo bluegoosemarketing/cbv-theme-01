@@ -547,3 +547,146 @@ recharge-subscription-widget {
   border-color: rgba(51, 111, 59, 0.25);
   color: #2d6636;
 }
+
+/* --- SCENT SHOTS BUILDER --- */
+.cbv-builder--scent-shots {
+  --cbv-success-bg: #f2f9f1;
+  --cbv-success-border: #9ac69e;
+  --cbv-success-text: #2f6a39;
+  --cbv-accent: #3f7f4d;
+}
+
+.cbv-scent-tray {
+  position: sticky;
+  top: calc(var(--cbv-sticky-height, 60px) + 1rem);
+  z-index: 3;
+  margin-bottom: 1.6rem;
+  padding: 1.4rem;
+  border: 1px solid #c4dcc7;
+  border-radius: 1rem;
+  background: #f6fcf5;
+}
+
+.cbv-scent-tray__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.cbv-scent-tray__title,
+.cbv-scent-tray__progress,
+.cbv-scent-tray__hint {
+  margin: 0;
+}
+
+.cbv-scent-tray__slots {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.8rem;
+}
+
+.cbv-scent-slot {
+  min-height: 7rem;
+  border-radius: 999px;
+  border: 1px dashed #8cab90;
+  background: #fff;
+  color: #2f6a39;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem;
+}
+
+.cbv-scent-slot.is-filled {
+  border-style: solid;
+  background: #eaf6e8;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  position: relative;
+}
+
+.cbv-scent-slot__remove {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.8rem;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.cbv-scent-slot__name {
+  padding-right: 1.2rem;
+}
+
+.cbv-bulk-family {
+  margin-bottom: 1.6rem;
+}
+
+.cbv-builder__label--sub {
+  margin-bottom: 1rem;
+  display: inline-flex;
+  pointer-events: auto;
+}
+
+.cbv-builder__input--select {
+  padding-left: 1.6rem;
+}
+
+.cbv-scent-shot-result {
+  background: #fff;
+  border: 1px solid #d4e2d6;
+  border-radius: 0.8rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.cbv-scent-shot-result__name,
+.cbv-scent-shot-result__family {
+  margin: 0;
+}
+
+.cbv-scent-shot-result__name {
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.cbv-scent-shot-result__family {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+.cbv-scent-shot-result__actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.cbv-scent-shot-result__btn {
+  border: 1px solid #2f6a39;
+  background: #2f6a39;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+}
+
+.cbv-scent-shot-result__btn.is-ghost {
+  background: #fff;
+  color: #2f6a39;
+}
+
+.cbv-validation-message {
+  margin: 0 0 1rem;
+  color: #2f6a39;
+  font-weight: 600;
+}
+
+@media (max-width: 989px) {
+  .cbv-scent-tray {
+    position: sticky;
+    top: 0.6rem;
+  }
+}
