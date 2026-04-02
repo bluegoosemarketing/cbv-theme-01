@@ -308,7 +308,6 @@
   .cbv-nav-list {
     display: flex;
     justify-content: center;
-    gap: 45px;
     max-width: 1400px;
     margin: 0 auto;
     list-style: none;
@@ -317,7 +316,7 @@
   }
 
   .cbv-nav-item {
-    padding: 16px 0;
+    padding: 16px 22.5px; /* Replaces 'gap' to eliminate mouse dead-zones */
     position: static; 
     transition: padding var(--cbv-duration) var(--cbv-ease);
   }
@@ -355,7 +354,7 @@
   /* ========================================= */
   .cbv-mega-menu {
     position: absolute;
-    top: calc(100% - 16px); /* Pulls the menu up perfectly flush with the nav text */
+    top: calc(100% - 16px);
     left: 0;
     width: 100%;
     background: #ffffff;
@@ -364,10 +363,13 @@
     opacity: 0;
     visibility: hidden;
     transform: translateY(8px) scale(0.99);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 6000;
     pointer-events: none;
     will-change: opacity, transform;
+    /* Adds a 150ms delay on exit to forgive diagonal mouse movement */
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, 
+                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, 
+                visibility 0s linear 0.45s; 
   }
 
   .cbv-mega-menu::before {
@@ -385,6 +387,10 @@
     visibility: visible;
     transform: translateY(0) scale(1);
     pointer-events: auto;
+    /* Instant show on hover */
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0s, 
+                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0s, 
+                visibility 0s linear 0s;
   }
 
   .cbv-mega-inner {
@@ -563,7 +569,7 @@
     }
 
     .cbv-header-fixed-group.is-scrolled .cbv-nav-item {
-      padding: 0; 
+      padding: 0 22.5px; /* Keeps the horizontal spacing so they aren't packed tight */
       height: var(--cbv-sticky-height);
       display: flex;
       align-items: center;
