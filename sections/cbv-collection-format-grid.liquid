@@ -56,7 +56,6 @@
           {%- liquid
             assign card_title = product.title
             assign card_link = product.url
-            assign card_cta = section.settings.default_cta_label
             assign card_description = product.description | strip_html | truncatewords: section.settings.description_word_limit
             assign can_quick_add = false
             if section.settings.enable_quick_add and product.has_only_default_variant and product.available
@@ -88,23 +87,40 @@
                 {%- if card_description != blank -%}
                   <p class="cbv-format-card__description">{{ card_description }}</p>
                 {%- endif -%}
-                <span class="cbv-format-card__cta">
-                  {{ card_cta | escape }}
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-                  </svg>
-                </span>
               </div>
             </a>
 
-            {%- if can_quick_add -%}
-              {%- form 'product', product, class: 'cbv-format-card__quick-add-form' -%}
-                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                <button type="submit" name="add" class="cbv-format-card__quick-add-button">
-                  Add to cart
-                </button>
-              {%- endform -%}
-            {%- endif -%}
+            <div class="cbv-format-card__footer">
+              {%- if can_quick_add -%}
+                {%- form 'product', product, class: 'cbv-format-card__form' -%}
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <button type="submit" name="add" class="cbv-format-card__action-btn cbv-format-card__action-btn--primary">
+                    <span class="cbv-format-card__btn-text">Add to Cart</span>
+                    <span class="cbv-format-card__btn-price">
+                      <span class="cbv-format-card__price-text">{{ product.price | money }}</span>
+                      <svg class="cbv-format-card__spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <svg class="cbv-format-card__check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                      </svg>
+                    </span>
+                  </button>
+                {%- endform -%}
+              {%- else -%}
+                <a href="{{ card_link }}" class="cbv-format-card__action-btn cbv-format-card__action-btn--{% if product.available == false %}secondary{% else %}primary{% endif %}" {% if product.available == false %}disabled{% endif %}>
+                  <span class="cbv-format-card__btn-text">{% if product.available == false %}Sold Out{% else %}View Details{% endif %}</span>
+                  {%- if product.available -%}
+                    <span class="cbv-format-card__btn-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                      </svg>
+                    </span>
+                  {%- endif -%}
+                </a>
+              {%- endif -%}
+            </div>
           </div>
         {%- endfor -%}
       {%- endpaginate -%}
@@ -115,43 +131,54 @@
             assign card_link = block.settings.link
             assign card_cta = block.settings.cta_label | default: section.settings.default_cta_label
             assign card_description = block.settings.description | strip_html | truncatewords: section.settings.description_word_limit
-            assign card_tag = 'div'
-            if card_link != blank
-              assign card_tag = 'a'
-            endif
           -%}
 
-          <{{ card_tag }} {% if card_link != blank %}href="{{ card_link }}"{% endif %} class="cbv-format-card" {{ block.shopify_attributes }} role="listitem">
-            <div class="cbv-format-card__media">
-              {%- if block.settings.image != blank -%}
-                {{
-                  block.settings.image
-                  | image_url: width: 900
-                  | image_tag:
-                    loading: 'lazy',
-                    widths: '280, 420, 560, 720, 900',
-                    sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
-                    class: 'cbv-format-card__image',
-                    alt: card_title
-                }}
-              {%- else -%}
-                {{ 'lifestyle-1' | placeholder_svg_tag: 'cbv-format-card__placeholder' }}
-              {%- endif -%}
-            </div>
+          <div class="cbv-format-card" {{ block.shopify_attributes }} role="listitem">
+            {%- if card_link != blank -%}
+              <a href="{{ card_link }}" class="cbv-format-card__link">
+            {%- else -%}
+              <div class="cbv-format-card__link">
+            {%- endif -%}
+              <div class="cbv-format-card__media">
+                {%- if block.settings.image != blank -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 900
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '280, 420, 560, 720, 900',
+                      sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                      class: 'cbv-format-card__image',
+                      alt: card_title
+                  }}
+                {%- else -%}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'cbv-format-card__placeholder' }}
+                {%- endif -%}
+              </div>
 
-            <div class="cbv-format-card__content">
-              <h2 class="cbv-format-card__title">{{ card_title | escape }}</h2>
-              {%- if card_description != blank -%}
-                <p class="cbv-format-card__description">{{ card_description }}</p>
-              {%- endif -%}
-              <span class="cbv-format-card__cta">
-                {{ card_cta | escape }}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-                </svg>
-              </span>
+              <div class="cbv-format-card__content">
+                <h2 class="cbv-format-card__title">{{ card_title | escape }}</h2>
+                {%- if card_description != blank -%}
+                  <p class="cbv-format-card__description">{{ card_description }}</p>
+                {%- endif -%}
+              </div>
+            {%- if card_link != blank -%}
+              </a>
+            {%- else -%}
+              </div>
+            {%- endif -%}
+
+            <div class="cbv-format-card__footer">
+              <a {% if card_link != blank %}href="{{ card_link }}"{% endif %} class="cbv-format-card__action-btn cbv-format-card__action-btn--primary">
+                <span class="cbv-format-card__btn-text">{{ card_cta | escape }}</span>
+                <span class="cbv-format-card__btn-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                  </svg>
+                </span>
+              </a>
             </div>
-          </{{ card_tag }}>
+          </div>
         {%- endfor -%}
       {%- endif -%}
 
@@ -196,9 +223,10 @@
   </div>
 </section>
 
-{% comment %} Script for Instant Quick Search Filter {% endcomment %}
+{% comment %} Script for Instant Quick Search Filter and Custom AJAX Cart {% endcomment %}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // --- SCENT PARAMETER FORWARDING ---
     const scentParam = new URLSearchParams(window.location.search).get('scent');
     const appendScentParam = (url) => {
       if (!url || !scentParam) return url;
@@ -216,11 +244,12 @@
     };
 
     if (scentParam) {
-      document.querySelectorAll('.cbv-format-card[href], .cbv-best-seller[href]').forEach((link) => {
+      document.querySelectorAll('.cbv-format-card__link[href], .cbv-format-card__action-btn[href], .cbv-best-seller[href]').forEach((link) => {
         link.href = appendScentParam(link.getAttribute('href'));
       });
     }
 
+    // --- QUICK SEARCH ---
     const searchInput = document.getElementById('cbv-format-search');
     const cards = document.querySelectorAll('.cbv-format-card');
     const emptyState = document.getElementById('cbv-format-empty');
@@ -249,6 +278,81 @@
         }
       });
     }
+
+    // --- CUSTOM AJAX ADD TO CART ---
+    const addToCartForms = document.querySelectorAll('.cbv-format-card__form');
+    
+    addToCartForms.forEach(form => {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const btn = form.querySelector('button[type="submit"]');
+        const textSpan = btn.querySelector('.cbv-format-card__btn-text');
+        const originalText = textSpan.textContent;
+
+        // Set Loading State
+        btn.classList.add('is-loading');
+        textSpan.textContent = 'Adding...';
+
+        try {
+          const formData = new FormData(form);
+          const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) ? window.Shopify.routes.root : '/';
+          const addUrl = rootUrl + (rootUrl.endsWith('/') ? 'cart/add.js' : '/cart/add.js');
+          
+          // 1. Add item to cart
+          const response = await fetch(addUrl, {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+          });
+
+          if (!response.ok) throw new Error('Failed to add to cart');
+
+          // 2. Silently update the Cart Bubble Icon (if applicable)
+          try {
+            const bubbleUrl = rootUrl + (rootUrl.endsWith('/') ? '?section_id=cart-icon-bubble' : '/?section_id=cart-icon-bubble');
+            const bubbleRes = await fetch(bubbleUrl);
+            if (bubbleRes.ok) {
+              const bubbleText = await bubbleRes.text();
+              const html = new DOMParser().parseFromString(bubbleText, 'text/html');
+              const newBubble = html.getElementById('shopify-section-cart-icon-bubble');
+              const oldBubble = document.getElementById('shopify-section-cart-icon-bubble');
+              if (newBubble && oldBubble) oldBubble.innerHTML = newBubble.innerHTML;
+            }
+          } catch(bubbleError) {
+             // Continue even if bubble fails
+          }
+
+          // 3. Trigger Global Theme Events (opens drawer if theme supports it, updates state)
+          if (window.publish && window.PUB_SUB_EVENTS) {
+            window.publish(window.PUB_SUB_EVENTS.cartUpdate, { source: 'cbv-grid' });
+          } else {
+            document.documentElement.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true }));
+          }
+
+          // 4. Set Success State
+          btn.classList.remove('is-loading');
+          btn.classList.add('is-added');
+          textSpan.textContent = 'Added!';
+
+          // 5. Revert after 2.5 seconds
+          setTimeout(() => {
+            btn.classList.remove('is-added');
+            textSpan.textContent = originalText;
+          }, 2500);
+
+        } catch (error) {
+          console.error(error);
+          btn.classList.remove('is-loading');
+          textSpan.textContent = 'Error';
+          
+          setTimeout(() => {
+            textSpan.textContent = originalText;
+          }, 2000);
+        }
+      });
+    });
+
   });
 </script>
 
@@ -291,7 +395,7 @@
       "type": "text",
       "id": "default_cta_label",
       "label": "Default card CTA label",
-      "default": "Build Yours"
+      "default": "View Details"
     },
     {
       "type": "checkbox",

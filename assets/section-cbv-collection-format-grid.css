@@ -135,7 +135,7 @@
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 20px;
-  overflow: hidden; /* Enables edge-to-edge images */
+  overflow: hidden;
   text-decoration: none;
   transition: var(--transition-smooth);
   box-shadow: 0 4px 15px rgba(0,0,0,0.02);
@@ -149,14 +149,13 @@
   color: inherit;
 }
 
-.cbv-format-card:hover,
-.cbv-format-card:focus-visible {
+.cbv-format-card:hover {
   transform: translateY(-0.6rem);
   box-shadow: 0 16px 40px rgba(0,0,0,0.08);
   border-color: transparent;
 }
 
-.cbv-format-card:focus-visible {
+.cbv-format-card__link:focus-visible {
   outline: 0.2rem solid var(--color-text-dark);
   outline-offset: 0.2rem;
 }
@@ -183,7 +182,7 @@
 }
 
 .cbv-format-card__content {
-  padding: 3rem 2.4rem 2.4rem 2.4rem;
+  padding: 2.4rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -199,68 +198,161 @@
 }
 
 .cbv-format-card__description {
-  margin: 0 0 3.2rem 0;
+  margin: 0;
   font-size: 1.5rem;
   line-height: 1.6;
   color: var(--color-text-light);
   flex-grow: 1;
 }
 
-/* --- CTA BUTTON --- */
-.cbv-format-card__cta {
+/* --- FOOTER & ADVANCED SPLIT BUTTON UI --- */
+.cbv-format-card__footer {
+  padding: 0 2.4rem 2.4rem;
+  margin-top: auto;
+}
+
+.cbv-format-card__form {
+  margin: 0;
+}
+
+.cbv-format-card__action-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
+  justify-content: space-between;
   width: 100%;
-  padding: 1.6rem 2rem;
+  padding: 0.8rem 0.8rem 0.8rem 2.4rem;
   border-radius: 100px;
-  background: var(--color-text-dark);
-  color: #fff;
+  font-family: var(--font-cbv-body);
   font-size: 1.3rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  border: 1px solid transparent;
+}
+
+.cbv-format-card__btn-text {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.cbv-format-card__btn-price,
+.cbv-format-card__btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 0.8rem 1.6rem;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 1.4rem;
+  letter-spacing: 0;
   transition: var(--transition-smooth);
 }
 
-.cbv-format-card__cta svg {
-  width: 1.6rem;
-  height: 1.6rem;
+.cbv-format-card__btn-icon {
+  padding: 0.8rem 1rem;
+}
+
+.cbv-format-card__btn-icon svg {
+  width: 1.8rem;
+  height: 1.8rem;
   transition: transform 0.3s ease;
 }
 
-.cbv-format-card:hover .cbv-format-card__cta {
-  background: var(--color-accent);
-}
-
-.cbv-format-card:hover .cbv-format-card__cta svg {
-  transform: translateX(4px);
-}
-
-.cbv-format-card__quick-add-form {
-  padding: 0 2.4rem 2.4rem;
-}
-
-.cbv-format-card__quick-add-button {
-  width: 100%;
-  border: 1px solid var(--color-text-dark);
-  border-radius: 100px;
-  background: transparent;
-  color: var(--color-text-dark);
-  font-size: 1.2rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 700;
-  padding: 1.2rem 1.6rem;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-}
-
-.cbv-format-card__quick-add-button:hover,
-.cbv-format-card__quick-add-button:focus-visible {
+.cbv-format-card__action-btn--primary {
   background: var(--color-text-dark);
   color: #fff;
+  border-color: var(--color-text-dark);
+}
+
+.cbv-format-card__action-btn--primary:hover,
+.cbv-format-card__action-btn--primary:focus-visible {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.cbv-format-card__action-btn--primary:hover .cbv-format-card__btn-price,
+.cbv-format-card__action-btn--primary:hover .cbv-format-card__btn-icon {
+  background: #fff;
+  color: var(--color-accent);
+}
+
+.cbv-format-card__action-btn--primary:hover .cbv-format-card__btn-icon svg {
+  transform: translateX(2px);
+}
+
+/* Sold Out / Secondary styles */
+.cbv-format-card__action-btn--secondary {
+  background: #F9F9F9;
+  color: var(--color-text-light);
+  border-color: transparent;
+  justify-content: center;
+  padding: 1.6rem 2rem;
+}
+
+.cbv-format-card__action-btn--secondary .cbv-format-card__btn-text {
+  text-align: center;
+}
+
+.cbv-format-card__action-btn[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* --- AJAX ADD-TO-CART ANIMATION STATES --- */
+.cbv-format-card__spinner,
+.cbv-format-card__check {
+  display: none;
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.cbv-format-card__spinner {
+  animation: cbv-spin 1s linear infinite;
+}
+
+@keyframes cbv-spin {
+  100% { transform: rotate(360deg); }
+}
+
+.cbv-format-card__spinner circle {
+  opacity: 0.25;
+}
+
+.cbv-format-card__spinner path {
+  opacity: 0.75;
+}
+
+/* Loading State */
+.cbv-format-card__action-btn.is-loading {
+  pointer-events: none;
+}
+.cbv-format-card__action-btn.is-loading .cbv-format-card__price-text {
+  display: none;
+}
+.cbv-format-card__action-btn.is-loading .cbv-format-card__spinner {
+  display: block;
+}
+
+/* Added State */
+.cbv-format-card__action-btn.is-added {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  pointer-events: none;
+}
+.cbv-format-card__action-btn.is-added .cbv-format-card__btn-price {
+  background: #fff;
+  color: var(--color-accent);
+}
+.cbv-format-card__action-btn.is-added .cbv-format-card__price-text {
+  display: none;
+}
+.cbv-format-card__action-btn.is-added .cbv-format-card__check {
+  display: block;
 }
 
 /* --- EMPTY SEARCH STATE --- */
