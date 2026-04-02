@@ -164,6 +164,17 @@
       });
     }
 
+    function syncPackCards() {
+      packInputs.forEach((input) => {
+        const packValue = input.dataset.cbvPackValue || input.value;
+        const isSelected = packValue === selectedPack;
+        input.checked = isSelected;
+
+        const card = input.closest('[data-cbv-pack-card]');
+        if (card) card.classList.toggle('is-selected', isSelected);
+      });
+    }
+
     function updateSlotProperties() {
       if (!slotPropertiesEl) return;
       slotPropertiesEl.innerHTML = '';
@@ -258,6 +269,8 @@
         mainPriceEl.dataset.cbvBasePrice = variant.price;
         mainPriceEl.textContent = formatMoney(variant.price);
       }
+
+      syncPackCards();
 
       if (btnPriceEl) btnPriceEl.textContent = ` - ${formatMoney(variant.price)}`;
       if (btnTitleEl) btnTitleEl.textContent = variantAvailable ? 'Add Scent Shots' : 'Sold Out';
@@ -403,6 +416,7 @@
 
     populateFamilySelect();
     renderFamilyFilters();
+    syncPackCards();
     if (secondaryInputs.length > 0) syncChoiceCards(secondaryInputs);
     applyVariant(findVariant(selectedPack, selectedSecondary));
   }
