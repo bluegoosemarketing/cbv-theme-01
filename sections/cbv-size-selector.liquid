@@ -30,6 +30,15 @@
 
   assign default_block = section.blocks[default_index]
   assign default_title = default_block.settings.title | default: default_block.settings.size_label
+
+  assign default_builder_path = default_block.settings.builder_link | default: ''
+  assign default_builder_parts = default_builder_path | split: '/products/'
+  assign default_builder_handle = default_builder_parts.last | split: '?' | first | split: '#' | first
+  assign default_builder_product = all_products[default_builder_handle]
+  assign default_image = default_block.settings.image
+  if default_image == blank and default_builder_product != blank
+    assign default_image = default_builder_product.featured_image
+  endif
 -%}
 
 <section class="cbv-size-selector section-{{ section.id }}-padding" data-section-id="{{ section.id }}">
@@ -41,9 +50,9 @@
         <div class="cbv-size-selector__media-col">
           <div class="cbv-size-selector__media-wrapper">
             <div class="cbv-media-badge">Step 1: Size</div>
-            {%- if default_block.settings.image != blank -%}
+            {%- if default_image != blank -%}
               {{
-                default_block.settings.image
+                default_image
                 | image_url: width: 1400
                 | image_tag:
                   loading: 'eager',
@@ -148,9 +157,19 @@
               "woodWick": {{ block.settings.wood_wick | json }},
               "styles": {{ block.settings.jar_styles | json }},
               "builderLink": {{ block.settings.builder_link | json }},
-              "image": {%- if block.settings.image != blank -%}
+              {%- liquid
+                assign builder_path = block.settings.builder_link | default: ''
+                assign builder_parts = builder_path | split: '/products/'
+                assign builder_handle = builder_parts.last | split: '?' | first | split: '#' | first
+                assign builder_product = all_products[builder_handle]
+                assign preview_image = block.settings.image
+                if preview_image == blank and builder_product != blank
+                  assign preview_image = builder_product.featured_image
+                endif
+              -%}
+              "image": {%- if preview_image != blank -%}
                 {
-                  "src": {{ block.settings.image | image_url: width: 1400 | json }},
+                  "src": {{ preview_image | image_url: width: 1400 | json }},
                   "alt": {{ block.settings.title | default: block.settings.size_label | json }}
                 }
               {%- else -%}
