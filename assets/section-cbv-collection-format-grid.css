@@ -141,6 +141,14 @@
   box-shadow: 0 4px 15px rgba(0,0,0,0.02);
 }
 
+.cbv-format-card__link {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  text-decoration: none;
+  color: inherit;
+}
+
 .cbv-format-card:hover,
 .cbv-format-card:focus-visible {
   transform: translateY(-0.6rem);
@@ -228,6 +236,31 @@
 
 .cbv-format-card:hover .cbv-format-card__cta svg {
   transform: translateX(4px);
+}
+
+.cbv-format-card__quick-add-form {
+  padding: 0 2.4rem 2.4rem;
+}
+
+.cbv-format-card__quick-add-button {
+  width: 100%;
+  border: 1px solid var(--color-text-dark);
+  border-radius: 100px;
+  background: transparent;
+  color: var(--color-text-dark);
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 1.2rem 1.6rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.cbv-format-card__quick-add-button:hover,
+.cbv-format-card__quick-add-button:focus-visible {
+  background: var(--color-text-dark);
+  color: #fff;
 }
 
 /* --- EMPTY SEARCH STATE --- */

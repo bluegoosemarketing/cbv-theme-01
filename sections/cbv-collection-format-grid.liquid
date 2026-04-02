@@ -58,39 +58,54 @@
             assign card_link = product.url
             assign card_cta = section.settings.default_cta_label
             assign card_description = product.description | strip_html | truncatewords: section.settings.description_word_limit
+            assign can_quick_add = false
+            if section.settings.enable_quick_add and product.has_only_default_variant and product.available
+              assign can_quick_add = true
+            endif
           -%}
 
-          <a href="{{ card_link }}" class="cbv-format-card" role="listitem">
-            <div class="cbv-format-card__media">
-              {%- if product.featured_media -%}
-                {{
-                  product.featured_media
-                  | image_url: width: 900
-                  | image_tag:
-                    loading: 'lazy',
-                    widths: '280, 420, 560, 720, 900',
-                    sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
-                    class: 'cbv-format-card__image',
-                    alt: card_title
-                }}
-              {%- else -%}
-                {{ 'lifestyle-1' | placeholder_svg_tag: 'cbv-format-card__placeholder' }}
-              {%- endif -%}
-            </div>
+          <div class="cbv-format-card{% if can_quick_add %} cbv-format-card--with-quick-add{% endif %}" role="listitem">
+            <a href="{{ card_link }}" class="cbv-format-card__link">
+              <div class="cbv-format-card__media">
+                {%- if product.featured_media -%}
+                  {{
+                    product.featured_media
+                    | image_url: width: 900
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '280, 420, 560, 720, 900',
+                      sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                      class: 'cbv-format-card__image',
+                      alt: card_title
+                  }}
+                {%- else -%}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'cbv-format-card__placeholder' }}
+                {%- endif -%}
+              </div>
 
-            <div class="cbv-format-card__content">
-              <h2 class="cbv-format-card__title">{{ card_title | escape }}</h2>
-              {%- if card_description != blank -%}
-                <p class="cbv-format-card__description">{{ card_description }}</p>
-              {%- endif -%}
-              <span class="cbv-format-card__cta">
-                {{ card_cta | escape }}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-                </svg>
-              </span>
-            </div>
-          </a>
+              <div class="cbv-format-card__content">
+                <h2 class="cbv-format-card__title">{{ card_title | escape }}</h2>
+                {%- if card_description != blank -%}
+                  <p class="cbv-format-card__description">{{ card_description }}</p>
+                {%- endif -%}
+                <span class="cbv-format-card__cta">
+                  {{ card_cta | escape }}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                  </svg>
+                </span>
+              </div>
+            </a>
+
+            {%- if can_quick_add -%}
+              {%- form 'product', product, class: 'cbv-format-card__quick-add-form' -%}
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                <button type="submit" name="add" class="cbv-format-card__quick-add-button">
+                  Add to cart
+                </button>
+              {%- endform -%}
+            {%- endif -%}
+          </div>
         {%- endfor -%}
       {%- endpaginate -%}
       {%- else -%}
@@ -277,6 +292,12 @@
       "id": "default_cta_label",
       "label": "Default card CTA label",
       "default": "Build Yours"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "label": "Enable quick add to cart for single-variant products",
+      "default": true
     },
     {
       "type": "range",
