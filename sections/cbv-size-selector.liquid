@@ -242,8 +242,13 @@
             
             setTimeout(() => {
                 if (image && image.src) {
+                    imageEl.removeAttribute('srcset');
+                    imageEl.removeAttribute('sizes');
                     imageEl.src = image.src;
                     imageEl.alt = image.alt || '';
+                } else {
+                    imageEl.removeAttribute('srcset');
+                    imageEl.removeAttribute('sizes');
                 }
                 imageEl.onload = () => imageEl.classList.remove('is-changing');
                 setTimeout(() => imageEl.classList.remove('is-changing'), 200);
