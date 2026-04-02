@@ -71,6 +71,7 @@
             "description": "Textured and matte finishes for a sophisticated statement piece.",
             "wick_count": "2",
             "wood_wick": "Yes",
+            "image": "shopify://shop_images/ChatGPTImageMar27_2026at12_53_13PM.png",
             "jar_styles": "Honeycomb\nMatte Black\nMatte White",
             "builder_link": "shopify://products/18oz-candle"
           }
@@ -84,7 +85,9 @@
             "description": "Vintage inspiration meets modern scale with vertical ribbing.",
             "wick_count": "2",
             "wood_wick": "No",
-            "jar_styles": "Clear Ribbed"
+            "image": "shopify://shop_images/coffee_cutie.png",
+            "jar_styles": "Clear Ribbed",
+            "builder_link": "shopify://products/24oz-jar-candle"
           }
         },
         "size_30oz": {
@@ -96,7 +99,9 @@
             "description": "Broad and bold. The wide melt pool releases fragrance rapidly.",
             "wick_count": "3",
             "wood_wick": "No",
-            "jar_styles": "Clear Wide Cylinder"
+            "image": "shopify://shop_images/30_oz_white.png",
+            "jar_styles": "Clear Wide Cylinder",
+            "builder_link": "shopify://products/30oz-jar-candle"
           }
         },
         "size_70oz": {
@@ -108,7 +113,9 @@
             "description": "The ultimate luxury. A massive vessel designed to anchor a room.",
             "wick_count": "4",
             "wood_wick": "No",
-            "jar_styles": "Clear Cylinder\nMatte Black"
+            "image": "shopify://shop_images/70_oz_black.png",
+            "jar_styles": "Clear Cylinder\nMatte Black",
+            "builder_link": "shopify://products/70oz-jar-candle"
           }
         }
       },
