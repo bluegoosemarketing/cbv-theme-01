@@ -58,7 +58,8 @@
             "description": "Elegance in height or width. Choose from tall cylinders or square profiles.",
             "wick_count": "1-2",
             "wood_wick": "Yes",
-            "jar_styles": "Tall Cylinder\nSalsa\nSquare"
+            "jar_styles": "Tall Cylinder\nSalsa\nSquare",
+            "builder_link": "shopify://products/12oz-jar-candle-copy"
           }
         },
         "size_18oz": {
@@ -70,7 +71,8 @@
             "description": "Textured and matte finishes for a sophisticated statement piece.",
             "wick_count": "2",
             "wood_wick": "Yes",
-            "jar_styles": "Honeycomb\nMatte Black\nMatte White"
+            "jar_styles": "Honeycomb\nMatte Black\nMatte White",
+            "builder_link": "shopify://products/18oz-candle"
           }
         },
         "size_24oz": {
