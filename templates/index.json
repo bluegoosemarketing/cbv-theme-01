@@ -9,23 +9,21 @@
  */
 {
   "sections": {
-    "cbv_hero_v2_4gQJh6": {
-      "type": "cbv-hero-v2",
-      "name": "CBV Hero v2",
+    "hero_collage_4xyhYD": {
+      "type": "hero-collage",
+      "name": "Hero collage",
       "settings": {
-        "eyebrow": "EST. 1999",
-        "headline": "The candle you can actually smell",
-        "body_text": "Hand poured in small batches since 1999, with over 450 scents designed to fill your home with fragrance you notice and love.",
-        "primary_button_label": "Shop Best Sellers",
+        "main_image": "shopify://shop_images/CBV-Candle-Hero_v2.2.webp",
+        "secondary_image": "shopify://shop_images/CBV-Candle-Hero_v3.webp",
+        "eyebrow_text": "Hand Poured Just for You",
+        "headline": "Welcome to <em>Original</em>",
+        "subheadline": "Experience our collection of premium, artisan-crafted fragrances designed to bring warmth, light, and beautiful memories into your sanctuary.",
+        "primary_button_label": "Shop New Arrivals",
         "primary_button_link": "",
-        "secondary_button_label": "Explore All Scents",
+        "secondary_button_label": "Build a Custom Candle",
         "secondary_button_link": "",
-        "show_trust_bar": true,
-        "trust_item_1": "Loved for strong scent throw",
-        "trust_item_2": "450+ scents",
-        "trust_item_3": "Hand poured since 1999",
-        "show_scent_examples": true,
-        "scent_examples": "Fresh Laundry, Banana Nut Bread, Beach Nights, Vanilla Sugar"
+        "badge_top_text": "HAND POURED",
+        "badge_bottom_text": "JUST FOR YOU"
       }
     },
     "image_banner_with_featured_collection": {
@@ -404,7 +402,7 @@
     }
   },
   "order": [
-    "cbv_hero_v2_4gQJh6",
+    "hero_collage_4xyhYD",
     "image_banner_with_featured_collection",
     "rich-text",
     "collection_tabs",

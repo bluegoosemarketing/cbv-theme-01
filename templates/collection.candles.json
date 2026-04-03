@@ -131,7 +131,6 @@
       ],
       "settings": {
         "eyebrow": "Step 1 · Choose your size",
-        "intro": "<p>Select your candle size to begin building your custom pour.</p>",
         "cta_label": "Build this candle →",
         "styles_note": "Selection happens in the next step",
         "default_size_label": "12oz",
