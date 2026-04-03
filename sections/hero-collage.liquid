@@ -1,5 +1,7 @@
 <div id="Section-{{ section.id }}" class="hero-collage-section">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
     #Section-{{ section.id }} {
       --bg-page: #FDFBFA;
       --text-main: #332E2A;
@@ -10,7 +12,7 @@
       --font-body: 'Jost', sans-serif;
       --transition: all 0.3s ease;
       background-color: var(--bg-page);
-      padding: 6rem 0;
+      padding: 96px 0;
       overflow: hidden;
       font-family: var(--font-body);
       color: var(--text-main);
@@ -19,31 +21,31 @@
     #Section-{{ section.id }} .container {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 0 2rem;
+      padding: 0 32px;
     }
 
     #Section-{{ section.id }} .hero-collage {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      gap: 64px;
       align-items: center;
     }
 
     #Section-{{ section.id }} .hero-text {
       max-width: 600px;
-      padding-right: 2rem;
+      padding-right: 32px;
     }
 
     #Section-{{ section.id }} .hero-eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 1rem;
-      font-size: 0.8rem;
+      gap: 16px;
+      font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--accent-green);
-      margin-bottom: 1.5rem;
+      margin-bottom: 24px;
     }
 
     #Section-{{ section.id }} .hero-eyebrow::after {
@@ -55,11 +57,11 @@
     }
 
     #Section-{{ section.id }} .hero-text h1 {
-      font-family: var(--font-heading);
-      font-size: 4.5rem;
+      font-family: var(--font-heading) !important;
+      font-size: 72px;
       font-weight: 400;
-      line-height: 1.05;
-      margin-bottom: 1.5rem;
+      line-height: 1.2;
+      margin-bottom: 24px;
       color: var(--text-main);
     }
 
@@ -70,9 +72,10 @@
     }
 
     #Section-{{ section.id }} .hero-text p {
-      font-size: 1.15rem;
+      font-family: var(--font-body) !important;
+      font-size: 18px;
       color: var(--text-secondary);
-      margin-bottom: 3rem;
+      margin-bottom: 48px;
       font-weight: 400;
       max-width: 90%;
       line-height: 1.6;
@@ -80,7 +83,7 @@
 
     #Section-{{ section.id }} .hero-cta-group {
       display: flex;
-      gap: 1.5rem;
+      gap: 24px;
       align-items: center;
     }
 
@@ -88,8 +91,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 1.2rem 2.5rem;
-      font-size: 0.85rem;
+      padding: 19px 40px;
+      font-size: 14px;
       font-weight: 600;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -114,7 +117,7 @@
       color: var(--text-main);
       border: none;
       border-bottom: 1px solid var(--text-main);
-      padding: 0.5rem 0;
+      padding: 8px 0;
     }
 
     #Section-{{ section.id }} .hero-btn-secondary:hover {
@@ -179,7 +182,7 @@
 
     @media (max-width: 1100px) {
       #Section-{{ section.id }} .hero-text h1 {
-        font-size: 3.5rem;
+        font-size: 56px;
       }
 
       #Section-{{ section.id }} .img-main {
@@ -194,13 +197,13 @@
 
     @media (max-width: 768px) {
       #Section-{{ section.id }} {
-        padding: 3rem 0;
+        padding: 48px 0;
       }
 
       #Section-{{ section.id }} .hero-collage {
         display: flex;
         flex-direction: column;
-        gap: 3.5rem;
+        gap: 56px;
       }
 
       #Section-{{ section.id }} .hero-text {
@@ -214,7 +217,7 @@
         order: 2;
         width: 100%;
         min-height: 450px;
-        margin-bottom: 2rem;
+        margin-bottom: 32px;
       }
 
       #Section-{{ section.id }} .img-main {
@@ -245,11 +248,11 @@
       }
 
       #Section-{{ section.id }} .hero-text h1 {
-        font-size: 3rem;
+        font-size: 48px;
       }
 
       #Section-{{ section.id }} .hero-text p {
-        margin: 0 auto 2.5rem auto;
+        margin: 0 auto 40px auto;
       }
 
       #Section-{{ section.id }} .hero-cta-group {
