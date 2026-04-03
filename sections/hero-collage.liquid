@@ -1,0 +1,404 @@
+<div id="Section-{{ section.id }}" class="hero-collage-section">
+  <style>
+    #Section-{{ section.id }} {
+      --bg-page: #FDFBFA;
+      --text-main: #332E2A;
+      --text-secondary: #5C534D;
+      --accent-green: #828E7D;
+      --accent-green-hover: #727D6E;
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Jost', sans-serif;
+      --transition: all 0.3s ease;
+      background-color: var(--bg-page);
+      padding: 6rem 0;
+      overflow: hidden;
+      font-family: var(--font-body);
+      color: var(--text-main);
+    }
+
+    #Section-{{ section.id }} .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    #Section-{{ section.id }} .hero-collage {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    #Section-{{ section.id }} .hero-text {
+      max-width: 600px;
+      padding-right: 2rem;
+    }
+
+    #Section-{{ section.id }} .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      margin-bottom: 1.5rem;
+    }
+
+    #Section-{{ section.id }} .hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background-color: var(--accent-green);
+    }
+
+    #Section-{{ section.id }} .hero-text h1 {
+      font-family: var(--font-heading);
+      font-size: 4.5rem;
+      font-weight: 400;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
+    }
+
+    #Section-{{ section.id }} .hero-text h1 em {
+      font-style: italic;
+      font-weight: 500;
+      color: var(--accent-green);
+    }
+
+    #Section-{{ section.id }} .hero-text p {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      font-weight: 400;
+      max-width: 90%;
+      line-height: 1.6;
+    }
+
+    #Section-{{ section.id }} .hero-cta-group {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    #Section-{{ section.id }} .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2rem 2.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: var(--transition);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    #Section-{{ section.id }} .hero-btn-primary {
+      background-color: var(--accent-green);
+      color: #FFFFFF;
+      border: 1px solid var(--accent-green);
+    }
+
+    #Section-{{ section.id }} .hero-btn-primary:hover {
+      background-color: var(--accent-green-hover);
+      border-color: var(--accent-green-hover);
+    }
+
+    #Section-{{ section.id }} .hero-btn-secondary {
+      background-color: transparent;
+      color: var(--text-main);
+      border: none;
+      border-bottom: 1px solid var(--text-main);
+      padding: 0.5rem 0;
+    }
+
+    #Section-{{ section.id }} .hero-btn-secondary:hover {
+      color: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
+    #Section-{{ section.id }} .hero-visuals {
+      position: relative;
+      height: 100%;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #Section-{{ section.id }} .img-main {
+      width: 75%;
+      height: 600px;
+      object-fit: cover;
+      border-radius: 2px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+      position: relative;
+      z-index: 1;
+    }
+
+    #Section-{{ section.id }} .img-secondary {
+      position: absolute;
+      bottom: 5%;
+      right: 0;
+      width: 45%;
+      aspect-ratio: 1 / 1;
+      height: auto;
+      object-fit: cover;
+      border: 12px solid var(--bg-page);
+      box-shadow: 0 15px 35px rgba(51, 46, 42, 0.08);
+      z-index: 2;
+    }
+
+    #Section-{{ section.id }} .artisan-seal {
+      position: absolute;
+      top: 2%;
+      left: 5%;
+      width: 140px;
+      height: 140px;
+      z-index: 3;
+      transform: rotate(-8deg);
+      background-color: var(--bg-page);
+      border-radius: 50%;
+      box-shadow: 0 8px 24px rgba(51, 46, 42, 0.08);
+      border: 1px solid rgba(51, 46, 42, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #Section-{{ section.id }} .artisan-seal svg {
+      width: 85%;
+      height: 85%;
+      fill: var(--text-main);
+    }
+
+    @media (max-width: 1100px) {
+      #Section-{{ section.id }} .hero-text h1 {
+        font-size: 3.5rem;
+      }
+
+      #Section-{{ section.id }} .img-main {
+        height: 500px;
+        width: 85%;
+      }
+
+      #Section-{{ section.id }} .img-secondary {
+        width: 45%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #Section-{{ section.id }} {
+        padding: 3rem 0;
+      }
+
+      #Section-{{ section.id }} .hero-collage {
+        display: flex;
+        flex-direction: column;
+        gap: 3.5rem;
+      }
+
+      #Section-{{ section.id }} .hero-text {
+        order: 1;
+        padding-right: 0;
+        text-align: center;
+        margin: 0 auto;
+      }
+
+      #Section-{{ section.id }} .hero-visuals {
+        order: 2;
+        width: 100%;
+        min-height: 450px;
+        margin-bottom: 2rem;
+      }
+
+      #Section-{{ section.id }} .img-main {
+        width: 90%;
+        height: 450px;
+      }
+
+      #Section-{{ section.id }} .img-secondary {
+        width: 55%;
+        bottom: -5%;
+        right: 5%;
+        border-width: 8px;
+      }
+
+      #Section-{{ section.id }} .artisan-seal {
+        width: 110px;
+        height: 110px;
+        top: -15px;
+        left: -5px;
+      }
+
+      #Section-{{ section.id }} .hero-eyebrow {
+        justify-content: center;
+      }
+
+      #Section-{{ section.id }} .hero-eyebrow::after {
+        display: none;
+      }
+
+      #Section-{{ section.id }} .hero-text h1 {
+        font-size: 3rem;
+      }
+
+      #Section-{{ section.id }} .hero-text p {
+        margin: 0 auto 2.5rem auto;
+      }
+
+      #Section-{{ section.id }} .hero-cta-group {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      #Section-{{ section.id }} .hero-btn {
+        width: 100%;
+      }
+
+      #Section-{{ section.id }} .hero-btn-secondary {
+        width: auto;
+        border-bottom: 1px solid var(--text-main);
+      }
+    }
+  </style>
+
+  <div class="container">
+    <div class="hero-collage">
+      <div class="hero-visuals">
+        <div class="artisan-seal" aria-hidden="true">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <path id="topArc-{{ section.id }}" d="M 12, 50 A 38, 38 0 1, 1 88, 50" />
+              <path id="bottomArc-{{ section.id }}" d="M 12, 50 A 38, 38 0 0, 0 88, 50" />
+            </defs>
+            <text font-family="var(--font-body), sans-serif" font-size="11.5" font-weight="600" letter-spacing="0.2em" fill="var(--text-main)">
+              <textPath href="#topArc-{{ section.id }}" startOffset="50%" text-anchor="middle">{{ section.settings.badge_top_text | escape }}</textPath>
+              <textPath href="#bottomArc-{{ section.id }}" startOffset="50%" text-anchor="middle" dominant-baseline="hanging">{{ section.settings.badge_bottom_text | escape }}</textPath>
+            </text>
+            <circle cx="10" cy="50" r="1.5" fill="var(--text-main)" />
+            <circle cx="90" cy="50" r="1.5" fill="var(--text-main)" />
+          </svg>
+        </div>
+
+        {% if section.settings.main_image != blank %}
+          {{ section.settings.main_image | image_url: width: 1600 | image_tag: class: 'img-main', alt: section.settings.main_image.alt, loading: 'eager', fetchpriority: 'high' }}
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'img-main' }}
+        {% endif %}
+
+        {% if section.settings.secondary_image != blank %}
+          {{ section.settings.secondary_image | image_url: width: 1000 | image_tag: class: 'img-secondary', alt: section.settings.secondary_image.alt, loading: 'lazy' }}
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: 'img-secondary' }}
+        {% endif %}
+      </div>
+
+      <div class="hero-text">
+        {% if section.settings.eyebrow_text != blank %}
+          <span class="hero-eyebrow">{{ section.settings.eyebrow_text }}</span>
+        {% endif %}
+
+        {% if section.settings.headline != blank %}
+          <h1>{{ section.settings.headline }}</h1>
+        {% endif %}
+
+        {% if section.settings.subheadline != blank %}
+          <p>{{ section.settings.subheadline }}</p>
+        {% endif %}
+
+        <div class="hero-cta-group">
+          {% if section.settings.primary_button_label != blank %}
+            <a href="{{ section.settings.primary_button_link | default: '#' }}" class="hero-btn hero-btn-primary">{{ section.settings.primary_button_label }}</a>
+          {% endif %}
+
+          {% if section.settings.secondary_button_label != blank %}
+            <a href="{{ section.settings.secondary_button_link | default: '#' }}" class="hero-btn hero-btn-secondary">{{ section.settings.secondary_button_label }}</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero collage",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main image"
+    },
+    {
+      "type": "image_picker",
+      "id": "secondary_image",
+      "label": "Secondary image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow text",
+      "default": "Hand Poured Just for You"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Welcome to <em>Original</em>"
+    },
+    {
+      "type": "textarea",
+      "id": "subheadline",
+      "label": "Subheadline / paragraph",
+      "default": "Experience our collection of premium, artisan-crafted fragrances designed to bring warmth, light, and beautiful memories into your sanctuary."
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "label": "Primary button label",
+      "default": "Shop New Arrivals"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary button label",
+      "default": "Build a Custom Candle"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "text",
+      "id": "badge_top_text",
+      "label": "Badge top text",
+      "default": "HAND POURED"
+    },
+    {
+      "type": "text",
+      "id": "badge_bottom_text",
+      "label": "Badge bottom text",
+      "default": "JUST FOR YOU"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero collage"
+    }
+  ]
+}
+{% endschema %}
