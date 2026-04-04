@@ -1,0 +1,447 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+  /* Scoped Variables */
+  #Section-{{ section.id }}.cbv-wayfinding-section {
+      --bg-page: #FDFBFA;
+      --bg-card: #FFFFFF;
+      --text-main: #332E2A;
+      --text-secondary: #5C534D;
+      --accent-green: #828E7D;
+      --border-light: rgba(51, 46, 42, 0.08);
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Jost', sans-serif;
+      --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+      background-color: var(--bg-page);
+      padding: 80px 0 100px 0;
+      font-family: var(--font-body);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+  }
+
+  #Section-{{ section.id }} .cbv-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+  }
+
+  /* Section Header */
+  #Section-{{ section.id }} .cbv-section-header {
+      text-align: center;
+      margin-bottom: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  #Section-{{ section.id }} .cbv-section-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+  }
+
+  #Section-{{ section.id }} .cbv-section-eyebrow::before,
+  #Section-{{ section.id }} .cbv-section-eyebrow::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background-color: var(--accent-green);
+  }
+
+  #Section-{{ section.id }} .cbv-section-header h2 {
+      font-family: var(--font-heading);
+      font-size: 40px;
+      font-weight: 400;
+      margin: 0;
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+  }
+
+  #Section-{{ section.id }} .cbv-section-header h2 em {
+      font-style: italic;
+      color: var(--accent-green);
+  }
+
+  /* 1x4 DESKTOP GRID & UNIFIED CARDS */
+  #Section-{{ section.id }} .cbv-wayfinding-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+  }
+
+  #Section-{{ section.id }} .cbv-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      outline: none;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 2px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(51, 46, 42, 0);
+      transition: var(--transition);
+  }
+
+  /* Image Area */
+  #Section-{{ section.id }} .cbv-card-image-wrap {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background-color: #E8E6E1;
+      position: relative;
+      border-bottom: 1px solid var(--border-light);
+  }
+
+  #Section-{{ section.id }} .cbv-card-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Content Area */
+  #Section-{{ section.id }} .cbv-card-content {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+  }
+
+  #Section-{{ section.id }} .cbv-card-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      margin-bottom: 8px;
+      transition: color 0.3s ease;
+  }
+
+  #Section-{{ section.id }} .cbv-card-title {
+      font-family: var(--font-heading);
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--text-main);
+      margin: 0 0 16px 0;
+      line-height: 1.15;
+      transition: color 0.3s ease;
+  }
+
+  /* Benefit List */
+  #Section-{{ section.id }} .cbv-card-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+  }
+
+  #Section-{{ section.id }} .cbv-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      font-weight: 400;
+  }
+
+  #Section-{{ section.id }} .cbv-feature-icon {
+      width: 14px;
+      height: 14px;
+      stroke: var(--accent-green);
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      opacity: 0.7;
+  }
+
+  /* Subtly CTA Link */
+  #Section-{{ section.id }} .cbv-card-link {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      transition: color 0.3s ease;
+  }
+
+  #Section-{{ section.id }} .cbv-card-link span {
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 2px;
+      transition: border-color 0.3s ease;
+  }
+
+  #Section-{{ section.id }} .cbv-card-link svg {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.3s ease;
+  }
+
+  /* Hover States */
+  #Section-{{ section.id }} .cbv-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(130, 142, 125, 0.4);
+      box-shadow: 0 12px 30px rgba(51, 46, 42, 0.06);
+  }
+
+  #Section-{{ section.id }} .cbv-card:hover .cbv-card-image-wrap img {
+      transform: scale(1.05);
+  }
+
+  #Section-{{ section.id }} .cbv-card:hover .cbv-card-title {
+      color: var(--accent-green);
+  }
+
+  #Section-{{ section.id }} .cbv-card:hover .cbv-card-link {
+      color: var(--accent-green);
+  }
+
+  #Section-{{ section.id }} .cbv-card:hover .cbv-card-link span {
+      border-bottom-color: var(--accent-green);
+  }
+
+  #Section-{{ section.id }} .cbv-card:hover .cbv-card-link svg {
+      transform: translateX(4px);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+      #Section-{{ section.id }} .cbv-container { padding: 0 32px; }
+      #Section-{{ section.id }} .cbv-wayfinding-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+      }
+  }
+
+  @media (max-width: 768px) {
+      #Section-{{ section.id }}.cbv-wayfinding-section { padding: 60px 0; }
+      #Section-{{ section.id }} .cbv-section-header { margin-bottom: 40px; }
+      #Section-{{ section.id }} .cbv-section-header h2 { font-size: 32px; }
+      #Section-{{ section.id }} .cbv-section-eyebrow::before,
+      #Section-{{ section.id }} .cbv-section-eyebrow::after { width: 20px; }
+
+      #Section-{{ section.id }} .cbv-container { padding: 0; }
+
+      /* Mobile Swipe Carousel */
+      #Section-{{ section.id }} .cbv-wayfinding-grid {
+          display: flex;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          scroll-padding-left: 20px;
+          padding: 0 20px 24px 20px;
+          gap: 16px;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+      }
+
+      #Section-{{ section.id }} .cbv-wayfinding-grid::-webkit-scrollbar {
+          display: none;
+      }
+
+      #Section-{{ section.id }} .cbv-card {
+          flex: 0 0 80%;
+          scroll-snap-align: start;
+      }
+
+      #Section-{{ section.id }} .cbv-card-content { padding: 20px; }
+      #Section-{{ section.id }} .cbv-card-title { font-size: 24px; }
+  }
+</style>
+
+<div id="Section-{{ section.id }}" class="cbv-wayfinding-section">
+  <div class="cbv-section-header">
+    {%- if section.settings.section_eyebrow != blank -%}
+      <span class="cbv-section-eyebrow">{{ section.settings.section_eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.section_heading != blank -%}
+      <h2>{{ section.settings.section_heading }}</h2>
+    {%- endif -%}
+  </div>
+
+  <div class="cbv-container">
+    <div class="cbv-wayfinding-grid">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link_url | default: '#' }}" class="cbv-card" {{ block.shopify_attributes }}>
+          <div class="cbv-card-image-wrap">
+            {%- if block.settings.category_image != blank -%}
+              {{ block.settings.category_image | image_url: width: 800 | image_tag: class: 'cbv-card-image', loading: 'lazy', alt: block.settings.title }}
+            {%- endif -%}
+          </div>
+          <div class="cbv-card-content">
+            {%- if block.settings.eyebrow_text != blank -%}
+              <span class="cbv-card-eyebrow">{{ block.settings.eyebrow_text }}</span>
+            {%- endif -%}
+            {%- if block.settings.title != blank -%}
+              <h3 class="cbv-card-title">{{ block.settings.title }}</h3>
+            {%- endif -%}
+
+            <ul class="cbv-card-features">
+              {%- if block.settings.feature_1_text != blank -%}
+                <li class="cbv-feature-item">
+                  <svg class="cbv-feature-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>{{ block.settings.feature_1_text }}</span>
+                </li>
+              {%- endif -%}
+              {%- if block.settings.feature_2_text != blank -%}
+                <li class="cbv-feature-item">
+                  <svg class="cbv-feature-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>{{ block.settings.feature_2_text }}</span>
+                </li>
+              {%- endif -%}
+              {%- if block.settings.feature_3_text != blank -%}
+                <li class="cbv-feature-item">
+                  <svg class="cbv-feature-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>{{ block.settings.feature_3_text }}</span>
+                </li>
+              {%- endif -%}
+            </ul>
+
+            <div class="cbv-card-link">
+              <span>Shop Collection</span>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </div>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Category Wayfinding Grid",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_eyebrow",
+      "label": "Section Eyebrow",
+      "default": "Curated For Your Home"
+    },
+    {
+      "type": "liquid",
+      "id": "section_heading",
+      "label": "Section Heading",
+      "default": "Shop by <em>Collection</em>",
+      "info": "Supports HTML, including <em> tags."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_item",
+      "name": "Category Item",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "category_image",
+          "label": "Category Image"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow_text",
+          "label": "Eyebrow Text",
+          "default": "Hand-Poured For You"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Custom Candles"
+        },
+        {
+          "type": "text",
+          "id": "feature_1_text",
+          "label": "Feature 1 Text",
+          "default": "Choose your jar"
+        },
+        {
+          "type": "text",
+          "id": "feature_2_text",
+          "label": "Feature 2 Text",
+          "default": "Pick a wax color"
+        },
+        {
+          "type": "text",
+          "id": "feature_3_text",
+          "label": "Feature 3 Text",
+          "default": "Select your scent"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Wayfinding Grid",
+      "blocks": [
+        {
+          "type": "category_item",
+          "settings": {
+            "eyebrow_text": "Hand-Poured For You",
+            "title": "Custom Candles",
+            "feature_1_text": "Choose your jar",
+            "feature_2_text": "Pick a wax color",
+            "feature_3_text": "Select your scent"
+          }
+        },
+        {
+          "type": "category_item",
+          "settings": {
+            "eyebrow_text": "Flameless Fragrance",
+            "title": "Custom Wax Melts",
+            "feature_1_text": "Choose a shape",
+            "feature_2_text": "Select your scent",
+            "feature_3_text": "Hand-poured detail"
+          }
+        },
+        {
+          "type": "category_item",
+          "settings": {
+            "eyebrow_text": "Artisan Designs",
+            "title": "Signature Lines",
+            "feature_1_text": "The Bake Shoppe",
+            "feature_2_text": "The Cuties",
+            "feature_3_text": "Sweet Treats"
+          }
+        },
+        {
+          "type": "category_item",
+          "settings": {
+            "eyebrow_text": "Find Your Favorite",
+            "title": "Scent Shots",
+            "feature_1_text": "2oz wax samplers",
+            "feature_2_text": "Over 800 fragrances",
+            "feature_3_text": "Build a multi-pack"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
