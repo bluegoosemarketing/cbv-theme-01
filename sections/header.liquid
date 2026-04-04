@@ -31,25 +31,31 @@
 {% endif %}
 
 {% style %}
+  @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
   :root {
-    /* --- ELITE COLOR PALETTE --- */
-    --cbv-header-offset: 160px; /* Reduced for sleeker default height */
+    /* --- ELITE COLOR PALETTE (Botanical Luxury Sync) --- */
+    --cbv-header-offset: 160px; 
     
     /* COLORS */
-    --cbv-header-bg: #F2F0EB; 
-    --cbv-header-text: #1C1B1A; 
-    --cbv-header-accent: #3A4D3F; 
-    --cbv-announcement-bg: #2F3E35;
-    --cbv-announcement-text: #FDFBF7;
-    --cbv-body-bg: #FDFBF7;
-    --cbv-border-color: rgba(0,0,0,0.06);
+    --cbv-header-bg: #FFFFFF; 
+    --cbv-header-text: #332E2A; /* Rich Espresso */
+    --cbv-header-accent: #828E7D; /* Soft Sage Green */
+    --cbv-announcement-bg: #828E7D; /* Soft Sage Green */
+    --cbv-announcement-text: #FFFFFF;
+    --cbv-body-bg: #FDFBFA; /* Warm Alabaster */
+    --cbv-border-color: rgba(51, 46, 42, 0.05); /* Tinted border */
+
+    /* TYPOGRAPHY SYNC */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Jost', sans-serif;
 
     /* ANIMATION PHYSICS */
     --cbv-ease: cubic-bezier(0.19, 1, 0.22, 1);
     --cbv-duration: 0.4s;
     
     /* DIMENSIONS */
-    --cbv-sticky-height: 56px; /* Slashed for ultra-sleek sticky state */
+    --cbv-sticky-height: 56px; 
   }
 
   #MainContent {
@@ -81,11 +87,11 @@
   
   /* WORLD CLASS: Frosted Glass Sticky Header */
   .cbv-header-fixed-group.is-scrolled {
-    background: rgba(242, 240, 235, 0.92);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    border-bottom: 1px solid var(--cbv-border-color);
+    box-shadow: 0 4px 24px rgba(51, 46, 42, 0.04);
   }
 
   .shopify-section-header {
@@ -99,15 +105,17 @@
     background-color: var(--cbv-announcement-bg);
     color: var(--cbv-announcement-text);
     text-align: center;
-    padding: 8px 20px;
-    font-size: 11px;
-    letter-spacing: 1.5px;
+    padding: 10px 20px;
+    font-size: 12px;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 500;
+    font-family: var(--font-body);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 36px;
+    height: auto;
+    min-height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -117,6 +125,7 @@
   
   .cbv-header-fixed-group.is-scrolled .cbv-announcement {
     height: 0;
+    min-height: 0;
     padding: 0;
     opacity: 0;
   }
@@ -140,7 +149,7 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    padding: 12px 0; /* Tightened from 20px to save vertical space */
+    padding: 12px 0; 
     transition: padding var(--cbv-duration) var(--cbv-ease), min-height var(--cbv-duration) var(--cbv-ease);
   }
 
@@ -155,12 +164,11 @@
   .cbv-search-bar {
     display: flex;
     align-items: center;
-    background: #FDFBF7;
+    background: #FFFFFF;
     padding: 8px 16px;
     border-radius: 50px;
     width: 240px;
-    border: 1px solid rgba(0,0,0,0.06);
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+    border: 1px solid #D1CDC7;
     opacity: 1;
     max-width: 300px;
     overflow: hidden;
@@ -168,9 +176,8 @@
   }
 
   .cbv-search-bar:focus-within {
-    background: #FFFFFF;
     border-color: var(--cbv-header-accent);
-    box-shadow: 0 0 0 1px var(--cbv-header-accent), 0 4px 12px rgba(58, 77, 63, 0.08);
+    box-shadow: 0 0 0 1px var(--cbv-header-accent);
   }
 
   .cbv-search-input {
@@ -180,29 +187,31 @@
     width: 100%;
     outline: none;
     font-size: 13px;
-    font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: var(--font-body);
     color: var(--cbv-header-text);
   }
   
-  .cbv-search-input::placeholder { color: #aaa; }
-  .cbv-search-bar .cbv-icon { color: #888; }
+  .cbv-search-input::placeholder { color: #aaa; font-weight: 400; }
+  .cbv-search-bar .cbv-icon { color: var(--cbv-header-text); }
   .cbv-search-bar:focus-within .cbv-icon { color: var(--cbv-header-accent); }
 
   /* --- LOGO STYLES (Shared) --- */
   .cbv-logo-main, .cbv-logo-sub { display: block; line-height: 1.2; text-align: center; }
   .cbv-logo-main {
-    font-family: "Georgia", "Times New Roman", serif;
-    letter-spacing: 0.5px;
+    font-family: var(--font-heading);
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--cbv-header-text);
+    font-weight: 500;
   }
   .cbv-logo-sub {
-    letter-spacing: 2.5px;
+    letter-spacing: 0.2em;
     color: var(--cbv-header-text);
-    font-family: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
-    font-size: 9px;
+    font-family: var(--font-body);
+    font-size: 10px;
     margin-top: 4px;
     opacity: 0.7;
+    font-weight: 500;
   }
 
   /* --- MAIN LOGO (Center) --- */
@@ -218,7 +227,6 @@
   }
   
   .cbv-logo-center .cbv-logo-main { font-size: 26px; }
-  /* MAJOR FIX: Slash max-height to eliminate huge header gaps */
   .cbv-logo-center .cbv-logo-image { max-height: 48px; width: auto; object-fit: contain; }
 
   /* Sleek Builder Pill Badge */
@@ -229,11 +237,11 @@
     letter-spacing: 1.8px;
     text-transform: uppercase;
     color: var(--cbv-header-accent);
-    background: rgba(58, 77, 63, 0.08);
+    background: rgba(130, 142, 125, 0.1);
     padding: 4px 12px;
     border-radius: 20px;
-    font-weight: 700;
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    font-weight: 600;
+    font-family: var(--font-body);
   }
 
   /* --- STICKY LOGO (Left) --- */
@@ -261,7 +269,7 @@
   .cbv-icon-link {
     position: relative;
     cursor: pointer;
-    color: #444;
+    color: var(--cbv-header-text);
     display: inline-flex;
     align-items: center;
     text-decoration: none;
@@ -275,7 +283,7 @@
     height: 22px;
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.4; /* Thinner, more elegant stroke */
+    stroke-width: 1.4; 
     stroke-linecap: round;
     stroke-linejoin: round;
   }
@@ -286,15 +294,16 @@
     right: -7px;
     background: var(--cbv-header-accent);
     color: #fff;
-    font-size: 9px;
-    font-weight: 700;
-    width: 17px;
-    height: 17px;
+    font-size: 10px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   }
 
   /* --- NAVIGATION CONTAINER --- */
@@ -316,17 +325,17 @@
   }
 
   .cbv-nav-item {
-    padding: 16px 22.5px; /* Replaces 'gap' to eliminate mouse dead-zones */
+    padding: 16px 22.5px; 
     position: static; 
     transition: padding var(--cbv-duration) var(--cbv-ease);
   }
 
   .cbv-nav-link {
-    font-size: 12px;
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    font-size: 13px;
+    font-family: var(--font-body);
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: 700;
+    letter-spacing: 0.12em;
+    font-weight: 500;
     color: var(--cbv-header-text);
     position: relative;
     padding-bottom: 4px;
@@ -359,14 +368,13 @@
     width: 100%;
     background: #ffffff;
     border-top: 1px solid var(--cbv-border-color);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+    box-shadow: 0 20px 40px rgba(51, 46, 42, 0.04);
     opacity: 0;
     visibility: hidden;
     transform: translateY(8px) scale(0.99);
     z-index: 6000;
     pointer-events: none;
     will-change: opacity, transform;
-    /* Adds a 150ms delay on exit to forgive diagonal mouse movement */
     transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, 
                 transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, 
                 visibility 0s linear 0.45s; 
@@ -387,7 +395,6 @@
     visibility: visible;
     transform: translateY(0) scale(1);
     pointer-events: auto;
-    /* Instant show on hover */
     transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0s, 
                 transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0s, 
                 visibility 0s linear 0s;
@@ -396,36 +403,35 @@
   .cbv-mega-inner {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 40px;
+    padding: 20px 40px 40px 40px; /* Slashed top padding from 40px to 20px */
     display: grid;
     gap: 60px;
   }
 
-  /* Updated layout specifically for 4 text columns + 1 image card */
   .layout-shop { grid-template-columns: 1fr 1fr 1fr 1fr 300px; gap: 40px; }
   .layout-scents { grid-template-columns: 1fr 320px; }
 
   .cbv-col-title {
-    font-family: "Georgia", "Times New Roman", serif;
-    font-size: 16px; /* Dropped by 1px for better column breathing room */
+    font-family: var(--font-heading);
+    font-size: 20px; /* Scaled up to maintain hierarchy */
     margin-bottom: 16px;
     color: var(--cbv-header-accent);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    line-height: 1.25; /* Pulls the stacked words closer together */
-    border-bottom: 1px solid #f0eee9;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    line-height: 1.25; 
+    border-bottom: 1px solid var(--cbv-border-color);
     padding-bottom: 8px;
     display: flex;
     align-items: flex-end;
-    min-height: 48px; /* Adjusted to match the new tighter line-height */
+    min-height: 48px; 
   }
 
   .cbv-sub-header {
+    font-family: var(--font-body);
     font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
+    letter-spacing: 0.1em;
+    font-weight: 600;
     color: #888;
     margin-top: 25px;
     margin-bottom: 12px;
@@ -435,11 +441,12 @@
   .cbv-menu-links { list-style: none; padding: 0; margin: 0; }
   .cbv-menu-links li { margin-bottom: 8px; }
   .cbv-menu-links a {
-    font-size: 14px;
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
-    color: #555;
+    font-size: 16px; /* Increased for legibility */
+    font-family: var(--font-body);
+    color: #5C534D;
+    font-weight: 400;
     display: block;
-    padding: 2px 0;
+    padding: 4px 0; /* More breathing room for easier clicking */
     transition: color 0.2s, transform 0.2s;
     text-decoration: none;
   }
@@ -448,7 +455,7 @@
     transform: translateX(4px);
   }
 
-  .cbv-link-highlight { color: #111 !important; font-weight: 600; }
+  .cbv-link-highlight { color: var(--cbv-header-text) !important; font-weight: 500; }
 
   .cbv-scent-grid {
     display: grid;
@@ -461,31 +468,30 @@
     align-items: center;
     gap: 10px;
     padding: 10px 14px;
-    border: 1px solid #e8e4dd;
-    border-radius: 6px;
-    background: #fdfbf7;
-    font-size: 13px;
-    font-family: "Avenir Next", sans-serif;
-    font-weight: 500;
-    color: #333;
+    border: 1px solid var(--cbv-border-color);
+    border-radius: 4px;
+    background: #FFFFFF;
+    font-size: 15px; /* Bumped slightly for legibility */
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--cbv-header-text);
     transition: all 0.2s;
     text-decoration: none;
   }
   .cbv-scent-pill:hover {
     border-color: var(--cbv-header-accent);
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(58, 77, 63, 0.05);
+    box-shadow: 0 4px 12px rgba(51, 46, 42, 0.05);
     color: var(--cbv-header-accent);
     transform: translateY(-2px);
   }
 
   .cbv-featured-card {
     position: relative;
-    border-radius: 8px;
+    border-radius: 2px;
     overflow: hidden;
     height: 380px;
     width: 100%;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(51, 46, 42, 0.05);
   }
   .cbv-featured-img {
     width: 100%;
@@ -498,20 +504,21 @@
     position: absolute;
     bottom: 0; left: 0; width: 100%;
     padding: 30px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    background: linear-gradient(to top, rgba(51, 46, 42, 0.8), transparent);
     color: #fff;
     text-align: center;
   }
   .cbv-feat-label {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
-    margin-bottom: 8px; display: block; opacity: 0.8;
+    font-family: var(--font-body);
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em;
+    margin-bottom: 8px; display: block; opacity: 0.8; font-weight: 500;
   }
   .cbv-feat-title {
-    font-family: "Georgia", "Times New Roman", serif; font-size: 24px; margin-bottom: 12px;
+    font-family: var(--font-heading); font-size: 24px; margin-bottom: 12px; font-weight: 400;
   }
   .cbv-btn-link {
-    font-size: 11px; font-family: "Avenir Next", sans-serif; text-transform: uppercase; letter-spacing: 1px;
-    font-weight: 700; border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    font-size: 11px; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.1em;
+    font-weight: 600; border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     padding-bottom: 4px; display: inline-block; transition: border-color 0.3s;
   }
   .cbv-featured-card:hover .cbv-btn-link { border-color: #fff; }
@@ -569,7 +576,7 @@
     }
 
     .cbv-header-fixed-group.is-scrolled .cbv-nav-item {
-      padding: 0 22.5px; /* Keeps the horizontal spacing so they aren't packed tight */
+      padding: 0 22.5px; 
       height: var(--cbv-sticky-height);
       display: flex;
       align-items: center;
@@ -588,7 +595,7 @@
       width: 100%;
       margin: 0;
       transform: none !important;
-      border-top: 1px solid rgba(0,0,0,0.04);
+      border-top: 1px solid var(--cbv-border-color);
     }
   }
 
@@ -603,7 +610,7 @@
     
     .cbv-header {
       padding: 0 20px;
-      height: 64px; /* Slimmed down for mobile */
+      height: 64px; 
       display: flex;
       flex-direction: row; 
       align-items: center;
@@ -628,7 +635,7 @@
       flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; text-decoration: none;
     }
     .cbv-mobile-logo .cbv-logo-main { font-size: 20px; color: var(--cbv-header-text); }
-    .cbv-mobile-logo .cbv-logo-sub { display: none; } /* Hide subtext on mobile default to save space */
+    .cbv-mobile-logo .cbv-logo-sub { display: none; } 
     .cbv-mobile-logo .cbv-logo-image {
         max-height: 36px; max-width: 180px; width: auto; object-fit: contain;
     }
@@ -638,8 +645,8 @@
 
     .cbv-mobile-overlay {
       position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(6px); /* Better blur */
+      background: rgba(51, 46, 42, 0.4);
+      backdrop-filter: blur(6px); 
       -webkit-backdrop-filter: blur(6px);
       z-index: 6001; 
       opacity: 0; pointer-events: none;
@@ -654,7 +661,7 @@
       background: #ffffff; z-index: 6002;
       transform: translateX(-100%);
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 10px 0 40px rgba(0, 0, 0, 0.08);
+      box-shadow: 10px 0 40px rgba(51, 46, 42, 0.08);
       overflow-y: auto;
     }
     .cbv-mobile-drawer.is-open { transform: translateX(0); }
@@ -663,33 +670,33 @@
     .cbv-drawer-header {
       padding: 18px 25px;
       display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid #f0eee9;
+      border-bottom: 1px solid var(--cbv-border-color);
       background: #fff; position: sticky; top: 0; z-index: 10;
     }
     .cbv-drawer-close {
       color: #999; padding: 5px; display: flex; align-items: center; transition: color 0.2s;
     }
-    .cbv-drawer-close:hover { color: #111; }
+    .cbv-drawer-close:hover { color: var(--cbv-header-text); }
     .cbv-drawer-content { padding: 0 25px 40px; }
     
     .cbv-mobile-search { margin: 25px 0 20px; position: relative; }
     .cbv-mobile-search input {
       width: 100%; padding: 12px 14px 12px 42px;
-      border: 1px solid #e8e4dd; border-radius: 6px;
-      font-size: 15px; background: #fdfbf7; color: #1f1c18; font-family: "Avenir Next", sans-serif;
+      border: 1px solid #D1CDC7; border-radius: 4px;
+      font-size: 15px; background: #FFFFFF; color: var(--cbv-header-text); font-family: var(--font-body);
     }
-    .cbv-mobile-search input:focus { outline: none; border-color: var(--cbv-header-accent); background: #fff; }
+    .cbv-mobile-search input:focus { outline: none; border-color: var(--cbv-header-accent); }
     .cbv-mobile-search .cbv-icon {
       position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
       color: #aaa; width: 18px; height: 18px;
     }
 
-    .cbv-mobile-item { border-bottom: 1px solid #f0eee9; }
+    .cbv-mobile-item { border-bottom: 1px solid var(--cbv-border-color); }
     .cbv-mobile-link-head {
       display: flex; justify-content: space-between; align-items: center;
       width: 100%; padding: 18px 0;
-      font-family: "Georgia", "Times New Roman", serif; font-size: 20px;
-      color: #111; text-align: left; text-decoration: none;
+      font-family: var(--font-heading); font-size: 20px; font-weight: 400;
+      color: var(--cbv-header-text); text-align: left; text-decoration: none;
     }
     .cbv-mobile-link-head .cbv-icon {
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); width: 18px; color: #888;
@@ -706,36 +713,36 @@
       max-height: 2500px; margin-bottom: 25px;
     }
     .cbv-mob-cat-title {
-      font-size: 12px; font-family: "Avenir Next", sans-serif; text-transform: uppercase; letter-spacing: 1px;
-      color: var(--cbv-header-accent); font-weight: 800;
-      margin: 20px 0 10px; display: block; border-bottom: 1px solid #f0eee9; padding-bottom: 5px;
+      font-size: 12px; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--cbv-header-accent); font-weight: 600;
+      margin: 20px 0 10px; display: block; border-bottom: 1px solid var(--cbv-border-color); padding-bottom: 5px;
     }
     .cbv-mob-sub-title {
-      font-size: 11px; font-family: "Avenir Next", sans-serif; text-transform: uppercase; letter-spacing: 1px;
-      color: #888; font-weight: 700; margin: 15px 0 8px; display: block; padding-left: 10px;
+      font-size: 11px; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.1em;
+      color: #888; font-weight: 500; margin: 15px 0 8px; display: block; padding-left: 10px;
     }
     .cbv-mob-link {
-      font-size: 15px; font-family: "Avenir Next", sans-serif; display: block; padding: 8px 0; color: #333; text-decoration: none;
+      font-size: 15px; font-family: var(--font-body); display: block; padding: 8px 0; color: #5C534D; text-decoration: none;
     }
     .cbv-mob-link-sub {
-      font-size: 14px; font-family: "Avenir Next", sans-serif; display: block; padding: 6px 0 6px 10px;
-      color: #666; border-left: 2px solid transparent; text-decoration: none; transition: color 0.2s;
+      font-size: 14px; font-family: var(--font-body); display: block; padding: 6px 0 6px 10px;
+      color: #5C534D; border-left: 2px solid transparent; text-decoration: none; transition: color 0.2s;
     }
     .cbv-mob-link-sub:hover {
       color: var(--cbv-header-accent); border-left-color: var(--cbv-header-accent);
     }
     .cbv-mobile-divider {
-      height: 1px; background: #f0eee9; margin: 15px 0; width: 100%; display: block;
+      height: 1px; background: var(--cbv-border-color); margin: 15px 0; width: 100%; display: block;
     }
     .cbv-mobile-scent-grid {
       display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 15px;
     }
-    .cbv-mobile-scent-grid .cbv-scent-pill { background: #fdfbf7; border-color: #f0eee9; }
+    .cbv-mobile-scent-grid .cbv-scent-pill { background: #FFFFFF; border-color: var(--cbv-border-color); }
     .cbv-drawer-footer {
-      margin-top: 30px; padding-top: 25px; border-top: 1px solid #f0eee9; text-align: center;
+      margin-top: 30px; padding-top: 25px; border-top: 1px solid var(--cbv-border-color); text-align: center;
     }
     .cbv-drawer-footer a {
-      display: block; padding: 10px; font-size: 13px; font-family: "Avenir Next", sans-serif; color: #666; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+      display: block; padding: 10px; font-size: 13px; font-family: var(--font-body); color: #5C534D; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;
     }
   }
 
@@ -752,7 +759,7 @@
 
   /* --- MINIMAL BUILDER HEADER (The "Checkout Flow" Focus) --- */
   .cbv-header-fixed-group--minimal {
-    background: #fdfbf7;
+    background: var(--cbv-body-bg);
   }
 
   .cbv-header-fixed-group--minimal .cbv-header {
@@ -771,15 +778,15 @@
     color: #888;
     text-decoration: none;
     font-size: 12px;
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    font-family: var(--font-body);
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     transition: color 0.2s ease, transform 0.2s ease;
   }
 
   .cbv-header-fixed-group--minimal .cbv-builder-exit:hover {
-    color: #111;
+    color: var(--cbv-header-text);
     transform: translateX(-3px);
   }
 
@@ -794,27 +801,27 @@
     gap: 8px;
     min-height: 44px;
     padding: 0 20px;
-    border-radius: 999px;
+    border-radius: 2px;
     border: 1px solid var(--cbv-header-accent);
     background: var(--cbv-header-accent);
     color: #fff;
     text-decoration: none;
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    font-family: var(--font-body);
     font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-    box-shadow: 0 10px 24px rgba(58, 77, 63, 0.16);
   }
 
   .cbv-flow-cta:hover {
     transform: translateY(-1px);
-    box-shadow: 0 14px 28px rgba(58, 77, 63, 0.2);
+    background-color: var(--cbv-header-accent-hover);
+    border-color: var(--cbv-header-accent-hover);
   }
 
   .cbv-header-fixed-group--cart .cbv-builder-progress {
-    background: rgba(58, 77, 63, 0.12);
+    background: rgba(130, 142, 125, 0.1);
   }
 
   .cbv-header-fixed-group--cart .cbv-cart-count {
@@ -869,10 +876,10 @@
     }
 
     .cbv-header-fixed-group--minimal .cbv-mobile-logo .cbv-builder-progress {
-      display: block; /* Show pill on mobile minimal */
+      display: block; 
       margin-top: 4px;
       font-size: 8px;
-      letter-spacing: 1px;
+      letter-spacing: 0.1em;
       padding: 3px 8px;
     }
 
@@ -882,11 +889,11 @@
 
     .cbv-header-fixed-group--minimal .cbv-builder-exit {
       font-size: 11px;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.05em;
       white-space: nowrap;
     }
     
-    .cbv-header-fixed-group--minimal .cbv-builder-exit span { display: none; } /* Hide text, just show arrow on mobile */
+    .cbv-header-fixed-group--minimal .cbv-builder-exit span { display: none; } 
   }
 {% endstyle %}
 
@@ -1044,7 +1051,7 @@
                 {%- if section.settings.shop_feature_image != blank -%}
                   {{ section.settings.shop_feature_image | image_url: width: 900 | image_tag: class: 'cbv-featured-img', loading: 'lazy', alt: section.settings.shop_feature_title }}
                 {%- else -%}
-                  <img src="https://placehold.co/400x600/FDFBF7/8B5E3C?text=Spring+2026" class="cbv-featured-img" alt="Spring Collection" loading="lazy">
+                  <img src="https://placehold.co/400x600/FDFBFA/332E2A?text=Spring+2026" class="cbv-featured-img" alt="Spring Collection" loading="lazy">
                 {%- endif -%}
                 <div class="cbv-featured-overlay">
                   <span class="cbv-feat-label">{{ section.settings.shop_feature_label }}</span>
@@ -1066,14 +1073,14 @@
                   {% render 'cbv-scent-family-nav-links', class: 'cbv-scent-pill' %}
                 </div>
                 <div style="margin-top:25px;">
-                  <a href="{{ section.settings.scents_az_link | default: '/pages/scent-library' }}" style="font-size:13px;font-family:'Avenir Next',sans-serif;color:#8b5e3c;font-weight:600;text-decoration:underline;">View Full Scent List (A-Z) →</a>
+                  <a href="{{ section.settings.scents_az_link | default: '/pages/scent-library' }}" style="font-size:13px;font-family:var(--font-body);color:var(--cbv-header-accent);font-weight:500;text-decoration:underline;">View Full Scent List (A-Z) →</a>
                 </div>
               </div>
               <a class="cbv-featured-card" href="{{ section.settings.scents_feature_link | default: '/pages/scent-library' }}">
                 {%- if section.settings.scents_feature_image != blank -%}
                   {{ section.settings.scents_feature_image | image_url: width: 900 | image_tag: class: 'cbv-featured-img', loading: 'lazy', alt: section.settings.scents_feature_title }}
                 {%- else -%}
-                  <img src="https://placehold.co/400x500/8B5E3C/FDFBF7?text=Banana+Nut" class="cbv-featured-img" alt="Scent of the Month" loading="lazy">
+                  <img src="https://placehold.co/400x500/828E7D/FDFBFA?text=Banana+Nut" class="cbv-featured-img" alt="Scent of the Month" loading="lazy">
                 {%- endif -%}
                 <div class="cbv-featured-overlay">
                   <span class="cbv-feat-label">{{ section.settings.scents_feature_label }}</span>
@@ -1089,7 +1096,7 @@
         <li class="cbv-nav-item"><a href="/pages/about" class="cbv-nav-link">About</a></li>
         <li class="cbv-nav-item"><a href="/pages/faqs" class="cbv-nav-link">FAQ</a></li>
         <li class="cbv-nav-item"><a href="/pages/contact" class="cbv-nav-link">Contact</a></li>
-        <li class="cbv-nav-item"><a href="/collections/sale" class="cbv-nav-link" style="color:#d32f2f;">Sale</a></li>
+        <li class="cbv-nav-item"><a href="/collections/sale" class="cbv-nav-link" style="color:var(--sale-color);">Sale</a></li>
       </ul>
     </nav>
     {% endif %}
@@ -1165,7 +1172,7 @@
         <div class="cbv-mobile-scent-grid">
           {% render 'cbv-scent-family-nav-links', class: 'cbv-scent-pill' %}
         </div>
-        <a href="{{ section.settings.scents_az_link | default: '/pages/scent-library' }}" class="cbv-mob-link" style="margin-top:15px;font-weight:700;color:#8b5e3c;">View All A-Z →</a>
+        <a href="{{ section.settings.scents_az_link | default: '/pages/scent-library' }}" class="cbv-mob-link" style="margin-top:15px;font-weight:600;color:var(--cbv-header-accent);">View All A-Z →</a>
       </div>
     </div>
 
@@ -1173,7 +1180,7 @@
     <div class="cbv-mobile-item"><a href="/pages/about" class="cbv-mobile-link-head">About</a></div>
     <div class="cbv-mobile-item"><a href="/pages/faqs" class="cbv-mobile-link-head">FAQ</a></div>
     <div class="cbv-mobile-item"><a href="/pages/contact" class="cbv-mobile-link-head">Contact</a></div>
-    <div class="cbv-mobile-item"><a href="/collections/sale" class="cbv-mobile-link-head" style="color:#d32f2f;">Sale</a></div>
+    <div class="cbv-mobile-item"><a href="/collections/sale" class="cbv-mobile-link-head" style="color:var(--sale-color);">Sale</a></div>
 
     <div class="cbv-drawer-footer">
       {%- if shop.customer_accounts_enabled -%}
@@ -1356,7 +1363,6 @@
       if (!fixedGroup) return;
 
       // Replaces manual offset setup with robust ResizeObserver 
-      // This protects against custom fonts/images dynamically expanding the header.
       const headerObserver = new ResizeObserver((entries) => {
         for (let entry of entries) {
           if (!fixedGroup.classList.contains('is-scrolled')) {
