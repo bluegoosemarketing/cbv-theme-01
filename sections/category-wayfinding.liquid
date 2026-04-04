@@ -2,23 +2,27 @@
   @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
 
   /* Scoped Variables */
-  #Section-{{ section.id }}.cbv-wayfinding-section {
-      --bg-page: #FDFBFA;
+  .cbv-wayfinding-section {
+      --bg-stone: #F4F2EC;  /* The deeper contrast color for the top */
+      --bg-page: #FDFBFA;   /* The airy alabaster for the bottom */
       --bg-card: #FFFFFF;
-      --text-main: #332E2A;
-      --text-secondary: #5C534D;
-      --accent-green: #828E7D;
+      --text-main: #332E2A;       
+      --text-secondary: #5C534D;  
+      --accent-green: #828E7D;    
       --border-light: rgba(51, 46, 42, 0.08);
       --font-heading: 'Playfair Display', serif;
       --font-body: 'Jost', sans-serif;
       --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-
-      background-color: var(--bg-page);
-      padding: 80px 0 100px 0;
+      
+      /* WORLD CLASS: Seamless Melt Gradient */
+      background: linear-gradient(to bottom, var(--bg-stone) 0%, var(--bg-page) 100%);
+      
+      border-top: 1px solid rgba(51, 46, 42, 0.05); 
+      padding: 80px 0 100px 0; 
       font-family: var(--font-body);
       color: var(--text-main);
       -webkit-font-smoothing: antialiased;
-      overflow: hidden;
+      overflow: hidden; 
   }
 
   #Section-{{ section.id }} .cbv-container {
