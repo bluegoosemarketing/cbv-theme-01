@@ -1,0 +1,438 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+  /* Scoped Variables */
+  #Section-{{ section.id }}.cbv-directory-section {
+      /* Seamlessly picks up the bottom color of previous section, fading back into Stone */
+      --bg-top: #FDFBFA;
+      --bg-bottom: #F4F2EC;
+      --text-main: #332E2A;
+      --text-secondary: #5C534D;
+      --accent-green: #828E7D;
+      --border-light: rgba(51, 46, 42, 0.08);
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Jost', sans-serif;
+      --transition: 0.3s ease;
+
+      background: linear-gradient(to bottom, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      padding: 100px 0;
+      font-family: var(--font-body);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+  }
+
+  #Section-{{ section.id }} .cbv-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+  }
+
+  /* SPLIT LAYOUT */
+  #Section-{{ section.id }} .cbv-directory-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 80px;
+      align-items: center;
+  }
+
+  /* LEFT: ATMOSPHERIC VISUAL */
+  #Section-{{ section.id }} .cbv-directory-visual {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 600px;
+  }
+
+  #Section-{{ section.id }} .cbv-directory-img-wrap {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border-radius: 2px;
+      box-shadow: 0 20px 40px rgba(51, 46, 42, 0.08);
+      background-color: #E8E6E1;
+  }
+
+  #Section-{{ section.id }} .cbv-directory-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+  }
+
+  #Section-{{ section.id }} .cbv-directory-badge {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      background-color: #FFFFFF;
+      padding: 30px 40px;
+      border: 1px solid var(--border-light);
+      border-radius: 2px;
+      box-shadow: 0 10px 30px rgba(51, 46, 42, 0.05);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+  }
+
+  #Section-{{ section.id }} .cbv-badge-num {
+      font-family: var(--font-heading);
+      font-size: 48px;
+      line-height: 1;
+      color: var(--accent-green);
+      font-style: italic;
+  }
+
+  #Section-{{ section.id }} .cbv-badge-text {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      margin-top: 8px;
+  }
+
+  /* RIGHT: THE TYPOGRAPHIC INDEX */
+  #Section-{{ section.id }} .cbv-directory-content {
+      display: flex;
+      flex-direction: column;
+  }
+
+  #Section-{{ section.id }} .cbv-section-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+  }
+
+  #Section-{{ section.id }} .cbv-section-eyebrow::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background-color: var(--accent-green);
+  }
+
+  #Section-{{ section.id }} .cbv-directory-content h2 {
+      font-family: var(--font-heading);
+      font-size: 44px;
+      font-weight: 400;
+      margin: 0 0 24px 0;
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+  }
+
+  #Section-{{ section.id }} .cbv-directory-content h2 em {
+      font-style: italic;
+      color: var(--accent-green);
+  }
+
+  #Section-{{ section.id }} .cbv-directory-description {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0 0 48px 0;
+      max-width: 90%;
+  }
+
+  #Section-{{ section.id }} .cbv-directory-description p {
+      margin: 0;
+  }
+
+  /* The Clean 2-Column List */
+  #Section-{{ section.id }} .cbv-index-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 40px;
+      margin-bottom: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border-light);
+  }
+
+  #Section-{{ section.id }} .cbv-index-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(51, 46, 42, 0.04);
+      text-decoration: none;
+      transition: var(--transition);
+  }
+
+  #Section-{{ section.id }} .cbv-link-text {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      transition: color var(--transition), transform var(--transition);
+  }
+
+  #Section-{{ section.id }} .cbv-index-arrow {
+      width: 14px;
+      height: 14px;
+      stroke: var(--accent-green);
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: var(--transition);
+  }
+
+  #Section-{{ section.id }} .cbv-index-link.is-primary .cbv-link-text {
+      font-weight: 600;
+      color: var(--accent-green);
+  }
+
+  #Section-{{ section.id }} .cbv-index-link.is-primary .cbv-index-arrow {
+      opacity: 1;
+      transform: translateX(0);
+  }
+
+  #Section-{{ section.id }} .cbv-index-link:hover .cbv-link-text {
+      color: var(--text-main);
+      transform: translateX(4px);
+  }
+
+  #Section-{{ section.id }} .cbv-index-link:hover .cbv-index-arrow {
+      opacity: 1;
+      transform: translateX(0);
+  }
+
+  /* Master CTA Button */
+  #Section-{{ section.id }} .cbv-directory-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 32px;
+      background-color: var(--text-main);
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--text-main);
+      border-radius: 2px;
+      align-self: flex-start;
+      transition: var(--transition);
+  }
+
+  #Section-{{ section.id }} .cbv-directory-cta svg {
+      width: 16px;
+      height: 16px;
+      transition: transform var(--transition);
+  }
+
+  #Section-{{ section.id }} .cbv-directory-cta:hover {
+      background-color: var(--accent-green);
+      border-color: var(--accent-green);
+  }
+
+  #Section-{{ section.id }} .cbv-directory-cta:hover svg {
+      transform: translateX(4px);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+      #Section-{{ section.id }} .cbv-container { padding: 0 32px; }
+      #Section-{{ section.id }} .cbv-directory-layout { gap: 40px; grid-template-columns: 1fr 1fr; }
+      #Section-{{ section.id }} .cbv-directory-content h2 { font-size: 36px; }
+      #Section-{{ section.id }} .cbv-badge-num { font-size: 36px; }
+      #Section-{{ section.id }} .cbv-directory-badge { padding: 20px 24px; bottom: -10px; right: -10px; }
+      #Section-{{ section.id }} .cbv-index-grid { gap: 12px 20px; }
+  }
+
+  @media (max-width: 768px) {
+      #Section-{{ section.id }}.cbv-directory-section { padding: 60px 0; }
+      #Section-{{ section.id }} .cbv-directory-layout { grid-template-columns: 1fr; gap: 56px; }
+
+      #Section-{{ section.id }} .cbv-directory-visual { min-height: auto; order: -1; }
+      #Section-{{ section.id }} .cbv-directory-img-wrap { aspect-ratio: 4 / 3; }
+      #Section-{{ section.id }} .cbv-directory-badge { bottom: -20px; right: 20px; }
+
+      #Section-{{ section.id }} .cbv-directory-content h2 { font-size: 32px; }
+      #Section-{{ section.id }} .cbv-directory-description { max-width: 100%; margin-bottom: 32px; }
+
+      #Section-{{ section.id }} .cbv-index-grid { grid-template-columns: 1fr 1fr; gap: 12px 24px; padding-top: 24px; margin-bottom: 40px; }
+      #Section-{{ section.id }} .cbv-index-link { padding: 10px 0; }
+      #Section-{{ section.id }} .cbv-link-text { font-size: 14px; }
+
+      #Section-{{ section.id }} .cbv-directory-cta { width: 100%; }
+  }
+</style>
+
+<div id="Section-{{ section.id }}" class="cbv-directory-section">
+  <div class="cbv-container">
+    <div class="cbv-directory-layout">
+      <div class="cbv-directory-visual">
+        <div class="cbv-directory-img-wrap">
+          {%- if section.settings.left_image != blank -%}
+            {{ section.settings.left_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'cbv-directory-image', alt: section.settings.heading | strip_html }}
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        <div class="cbv-directory-badge">
+          {%- if section.settings.badge_number != blank -%}
+            <span class="cbv-badge-num">{{ section.settings.badge_number }}</span>
+          {%- endif -%}
+          {%- if section.settings.badge_text != blank -%}
+            <span class="cbv-badge-text">{{ section.settings.badge_text }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="cbv-directory-content">
+        {%- if section.settings.eyebrow_text != blank -%}
+          <span class="cbv-section-eyebrow">{{ section.settings.eyebrow_text }}</span>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2>{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <div class="cbv-directory-description">{{ section.settings.description }}</div>
+        {%- endif -%}
+
+        <div class="cbv-index-grid">
+          {%- for block in section.blocks -%}
+            <a href="{{ block.settings.link_url | default: '#' }}" class="cbv-index-link{% if block.settings.make_primary %} is-primary{% endif %}" {{ block.shopify_attributes }}>
+              <span class="cbv-link-text">{{ block.settings.link_text }}</span>
+              <svg class="cbv-index-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          {%- endfor -%}
+        </div>
+
+        {%- if section.settings.cta_label != blank -%}
+          <a href="{{ section.settings.cta_link | default: '#' }}" class="cbv-directory-cta">
+            {{ section.settings.cta_label }}
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Scent Directory",
+  "tag": "section",
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Left Image"
+    },
+    {
+      "type": "text",
+      "id": "badge_number",
+      "label": "Badge Number",
+      "default": "800+"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Unique Scents"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow Text",
+      "default": "The Master Archive"
+    },
+    {
+      "type": "liquid",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Discover Your <em>Scent Family</em>",
+      "info": "Supports HTML, including <em> tags."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description Paragraph",
+      "default": "<p>We’ve categorized our massive 800+ master archive into 15 distinct fragrance families. Find your perfect scent profile below.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Button Label",
+      "default": "Explore The Master Archive"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Bakery"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "make_primary",
+          "label": "Make Primary",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scent Directory",
+      "blocks": [
+        {
+          "type": "link",
+          "settings": {
+            "link_text": "All Scents",
+            "make_primary": true
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "link_text": "Bakery"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "link_text": "Floral"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "link_text": "Fruity"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
