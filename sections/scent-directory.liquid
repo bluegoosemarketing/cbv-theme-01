@@ -120,11 +120,12 @@
 
   #Section-{{ section.id }} .cbv-directory-content h2 {
       font-family: var(--font-heading);
-      font-size: 44px;
+      font-size: clamp(46px, 5vw, 64px);
       font-weight: 400;
       margin: 0 0 24px 0;
-      line-height: 1.1;
-      letter-spacing: 0.02em;
+      line-height: 1.06;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
   }
 
   #Section-{{ section.id }} .cbv-directory-content h2 em {
@@ -133,11 +134,13 @@
   }
 
   #Section-{{ section.id }} .cbv-directory-description {
-      font-size: 16px;
+      font-size: 20px;
       color: var(--text-secondary);
       line-height: 1.6;
       margin: 0 0 48px 0;
       max-width: 90%;
+      font-weight: 500;
+      text-rendering: optimizeLegibility;
   }
 
   #Section-{{ section.id }} .cbv-directory-description p {
@@ -166,9 +169,12 @@
 
   #Section-{{ section.id }} .cbv-link-text {
       font-family: var(--font-body);
-      font-size: 15px;
-      font-weight: 400;
-      color: var(--text-secondary);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-main);
+      letter-spacing: 0.01em;
+      line-height: 1.35;
+      text-rendering: optimizeLegibility;
       transition: color var(--transition), transform var(--transition);
   }
 
@@ -244,10 +250,12 @@
   @media (max-width: 1024px) {
       #Section-{{ section.id }} .cbv-container { padding: 0 32px; }
       #Section-{{ section.id }} .cbv-directory-layout { gap: 40px; grid-template-columns: 1fr 1fr; }
-      #Section-{{ section.id }} .cbv-directory-content h2 { font-size: 36px; }
+      #Section-{{ section.id }} .cbv-directory-content h2 { font-size: clamp(40px, 5vw, 54px); }
       #Section-{{ section.id }} .cbv-badge-num { font-size: 36px; }
       #Section-{{ section.id }} .cbv-directory-badge { padding: 20px 24px; bottom: -10px; right: -10px; }
       #Section-{{ section.id }} .cbv-index-grid { gap: 12px 20px; }
+      #Section-{{ section.id }} .cbv-link-text { font-size: 18px; }
+      #Section-{{ section.id }} .cbv-directory-description { font-size: 18px; }
   }
 
   @media (max-width: 768px) {
@@ -258,12 +266,13 @@
       #Section-{{ section.id }} .cbv-directory-img-wrap { aspect-ratio: 4 / 3; }
       #Section-{{ section.id }} .cbv-directory-badge { bottom: -20px; right: 20px; }
 
-      #Section-{{ section.id }} .cbv-directory-content h2 { font-size: 32px; }
+      #Section-{{ section.id }} .cbv-directory-content h2 { font-size: clamp(34px, 9vw, 44px); }
       #Section-{{ section.id }} .cbv-directory-description { max-width: 100%; margin-bottom: 32px; }
 
       #Section-{{ section.id }} .cbv-index-grid { grid-template-columns: 1fr 1fr; gap: 12px 24px; padding-top: 24px; margin-bottom: 40px; }
       #Section-{{ section.id }} .cbv-index-link { padding: 10px 0; }
-      #Section-{{ section.id }} .cbv-link-text { font-size: 14px; }
+      #Section-{{ section.id }} .cbv-link-text { font-size: 16px; }
+      #Section-{{ section.id }} .cbv-directory-description { font-size: 17px; }
 
       #Section-{{ section.id }} .cbv-directory-cta { width: 100%; }
   }
@@ -303,10 +312,24 @@
           <div class="cbv-directory-description">{{ section.settings.description }}</div>
         {%- endif -%}
 
+        {%- liquid
+          assign scent_library_url = '/pages/scent-library'
+          assign scent_family_links = 'All Scents|all||Bakery / Gourmand|Bakery||Floral & Garden|Floral||Fruity & Citrus|Fruity||Clean & Fresh|Clean||Earthy & Woody|Earthy||Holiday & Seasonal|Christmas||Perfume Dupes|Perfume & Cologne||Tropical|Tropical||Luxury Spa|Luxury Spa' | split: '||'
+        -%}
         <div class="cbv-index-grid">
-          {%- for block in section.blocks -%}
-            <a href="{{ block.settings.link_url | default: '#' }}" class="cbv-index-link{% if block.settings.make_primary %} is-primary{% endif %}" {{ block.shopify_attributes }}>
-              <span class="cbv-link-text">{{ block.settings.link_text }}</span>
+          {%- for family_item in scent_family_links -%}
+            {%- assign family_parts = family_item | split: '|' -%}
+            {%- assign display_label = family_parts[0] | strip -%}
+            {%- assign canonical_family = family_parts[1] | strip -%}
+            {%- assign is_primary_link = canonical_family == 'all' -%}
+            {%- if is_primary_link -%}
+              {%- assign destination_url = scent_library_url -%}
+            {%- else -%}
+              {%- assign encoded_family = canonical_family | url_encode -%}
+              {%- assign destination_url = scent_library_url | append: '?family=' | append: encoded_family -%}
+            {%- endif -%}
+            <a href="{{ destination_url }}" class="cbv-index-link{% if is_primary_link %} is-primary{% endif %}">
+              <span class="cbv-link-text">{{ display_label }}</span>
               <svg class="cbv-index-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </a>
           {%- endfor -%}
