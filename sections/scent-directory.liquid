@@ -321,7 +321,10 @@
             {%- assign family_parts = family_item | split: '|' -%}
             {%- assign display_label = family_parts[0] | strip -%}
             {%- assign canonical_family = family_parts[1] | strip -%}
-            {%- assign is_primary_link = canonical_family == 'all' -%}
+            {%- assign is_primary_link = false -%}
+            {%- if canonical_family == 'all' -%}
+              {%- assign is_primary_link = true -%}
+            {%- endif -%}
             {%- if is_primary_link -%}
               {%- assign destination_url = scent_library_url -%}
             {%- else -%}
