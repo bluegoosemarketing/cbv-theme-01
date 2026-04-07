@@ -61,13 +61,15 @@
       background-color: var(--accent-green);
   }
 
+  /* MATCHED SIZING TO SCENT DIRECTORY */
   #Section-{{ section.id }} .cbv-section-header h2 {
       font-family: var(--font-heading);
-      font-size: 40px;
+      font-size: clamp(46px, 5vw, 64px);
       font-weight: 400;
       margin: 0;
-      line-height: 1.1;
-      letter-spacing: 0.02em;
+      line-height: 1.06;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
   }
 
   #Section-{{ section.id }} .cbv-section-header h2 em {
@@ -115,29 +117,30 @@
 
   /* Content Area */
   #Section-{{ section.id }} .cbv-card-content {
-      padding: 30px;
+      padding: 36px 32px;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
   }
 
   #Section-{{ section.id }} .cbv-card-eyebrow {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--accent-green);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       transition: color 0.3s ease;
   }
 
+  /* INCREASED TITLE SIZE */
   #Section-{{ section.id }} .cbv-card-title {
       font-family: var(--font-heading);
-      font-size: 24px;
+      font-size: 32px;
       font-weight: 400;
       color: var(--text-main);
-      margin: 0 0 18px 0;
-      line-height: 1.25;
+      margin: 0 0 24px 0;
+      line-height: 1.15;
       transition: color 0.3s ease;
   }
 
@@ -145,45 +148,46 @@
   #Section-{{ section.id }} .cbv-card-features {
       list-style: none;
       padding: 0;
-      margin: 0 0 24px 0;
+      margin: 0 0 32px 0;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
   }
 
+  /* INCREASED READABILITY: Larger Font & Darker Text Color */
   #Section-{{ section.id }} .cbv-feature-item {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       font-family: var(--font-body);
-      font-size: 15px;
-      color: var(--text-secondary);
+      font-size: 18px;
+      color: var(--text-main);
       font-weight: 500;
       line-height: 1.45;
   }
 
   #Section-{{ section.id }} .cbv-feature-icon {
-      width: 14px;
-      height: 14px;
+      width: 18px;
+      height: 18px;
       stroke: var(--accent-green);
-      stroke-width: 2;
+      stroke-width: 2.5;
       fill: none;
       stroke-linecap: round;
       stroke-linejoin: round;
       flex-shrink: 0;
-      opacity: 0.7;
+      opacity: 0.8;
   }
 
-  /* Subtly CTA Link */
+  /* Subtle CTA Link */
   #Section-{{ section.id }} .cbv-card-link {
       margin-top: auto;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-family: var(--font-body);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text-main);
       transition: color 0.3s ease;
@@ -196,8 +200,8 @@
   }
 
   #Section-{{ section.id }} .cbv-card-link svg {
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       transition: transform 0.3s ease;
   }
 
@@ -240,7 +244,9 @@
   @media (max-width: 768px) {
       #Section-{{ section.id }}.cbv-wayfinding-section { padding: 60px 0; }
       #Section-{{ section.id }} .cbv-section-header { margin-bottom: 40px; }
-      #Section-{{ section.id }} .cbv-section-header h2 { font-size: 32px; }
+      
+      /* Matching Scent Directory Mobile Sizing */
+      #Section-{{ section.id }} .cbv-section-header h2 { font-size: clamp(34px, 9vw, 44px); }
       #Section-{{ section.id }} .cbv-section-eyebrow::before,
       #Section-{{ section.id }} .cbv-section-eyebrow::after { width: 20px; }
 
@@ -268,8 +274,9 @@
           scroll-snap-align: start;
       }
 
-      #Section-{{ section.id }} .cbv-card-content { padding: 24px; }
-      #Section-{{ section.id }} .cbv-card-title { font-size: 24px; }
+      #Section-{{ section.id }} .cbv-card-content { padding: 32px 24px; }
+      #Section-{{ section.id }} .cbv-card-title { font-size: 28px; }
+      #Section-{{ section.id }} .cbv-feature-item { font-size: 16px; }
   }
 </style>
 
@@ -337,7 +344,7 @@
   "name": "Category Wayfinding Grid",
   "tag": "section",
   "max_blocks": 4,
-  "settings": [
+  "settings":[
     {
       "type": "text",
       "id": "section_eyebrow",
@@ -352,12 +359,12 @@
       "info": "Supports HTML, including <em> tags."
     }
   ],
-  "blocks": [
+  "blocks":[
     {
       "type": "category_item",
       "name": "Category Item",
       "limit": 4,
-      "settings": [
+      "settings":[
         {
           "type": "image_picker",
           "id": "category_image",
@@ -401,10 +408,10 @@
       ]
     }
   ],
-  "presets": [
+  "presets":[
     {
       "name": "Category Wayfinding Grid",
-      "blocks": [
+      "blocks":[
         {
           "type": "category_item",
           "settings": {
