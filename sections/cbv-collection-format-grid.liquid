@@ -19,37 +19,95 @@
   if featured_collection == blank
     assign featured_collection = collection
   endif
+  assign sidebar_menu = section.settings.sidebar_menu
+  assign current_path = request.path
 -%}
 
 <section class="cbv-format-grid section-{{ section.id }}-padding">
   <div class="page-width">
-    
-    <div class="cbv-format-grid__top-bar">
-      <div class="cbv-format-grid__header-text">
-        {%- if section.settings.eyebrow != blank -%}
-          <p class="cbv-format-grid__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-        {%- endif -%}
-        {%- assign display_title = collection.metafields.theme.display_title | default: collection.title -%}
-        {%- assign display_description = collection.metafields.theme.display_description | default: collection.description -%}
-        <h1 class="cbv-format-grid__title">{{ display_title | escape }}</h1>
-        {%- if display_description != blank -%}
-          <div class="cbv-format-grid__intro rte">{{ display_description }}</div>
-        {%- elsif section.settings.intro != blank -%}
-          <div class="cbv-format-grid__intro rte">{{ section.settings.intro }}</div>
-        {%- endif -%}
-      </div>
+    <div class="cbv-format-grid__layout">
+      {%- if sidebar_menu != blank and sidebar_menu.links.size > 0 -%}
+        <aside class="cbv-format-grid__sidebar" aria-label="{{ section.settings.sidebar_heading | escape }}">
+          {%- if section.settings.sidebar_heading != blank -%}
+            <p class="cbv-format-grid__sidebar-heading">{{ section.settings.sidebar_heading | escape }}</p>
+          {%- endif -%}
+          <nav class="cbv-format-grid__sidebar-nav">
+            <ul class="cbv-format-grid__sidebar-list list-unstyled" role="list">
+              {%- for link in sidebar_menu.links -%}
+                {%- liquid
+                  assign link_path = link.url | split: '?' | first
+                  assign is_active_link = false
+                  if current_path == link_path
+                    assign is_active_link = true
+                  elsif link.type == 'collection_link' and collection and link.object and link.object.handle == collection.handle
+                    assign is_active_link = true
+                  elsif link.type == 'product_link' and product and link.object and link.object.handle == product.handle
+                    assign is_active_link = true
+                  endif
+                -%}
+                <li>
+                  <a href="{{ link.url }}" class="cbv-format-grid__nav-link{% if is_active_link %} is-active{% endif %}" {% if is_active_link %}aria-current="page"{% endif %}>
+                    <span>{{ link.title | escape }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        </aside>
+      {%- endif -%}
 
-      <div class="cbv-format-grid__toolbar">
-        <div class="cbv-quick-search">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-          </svg>
-          <input type="text" id="cbv-format-search" placeholder="Search {{ collection.title | escape }}" aria-label="Search {{ collection.title | escape }}">
+      <div class="cbv-format-grid__main">
+        {%- if sidebar_menu != blank and sidebar_menu.links.size > 0 -%}
+          <nav class="cbv-format-grid__mobile-nav" aria-label="{{ section.settings.sidebar_heading | escape }}">
+            <ul class="cbv-format-grid__mobile-nav-list list-unstyled" role="list">
+              {%- for link in sidebar_menu.links -%}
+                {%- liquid
+                  assign link_path = link.url | split: '?' | first
+                  assign is_active_link = false
+                  if current_path == link_path
+                    assign is_active_link = true
+                  elsif link.type == 'collection_link' and collection and link.object and link.object.handle == collection.handle
+                    assign is_active_link = true
+                  elsif link.type == 'product_link' and product and link.object and link.object.handle == product.handle
+                    assign is_active_link = true
+                  endif
+                -%}
+                <li>
+                  <a href="{{ link.url }}" class="cbv-format-grid__mobile-chip{% if is_active_link %} is-active{% endif %}" {% if is_active_link %}aria-current="page"{% endif %}>
+                    {{ link.title | escape }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+
+        <div class="cbv-format-grid__top-bar">
+          <div class="cbv-format-grid__header-text">
+            {%- if section.settings.eyebrow != blank -%}
+              <p class="cbv-format-grid__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+            {%- endif -%}
+            {%- assign display_title = collection.metafields.theme.display_title | default: collection.title -%}
+            {%- assign display_description = collection.metafields.theme.display_description | default: collection.description -%}
+            <h1 class="cbv-format-grid__title">{{ display_title | escape }}</h1>
+            {%- if display_description != blank -%}
+              <div class="cbv-format-grid__intro rte">{{ display_description }}</div>
+            {%- elsif section.settings.intro != blank -%}
+              <div class="cbv-format-grid__intro rte">{{ section.settings.intro }}</div>
+            {%- endif -%}
+          </div>
+
+          <div class="cbv-format-grid__toolbar">
+            <div class="cbv-quick-search">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+              <input type="text" id="cbv-format-search" placeholder="Search {{ collection.title | escape }}" aria-label="Search {{ collection.title | escape }}">
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="cbv-format-grid__cards" id="cbv-format-cards" role="list">
+        <div class="cbv-format-grid__cards" id="cbv-format-cards" role="list">
       {%- if section.settings.card_source == 'collection_products' -%}
         {%- paginate collection.products by 1000 -%}
         {%- for product in collection.products -%}
@@ -182,44 +240,46 @@
         {%- endfor -%}
       {%- endif -%}
 
-      <div id="cbv-format-empty" class="cbv-format-empty-state">
-        No {{ collection.title | escape }} products matched your search. Try another term!
+          <div id="cbv-format-empty" class="cbv-format-empty-state">
+            No {{ collection.title | escape }} products matched your search. Try another term!
+          </div>
+        </div>
+
+        {%- if section.settings.show_best_sellers and featured_collection != blank and featured_collection.products_count > 0 -%}
+          <div class="cbv-format-grid__best-sellers">
+            <div class="cbv-format-grid__best-sellers-header">
+              <h2>{{ section.settings.best_sellers_heading | escape }}</h2>
+            </div>
+
+            <div class="cbv-format-grid__best-sellers-list" role="list">
+              {%- for product in featured_collection.products limit: section.settings.best_sellers_limit -%}
+                <a href="{{ product.url }}" class="cbv-best-seller" role="listitem">
+                  <div class="cbv-best-seller__media">
+                    {%- if product.featured_media -%}
+                      {{
+                        product.featured_media
+                        | image_url: width: 600
+                        | image_tag:
+                          loading: 'lazy',
+                          widths: '160, 260, 360, 520, 600',
+                          sizes: '(min-width: 990px) 20vw, 45vw',
+                          class: 'cbv-best-seller__image',
+                          alt: product.title
+                      }}
+                    {%- endif -%}
+                  </div>
+                  <div class="cbv-best-seller__content">
+                    <h3>{{ product.title | escape }}</h3>
+                    <p>{{ product.price | money }}</p>
+                    <span>{{ section.settings.best_sellers_cta_label | escape }}</span>
+                  </div>
+                </a>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
       </div>
     </div>
-
-    {%- if section.settings.show_best_sellers and featured_collection != blank and featured_collection.products_count > 0 -%}
-      <div class="cbv-format-grid__best-sellers">
-        <div class="cbv-format-grid__best-sellers-header">
-          <h2>{{ section.settings.best_sellers_heading | escape }}</h2>
-        </div>
-
-        <div class="cbv-format-grid__best-sellers-list" role="list">
-          {%- for product in featured_collection.products limit: section.settings.best_sellers_limit -%}
-            <a href="{{ product.url }}" class="cbv-best-seller" role="listitem">
-              <div class="cbv-best-seller__media">
-                {%- if product.featured_media -%}
-                  {{
-                    product.featured_media
-                    | image_url: width: 600
-                    | image_tag:
-                      loading: 'lazy',
-                      widths: '160, 260, 360, 520, 600',
-                      sizes: '(min-width: 990px) 20vw, 45vw',
-                      class: 'cbv-best-seller__image',
-                      alt: product.title
-                  }}
-                {%- endif -%}
-              </div>
-              <div class="cbv-best-seller__content">
-                <h3>{{ product.title | escape }}</h3>
-                <p>{{ product.price | money }}</p>
-                <span>{{ section.settings.best_sellers_cta_label | escape }}</span>
-              </div>
-            </a>
-          {%- endfor -%}
-        </div>
-      </div>
-    {%- endif -%}
   </div>
 </section>
 
@@ -244,7 +304,7 @@
     };
 
     if (scentParam) {
-      document.querySelectorAll('.cbv-format-card__link[href], .cbv-format-card__action-btn[href], .cbv-best-seller[href]').forEach((link) => {
+      document.querySelectorAll('.cbv-format-card__link[href], .cbv-format-card__action-btn[href], .cbv-best-seller[href], .cbv-format-grid__nav-link[href], .cbv-format-grid__mobile-chip[href]').forEach((link) => {
         link.href = appendScentParam(link.getAttribute('href'));
       });
     }
@@ -396,6 +456,17 @@
       "id": "default_cta_label",
       "label": "Default card CTA label",
       "default": "View Details"
+    },
+    {
+      "type": "link_list",
+      "id": "sidebar_menu",
+      "label": "Sidebar navigation menu"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_heading",
+      "label": "Sidebar heading",
+      "default": "Shop categories"
     },
     {
       "type": "checkbox",
