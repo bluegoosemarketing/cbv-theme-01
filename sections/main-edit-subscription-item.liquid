@@ -250,6 +250,7 @@
     <script type="application/json" data-cbv-subscription-api-config>
       {
         "api_base_path": {{ section.settings.api_base_path | strip | default: '/apps/cbv-subscriptions' | json }},
+        "customer_id": {{ customer.id | json }},
         "data_mode": {{ section.settings.data_mode | default: 'mock' | json }},
         "builder_handles": {
           "candle": "cbv-builder",
@@ -365,6 +366,28 @@
       const normalized = (value || '').toString().trim().toLowerCase();
       if (normalized === 'wax melt' || normalized === 'wax_melt' || normalized === 'waxmelt') return 'wax-melt';
       return normalized;
+    }
+
+    function resolveProxyBasePath(rawPath) {
+      const fallback = '/apps/cbv-subscriptions';
+      const candidate = (rawPath || fallback).toString().trim();
+      if (!candidate) return fallback;
+
+      if (/^https?:\/\//i.test(candidate)) {
+        try {
+          const parsed = new URL(candidate, window.location.origin);
+          if (parsed.pathname.startsWith('/apps/')) {
+            return parsed.pathname.replace(/\/$/, '') || fallback;
+          }
+          return fallback;
+        } catch (error) {
+          console.warn('CBV edit subscription: invalid absolute API base path, falling back to Shopify app proxy path.', error);
+          return fallback;
+        }
+      }
+
+      const normalized = candidate.startsWith('/') ? candidate : `/${candidate}`;
+      return normalized.replace(/\/$/, '') || fallback;
     }
 
     function normalizeHandle(value) {
@@ -529,9 +552,12 @@
       }
 
       async function fetchLiveItem() {
-        const apiBasePath = (apiConfig.api_base_path || '/apps/cbv-subscriptions').replace(/\/$/, '');
-        const itemUrl = `${apiBasePath}/items/${encodeURIComponent(requestedId)}?type=${encodeURIComponent(requestedType)}`;
-        const response = await fetch(itemUrl, {
+        const apiBasePath = resolveProxyBasePath(apiConfig.api_base_path);
+        const customerId = (apiConfig.customer_id || '').toString().trim();
+        const itemUrl = new URL(`${apiBasePath}/items/${encodeURIComponent(requestedId)}`, window.location.origin);
+        itemUrl.searchParams.set('type', requestedType);
+        if (customerId) itemUrl.searchParams.set('customer_id', customerId);
+        const response = await fetch(itemUrl.toString(), {
           method: 'GET',
           headers: { Accept: 'application/json' },
           credentials: 'same-origin'
@@ -947,7 +973,8 @@
         }
         payloadProperties.variant_id = String(selectedVariant.id);
 
-        const apiBasePath = (apiConfig.api_base_path || '/apps/cbv-subscriptions').replace(/\/$/, '');
+        const apiBasePath = resolveProxyBasePath(apiConfig.api_base_path);
+        const customerId = (apiConfig.customer_id || '').toString().trim();
         if (itemSource === 'mock') {
           setFeedback('Demo mode: changes saved locally for preview only. Live subscription was not updated.', 'success');
           return;
@@ -960,7 +987,9 @@
         }
 
         try {
-          const response = await fetch(`${apiBasePath}/items/${encodeURIComponent(requestedId)}`, {
+          const updateUrl = new URL(`${apiBasePath}/items/${encodeURIComponent(requestedId)}`, window.location.origin);
+          if (customerId) updateUrl.searchParams.set('customer_id', customerId);
+          const response = await fetch(updateUrl.toString(), {
             method: 'POST',
             headers: {
               Accept: 'application/json',
