@@ -105,6 +105,17 @@
               </svg>
               <input type="text" id="cbv-format-search" placeholder="Search {{ collection.title | escape }}" aria-label="Search {{ collection.title | escape }}">
             </div>
+            <div class="cbv-sort-select">
+              <label class="visually-hidden" for="cbv-format-sort">Sort by</label>
+              <select id="cbv-format-sort" name="sort_by" aria-label="Sort products">
+                {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+                {%- for option in collection.sort_options -%}
+                  <option value="{{ option.value | escape }}"{% if option.value == current_sort %} selected{% endif %}>
+                    {{ option.name | escape }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -312,6 +323,7 @@
 
     // --- QUICK SEARCH ---
     const searchInput = document.getElementById('cbv-format-search');
+    const sortSelect = document.getElementById('cbv-format-sort');
     const cards = document.querySelectorAll('.cbv-format-card');
     const emptyState = document.getElementById('cbv-format-empty');
 
@@ -337,6 +349,22 @@
         } else {
           emptyState.style.display = 'none';
         }
+      });
+    }
+
+    // --- COLLECTION SORT ---
+    if (sortSelect) {
+      sortSelect.addEventListener('change', function(e) {
+        const nextSort = e.target.value;
+        const url = new URL(window.location.href);
+
+        if (nextSort) {
+          url.searchParams.set('sort_by', nextSort);
+        } else {
+          url.searchParams.delete('sort_by');
+        }
+
+        window.location.href = url.toString();
       });
     }
 
