@@ -227,6 +227,7 @@
       <script type="application/json" data-cbv-subscriptions-api-config>
         {
           "api_base_path": {{ section.settings.api_base_path | strip | default: '/apps/cbv-subscriptions' | json }},
+          "customer_id": {{ customer.id | json }},
           "empty_state_enabled": {{ section.settings.show_empty_state | json }},
           "data_mode": {{ section.settings.data_mode | default: 'mock' | json }}
         }
@@ -307,6 +308,28 @@
       }
     }
 
+    function resolveProxyBasePath(rawPath) {
+      const fallback = '/apps/cbv-subscriptions';
+      const candidate = (rawPath || fallback).toString().trim();
+      if (!candidate) return fallback;
+
+      if (/^https?:\/\//i.test(candidate)) {
+        try {
+          const parsed = new URL(candidate, window.location.origin);
+          if (parsed.pathname.startsWith('/apps/')) {
+            return parsed.pathname.replace(/\/$/, '') || fallback;
+          }
+          return fallback;
+        } catch (error) {
+          console.warn('CBV subscriptions: invalid absolute API base path, falling back to Shopify app proxy path.', error);
+          return fallback;
+        }
+      }
+
+      const normalized = candidate.startsWith('/') ? candidate : `/${candidate}`;
+      return normalized.replace(/\/$/, '') || fallback;
+    }
+
     function escapeHtml(value) {
       return (value || '').toString().replace(/[&<>"']/g, (char) => (
         { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char] || char
@@ -380,7 +403,8 @@
       const config = readConfig();
       const mocks = readMocks();
       const mode = (config.data_mode || 'mock').toLowerCase();
-      const apiBasePath = (config.api_base_path || '/apps/cbv-subscriptions').replace(/\/$/, '');
+      const apiBasePath = resolveProxyBasePath(config.api_base_path);
+      const customerId = (config.customer_id || '').toString().trim();
       const mockItems = Array.isArray(mocks?.items) ? mocks.items : [];
 
       function renderItems(items, source) {
@@ -407,7 +431,10 @@
       }
 
       try {
-        const response = await fetch(`${apiBasePath}/items`, {
+        const requestUrl = new URL(`${apiBasePath}/items`, window.location.origin);
+        if (customerId) requestUrl.searchParams.set('customer_id', customerId);
+
+        const response = await fetch(requestUrl.toString(), {
           method: 'GET',
           headers: { Accept: 'application/json' },
           credentials: 'same-origin'
