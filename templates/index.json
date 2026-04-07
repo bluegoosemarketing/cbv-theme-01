@@ -18,13 +18,13 @@
         "eyebrow_text": "Hand Poured Just for You",
         "headline": "Welcome to <em>Original</em>",
         "subheadline": "Experience our collection of premium, artisan-crafted fragrances designed to bring warmth, light, and beautiful memories into your sanctuary.",
-        "primary_button_label": "Shop New Arrivals",
-        "primary_button_link": "",
-        "secondary_button_label": "Build a Custom Candle",
+        "primary_button_label": "Build Candles",
+        "primary_button_link": "shopify://collections/custom-candles",
+        "secondary_button_label": "Signature Lines",
         "secondary_button_link": "",
-        "callout_label": "FEATURED SCENT",
-        "callout_title": "The Bake Shoppe",
-        "callout_link": ""
+        "callout_label": "FEATURED CANDLE",
+        "callout_title": "Butter Pecan Waffle",
+        "callout_link": "shopify://products/butter-pecan-waffle"
       }
     },
     "category_wayfinding_FJJVWF": {
