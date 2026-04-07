@@ -115,29 +115,29 @@
 
   /* Content Area */
   #Section-{{ section.id }} .cbv-card-content {
-      padding: 24px;
+      padding: 30px;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
   }
 
   #Section-{{ section.id }} .cbv-card-eyebrow {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--accent-green);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       transition: color 0.3s ease;
   }
 
   #Section-{{ section.id }} .cbv-card-title {
       font-family: var(--font-heading);
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 400;
       color: var(--text-main);
-      margin: 0 0 16px 0;
-      line-height: 1.15;
+      margin: 0 0 18px 0;
+      line-height: 1.25;
       transition: color 0.3s ease;
   }
 
@@ -156,9 +156,10 @@
       align-items: center;
       gap: 10px;
       font-family: var(--font-body);
-      font-size: 13.5px;
+      font-size: 15px;
       color: var(--text-secondary);
-      font-weight: 400;
+      font-weight: 500;
+      line-height: 1.45;
   }
 
   #Section-{{ section.id }} .cbv-feature-icon {
@@ -180,9 +181,9 @@
       align-items: center;
       gap: 6px;
       font-family: var(--font-body);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       color: var(--text-main);
       transition: color 0.3s ease;
@@ -267,7 +268,7 @@
           scroll-snap-align: start;
       }
 
-      #Section-{{ section.id }} .cbv-card-content { padding: 20px; }
+      #Section-{{ section.id }} .cbv-card-content { padding: 24px; }
       #Section-{{ section.id }} .cbv-card-title { font-size: 24px; }
   }
 </style>
