@@ -284,7 +284,8 @@
       <div class="cbv-directory-visual">
         <div class="cbv-directory-img-wrap">
           {%- if section.settings.left_image != blank -%}
-            {{ section.settings.left_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'cbv-directory-image', alt: section.settings.heading | strip_html }}
+            {%- assign left_image_alt = section.settings.heading | strip_html | strip -%}
+            {{ section.settings.left_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'cbv-directory-image', alt: left_image_alt }}
           {%- else -%}
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           {%- endif -%}
