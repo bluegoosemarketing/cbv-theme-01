@@ -13,8 +13,8 @@
       "type": "hero-collage",
       "name": "Hero collage",
       "settings": {
+        "background_image": "shopify://shop_images/Bright-Living-Room_Crisp_v1.webp",
         "main_image": "shopify://shop_images/CBV-Candle-Hero_v2.2.webp",
-        "secondary_image": "shopify://shop_images/CBV-Candle-Hero_v3.webp",
         "eyebrow_text": "Hand Poured Just for You",
         "headline": "Welcome to <em>Original</em>",
         "subheadline": "Experience our collection of premium, artisan-crafted fragrances designed to bring warmth, light, and beautiful memories into your sanctuary.",
@@ -22,8 +22,9 @@
         "primary_button_link": "",
         "secondary_button_label": "Build a Custom Candle",
         "secondary_button_link": "",
-        "badge_top_text": "HAND POURED",
-        "badge_bottom_text": "JUST FOR YOU"
+        "callout_label": "FEATURED SCENT",
+        "callout_title": "The Bake Shoppe",
+        "callout_link": ""
       }
     },
     "category_wayfinding_FJJVWF": {
