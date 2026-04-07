@@ -31,13 +31,22 @@
   assign default_block = section.blocks[default_index]
   assign default_title = default_block.settings.title | default: default_block.settings.size_label
 
+  assign default_product = default_block.settings.product
   assign default_builder_path = default_block.settings.builder_link | default: ''
-  assign default_builder_parts = default_builder_path | split: '/products/'
-  assign default_builder_handle = default_builder_parts.last | split: '?' | first | split: '#' | first
-  assign default_builder_product = all_products[default_builder_handle]
+  if default_product == blank and default_builder_path contains '/products/'
+    assign default_builder_parts = default_builder_path | split: '/products/'
+    assign default_builder_handle = default_builder_parts.last | split: '?' | first | split: '#' | first
+    assign default_product = all_products[default_builder_handle]
+  endif
+  assign default_price = blank
+  if default_product != blank and default_product.price != blank
+    assign default_price = default_product.price | money_without_trailing_zeros
+  elsif default_block.settings.fallback_price != blank
+    assign default_price = default_block.settings.fallback_price
+  endif
   assign default_image = default_block.settings.image
-  if default_image == blank and default_builder_product != blank
-    assign default_image = default_builder_product.featured_image
+  if default_image == blank and default_product != blank
+    assign default_image = default_product.featured_image
   endif
 -%}
 
@@ -72,6 +81,7 @@
           <div class="cbv-content-header">
             <p class="cbv-eyebrow">{{ section.settings.eyebrow | escape | default: 'Custom Candle Builder' }}</p>
             <h1 class="cbv-title" data-size-title>{{ default_title | escape }}</h1>
+            <p class="cbv-price" data-size-price {% if default_price == blank %}style="display:none;"{% endif %}>{{ default_price | escape }}</p>
           </div>
 
           <!-- CORE ACTION PULLED TO THE TOP -->
@@ -158,13 +168,25 @@
               "styles": {{ block.settings.jar_styles | json }},
               "builderLink": {{ block.settings.builder_link | json }},
               {%- liquid
+                assign block_product = block.settings.product
                 assign builder_path = block.settings.builder_link | default: ''
-                assign builder_parts = builder_path | split: '/products/'
-                assign builder_handle = builder_parts.last | split: '?' | first | split: '#' | first
-                assign builder_product = all_products[builder_handle]
+                if block_product == blank and builder_path contains '/products/'
+                  assign builder_parts = builder_path | split: '/products/'
+                  assign builder_handle = builder_parts.last | split: '?' | first | split: '#' | first
+                  assign block_product = all_products[builder_handle]
+                endif
+                assign display_price = blank
+                if block_product != blank and block_product.price != blank
+                  assign display_price = block_product.price | money_without_trailing_zeros
+                elsif block.settings.fallback_price != blank
+                  assign display_price = block.settings.fallback_price
+                endif
+              -%}
+              "price": {{ display_price | json }},
+              {%- liquid
                 assign preview_image = block.settings.image
-                if preview_image == blank and builder_product != blank
-                  assign preview_image = builder_product.featured_image
+                if preview_image == blank and block_product != blank
+                  assign preview_image = block_product.featured_image
                 endif
               -%}
               "image": {%- if preview_image != blank -%}
@@ -196,6 +218,7 @@
           const titleEl = sectionEl.querySelector('[data-size-title]');
           const roomBadgeEl = sectionEl.querySelector('[data-size-room-badge]');
           const roomEl = sectionEl.querySelector('[data-size-room]');
+          const priceEl = sectionEl.querySelector('[data-size-price]');
           const descriptionEl = sectionEl.querySelector('[data-size-description]');
           const stylesListEl = sectionEl.querySelector('[data-size-styles]');
           const wicksEl = sectionEl.querySelector('[data-size-wicks]');
@@ -266,6 +289,14 @@
             });
 
             if (titleEl) titleEl.textContent = selected.title;
+            if (priceEl) {
+              if (selected.price) {
+                priceEl.style.display = '';
+                priceEl.textContent = selected.price;
+              } else {
+                priceEl.style.display = 'none';
+              }
+            }
             if (descriptionEl) descriptionEl.textContent = selected.description;
             if (wicksEl) wicksEl.textContent = selected.wicks;
             if (woodEl) woodEl.textContent = selected.woodWick;
@@ -375,6 +406,17 @@
           "id": "title",
           "label": "Display Title",
           "default": "12oz Candle"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Linked Product (for dynamic price/image)"
+        },
+        {
+          "type": "text",
+          "id": "fallback_price",
+          "label": "Fallback Price Label",
+          "info": "Shown if no product is linked (example: $34)"
         },
         {
           "type": "text",
