@@ -134,10 +134,11 @@
       ],
       "name": "Scent Directory",
       "settings": {
-        "badge_number": "800+",
+        "left_image": "shopify://shop_images/Scent-Library-Feature.webp",
+        "badge_number": "500+",
         "badge_text": "Unique Scents",
-        "eyebrow_text": "The Master Archive",
-        "heading": "Discover Your <em>Scent Family</em>",
+        "eyebrow_text": "Scents for every moment",
+        "heading": "Discover <em>Your Scent</em>",
         "description": "<p>We’ve categorized our massive 800+ master archive into 15 distinct fragrance families. Find your perfect scent profile below.</p>",
         "cta_label": "Explore The Master Archive",
         "cta_link": ""
