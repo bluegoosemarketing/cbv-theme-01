@@ -17,10 +17,10 @@
       overflow: hidden;
       font-family: var(--font-body);
       color: var(--text-main);
-      position: relative; /* Added for background wrapper */
+      position: relative; 
     }
 
-    /* WORLD CLASS: Blurred Background Implementation */
+    /* Background Blur Implementation */
     #Section-{{ section.id }} .hero-bg-wrapper {
       position: absolute;
       top: -5%;
@@ -36,14 +36,14 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: blur(07px); /* Heavy depth of field blur */
-      transform: scale(1.05); /* Prevents edge bleeding */
+      filter: blur(7px); /* Locked in your preferred 7px blur */
+      transform: scale(1.05); 
     }
 
     #Section-{{ section.id }} .hero-bg-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(253, 251, 250, 0.75); /* Warm alabaster wash ensures perfect text contrast */
+      background: rgba(253, 251, 250, 0.75); 
       z-index: 1;
     }
 
@@ -52,7 +52,7 @@
       margin: 0 auto;
       padding: 0 32px;
       position: relative;
-      z-index: 2; /* Sits above the background */
+      z-index: 2; 
     }
 
     #Section-{{ section.id }} .hero-collage {
@@ -76,7 +76,7 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--accent-green);
-      margin-bottom: 24px;
+      margin-bottom: 12px; /* Tightened spacing to pull it closer to headline */
     }
 
     #Section-{{ section.id }} .hero-eyebrow::after {
@@ -90,24 +90,24 @@
     #Section-{{ section.id }} .hero-text h1 {
       font-family: var(--font-heading) !important;
       font-size: 72px;
-      font-weight: 400;
-      line-height: 1.2;
+      font-weight: 500; /* Bumped weight for better legibility */
+      line-height: 1.15;
       margin-bottom: 24px;
       color: var(--text-main);
     }
 
     #Section-{{ section.id }} .hero-text h1 em {
       font-style: italic;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--accent-green);
     }
 
     #Section-{{ section.id }} .hero-text p {
       font-family: var(--font-body) !important;
-      font-size: 18px;
-      color: var(--text-secondary);
-      margin-bottom: 48px;
-      font-weight: 400;
+      font-size: 20px; /* Increased for legibility */
+      color: var(--text-main); /* Darkened for better contrast */
+      margin-bottom: 40px;
+      font-weight: 500; /* Thickened for legibility */
       max-width: 90%;
       line-height: 1.6;
     }
@@ -156,7 +156,6 @@
       border-color: var(--accent-green);
     }
 
-    /* RESTORED ORIGINAL VISUAL STRUCTURE */
     #Section-{{ section.id }} .hero-visuals {
       position: relative;
       height: 100%;
@@ -166,7 +165,6 @@
       justify-content: center;
     }
 
-    /* Using your original bulletproof sizing logic */
     #Section-{{ section.id }} .img-main {
       width: 75%;
       height: 600px;
@@ -177,11 +175,11 @@
       z-index: 1;
     }
 
-    /* SLEEK PRODUCT CALLOUT CARD (Replaces the old secondary image) */
+    /* EDITORIAL PRODUCT CALLOUT CARD */
     #Section-{{ section.id }} .hero-product-callout {
       position: absolute;
-      bottom: 8%;
-      right: 0;
+      bottom: 40px;
+      left: -32px; /* Shifted to the Left side to fix CTA alignment issues */
       background: #FFFFFF;
       padding: 18px 24px;
       border-radius: 2px;
@@ -245,7 +243,6 @@
       border-color: var(--accent-green);
     }
 
-    /* Media Queries matching original */
     @media (max-width: 1100px) {
       #Section-{{ section.id }} .hero-text h1 {
         font-size: 56px;
@@ -254,6 +251,10 @@
       #Section-{{ section.id }} .img-main {
         height: 500px;
         width: 85%;
+      }
+      
+      #Section-{{ section.id }} .hero-product-callout {
+        left: -16px; /* Adjusting overhang for smaller screens */
       }
     }
 
@@ -287,10 +288,17 @@
         height: 450px;
       }
 
-      /* Callout adjustment for mobile */
+      /* Center and ground the callout on mobile */
       #Section-{{ section.id }} .hero-product-callout {
-        bottom: -5%;
-        right: 5%;
+        bottom: -24px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 85%;
+        justify-content: space-between;
+      }
+
+      #Section-{{ section.id }} .hero-product-callout:hover {
+        transform: translate(-50%, -4px);
       }
 
       #Section-{{ section.id }} .hero-eyebrow {
@@ -307,6 +315,7 @@
 
       #Section-{{ section.id }} .hero-text p {
         margin: 0 auto 40px auto;
+        font-size: 18px;
       }
 
       #Section-{{ section.id }} .hero-cta-group {
@@ -344,7 +353,7 @@
           {{ 'lifestyle-2' | placeholder_svg_tag: 'img-main' }}
         {% endif %}
 
-        <!-- Clean, Editorial Product Callout Card -->
+        <!-- Clean, Editorial Product Callout Card (Shifted Left) -->
         <a href="{{ section.settings.callout_link | default: '#' }}" class="hero-product-callout" aria-label="Shop {{ section.settings.callout_title }}">
           <div class="callout-content">
             <span class="callout-label">{{ section.settings.callout_label }}</span>
