@@ -403,17 +403,16 @@
   .cbv-mega-inner {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 20px 40px 40px 40px; /* Slashed top padding from 40px to 20px */
+    padding: 20px 40px 40px 40px; 
     display: grid;
-    gap: 60px;
   }
 
-  .layout-shop { grid-template-columns: 1fr 1fr 1fr 1fr 300px; gap: 40px; }
-  .layout-scents { grid-template-columns: 1fr 320px; }
+  .layout-shop { grid-template-columns: 1fr 1fr 340px; gap: 60px; }
+  .layout-scents { grid-template-columns: 1fr 240px 320px; gap: 50px; }
 
   .cbv-col-title {
     font-family: var(--font-heading);
-    font-size: 20px; /* Scaled up to maintain hierarchy */
+    font-size: 20px; 
     margin-bottom: 16px;
     color: var(--cbv-header-accent);
     font-weight: 500;
@@ -441,12 +440,12 @@
   .cbv-menu-links { list-style: none; padding: 0; margin: 0; }
   .cbv-menu-links li { margin-bottom: 8px; }
   .cbv-menu-links a {
-    font-size: 16px; /* Increased for legibility */
+    font-size: 16px; 
     font-family: var(--font-body);
     color: #5C534D;
     font-weight: 400;
     display: block;
-    padding: 4px 0; /* More breathing room for easier clicking */
+    padding: 4px 0; 
     transition: color 0.2s, transform 0.2s;
     text-decoration: none;
   }
@@ -459,7 +458,7 @@
 
   .cbv-scent-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 12px;
   }
 
@@ -471,7 +470,7 @@
     border: 1px solid var(--cbv-border-color);
     border-radius: 4px;
     background: #FFFFFF;
-    font-size: 15px; /* Bumped slightly for legibility */
+    font-size: 15px; 
     font-family: var(--font-body);
     font-weight: 400;
     color: var(--cbv-header-text);
@@ -1028,30 +1027,14 @@
                   <li><a href="/collections/cuties">Cuties</a></li>
                   <li><a href="/collections/sweet-treats">Sweet Treats</a></li>
                   <li><a href="/collections/giftables">Giftables</a></li>
+                  <li><a href="/products/gift-card" style="margin-top: 12px; display: inline-block; color: var(--cbv-header-accent); font-weight: 500;">Gift Cards &rarr;</a></li>
                 </ul>
               </div>
-              <div>
-                <span class="cbv-col-title">Bundles & Boxes</span>
-                <ul class="cbv-menu-links">
-                  <li><a href="#">Sampler Packs</a></li>
-                  <li><a href="#">Variety Packs</a></li>
-                  <li><a href="#">Mystery Boxes</a></li>
-                </ul>
-              </div>
-              <div>
-                <span class="cbv-col-title">Quick Links</span>
-                <ul class="cbv-menu-links">
-                  <li><a href="/collections/sale">SALE</a></li>
-                  <li><a href="/collections/new-arrivals">New Arrivals</a></li>
-                  <li><a href="/collections/best-sellers">Best Sellers</a></li>
-                  <li><a href="/products/gift-card">Gift Cards</a></li>
-                </ul>
-              </div>
-              <a class="cbv-featured-card" href="{{ section.settings.shop_feature_link | default: '/collections/seasonal-collection' }}">
+              <a class="cbv-featured-card" href="{{ section.settings.shop_feature_link | default: '/collections/best-sellers' }}">
                 {%- if section.settings.shop_feature_image != blank -%}
                   {{ section.settings.shop_feature_image | image_url: width: 900 | image_tag: class: 'cbv-featured-img', loading: 'lazy', alt: section.settings.shop_feature_title }}
                 {%- else -%}
-                  <img src="https://placehold.co/400x600/FDFBFA/332E2A?text=Spring+2026" class="cbv-featured-img" alt="Spring Collection" loading="lazy">
+                  <img src="https://placehold.co/400x600/FDFBFA/332E2A?text=Best+Sellers" class="cbv-featured-img" alt="Best Sellers" loading="lazy">
                 {%- endif -%}
                 <div class="cbv-featured-overlay">
                   <span class="cbv-feat-label">{{ section.settings.shop_feature_label }}</span>
@@ -1075,6 +1058,16 @@
                 <div style="margin-top:25px;">
                   <a href="{{ section.settings.scents_az_link | default: '/pages/scent-library' }}" style="font-size:13px;font-family:var(--font-body);color:var(--cbv-header-accent);font-weight:500;text-decoration:underline;">View Full Scent List (A-Z) →</a>
                 </div>
+              </div>
+              <div>
+                <span class="cbv-col-title">Exclusive Collections</span>
+                <ul class="cbv-menu-links">
+                  <li><a href="/collections/black-label">Black Label</a></li>
+                  <li><a href="/collections/candlemans-closet">Candleman's Closet</a></li>
+                  <li><a href="/collections/club-diva">Club Diva</a></li>
+                  <li><a href="/collections/customer-creations">Customer Creations</a></li>
+                  <li><a href="/collections/house-blends">House Blends</a></li>
+                </ul>
               </div>
               <a class="cbv-featured-card" href="{{ section.settings.scents_feature_link | default: '/pages/scent-library' }}">
                 {%- if section.settings.scents_feature_image != blank -%}
@@ -1145,21 +1138,7 @@
         <a href="/collections/cuties" class="cbv-mob-link-sub">Cuties</a>
         <a href="/collections/sweet-treats" class="cbv-mob-link-sub">Sweet Treats</a>
         <a href="/collections/giftables" class="cbv-mob-link-sub">Giftables</a>
-
-        <div class="cbv-mobile-divider"></div>
-
-        <span class="cbv-mob-cat-title">Bundles & Boxes</span>
-        <a href="#" class="cbv-mob-link">Sampler Packs</a>
-        <a href="#" class="cbv-mob-link">Variety Packs</a>
-        <a href="#" class="cbv-mob-link">Mystery Boxes</a>
-
-        <div class="cbv-mobile-divider"></div>
-
-        <span class="cbv-mob-cat-title">Quick Links</span>
-        <a href="/collections/sale" class="cbv-mob-link">SALE</a>
-        <a href="/collections/new-arrivals" class="cbv-mob-link">New Arrivals</a>
-        <a href="/collections/best-sellers" class="cbv-mob-link">Best Sellers</a>
-        <a href="/products/gift-card" class="cbv-mob-link">Gift Cards</a>
+        <a href="/products/gift-card" class="cbv-mob-link-sub" style="color: var(--cbv-header-accent); font-weight: 500; margin-top: 5px;">Gift Cards &rarr;</a>
       </div>
     </div>
 
@@ -1169,10 +1148,20 @@
         <svg class="cbv-icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
       </button>
       <div class="cbv-mobile-submenu">
-        <div class="cbv-mobile-scent-grid">
+        <span class="cbv-mob-cat-title">Browse by Family</span>
+        <div class="cbv-mobile-scent-grid" style="margin-top: 10px;">
           {% render 'cbv-scent-family-nav-links', class: 'cbv-scent-pill' %}
         </div>
         <a href="{{ section.settings.scents_az_link | default: '/pages/scent-library' }}" class="cbv-mob-link" style="margin-top:15px;font-weight:600;color:var(--cbv-header-accent);">View All A-Z →</a>
+        
+        <div class="cbv-mobile-divider"></div>
+
+        <span class="cbv-mob-cat-title">Exclusive Collections</span>
+        <a href="/collections/black-label" class="cbv-mob-link-sub">Black Label</a>
+        <a href="/collections/candlemans-closet" class="cbv-mob-link-sub">Candleman's Closet</a>
+        <a href="/collections/club-diva" class="cbv-mob-link-sub">Club Diva</a>
+        <a href="/collections/customer-creations" class="cbv-mob-link-sub">Customer Creations</a>
+        <a href="/collections/house-blends" class="cbv-mob-link-sub">House Blends</a>
       </div>
     </div>
 
@@ -1222,7 +1211,7 @@
 {
   "name": "t:sections.header.name",
   "class": "section-header",
-  "settings": [
+  "settings":[
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -1272,19 +1261,19 @@
       "type": "text",
       "id": "shop_feature_label",
       "label": "Label",
-      "default": "Featured"
+      "default": "Trending Now"
     },
     {
       "type": "text",
       "id": "shop_feature_title",
       "label": "Title",
-      "default": "Spring Collection"
+      "default": "Best Sellers"
     },
     {
       "type": "text",
       "id": "shop_feature_cta",
       "label": "CTA",
-      "default": "Shop now"
+      "default": "Shop favorites"
     },
     {
       "type": "header",
