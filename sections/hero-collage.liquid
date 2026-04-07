@@ -11,17 +11,48 @@
       --font-heading: 'Playfair Display', serif;
       --font-body: 'Jost', sans-serif;
       --transition: all 0.3s ease;
+      
       background-color: var(--bg-page);
       padding: 96px 0;
       overflow: hidden;
       font-family: var(--font-body);
       color: var(--text-main);
+      position: relative; /* Added for background wrapper */
+    }
+
+    /* WORLD CLASS: Blurred Background Implementation */
+    #Section-{{ section.id }} .hero-bg-wrapper {
+      position: absolute;
+      top: -5%;
+      left: -5%;
+      width: 110%;
+      height: 110%;
+      z-index: 0;
+      overflow: hidden;
+      background-color: var(--bg-page);
+    }
+
+    #Section-{{ section.id }} .hero-bg-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(14px); /* Heavy depth of field blur */
+      transform: scale(1.05); /* Prevents edge bleeding */
+    }
+
+    #Section-{{ section.id }} .hero-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(253, 251, 250, 0.75); /* Warm alabaster wash ensures perfect text contrast */
+      z-index: 1;
     }
 
     #Section-{{ section.id }} .container {
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 32px;
+      position: relative;
+      z-index: 2; /* Sits above the background */
     }
 
     #Section-{{ section.id }} .hero-collage {
@@ -125,6 +156,7 @@
       border-color: var(--accent-green);
     }
 
+    /* RESTORED ORIGINAL VISUAL STRUCTURE */
     #Section-{{ section.id }} .hero-visuals {
       position: relative;
       height: 100%;
@@ -134,6 +166,7 @@
       justify-content: center;
     }
 
+    /* Using your original bulletproof sizing logic */
     #Section-{{ section.id }} .img-main {
       width: 75%;
       height: 600px;
@@ -144,42 +177,75 @@
       z-index: 1;
     }
 
-    #Section-{{ section.id }} .img-secondary {
+    /* SLEEK PRODUCT CALLOUT CARD (Replaces the old secondary image) */
+    #Section-{{ section.id }} .hero-product-callout {
       position: absolute;
-      bottom: 5%;
+      bottom: 8%;
       right: 0;
-      width: 45%;
-      aspect-ratio: 1 / 1;
-      height: auto;
-      object-fit: cover;
-      border: 12px solid var(--bg-page);
+      background: #FFFFFF;
+      padding: 18px 24px;
+      border-radius: 2px;
       box-shadow: 0 15px 35px rgba(51, 46, 42, 0.08);
-      z-index: 2;
+      border: 1px solid rgba(51, 46, 42, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-decoration: none;
+      z-index: 3;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    #Section-{{ section.id }} .artisan-seal {
-      position: absolute;
-      top: 2%;
-      left: 5%;
-      width: 140px;
-      height: 140px;
-      z-index: 3;
-      transform: rotate(-8deg);
-      background-color: var(--bg-page);
+    #Section-{{ section.id }} .hero-product-callout:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(51, 46, 42, 0.12);
+    }
+
+    #Section-{{ section.id }} .callout-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #Section-{{ section.id }} .callout-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      margin-bottom: 4px;
+    }
+
+    #Section-{{ section.id }} .callout-title {
+      font-family: var(--font-heading);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    #Section-{{ section.id }} .callout-icon {
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      box-shadow: 0 8px 24px rgba(51, 46, 42, 0.08);
-      border: 1px solid rgba(51, 46, 42, 0.05);
+      border: 1px solid rgba(51, 46, 42, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
+      color: var(--text-main);
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    #Section-{{ section.id }} .artisan-seal svg {
-      width: 85%;
-      height: 85%;
-      fill: var(--text-main);
+    #Section-{{ section.id }} .callout-icon svg {
+      width: 14px;
+      height: 14px;
     }
 
+    #Section-{{ section.id }} .hero-product-callout:hover .callout-icon {
+      background-color: var(--accent-green);
+      color: #FFFFFF;
+      border-color: var(--accent-green);
+    }
+
+    /* Media Queries matching original */
     @media (max-width: 1100px) {
       #Section-{{ section.id }} .hero-text h1 {
         font-size: 56px;
@@ -188,10 +254,6 @@
       #Section-{{ section.id }} .img-main {
         height: 500px;
         width: 85%;
-      }
-
-      #Section-{{ section.id }} .img-secondary {
-        width: 45%;
       }
     }
 
@@ -225,18 +287,10 @@
         height: 450px;
       }
 
-      #Section-{{ section.id }} .img-secondary {
-        width: 55%;
+      /* Callout adjustment for mobile */
+      #Section-{{ section.id }} .hero-product-callout {
         bottom: -5%;
         right: 5%;
-        border-width: 8px;
-      }
-
-      #Section-{{ section.id }} .artisan-seal {
-        width: 110px;
-        height: 110px;
-        top: -15px;
-        left: -5px;
       }
 
       #Section-{{ section.id }} .hero-eyebrow {
@@ -271,35 +325,35 @@
     }
   </style>
 
+  <!-- Blurred Living Room Background -->
+  <div class="hero-bg-wrapper">
+    {% if section.settings.background_image != blank %}
+      {{ section.settings.background_image | image_url: width: 2400 | image_tag: alt: 'Background', loading: 'eager', fetchpriority: 'high' }}
+    {% else %}
+      <div style="width:100%; height:100%; background:var(--bg-page);"></div>
+    {% endif %}
+    <div class="hero-bg-overlay"></div>
+  </div>
+
   <div class="container">
     <div class="hero-collage">
       <div class="hero-visuals">
-        <div class="artisan-seal" aria-hidden="true">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <path id="topArc-{{ section.id }}" d="M 12, 50 A 38, 38 0 1, 1 88, 50" />
-              <path id="bottomArc-{{ section.id }}" d="M 12, 50 A 38, 38 0 0, 0 88, 50" />
-            </defs>
-            <text font-family="var(--font-body), sans-serif" font-size="11.5" font-weight="600" letter-spacing="0.2em" fill="var(--text-main)">
-              <textPath href="#topArc-{{ section.id }}" startOffset="50%" text-anchor="middle">{{ section.settings.badge_top_text | escape }}</textPath>
-              <textPath href="#bottomArc-{{ section.id }}" startOffset="50%" text-anchor="middle" dominant-baseline="hanging">{{ section.settings.badge_bottom_text | escape }}</textPath>
-            </text>
-            <circle cx="10" cy="50" r="1.5" fill="var(--text-main)" />
-            <circle cx="90" cy="50" r="1.5" fill="var(--text-main)" />
-          </svg>
-        </div>
-
         {% if section.settings.main_image != blank %}
           {{ section.settings.main_image | image_url: width: 1600 | image_tag: class: 'img-main', alt: section.settings.main_image.alt, loading: 'eager', fetchpriority: 'high' }}
         {% else %}
           {{ 'lifestyle-2' | placeholder_svg_tag: 'img-main' }}
         {% endif %}
 
-        {% if section.settings.secondary_image != blank %}
-          {{ section.settings.secondary_image | image_url: width: 1000 | image_tag: class: 'img-secondary', alt: section.settings.secondary_image.alt, loading: 'lazy' }}
-        {% else %}
-          {{ 'image' | placeholder_svg_tag: 'img-secondary' }}
-        {% endif %}
+        <!-- Clean, Editorial Product Callout Card -->
+        <a href="{{ section.settings.callout_link | default: '#' }}" class="hero-product-callout" aria-label="Shop {{ section.settings.callout_title }}">
+          <div class="callout-content">
+            <span class="callout-label">{{ section.settings.callout_label }}</span>
+            <span class="callout-title">{{ section.settings.callout_title }}</span>
+          </div>
+          <div class="callout-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </div>
+        </a>
       </div>
 
       <div class="hero-text">
@@ -331,19 +385,19 @@
 
 {% schema %}
 {
-  "name": "Hero collage",
+  "name": "Hero Section",
   "tag": "section",
   "class": "section",
-  "settings": [
+  "settings":[
     {
       "type": "image_picker",
-      "id": "main_image",
-      "label": "Main image"
+      "id": "background_image",
+      "label": "Background image (Blurred Living Room)"
     },
     {
       "type": "image_picker",
-      "id": "secondary_image",
-      "label": "Secondary image"
+      "id": "main_image",
+      "label": "Main product image"
     },
     {
       "type": "text",
@@ -386,21 +440,30 @@
       "label": "Secondary button link"
     },
     {
-      "type": "text",
-      "id": "badge_top_text",
-      "label": "Badge top text",
-      "default": "HAND POURED"
+      "type": "header",
+      "content": "Product Callout Card"
     },
     {
       "type": "text",
-      "id": "badge_bottom_text",
-      "label": "Badge bottom text",
-      "default": "JUST FOR YOU"
+      "id": "callout_label",
+      "label": "Callout Label",
+      "default": "FEATURED SCENT"
+    },
+    {
+      "type": "text",
+      "id": "callout_title",
+      "label": "Callout Product Title",
+      "default": "The Bake Shoppe"
+    },
+    {
+      "type": "url",
+      "id": "callout_link",
+      "label": "Callout Link"
     }
   ],
-  "presets": [
+  "presets":[
     {
-      "name": "Hero collage"
+      "name": "Hero Section"
     }
   ]
 }
