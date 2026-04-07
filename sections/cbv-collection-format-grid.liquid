@@ -85,9 +85,6 @@
 
         <div class="cbv-format-grid__top-bar">
           <div class="cbv-format-grid__header-text">
-            {%- if section.settings.eyebrow != blank -%}
-              <p class="cbv-format-grid__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-            {%- endif -%}
             {%- assign display_title = collection.metafields.theme.display_title | default: collection.title -%}
             {%- assign display_description = collection.metafields.theme.display_description | default: collection.description -%}
             <h1 class="cbv-format-grid__title">{{ display_title | escape }}</h1>
