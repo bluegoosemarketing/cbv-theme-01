@@ -166,6 +166,27 @@
         "settings": {
           "color_scheme": "background-1"
         }
+      },
+      "cbv-collection-format-grid": {
+        "type": "cbv-collection-format-grid",
+        "settings": {
+          "eyebrow": "Shop by format",
+          "intro": "<p>Choose your vessel, then enter our candle builder to pour your scent memory.</p>",
+          "card_source": "collection_products",
+          "default_cta_label": "View Details",
+          "sidebar_menu": "shop-sidebar",
+          "sidebar_heading": "Shop categories",
+          "enable_quick_add": true,
+          "collection_products_limit": 6,
+          "description_word_limit": 10,
+          "padding_top": 52,
+          "padding_bottom": 72,
+          "show_best_sellers": false,
+          "best_sellers_heading": "Loved right now",
+          "best_sellers_collection": "",
+          "best_sellers_limit": 4,
+          "best_sellers_cta_label": "Shop now"
+        }
       }
     },
     "content_for_index": [],
