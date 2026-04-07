@@ -25,7 +25,8 @@
 
 <section class="cbv-format-grid section-{{ section.id }}-padding">
   <div class="page-width">
-    <div class="cbv-format-grid__layout">
+    <div class="cbv-format-grid__layout {% if sidebar_menu != blank and sidebar_menu.links.size > 0 %}has-sidebar{% endif %}">
+      
       {%- if sidebar_menu != blank and sidebar_menu.links.size > 0 -%}
         <aside class="cbv-format-grid__sidebar" aria-label="{{ section.settings.sidebar_heading | escape }}">
           {%- if section.settings.sidebar_heading != blank -%}

@@ -89,10 +89,64 @@
         "section_eyebrow": "Curated For Your Home",
         "section_heading": "Shop by <em>Collection</em>"
       }
+    },
+    "scent_directory_67PWrg": {
+      "type": "scent-directory",
+      "blocks": {
+        "link_YAqUYF": {
+          "type": "link",
+          "settings": {
+            "link_text": "All Scents",
+            "link_url": "",
+            "make_primary": true
+          }
+        },
+        "link_HKVNY4": {
+          "type": "link",
+          "settings": {
+            "link_text": "Bakery",
+            "link_url": "",
+            "make_primary": false
+          }
+        },
+        "link_kLEEA4": {
+          "type": "link",
+          "settings": {
+            "link_text": "Floral",
+            "link_url": "",
+            "make_primary": false
+          }
+        },
+        "link_rVQ8HK": {
+          "type": "link",
+          "settings": {
+            "link_text": "Fruity",
+            "link_url": "",
+            "make_primary": false
+          }
+        }
+      },
+      "block_order": [
+        "link_YAqUYF",
+        "link_HKVNY4",
+        "link_kLEEA4",
+        "link_rVQ8HK"
+      ],
+      "name": "Scent Directory",
+      "settings": {
+        "badge_number": "800+",
+        "badge_text": "Unique Scents",
+        "eyebrow_text": "The Master Archive",
+        "heading": "Discover Your <em>Scent Family</em>",
+        "description": "<p>We’ve categorized our massive 800+ master archive into 15 distinct fragrance families. Find your perfect scent profile below.</p>",
+        "cta_label": "Explore The Master Archive",
+        "cta_link": ""
+      }
     }
   },
   "order": [
     "hero_collage_4xyhYD",
-    "category_wayfinding_FJJVWF"
+    "category_wayfinding_FJJVWF",
+    "scent_directory_67PWrg"
   ]
 }
