@@ -119,6 +119,26 @@
     display: none !important;
   }
 
+  .cbv-subscription-edit__empty {
+    margin-top: 1.6rem;
+    padding: 2rem;
+    text-align: center;
+    border: 0.1rem dashed rgba(var(--color-foreground), 0.2);
+    border-radius: 1.6rem;
+    background: rgba(var(--color-foreground), 0.03);
+  }
+
+  .cbv-subscription-edit__empty h2 {
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+  }
+
+  .cbv-subscription-edit__empty p {
+    margin: 0 auto 1.8rem;
+    max-width: 48rem;
+    color: rgba(var(--color-foreground), 0.72);
+  }
+
   .cbv-subscription-edit [hidden] {
     display: none !important;
   }
@@ -151,6 +171,7 @@
       <h1 class="cbv-subscription-edit__title heading-bold">Edit Next Item</h1>
     </header>
 
+    {%- if customer or section.settings.test_customer_id != blank -%}
     <article class="cbv-subscription-edit__summary" aria-live="polite">
       <div class="cbv-subscription-edit__summary-grid">
         <div class="cbv-subscription-edit__meta">
@@ -250,7 +271,7 @@
     <script type="application/json" data-cbv-subscription-api-config>
       {
         "api_base_path": {{ section.settings.api_base_path | strip | default: '/apps/cbv-subscriptions' | json }},
-        "customer_id": {{ customer.id | json }},
+        "customer_id": {{ section.settings.test_customer_id | default: customer.id | json }},
         "data_mode": {{ section.settings.data_mode | default: 'mock' | json }},
         "builder_handles": {
           "candle": "cbv-builder",
@@ -347,6 +368,13 @@
         ]
       </script>
     {%- endpaginate -%}
+    {%- else -%}
+      <div class="cbv-subscription-edit__empty">
+        <h2 class="heading-bold">Sign in to edit subscription items</h2>
+        <p>Please sign in to load and edit your next Candle Club or wax melt item.</p>
+        <a class="button button--primary" href="/account/login">Sign in</a>
+      </div>
+    {%- endif -%}
   </section>
 </div>
 
@@ -1061,6 +1089,12 @@
       "label": "Subscriptions API base path",
       "default": "/apps/cbv-subscriptions",
       "info": "Theme calls {base}/items/:id to load and save customer-owned subscription item properties."
+    },
+    {
+      "type": "text",
+      "id": "test_customer_id",
+      "label": "Test Customer ID (Developer Mode)",
+      "info": "Forces the UI to load and passes this ID to the backend, bypassing the Shopify login requirement."
     },
     {
       "type": "range",

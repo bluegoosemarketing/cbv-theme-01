@@ -221,13 +221,13 @@
       </p>
     </header>
 
-    {%- if customer -%}
+    {%- if customer or section.settings.test_customer_id != blank -%}
       <p class="cbv-subscriptions__status" data-cbv-subscriptions-status aria-live="polite">Loading your subscriptions…</p>
       <div class="cbv-subscriptions__list" data-cbv-subscriptions-list></div>
       <script type="application/json" data-cbv-subscriptions-api-config>
         {
           "api_base_path": {{ section.settings.api_base_path | strip | default: '/apps/cbv-subscriptions' | json }},
-          "customer_id": {{ customer.id | json }},
+          "customer_id": {{ section.settings.test_customer_id | default: customer.id | json }},
           "empty_state_enabled": {{ section.settings.show_empty_state | json }},
           "data_mode": {{ section.settings.data_mode | default: 'mock' | json }}
         }
@@ -505,6 +505,12 @@
       "label": "Subscriptions API base path",
       "default": "/apps/cbv-subscriptions",
       "info": "Theme will call {base}/items for customer-owned subscription items."
+    },
+    {
+      "type": "text",
+      "id": "test_customer_id",
+      "label": "Test Customer ID (Developer Mode)",
+      "info": "Forces the UI to load and passes this ID to the backend, bypassing the Shopify login requirement."
     },
     {
       "type": "header",
