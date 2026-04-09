@@ -15,19 +15,27 @@
   .page-header h1 { font-family: var(--font-cbv-heading); font-size: 56px; font-weight: 400; color: var(--color-text-dark); margin: 0 0 16px 0; letter-spacing: -0.02em; }
   .page-header p { color: var(--color-text-light); font-size: 18px; max-width: 540px; margin: 0 auto; line-height: 1.6; }
   .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 320px; gap: 24px; }
+  
   .bento-item { position: relative; display: block; border-radius: 4px; overflow: hidden; text-decoration: none; background: var(--color-border); isolation: isolate; transition: var(--transition-smooth); }
   .bento-item:hover { box-shadow: 0 20px 40px rgba(28, 27, 26, 0.15); transform: translateY(-4px); }
+  
   .bento-image { position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); z-index: -2; }
+  /* Fallback styling for Shopify SVGs so they look okay before merchant adds images */
+  svg.bento-image { background-color: #2A2A2A; padding: 40px; fill: #555555; }
+  
   .bento-item:hover .bento-image { transform: scale(1.06); }
   .bento-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 30%, rgba(0,0,0,0.6) 100%); transition: var(--transition-smooth); z-index: -1; }
   .bento-item:hover .bento-overlay { background: linear-gradient(to bottom, rgba(0,0,0,0.1) 10%, rgba(0,0,0,0.8) 100%); }
+  
   .bento-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 32px; z-index: 1; display: flex; flex-direction: column; gap: 6px; }
   .bento-eyebrow { font-family: var(--font-cbv-body); color: rgba(255, 255, 255, 0.85); font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 4px; }
   .bento-title { font-family: var(--font-cbv-heading); color: #FFFFFF; font-weight: 400; margin: 0; letter-spacing: 0.01em; transition: var(--transition-smooth); }
+  
   .item-large .bento-title { font-size: 48px; }
   .item-wide .bento-title { font-size: 36px; }
   .item-standard .bento-title { font-size: 24px; }
   .item-standard .bento-content { padding: 24px; }
+  
   .bento-link { color: #FFFFFF; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0; transform: translateY(12px); transition: var(--transition-smooth); display: flex; align-items: center; gap: 8px; margin-top: 8px; }
   .bento-item:hover .bento-link { opacity: 1; transform: translateY(0); }
   .bento-link::after { content: "→"; transition: transform 0.3s ease; }
@@ -46,6 +54,7 @@
     .item-standard { grid-column: span 1; grid-row: span 1; }
     .item-large .bento-title { font-size: 40px; }
   }
+  
   @media (max-width: 768px) {
     .collections-landing { padding: 40px 20px; }
     .page-header { margin-bottom: 40px; }
@@ -59,6 +68,7 @@
     .item-wide .bento-title { font-size: 28px; }
     .bento-content { padding: 24px; }
   }
+  
   @media (hover: none) {
     .bento-link { opacity: 1; transform: translateY(0); }
     .bento-overlay { background: linear-gradient(to bottom, rgba(0,0,0,0.1) 20%, rgba(0,0,0,0.7) 100%); }
@@ -75,12 +85,19 @@
     {% for block in section.blocks %}
       {% liquid
         assign collection = block.settings.collection
-        assign card_title = block.settings.custom_title | default: collection.title
+        
+        # Logic: Custom Link overrides Collection Link. If both empty, use '#'
+        assign card_link = block.settings.custom_link | default: collection.url | default: '#'
+        
+        # Logic: Custom Title overrides Collection Title. If both empty, use Fallback
+        assign fallback_title = 'Collection ' | append: forloop.index
+        assign card_title = block.settings.custom_title | default: collection.title | default: fallback_title
+        
         assign card_image = block.settings.custom_image | default: collection.image
-        assign card_link = collection.url | default: '#'
         assign eyebrow = block.settings.eyebrow_text
         assign cta = block.settings.cta_text
       %}
+      
       <a
         href="{{ card_link }}"
         class="bento-item {{ block.settings.card_size }}"
@@ -91,14 +108,16 @@
         {% if card_image != blank %}
           {{ card_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'bento-image', sizes: '(min-width: 1024px) 50vw, 100vw', widths: '400,600,800,1000,1200', alt: card_title }}
         {% else %}
-          {{ 'collection-1' | placeholder_svg_tag: 'bento-image' }}
+          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'bento-image' }}
         {% endif %}
+        
         <div class="bento-overlay"></div>
         <div class="bento-content">
           {% if eyebrow != blank %}
             <span class="bento-eyebrow">{{ eyebrow }}</span>
           {% endif %}
-          <h2 class="bento-title">{{ card_title | default: 'Collection' }}</h2>
+          <h2 class="bento-title">{{ card_title }}</h2>
           {% if cta != blank %}
             <span class="bento-link">{{ cta }}</span>
           {% endif %}
@@ -111,7 +130,7 @@
 {% schema %}
 {
   "name": "Collections Bento",
-  "settings": [
+  "settings":[
     {
       "type": "text",
       "id": "heading",
@@ -122,72 +141,141 @@
       "type": "textarea",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Design your own signature fragrance..."
+      "default": "Design your own signature fragrance in our Custom Builder, or explore our curated selection of ready-to-ship specialty creations."
     }
   ],
-  "blocks": [
+  "blocks":[
     {
       "type": "collection_card",
-      "name": "Collection card",
-      "settings": [
+      "name": "Collection Card",
+      "settings":[
         {
           "type": "collection",
           "id": "collection",
-          "label": "Collection"
+          "label": "Collection (Optional)",
+          "info": "Leave blank if linking to a single Product or Page below."
+        },
+        {
+          "type": "url",
+          "id": "custom_link",
+          "label": "Link Override",
+          "info": "Use this to link directly to a Product (like Scent Shots) or custom page. Overrides the collection link."
         },
         {
           "type": "image_picker",
           "id": "custom_image",
-          "label": "Custom image"
+          "label": "Custom Image",
+          "info": "Overrides the default collection image."
         },
         {
           "type": "text",
           "id": "custom_title",
-          "label": "Custom title"
+          "label": "Custom Title",
+          "info": "Overrides the default collection title."
         },
         {
           "type": "text",
           "id": "eyebrow_text",
-          "label": "Eyebrow text",
+          "label": "Eyebrow Text",
           "default": "Specialty Collection"
         },
         {
           "type": "text",
           "id": "cta_text",
-          "label": "CTA text",
+          "label": "CTA Text",
           "default": "Shop Now"
         },
         {
           "type": "select",
           "id": "card_size",
-          "label": "Card size",
+          "label": "Card Size",
           "default": "item-standard",
-          "options": [
+          "options":[
             {
               "value": "item-large",
-              "label": "Large Square (2x2)"
+              "label": "Large Square (2x2) - Main Hero"
             },
             {
               "value": "item-wide",
-              "label": "Wide Rectangle (2x1)"
+              "label": "Wide Rectangle (2x1) - Secondary Hero"
             },
             {
               "value": "item-standard",
-              "label": "Standard Square (1x1)"
+              "label": "Standard Square (1x1) - Specialty"
             }
           ]
         }
       ]
     }
   ],
-  "max_blocks": 7,
-  "presets": [
+  "max_blocks": 10,
+  "presets":[
     {
       "name": "Collections Bento",
-      "blocks": [
-        { "type": "collection_card" },
-        { "type": "collection_card" },
-        { "type": "collection_card" }
+      "blocks":[
+        {
+          "type": "collection_card",
+          "settings": {
+            "card_size": "item-large",
+            "custom_title": "Custom Candles",
+            "eyebrow_text": "Custom Builder",
+            "cta_text": "Start Building"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "card_size": "item-wide",
+            "custom_title": "Wax Melts",
+            "eyebrow_text": "Custom Builder",
+            "cta_text": "Start Building"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "card_size": "item-wide",
+            "custom_title": "Scent Shots",
+            "eyebrow_text": "Custom Builder",
+            "cta_text": "Start Building"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "card_size": "item-standard",
+            "custom_title": "Bake Shoppe",
+            "eyebrow_text": "Specialty Collection",
+            "cta_text": "Shop Now"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "card_size": "item-standard",
+            "custom_title": "Cuties",
+            "eyebrow_text": "Specialty Collection",
+            "cta_text": "Shop Now"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "card_size": "item-standard",
+            "custom_title": "Sweet Treats",
+            "eyebrow_text": "Specialty Collection",
+            "cta_text": "Shop Now"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "card_size": "item-standard",
+            "custom_title": "Giftables",
+            "eyebrow_text": "Specialty Collection",
+            "cta_text": "Shop Now"
+          }
+        }
       ]
     }
   ]
