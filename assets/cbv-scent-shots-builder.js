@@ -21,6 +21,11 @@
     return emojiMap[key] ? `${emojiMap[key]} ${family}` : family;
   };
 
+  const getUrlScent = () => {
+    const params = new URLSearchParams(window.location.search);
+    return (params.get('scent') || '').toString().trim();
+  };
+
   const readPackSize = (label) => {
     const match = (label || '').toString().match(/(\d+)/);
     if (match) return Number(match[1]);
@@ -91,6 +96,11 @@
     const allScents = [...scentByHandle.values()].sort((a, b) => a.name.localeCompare(b.name));
     const families = [...new Set(allScents.map((scent) => normalizeFamily(scent.family)))].sort((a, b) => a.localeCompare(b));
 
+    const requestedScent = getUrlScent();
+    const requestedScentMatch = requestedScent
+      ? allScents.find((scent) => normalize(scent.name) === normalize(requestedScent)) || null
+      : null;
+
     const variantScript = builderEl.querySelector('[data-cbv-variants]');
     const allVariants = variantScript ? JSON.parse(variantScript.textContent || '[]') : [];
 
@@ -138,6 +148,7 @@
     let selectedPack = selectedVariant?.option1 || packInputs[0]?.value || '';
     let selectedSecondary = selectedVariant?.option2 || secondaryInputs[0]?.value || '';
     let selectedSlots = [];
+    let pinnedScent = requestedScentMatch?.name || '';
 
     function isBulkPack() {
       return readPackSize(selectedPack) >= BULK_MIN_SIZE;
@@ -257,6 +268,7 @@
 
     function applyVariant(variant) {
       if (!variant) return;
+      const previousSlots = selectedSlots.filter(Boolean);
       selectedVariant = variant;
       variantAvailable = Boolean(variant.available);
 
@@ -281,12 +293,27 @@
 
       if (mainImageEl && variant.featured_image?.src) mainImageEl.src = variant.featured_image.src;
 
-      selectedSlots = new Array(requiredSlots()).fill('');
-      if (isBulkPack()) selectedSlots = [];
+      if (isBulkPack()) {
+        selectedSlots = [];
+      } else {
+        const slotsRequired = requiredSlots();
+        selectedSlots = previousSlots.slice(0, slotsRequired);
+
+        if (pinnedScent) {
+          selectedSlots = selectedSlots.filter((slot) => normalize(slot) !== normalize(pinnedScent));
+          selectedSlots.unshift(pinnedScent);
+        }
+
+        selectedSlots = selectedSlots.slice(0, slotsRequired);
+        while (selectedSlots.length < slotsRequired) selectedSlots.push('');
+      }
 
       if (bulkFamilyWrap) bulkFamilyWrap.hidden = !isBulkPack();
       if (scentPickerEl) scentPickerEl.hidden = isBulkPack();
       if (!isBulkPack() && familySelect) familySelect.value = '';
+      if (isBulkPack() && familySelect && !familySelect.value && requestedScentMatch?.family) {
+        familySelect.value = normalizeFamily(requestedScentMatch.family);
+      }
       if (familyProp) familyProp.value = isBulkPack() ? familySelect?.value || '' : '';
 
       updateSlotProperties();
