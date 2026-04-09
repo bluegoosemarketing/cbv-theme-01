@@ -39,7 +39,7 @@
             "custom_title": "Waz Melts",
             "eyebrow_text": "Build Your Own",
             "cta_text": "Shop Now",
-            "card_size": "item-wide"
+            "card_size": "item-standard"
           }
         },
         "collection_card_FKdHFc": {
@@ -85,6 +85,17 @@
             "cta_text": "Shop Now",
             "card_size": "item-standard"
           }
+        },
+        "collection_card_xic6Yp": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "sweet-treats",
+            "custom_link": "",
+            "custom_title": "",
+            "eyebrow_text": "Specialty Collection",
+            "cta_text": "Shop Now",
+            "card_size": "item-standard"
+          }
         }
       },
       "block_order": [
@@ -93,7 +104,8 @@
         "collection_card_FKdHFc",
         "collection_card_fJ7zzX",
         "collection_card_TFKjB9",
-        "collection_card_aRMqe7"
+        "collection_card_aRMqe7",
+        "collection_card_xic6Yp"
       ],
       "name": "Collections Bento",
       "settings": {
