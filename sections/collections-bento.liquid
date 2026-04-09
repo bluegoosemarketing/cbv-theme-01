@@ -7,41 +7,101 @@
     --color-accent: #3A4D3F;
     --color-surface: #FFFFFF;
     --color-border: #EAEAEC;
-    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --color-section-bg: #F9F9F8; /* The subtle luxury gallery wall color */
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  /* FULL BLEED SECTION BACKGROUND */
+  .collections-section-wrapper {
+    width: 100%;
+    background-color: var(--color-section-bg);
+    border-top: 1px solid rgba(0,0,0,0.03);
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+  }
+
   .collections-landing { max-width: 1440px; margin: 0 auto; padding: 80px 40px; }
   .page-header { text-align: center; margin-bottom: 64px; }
   .page-header h1 { font-family: var(--font-cbv-heading); font-size: 56px; font-weight: 400; color: var(--color-text-dark); margin: 0 0 16px 0; letter-spacing: -0.02em; }
   .page-header p { color: var(--color-text-light); font-size: 18px; max-width: 540px; margin: 0 auto; line-height: 1.6; }
+  
   .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 320px; gap: 24px; }
   
-  .bento-item { position: relative; display: block; border-radius: 4px; overflow: hidden; text-decoration: none; background: var(--color-border); isolation: isolate; transition: var(--transition-smooth); }
-  .bento-item:hover { box-shadow: 0 20px 40px rgba(28, 27, 26, 0.15); transform: translateY(-4px); }
+  /* THE COHESIVE CARD STRUCTURE */
+  .bento-item { 
+    display: flex; 
+    flex-direction: column; 
+    position: relative; 
+    background: var(--color-surface); 
+    border: 1px solid rgba(0, 0, 0, 0.06); /* Crisper, slightly more defined border */
+    border-radius: 4px; 
+    overflow: hidden; 
+    text-decoration: none; 
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.025); /* Permanent, ultra-soft ambient shadow */
+    transition: var(--transition-smooth); 
+  }
   
-  .bento-image { position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); z-index: -2; }
-  /* Fallback styling for Shopify SVGs so they look okay before merchant adds images */
-  svg.bento-image { background-color: #2A2A2A; padding: 40px; fill: #555555; }
+  .bento-item:hover { 
+    border-color: rgba(0, 0, 0, 0.12); /* Border deepens slightly on hover */
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08); /* Shadow lifts on hover */
+    transform: translateY(-4px); 
+  }
   
-  .bento-item:hover .bento-image { transform: scale(1.06); }
-  .bento-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 30%, rgba(0,0,0,0.6) 100%); transition: var(--transition-smooth); z-index: -1; }
-  .bento-item:hover .bento-overlay { background: linear-gradient(to bottom, rgba(0,0,0,0.1) 10%, rgba(0,0,0,0.8) 100%); }
+  /* THE IMAGE AREA */
+  .bento-image-wrapper {
+    flex: 1 1 auto; 
+    position: relative;
+    overflow: hidden;
+    background: #FAFAFA;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04); 
+  }
   
-  .bento-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 32px; z-index: 1; display: flex; flex-direction: column; gap: 6px; }
-  .bento-eyebrow { font-family: var(--font-cbv-body); color: rgba(255, 255, 255, 0.85); font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 4px; }
-  .bento-title { font-family: var(--font-cbv-heading); color: #FFFFFF; font-weight: 400; margin: 0; letter-spacing: 0.01em; transition: var(--transition-smooth); }
+  .bento-image { 
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
+    width: 100%; height: 100%; object-fit: cover; 
+    transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
+  }
   
-  .item-large .bento-title { font-size: 48px; }
-  .item-wide .bento-title { font-size: 36px; }
-  .item-standard .bento-title { font-size: 24px; }
-  .item-standard .bento-content { padding: 24px; }
+  svg.bento-image { background-color: #FAFAFA; padding: 40px; fill: #CCCCCC; }
+  .bento-item:hover .bento-image { transform: scale(1.04); }
   
-  .bento-link { color: #FFFFFF; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0; transform: translateY(12px); transition: var(--transition-smooth); display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-  .bento-item:hover .bento-link { opacity: 1; transform: translateY(0); }
-  .bento-link::after { content: "→"; transition: transform 0.3s ease; }
+  /* THE TEXT AREA */
+  .bento-content { 
+    flex: 0 0 auto; 
+    width: 100%; 
+    background: var(--color-surface);
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-start;
+    transition: var(--transition-smooth);
+  }
+
+  .item-large .bento-content { padding: 28px 32px; }
+  .item-wide .bento-content { padding: 20px 24px; }
+  .item-standard .bento-content { padding: 20px 20px; }
+  
+  /* TYPOGRAPHY */
+  .bento-eyebrow { font-family: var(--font-cbv-body); color: var(--color-text-light); font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; margin-bottom: 6px; }
+  .bento-title { font-family: var(--font-cbv-heading); color: var(--color-text-dark); font-weight: 400; margin: 0; letter-spacing: 0.01em; line-height: 1.1; transition: color 0.3s ease; }
+  
+  .item-large .bento-title { font-size: 34px; }
+  .item-wide .bento-title { font-size: 26px; }
+  .item-standard .bento-title { font-size: 22px; }
+  
+  .bento-link { 
+    color: var(--color-text-dark); font-family: var(--font-cbv-body); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; 
+    display: inline-flex; align-items: center; gap: 8px; 
+    margin-top: 10px; 
+    width: max-content;
+    transition: var(--transition-smooth); 
+  }
+  .bento-link::after { content: "→"; font-size: 14px; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+  
+  .bento-item:hover .bento-title { color: var(--color-accent); }
+  .bento-item:hover .bento-link { color: var(--color-accent); }
   .bento-item:hover .bento-link::after { transform: translateX(6px); }
 
-  /* Base Grid Sizes assigned by Schema */
+  /* Base Grid Sizes */
   .item-large { grid-column: span 2; grid-row: span 2; }
   .item-wide { grid-column: span 2; grid-row: span 1; }
   .item-standard { grid-column: span 1; grid-row: span 1; }
@@ -52,7 +112,8 @@
     .item-large { grid-column: span 2; grid-row: span 2; }
     .item-wide { grid-column: span 2; grid-row: span 1; }
     .item-standard { grid-column: span 1; grid-row: span 1; }
-    .item-large .bento-title { font-size: 40px; }
+    .item-large .bento-title { font-size: 30px; }
+    .item-large .bento-content { padding: 24px; }
   }
   
   @media (max-width: 768px) {
@@ -61,71 +122,63 @@
     .page-header h1 { font-size: 36px; }
     .bento-grid { grid-template-columns: 1fr; grid-auto-rows: auto; gap: 16px; }
     .bento-item { grid-column: span 1 !important; grid-row: span 1 !important; }
-    .item-large { height: 400px; }
-    .item-wide { height: 300px; }
-    .item-standard { height: 250px; }
-    .item-large .bento-title { font-size: 32px; }
-    .item-wide .bento-title { font-size: 28px; }
-    .bento-content { padding: 24px; }
-  }
-  
-  @media (hover: none) {
-    .bento-link { opacity: 1; transform: translateY(0); }
-    .bento-overlay { background: linear-gradient(to bottom, rgba(0,0,0,0.1) 20%, rgba(0,0,0,0.7) 100%); }
+    .item-large { height: 420px; }
+    .item-wide { height: 320px; }
+    .item-standard { height: 320px; }
+    .item-large .bento-title { font-size: 28px; }
+    .item-wide .bento-title { font-size: 26px; }
   }
 </style>
 
-<section class="collections-landing">
-  <header class="page-header">
-    <h1>{{ section.settings.heading }}</h1>
-    <p>{{ section.settings.subheading }}</p>
-  </header>
+<div class="collections-section-wrapper">
+  <section class="collections-landing">
+    <header class="page-header">
+      <h1>{{ section.settings.heading }}</h1>
+      <p>{{ section.settings.subheading }}</p>
+    </header>
 
-  <div class="bento-grid">
-    {% for block in section.blocks %}
-      {% liquid
-        assign collection = block.settings.collection
+    <div class="bento-grid">
+      {% for block in section.blocks %}
+        {% liquid
+          assign collection = block.settings.collection
+          assign card_link = block.settings.custom_link | default: collection.url | default: '#'
+          assign fallback_title = 'Collection ' | append: forloop.index
+          assign card_title = block.settings.custom_title | default: collection.title | default: fallback_title
+          assign card_image = block.settings.custom_image | default: collection.image
+          assign eyebrow = block.settings.eyebrow_text
+          assign cta = block.settings.cta_text
+        %}
         
-        # Logic: Custom Link overrides Collection Link. If both empty, use '#'
-        assign card_link = block.settings.custom_link | default: collection.url | default: '#'
-        
-        # Logic: Custom Title overrides Collection Title. If both empty, use Fallback
-        assign fallback_title = 'Collection ' | append: forloop.index
-        assign card_title = block.settings.custom_title | default: collection.title | default: fallback_title
-        
-        assign card_image = block.settings.custom_image | default: collection.image
-        assign eyebrow = block.settings.eyebrow_text
-        assign cta = block.settings.cta_text
-      %}
-      
-      <a
-        href="{{ card_link }}"
-        class="bento-item {{ block.settings.card_size }}"
-        id="collections-bento-item-{{ block.id }}"
-        data-index="{{ forloop.index }}"
-        {{ block.shopify_attributes }}
-      >
-        {% if card_image != blank %}
-          {{ card_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'bento-image', sizes: '(min-width: 1024px) 50vw, 100vw', widths: '400,600,800,1000,1200', alt: card_title }}
-        {% else %}
-          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
-          {{ 'collection-' | append: current | placeholder_svg_tag: 'bento-image' }}
-        {% endif %}
-        
-        <div class="bento-overlay"></div>
-        <div class="bento-content">
-          {% if eyebrow != blank %}
-            <span class="bento-eyebrow">{{ eyebrow }}</span>
-          {% endif %}
-          <h2 class="bento-title">{{ card_title }}</h2>
-          {% if cta != blank %}
-            <span class="bento-link">{{ cta }}</span>
-          {% endif %}
-        </div>
-      </a>
-    {% endfor %}
-  </div>
-</section>
+        <a
+          href="{{ card_link }}"
+          class="bento-item {{ block.settings.card_size }}"
+          id="collections-bento-item-{{ block.id }}"
+          data-index="{{ forloop.index }}"
+          {{ block.shopify_attributes }}
+        >
+          <div class="bento-image-wrapper">
+            {% if card_image != blank %}
+              {{ card_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'bento-image', sizes: '(min-width: 1024px) 50vw, 100vw', widths: '400,600,800,1000,1200', alt: card_title }}
+            {% else %}
+              {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+              {{ 'collection-' | append: current | placeholder_svg_tag: 'bento-image' }}
+            {% endif %}
+          </div>
+          
+          <div class="bento-content">
+            {% if eyebrow != blank %}
+              <span class="bento-eyebrow">{{ eyebrow }}</span>
+            {% endif %}
+            <h2 class="bento-title">{{ card_title }}</h2>
+            {% if cta != blank %}
+              <span class="bento-link">{{ cta }}</span>
+            {% endif %}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+</div>
 
 {% schema %}
 {
