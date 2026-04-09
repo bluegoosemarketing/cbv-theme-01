@@ -42,22 +42,22 @@
           "type": "format",
           "settings": {
             "tag": "Sample & Save",
-            "title": "Scent Shots & Bundles",
-            "subcopy": "Perfect for testing or gifting. Build a custom bundle featuring this fragrance alongside others.",
-            "url": "/collections/bundles",
-            "cta_label": "Choose Bundles",
+            "title": "Scent Shots",
+            "subcopy": "Perfect for testing or gifting. Explore Scent Shots featuring this fragrance.",
+            "url": "/products/scent-shots-1",
+            "cta_label": "Choose Scent Shots",
             "meta_note": ""
           }
         }
       },
-      "block_order":[
+      "block_order": [
         "category_candles",
         "category_flameless",
         "category_bundles"
       ]
     }
   },
-  "order":[
+  "order": [
     "main"
   ]
 }
