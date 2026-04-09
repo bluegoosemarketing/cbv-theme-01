@@ -23,27 +23,63 @@
         "collection_card_ppGrTF": {
           "type": "collection_card",
           "settings": {
-            "collection": "",
-            "custom_title": "",
-            "eyebrow_text": "Specialty Collection",
+            "collection": "custom-candles",
+            "custom_link": "",
+            "custom_title": "Candles",
+            "eyebrow_text": "Build your Own",
             "cta_text": "Shop Now",
-            "card_size": "item-standard"
+            "card_size": "item-wide"
           }
         },
         "collection_card_VgLFpi": {
           "type": "collection_card",
           "settings": {
-            "collection": "",
-            "custom_title": "",
-            "eyebrow_text": "Specialty Collection",
+            "collection": "melts",
+            "custom_link": "",
+            "custom_title": "Waz Melts",
+            "eyebrow_text": "Build Your Own",
             "cta_text": "Shop Now",
-            "card_size": "item-standard"
+            "card_size": "item-wide"
           }
         },
         "collection_card_FKdHFc": {
           "type": "collection_card",
           "settings": {
             "collection": "",
+            "custom_link": "shopify://products/scent-shots-1",
+            "custom_title": "Scent Shots",
+            "eyebrow_text": "Sample",
+            "cta_text": "Shop Now",
+            "card_size": "item-standard"
+          }
+        },
+        "collection_card_fJ7zzX": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "cuties",
+            "custom_link": "",
+            "custom_title": "",
+            "eyebrow_text": "Specialty Collection",
+            "cta_text": "Shop Now",
+            "card_size": "item-standard"
+          }
+        },
+        "collection_card_TFKjB9": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "bake-shoppe",
+            "custom_link": "",
+            "custom_title": "",
+            "eyebrow_text": "Specialty Collection",
+            "cta_text": "Shop Now",
+            "card_size": "item-standard"
+          }
+        },
+        "collection_card_aRMqe7": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "giftable-candles",
+            "custom_link": "",
             "custom_title": "",
             "eyebrow_text": "Specialty Collection",
             "cta_text": "Shop Now",
@@ -54,7 +90,10 @@
       "block_order": [
         "collection_card_ppGrTF",
         "collection_card_VgLFpi",
-        "collection_card_FKdHFc"
+        "collection_card_FKdHFc",
+        "collection_card_fJ7zzX",
+        "collection_card_TFKjB9",
+        "collection_card_aRMqe7"
       ],
       "name": "Collections Bento",
       "settings": {
