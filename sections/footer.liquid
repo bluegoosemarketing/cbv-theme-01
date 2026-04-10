@@ -147,8 +147,12 @@
                             </div>
                           {%- when 'link_list' -%}
                             {%- if block.settings.menu != blank -%}
+                              {%- assign has_contact_link = false -%}
                               <ul class="footer-block__details-content list-unstyled">
                                 {%- for link in block.settings.menu.links -%}
+                                  {%- if link.url == '/pages/contact' -%}
+                                    {%- assign has_contact_link = true -%}
+                                  {%- endif -%}
                                   <li>
                                     <a
                                       href="{{ link.url }}"
@@ -158,6 +162,13 @@
                                     </a>
                                   </li>
                                 {%- endfor -%}
+                                {%- if block.settings.heading == 'Quick links' and has_contact_link == false -%}
+                                  <li>
+                                    <a href="/pages/contact" class="link link--text list-menu__item list-menu__item--link">
+                                      Contact Us
+                                    </a>
+                                  </li>
+                                {%- endif -%}
                               </ul>
                             {%- endif -%}
                           {%- when 'brand_information' -%}
