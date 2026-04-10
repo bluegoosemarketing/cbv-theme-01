@@ -697,6 +697,16 @@
       font-family: var(--font-heading); font-size: 20px; font-weight: 400;
       color: var(--cbv-header-text); text-align: left; text-decoration: none;
     }
+    .cbv-mobile-link-main {
+      color: inherit;
+      text-decoration: none;
+    }
+    .cbv-mobile-submenu-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+    }
     .cbv-mobile-link-head .cbv-icon {
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); width: 18px; color: #888;
     }
@@ -1009,7 +1019,7 @@
     <nav class="cbv-nav-container" aria-label="Primary">
       <ul class="cbv-nav-list">
         <li class="cbv-nav-item">
-          <a href="/collections/all-products" class="cbv-nav-link">Shop</a>
+          <a href="/pages/collection" class="cbv-nav-link">Shop</a>
           <div class="cbv-mega-menu">
             <div class="cbv-mega-inner layout-shop">
               <div>
@@ -1089,7 +1099,6 @@
         <li class="cbv-nav-item"><a href="/pages/about" class="cbv-nav-link">About</a></li>
         <li class="cbv-nav-item"><a href="/pages/faqs" class="cbv-nav-link">FAQ</a></li>
         <li class="cbv-nav-item"><a href="/pages/contact" class="cbv-nav-link">Contact</a></li>
-        <li class="cbv-nav-item"><a href="/collections/sale" class="cbv-nav-link" style="color:var(--sale-color);">Sale</a></li>
       </ul>
     </nav>
     {% endif %}
@@ -1121,10 +1130,12 @@
     </form>
 
     <div class="cbv-mobile-item">
-      <button class="cbv-mobile-link-head" type="button" data-cbv-accordion>
-        Shop
-        <svg class="cbv-icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
-      </button>
+      <div class="cbv-mobile-link-head">
+        <a href="/pages/collection" class="cbv-mobile-link-main">Shop</a>
+        <button class="cbv-mobile-submenu-toggle" type="button" data-cbv-accordion aria-label="Toggle Shop submenu">
+          <svg class="cbv-icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
+        </button>
+      </div>
       <div class="cbv-mobile-submenu">
         <span class="cbv-mob-cat-title">Custom Creations</span>
         <a href="{{ section.settings.custom_candles_link | default: '/collections/custom-candles' }}" class="cbv-mob-link cbv-link-highlight">Custom Candles</a>
@@ -1143,10 +1154,12 @@
     </div>
 
     <div class="cbv-mobile-item">
-      <button class="cbv-mobile-link-head" type="button" data-cbv-accordion>
-        Scent Library
-        <svg class="cbv-icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
-      </button>
+      <div class="cbv-mobile-link-head">
+        <a href="/pages/scent-library" class="cbv-mobile-link-main">Scent Library</a>
+        <button class="cbv-mobile-submenu-toggle" type="button" data-cbv-accordion aria-label="Toggle Scent Library submenu">
+          <svg class="cbv-icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
+        </button>
+      </div>
       <div class="cbv-mobile-submenu">
         <span class="cbv-mob-cat-title">Browse by Family</span>
         <div class="cbv-mobile-scent-grid" style="margin-top: 10px;">
@@ -1169,8 +1182,6 @@
     <div class="cbv-mobile-item"><a href="/pages/about" class="cbv-mobile-link-head">About</a></div>
     <div class="cbv-mobile-item"><a href="/pages/faqs" class="cbv-mobile-link-head">FAQ</a></div>
     <div class="cbv-mobile-item"><a href="/pages/contact" class="cbv-mobile-link-head">Contact</a></div>
-    <div class="cbv-mobile-item"><a href="/collections/sale" class="cbv-mobile-link-head" style="color:var(--sale-color);">Sale</a></div>
-
     <div class="cbv-drawer-footer">
       {%- if shop.customer_accounts_enabled -%}
         <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}">Login / Register</a>
@@ -1342,7 +1353,9 @@
 
         accordionButtons.forEach((button) => {
           button.addEventListener('click', () => {
-            button.parentElement.classList.toggle('is-expanded');
+            const menuItem = button.closest('.cbv-mobile-item');
+            if (!menuItem) return;
+            menuItem.classList.toggle('is-expanded');
           });
         });
       }
