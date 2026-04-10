@@ -135,8 +135,8 @@
           "footer-2": {
             "type": "text",
             "settings": {
-              "heading": "Our mission",
-              "subtext": "<p>Share contact information, store details, and brand content with your customers.</p>"
+              "heading": "Contact",
+              "subtext": "<p><strong>Our Location</strong><br/>Candles By Victoria<br/>Edgewood, TX</p><p><strong>Phone</strong><br/><a href=\"tel:9034671170\">903-467-1170</a></p><p><strong>Email</strong><br/><a href=\"mailto:orders@candlesbyvictoria.com\">orders@candlesbyvictoria.com</a></p>"
             }
           }
         },
