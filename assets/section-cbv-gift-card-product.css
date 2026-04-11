@@ -1,0 +1,48 @@
+.cbv-simple-product--gift-card .cbv-simple-product__main-media {
+  background: radial-gradient(circle at 20% 20%, rgb(255 255 255 / 88%), rgb(240 229 217 / 68%));
+}
+
+.cbv-gift-card__form {
+  backdrop-filter: blur(6px);
+}
+
+.cbv-gift-card__price-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.8rem;
+}
+
+.cbv-gift-card__price-card {
+  display: grid;
+  gap: 0.25rem;
+  border: 1px solid var(--cbv-border);
+  border-radius: 1rem;
+  background: #fff;
+  padding: 1.1rem 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.cbv-gift-card__price-card:hover,
+.cbv-gift-card__price-card.is-selected {
+  border-color: #dd8762;
+  box-shadow: 0 10px 24px rgb(43 30 18 / 12%);
+  transform: translateY(-1px);
+}
+
+.cbv-gift-card__price-title {
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.cbv-gift-card__price-sub {
+  color: rgb(16 27 43 / 68%);
+  font-size: 1.25rem;
+}
+
+.cbv-gift-card__recipient {
+  margin: 1.5rem 0;
+  padding-top: 1.25rem;
+  border-top: 1px dashed var(--cbv-border);
+}
