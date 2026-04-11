@@ -58,7 +58,7 @@
         <!-- LEFT: EDITORIAL VISUAL PANEL -->
         <div class="cbv-size-selector__media-col">
           <div class="cbv-size-selector__media-wrapper">
-            <div class="cbv-media-badge">Step 1: Size</div>
+            <div class="cbv-media-badge">{{ section.settings.eyebrow | escape | default: 'Step 1: Size' }}</div>
             {%- if default_image != blank -%}
               {{
                 default_image
@@ -80,14 +80,20 @@
           
           <div class="cbv-content-header">
             <p class="cbv-eyebrow">{{ section.settings.eyebrow | escape | default: 'Custom Candle Builder' }}</p>
-            <h1 class="cbv-title" data-size-title>{{ default_title | escape }}</h1>
-            <p class="cbv-price" data-size-price {% if default_price == blank %}style="display:none;"{% endif %}>{{ default_price | escape }}</p>
+            
+            <!-- ALIGNED TITLE & PRICE WRAPPER -->
+            <div class="cbv-title-price-wrap">
+              <h1 class="cbv-title" data-size-title>{{ default_title | escape }}</h1>
+              <div class="cbv-price" data-size-price {% if default_price == blank %}style="display:none;"{% endif %}>{{ default_price | escape }}</div>
+            </div>
+
+            <p class="cbv-description" data-size-description>{{ default_block.settings.description | escape }}</p>
           </div>
 
-          <!-- CORE ACTION PULLED TO THE TOP -->
+          <!-- SELECTION AREA -->
           <div class="cbv-selection-area">
             <div class="cbv-selection-header">
-              <span class="cbv-label">Select Candle Size</span>
+              <span class="cbv-label">Select Size</span>
             </div>
             <div class="cbv-size-grid">
               {%- for block in section.blocks -%}
@@ -106,40 +112,27 @@
             </div>
           </div>
 
-          <!-- CONSOLIDATED INFO CARD -->
-          <div class="cbv-info-card">
-            <div class="cbv-info-card__header">
-              <div class="cbv-badge" data-size-room-badge {% if default_block.settings.room_recommendation == blank %}style="display:none;"{% endif %}>
-                Ideal for: <span data-size-room>{{ default_block.settings.room_recommendation | escape }}</span>
+          <!-- REFINED QUICK FACTS -->
+          <div class="cbv-quick-facts">
+            <div class="cbv-fact" data-size-room-wrap {% if default_block.settings.room_recommendation == blank %}style="display:none;"{% endif %}>
+              <div class="cbv-fact-label">
+                Ideal For
               </div>
-              <p class="cbv-description" data-size-description>{{ default_block.settings.description | escape }}</p>
+              <div class="cbv-fact-value" data-size-room>{{ default_block.settings.room_recommendation | escape }}</div>
+            </div>
+            
+            <div class="cbv-fact">
+              <div class="cbv-fact-label">
+                Wick Count
+              </div>
+              <div class="cbv-fact-value" data-size-wicks>{{ default_block.settings.wick_count | escape }}</div>
             </div>
 
-            <div class="cbv-info-card__divider"></div>
-
-            <div class="cbv-specs-row">
-              <div class="cbv-spec-item">
-                <div class="cbv-spec-text">
-                  <span class="cbv-spec-label">Wick Count</span>
-                  <strong data-size-wicks>{{ default_block.settings.wick_count | escape }}</strong>
-                </div>
+            <div class="cbv-fact">
+              <div class="cbv-fact-label">
+                Wood Wick
               </div>
-              <div class="cbv-spec-item">
-                <div class="cbv-spec-text">
-                  <span class="cbv-spec-label">Wood Wick Option</span>
-                  <strong data-size-wood>{{ default_block.settings.wood_wick | escape }}</strong>
-                </div>
-              </div>
-            </div>
-
-            <div class="cbv-styles-preview">
-              <div class="cbv-styles-header">
-                <span class="cbv-spec-label">Jar Styles Available</span>
-                <span class="cbv-styles-note">{{ section.settings.styles_note | escape }}</span>
-              </div>
-              <div class="cbv-styles-list" data-size-styles>
-                <!-- JS Populated -->
-              </div>
+              <div class="cbv-fact-value" data-size-wood>{{ default_block.settings.wood_wick | escape }}</div>
             </div>
           </div>
 
@@ -165,7 +158,6 @@
               "description": {{ block.settings.description | json }},
               "wicks": {{ block.settings.wick_count | json }},
               "woodWick": {{ block.settings.wood_wick | json }},
-              "styles": {{ block.settings.jar_styles | json }},
               "builderLink": {{ block.settings.builder_link | json }},
               {%- liquid
                 assign block_product = block.settings.product
@@ -216,11 +208,10 @@
 
           const imageEl = sectionEl.querySelector('.cbv-size-image');
           const titleEl = sectionEl.querySelector('[data-size-title]');
-          const roomBadgeEl = sectionEl.querySelector('[data-size-room-badge]');
+          const descriptionEl = sectionEl.querySelector('[data-size-description]');
+          const roomWrapEl = sectionEl.querySelector('[data-size-room-wrap]');
           const roomEl = sectionEl.querySelector('[data-size-room]');
           const priceEl = sectionEl.querySelector('[data-size-price]');
-          const descriptionEl = sectionEl.querySelector('[data-size-description]');
-          const stylesListEl = sectionEl.querySelector('[data-size-styles]');
           const wicksEl = sectionEl.querySelector('[data-size-wicks]');
           const woodEl = sectionEl.querySelector('[data-size-wood]');
           const ctaEl = sectionEl.querySelector('[data-size-cta]');
@@ -233,30 +224,6 @@
             const joiner = base.includes('?') ? '&' : '?';
             const nextUrl = `${base}${joiner}scent=${encodeURIComponent(scentParam)}`;
             return hash ? `${nextUrl}#${hash}` : nextUrl;
-          };
-
-          const parseStyles = (styles) => {
-            if (!styles) return[];
-            return styles.split(/[\n,]/).map(s => s.trim()).filter(Boolean);
-          };
-
-          const renderStyles = (styles) => {
-            if (!stylesListEl) return;
-            stylesListEl.innerHTML = '';
-            const entries = parseStyles(styles);
-            if (!entries.length) {
-              const empty = document.createElement('span');
-              empty.className = 'cbv-style-pill is-empty';
-              empty.textContent = 'None listed';
-              stylesListEl.appendChild(empty);
-              return;
-            }
-            entries.forEach(style => {
-              const tag = document.createElement('span');
-              tag.className = 'cbv-style-pill';
-              tag.textContent = style;
-              stylesListEl.appendChild(tag);
-            });
           };
 
           const updateImage = (image) => {
@@ -289,6 +256,8 @@
             });
 
             if (titleEl) titleEl.textContent = selected.title;
+            if (descriptionEl) descriptionEl.textContent = selected.description;
+            
             if (priceEl) {
               if (selected.price) {
                 priceEl.style.display = '';
@@ -297,20 +266,18 @@
                 priceEl.style.display = 'none';
               }
             }
-            if (descriptionEl) descriptionEl.textContent = selected.description;
+            
             if (wicksEl) wicksEl.textContent = selected.wicks;
             if (woodEl) woodEl.textContent = selected.woodWick;
 
-            if (roomBadgeEl) {
+            if (roomWrapEl) {
                 if (selected.room) {
-                    roomBadgeEl.style.display = 'inline-flex';
+                    roomWrapEl.style.display = 'flex';
                     if (roomEl) roomEl.textContent = selected.room;
                 } else {
-                    roomBadgeEl.style.display = 'none';
+                    roomWrapEl.style.display = 'none';
                 }
             }
-
-            renderStyles(selected.styles);
 
             if (ctaEl) {
                 if (selected.builderLink) {
@@ -355,12 +322,6 @@
       "id": "cta_label",
       "label": "CTA Button Label",
       "default": "Next Step: Customize"
-    },
-    {
-      "type": "text",
-      "id": "styles_note",
-      "label": "Styles Note",
-      "default": "(Selection happens in the next step)"
     },
     {
       "type": "text",
@@ -446,13 +407,6 @@
           "type": "image_picker",
           "id": "image",
           "label": "Preview Image"
-        },
-        {
-          "type": "textarea",
-          "id": "jar_styles",
-          "label": "Jar Styles List",
-          "info": "Enter one style per line or comma separated",
-          "default": "Clear Glass\nSeafoam\nBlush\nIridescent"
         },
         {
           "type": "url",

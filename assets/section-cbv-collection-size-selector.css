@@ -3,12 +3,13 @@
   --font-cbv-heading: "Georgia", "Times New Roman", serif;
   --font-cbv-body: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --color-text-dark: #1C1B1A;
-  --color-text-light: #666666;
-  --color-accent: #3A4D3F; /* Elegant green from header */
-  --color-accent-gold: #855A30; /* Warm gold/brown */
+  --color-text-light: #5C534D;
+  --color-accent: #3A4D3F; 
+  --color-accent-gold: #855A30; 
   --color-bg-light: #FDFBF7;
   --color-border: #E8E4DD;
   --color-surface: #FFFFFF;
+  --color-subtle-bg: #F5F3ED;
   --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   
   font-family: var(--font-cbv-body);
@@ -51,7 +52,7 @@
   border: 1px solid var(--color-border);
   border-radius: 16px;
   height: auto;
-  aspect-ratio: 4/5; /* Fashion/editorial aspect ratio */
+  aspect-ratio: 4/5;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,11 +63,11 @@
 
 .cbv-media-badge {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 24px;
+  left: 24px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: 30px;
   font-size: 11px;
   font-weight: 700;
@@ -82,7 +83,7 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  mix-blend-mode: multiply; /* Removes white backgrounds on images */
+  mix-blend-mode: multiply;
   transition: opacity 0.3s ease, transform 0.5s ease;
 }
 
@@ -97,16 +98,27 @@
 }
 
 .cbv-content-header {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .cbv-eyebrow {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--color-text-light);
-  margin: 0 0 12px 0;
+  margin: 0 0 16px 0;
+}
+
+/* CONNECTED TITLE & PRICE */
+.cbv-title-price-wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .cbv-title {
@@ -119,28 +131,37 @@
 }
 
 .cbv-price {
-  margin: 10px 0 0;
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
+  font-size: 32px;
+  font-family: var(--font-cbv-heading);
+  font-weight: 500;
   color: var(--color-accent-gold);
+  margin: 0;
+  white-space: nowrap;
 }
 
-/* --- SELECTION AREA (Pulled to top) --- */
+.cbv-description {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-text-light);
+  margin: 0;
+  max-width: 95%;
+}
+
+/* --- SELECTION AREA --- */
 .cbv-selection-area {
-  margin-bottom: 35px;
+  margin-bottom: 40px;
 }
 
 .cbv-selection-header {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .cbv-label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  color: var(--color-text-dark);
+  color: var(--color-text-light);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 .cbv-size-grid {
@@ -153,7 +174,7 @@
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  padding: 14px 24px;
+  padding: 16px 28px;
   font-size: 16px;
   font-family: var(--font-cbv-body);
   font-weight: 600;
@@ -161,144 +182,61 @@
   cursor: pointer;
   transition: var(--transition-smooth);
   outline: none;
-  min-width: 90px;
+  min-width: 100px;
   text-align: center;
 }
 
 .cbv-size-btn:hover {
-  border-color: #999;
+  border-color: #A39E98;
+  background-color: #FAFAF8;
 }
 
 .cbv-size-btn.is-active {
   background: var(--color-text-dark);
   border-color: var(--color-text-dark);
   color: #fff;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 20px rgba(28, 27, 26, 0.15);
   transform: translateY(-2px);
 }
 
-/* --- INFO CARD (Consolidated Details) --- */
-.cbv-info-card {
-  background: var(--color-bg-light);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 30px;
-  margin-bottom: 35px;
+/* --- QUICK FACTS (Perfect Alignment) --- */
+.cbv-quick-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 24px;
+  padding: 24px 0;
+  margin-bottom: 30px;
+  border-top: 1px solid var(--color-border);
 }
 
-.cbv-info-card__header {
-  margin-bottom: 25px;
-}
-
-.cbv-badge {
-  display: inline-flex;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--color-accent-gold);
-  background: rgba(133, 90, 48, 0.08);
-  padding: 6px 12px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-}
-
-.cbv-description {
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--color-text-light);
-  margin: 0;
-}
-
-.cbv-info-card__divider {
-  height: 1px;
-  background: var(--color-border);
-  margin: 0 -30px 25px -30px;
-}
-
-/* --- SPECS ROW --- */
-.cbv-specs-row {
-  display: flex;
-  gap: 40px;
-  margin-bottom: 25px;
-}
-
-.cbv-spec-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.cbv-spec-icon {
-  color: #aaa;
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.cbv-spec-text {
+.cbv-fact {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 
-.cbv-spec-label {
-  font-size: 11px;
+.cbv-fact-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 1px;
   color: #888;
 }
 
-.cbv-spec-text strong {
+.cbv-fact-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--color-accent-gold);
+}
+
+.cbv-fact-value {
   font-size: 15px;
   font-weight: 600;
   color: var(--color-text-dark);
-}
-
-/* --- STYLES PREVIEW --- */
-.cbv-styles-preview {
-  background: #fff;
-  border: 1px solid rgba(0,0,0,0.04);
-  padding: 16px 20px;
-  border-radius: 8px;
-}
-
-.cbv-styles-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.cbv-styles-note {
-  font-size: 11px;
-  color: #aaa;
-  font-style: italic;
-}
-
-.cbv-styles-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.cbv-style-pill {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-dark);
-  background: var(--color-bg-light);
-  border: 1px solid var(--color-border);
-  padding: 6px 12px;
-  border-radius: 20px;
-}
-
-.cbv-style-pill.is-empty {
-  color: #999;
-  border-style: dashed;
-  background: transparent;
+  line-height: 1.3;
 }
 
 /* --- PRIMARY CTA --- */
@@ -359,7 +297,7 @@
     gap: 40px;
   }
   .cbv-title {
-    font-size: 42px;
+    font-size: 46px;
   }
 }
 
@@ -370,7 +308,7 @@
   }
   
   .cbv-size-selector__media-wrapper {
-    aspect-ratio: 16/10; /* Shorter on mobile so it doesn't take the whole screen */
+    aspect-ratio: 16/11; 
     padding: 20px;
     border-radius: 12px;
   }
@@ -379,23 +317,38 @@
     top: 15px;
     left: 15px;
     font-size: 10px;
-    padding: 4px 10px;
+    padding: 6px 12px;
   }
   
   .cbv-title {
-    font-size: 36px;
+    font-size: 40px;
   }
 
-  .cbv-specs-row {
-    flex-direction: column;
-    gap: 20px;
+  .cbv-description {
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  /* Keep title and price side-by-side on mobile */
+  .cbv-title-price-wrap {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 16px;
+  }
+
+  .cbv-quick-facts {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px 0;
   }
 
   /* --- WORLD CLASS MOBILE STICKY CTA --- */
   .cbv-grand-cta {
-    position: -webkit-sticky; /* For iOS Safari */
+    position: -webkit-sticky; 
     position: sticky;
-    bottom: max(20px, env(safe-area-inset-bottom)); /* Respects the iPhone home bar */
+    bottom: max(20px, env(safe-area-inset-bottom)); 
     z-index: 100;
     box-shadow: 0 0 0 1px rgba(0,0,0,0.05), 0 15px 35px rgba(0,0,0,0.2) !important;
   }
@@ -406,14 +359,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
+  .cbv-size-btn {
+    padding: 14px 16px;
+  }
   .cbv-grand-cta {
     font-size: 15px;
     padding: 18px;
-  }
-  .cbv-info-card {
-    padding: 20px;
-  }
-  .cbv-info-card__divider {
-    margin: 0 -20px 20px -20px;
   }
 }
