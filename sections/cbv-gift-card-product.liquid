@@ -1,4 +1,3 @@
-{{ 'section-cbv-simple-product.css' | asset_url | stylesheet_tag }}
 {{ 'section-cbv-gift-card-product.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'cbv-gift-card-product.js' | asset_url }}" defer="defer"></script>
 
@@ -8,87 +7,85 @@
   assign current_media = current_variant.featured_media | default: product.featured_media
 -%}
 
-<section class="cbv-simple-product cbv-simple-product--gift-card color-{{ section.settings.color_scheme }} gradient" data-cbv-gift-card-product data-section-id="{{ section.id }}">
-  <div class="page-width section-{{ section.id }}-padding">
-    <div class="cbv-simple-product__grid">
-      <div class="cbv-simple-product__media">
-        {% if current_media %}
-          <div class="cbv-simple-product__main-media" style="--ratio-percent: {{ 1 | divided_by: current_media.aspect_ratio | times: 100 }}%;">
+<section class="cbv-gc" data-cbv-gift-card-product data-section-id="{{ section.id }}">
+  <div class="page-width">
+    <div class="cbv-gc__layout">
+      
+      <!-- LEFT: VISUAL PANEL -->
+      <div class="cbv-gc__media-col">
+        <div class="cbv-gc__media-wrapper">
+          <div class="cbv-gc__media-badge">Digital Gift Card</div>
+          {% if current_media %}
             {{
               current_media
-              | image_url: width: 1400
+              | image_url: width: 1200
               | image_tag:
-                class: 'cbv-simple-product__main-image',
-                loading: 'lazy',
-                widths: '480, 760, 980, 1200, 1400',
-                sizes: '(min-width: 990px) 55vw, 100vw'
+                class: 'cbv-gc__image',
+                loading: 'eager',
+                widths: '480, 760, 980, 1200'
             }}
-          </div>
-        {% endif %}
+          {% else %}
+            {{ 'gift-card' | placeholder_svg_tag: 'cbv-gc__image cbv-placeholder' }}
+          {% endif %}
+        </div>
       </div>
 
-      <div class="cbv-simple-product__content">
-        {% if section.settings.eyebrow != blank %}
-          <p class="cbv-simple-product__eyebrow">{{ section.settings.eyebrow }}</p>
-        {% endif %}
-        <h1 class="cbv-simple-product__title">{{ product.title | escape }}</h1>
-
-        <div class="cbv-simple-product__price" data-cbv-price>
-          {{ current_variant.price | money_without_trailing_zeros }}
-        </div>
-
-        {% if section.settings.supporting_text != blank %}
-          <p class="cbv-simple-product__supporting">{{ section.settings.supporting_text }}</p>
-        {% endif %}
-
-        {% if product.description != blank %}
-          <div class="cbv-simple-product__description rte">{{ product.description }}</div>
-        {% endif %}
-
-        <product-form class="product-form" data-section-id="{{ section.id }}">
-          <div class="product-form__error-message-wrapper" role="alert" hidden>
-            <span class="product-form__error-message"></span>
+      <!-- RIGHT: CONTENT & FORM -->
+      <div class="cbv-gc__content-col">
+        <div class="cbv-gc__header">
+          {% if section.settings.eyebrow != blank %}
+            <p class="cbv-gc__eyebrow">{{ section.settings.eyebrow }}</p>
+          {% endif %}
+          
+          <div class="cbv-gc__title-wrap">
+            <h1 class="cbv-gc__title">{{ product.title | escape }}</h1>
+            <div class="cbv-gc__price" data-cbv-price>
+              {{ current_variant.price | money_without_trailing_zeros }}
+            </div>
           </div>
 
-          {%- form 'product', product, id: product_form_id, class: 'form cbv-simple-product__form cbv-gift-card__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+          {% if section.settings.supporting_text != blank %}
+            <p class="cbv-gc__supporting">{{ section.settings.supporting_text }}</p>
+          {% endif %}
+          
+          {% if product.description != blank %}
+            <div class="cbv-gc__description">{{ product.description }}</div>
+          {% endif %}
+        </div>
+
+        <product-form class="cbv-gc__form-wrapper" data-section-id="{{ section.id }}">
+          {%- form 'product', product, id: product_form_id, class: 'cbv-gc__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
             <input type="hidden" name="id" value="{{ current_variant.id }}" data-cbv-variant-id>
 
             {% unless product.has_only_default_variant %}
-              <div class="cbv-simple-product__variant-wrap">
+              <div class="cbv-gc__variants">
                 {% for option in product.options_with_values %}
-                  <div class="cbv-simple-product__option-group">
-                    <p class="cbv-simple-product__option-label">{{ option.name }}</p>
+                  <div class="cbv-gc__option-group">
+                    <div class="cbv-gc__option-label">Select {{ option.name }}</div>
 
                     {% if forloop.first %}
-                      <div class="cbv-gift-card__price-grid" role="radiogroup" aria-label="{{ option.name | escape }}">
+                      <!-- Beautiful Grid Selectors for primary option (Denomination) -->
+                      <div class="cbv-gc__variant-grid" role="radiogroup" aria-label="{{ option.name | escape }}">
                         {% for value in option.values %}
-                          {%- assign variant_for_value = blank -%}
-                          {%- for variant in product.variants -%}
-                            {%- if variant.option1 == value and variant_for_value == blank -%}
-                              {%- assign variant_for_value = variant -%}
-                            {%- endif -%}
-                          {%- endfor -%}
-                          <label class="cbv-gift-card__price-card{% if option.selected_value == value %} is-selected{% endif %}" data-cbv-price-card>
+                          <label class="cbv-gc__variant-btn{% if option.selected_value == value %} is-active{% endif %}" data-cbv-price-card>
                             <input
                               type="radio"
                               name="cbv_option_{{ option.position }}"
                               value="{{ value | escape }}"
-                              class="visually-hidden"
+                              class="cbv-gc__visually-hidden"
                               data-cbv-option-input
                               data-option-position="{{ option.position }}"
                               {% if option.selected_value == value %}checked{% endif %}
                             >
-                            <span class="cbv-gift-card__price-title">{{ value }}</span>
-                            {% if variant_for_value != blank %}
-                              <span class="cbv-gift-card__price-sub">{{ variant_for_value.price | money_without_trailing_zeros }}</span>
-                            {% endif %}
+                            <span>{{ value }}</span>
                           </label>
                         {% endfor %}
                       </div>
                     {% else %}
-                      <div class="select">
+                      <!-- Dropdown fallback for secondary options -->
+                      <div class="cbv-gc__select-wrap">
                         <select
-                          class="select__select cbv-simple-product__option-select"
+                          class="cbv-gc__select"
                           data-cbv-option-input
                           data-option-position="{{ option.position }}"
                         >
@@ -98,7 +95,6 @@
                             </option>
                           {% endfor %}
                         </select>
-                        {% render 'icon-caret' %}
                       </div>
                     {% endif %}
                   </div>
@@ -107,33 +103,26 @@
             {% endunless %}
 
             {% if product.gift_card? %}
-              <div class="cbv-gift-card__recipient">
+              <div class="cbv-gc__recipient-box">
                 {% render 'gift-card-recipient-form', product: product, form: form, section: section %}
               </div>
             {% endif %}
 
-            <div class="product-form__buttons">
-              <button
-                type="submit"
-                name="add"
-                class="product-form__submit button button--primary cbv-simple-product__submit"
-                {% unless current_variant.available %}disabled{% endunless %}
-                data-cbv-submit
-              >
-                <span data-cbv-submit-text>
-                  {% if current_variant.available %}
-                    {{ section.settings.cta_label }} · {{ current_variant.price | money }}
-                  {% else %}
-                    {{ 'products.product.sold_out' | t }}
-                  {% endif %}
-                </span>
-                <div class="loading-overlay-spinner hidden">
-                  <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                  </svg>
-                </div>
-              </button>
-            </div>
+            <button
+              type="submit"
+              name="add"
+              class="cbv-gc__submit-btn"
+              {% unless current_variant.available %}disabled{% endunless %}
+              data-cbv-submit
+            >
+              <span data-cbv-submit-text>
+                {% if current_variant.available %}
+                  {{ section.settings.cta_label }} · {{ current_variant.price | money_without_trailing_zeros }}
+                {% else %}
+                  {{ 'products.product.sold_out' | t }}
+                {% endif %}
+              </span>
+            </button>
           {%- endform -%}
         </product-form>
       </div>
@@ -147,7 +136,7 @@
 
 {% schema %}
 {
-  "name": "CBV Gift card",
+  "name": "CBV Gift Card",
   "settings": [
     {
       "type": "text",
@@ -159,19 +148,13 @@
       "type": "text",
       "id": "supporting_text",
       "label": "Supporting text",
-      "default": "Send a beautifully packaged digital gift card in seconds."
+      "default": "A luxe digital gift card for the fragrance lover in your life."
     },
     {
       "type": "text",
       "id": "cta_label",
       "label": "Add to cart label",
       "default": "Add gift card"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "option-1"
     },
     {
       "type": "range",
@@ -181,7 +164,7 @@
       "step": 4,
       "unit": "px",
       "label": "Top padding",
-      "default": 32
+      "default": 64
     },
     {
       "type": "range",
@@ -191,25 +174,24 @@
       "step": 4,
       "unit": "px",
       "label": "Bottom padding",
-      "default": 48
+      "default": 80
     }
   ],
   "presets": [
     {
-      "name": "CBV Gift card"
+      "name": "CBV Gift Card"
     }
   ]
 }
 {% endschema %}
 
 {%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+  .cbv-gc {
+    padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
+  @media screen and (min-width: 990px) {
+    .cbv-gc {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }

@@ -43,7 +43,8 @@
     const syncPriceCardState = () => {
       priceCards.forEach((card) => {
         const input = card.querySelector('[data-cbv-option-input]');
-        card.classList.toggle('is-selected', Boolean(input?.checked));
+        // Add the is-active class for styling the pill button
+        card.classList.toggle('is-active', Boolean(input?.checked));
       });
     };
 
@@ -54,13 +55,26 @@
       variantIdInput.value = variant.id;
       variantIdInput.dispatchEvent(new Event('change', { bubbles: true }));
 
-      if (priceTarget) priceTarget.textContent = formatMoney(variant.price);
+      // Strip trailing zeros for a cleaner luxury look
+      if (priceTarget) {
+         let formattedPrice = formatMoney(variant.price);
+         if(formattedPrice.endsWith('.00')) {
+             formattedPrice = formattedPrice.replace('.00', '');
+         }
+         priceTarget.textContent = formattedPrice;
+      }
 
       if (submitButton && submitText) {
         if (variant.available) {
           submitButton.disabled = false;
           const actionLabel = submitText.textContent.split('·')[0].trim() || 'Add gift card';
-          submitText.textContent = `${actionLabel} · ${formatMoney(variant.price)}`;
+          
+          let btnPrice = formatMoney(variant.price);
+          if(btnPrice.endsWith('.00')) {
+              btnPrice = btnPrice.replace('.00', '');
+          }
+
+          submitText.textContent = `${actionLabel} · ${btnPrice}`;
         } else {
           submitButton.disabled = true;
           submitText.textContent = 'Sold out';
@@ -74,6 +88,7 @@
       input.addEventListener('change', syncVariant);
     });
 
+    // Run on load
     syncVariant();
   });
 })();

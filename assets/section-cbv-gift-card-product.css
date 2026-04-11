@@ -1,48 +1,354 @@
-.cbv-simple-product--gift-card .cbv-simple-product__main-media {
-  background: radial-gradient(circle at 20% 20%, rgb(255 255 255 / 88%), rgb(240 229 217 / 68%));
+/* --- LUXURY BRAND VARIABLES --- */
+.cbv-gc {
+  --font-cbv-heading: "Georgia", "Times New Roman", serif;
+  --font-cbv-body: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --color-text-dark: #1C1B1A;
+  --color-text-light: #5C534D;
+  --color-accent: #3A4D3F; 
+  --color-accent-gold: #855A30; 
+  --color-bg-light: #FDFBF7;
+  --color-border: #E8E4DD;
+  --color-surface: #FFFFFF;
+  --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  
+  font-family: var(--font-cbv-body);
+  color: var(--color-text-dark);
+  box-sizing: border-box;
+  background-color: var(--color-surface);
 }
 
-.cbv-gift-card__form {
-  backdrop-filter: blur(6px);
+.cbv-gc * {
+  box-sizing: inherit;
 }
 
-.cbv-gift-card__price-grid {
+/* --- LAYOUT --- */
+.cbv-gc .page-width {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.cbv-gc__layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 0.8rem;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 80px;
+  align-items: start;
 }
 
-.cbv-gift-card__price-card {
-  display: grid;
-  gap: 0.25rem;
-  border: 1px solid var(--cbv-border);
-  border-radius: 1rem;
-  background: #fff;
-  padding: 1.1rem 1rem;
-  cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+/* --- LEFT: EDITORIAL MEDIA PANEL --- */
+.cbv-gc__media-col {
+  position: relative;
 }
 
-.cbv-gift-card__price-card:hover,
-.cbv-gift-card__price-card.is-selected {
-  border-color: #dd8762;
-  box-shadow: 0 10px 24px rgb(43 30 18 / 12%);
-  transform: translateY(-1px);
+@media screen and (min-width: 990px) {
+  .cbv-gc__media-col {
+    position: sticky;
+    top: 110px;
+  }
 }
 
-.cbv-gift-card__price-title {
-  font-size: 1.7rem;
+.cbv-gc__media-wrapper {
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  aspect-ratio: 4/5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 40px;
+}
+
+.cbv-gc__media-badge {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--color-accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  z-index: 2;
+}
+
+.cbv-gc__image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+/* --- RIGHT: CONTENT PANEL --- */
+.cbv-gc__content-col {
+  padding-top: 10px;
+}
+
+.cbv-gc__header {
+  margin-bottom: 40px;
+}
+
+.cbv-gc__eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  margin: 0 0 16px 0;
+}
+
+.cbv-gc__title-wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cbv-gc__title {
+  font-family: var(--font-cbv-heading);
+  font-size: 52px;
+  line-height: 1.1;
+  color: var(--color-text-dark);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.cbv-gc__price {
+  font-size: 32px;
+  font-family: var(--font-cbv-heading);
+  font-weight: 500;
+  color: var(--color-accent-gold);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.cbv-gc__supporting {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-text-light);
+  margin: 0 0 16px 0;
+  max-width: 95%;
+}
+
+/* --- VARIANT SELECTORS --- */
+.cbv-gc__variants {
+  margin-bottom: 32px;
+}
+
+.cbv-gc__option-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 16px;
+}
+
+.cbv-gc__variant-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Hides the ugly native radio button completely */
+.cbv-gc__visually-hidden {
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  word-wrap: normal !important;
+}
+
+.cbv-gc__variant-btn {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 16px 24px;
+  font-size: 16px;
+  font-family: var(--font-cbv-body);
   font-weight: 600;
-  line-height: 1.2;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  flex-grow: 1;
+  text-align: center;
+  min-width: 80px;
 }
 
-.cbv-gift-card__price-sub {
-  color: rgb(16 27 43 / 68%);
-  font-size: 1.25rem;
+.cbv-gc__variant-btn:hover {
+  border-color: #A39E98;
+  background-color: #FAFAF8;
 }
 
-.cbv-gift-card__recipient {
-  margin: 1.5rem 0;
-  padding-top: 1.25rem;
-  border-top: 1px dashed var(--cbv-border);
+/* The active state styling */
+.cbv-gc__variant-btn.is-active,
+.cbv-gc__variant-btn:has(input:checked) {
+  background: var(--color-text-dark);
+  border-color: var(--color-text-dark);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(28, 27, 26, 0.15);
+  transform: translateY(-2px);
+}
+
+/* --- RECIPIENT FORM --- */
+.cbv-gc__recipient-box {
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+/* 1. Fix Checkbox Overlap (Use native styling, hide Dawn SVGs) */
+.cbv-gc__recipient-box .recipient-checkbox {
+  position: static !important;
+  opacity: 1 !important;
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 10px 0 0 !important;
+  accent-color: var(--color-text-dark);
+  cursor: pointer;
+}
+
+.cbv-gc__recipient-box label.recipient-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0;
+}
+
+.cbv-gc__recipient-box label.recipient-checkbox-label svg {
+  display: none !important; /* Hides Dawn's broken double-SVG setup */
+}
+
+/* 2. Fix Input Label Overlap */
+.cbv-gc__recipient-box .recipient-fields {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cbv-gc__recipient-box .field {
+  position: relative;
+  margin: 0;
+}
+
+.cbv-gc__recipient-box .field__input,
+.cbv-gc__recipient-box .text-area {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  color: var(--color-text-dark);
+  font-family: var(--font-cbv-body);
+  font-size: 15px;
+  box-shadow: none;
+  margin: 0;
+  display: block;
+}
+
+.cbv-gc__recipient-box .field__input:focus,
+.cbv-gc__recipient-box .text-area:focus {
+  border-color: var(--color-text-dark);
+  outline: none;
+  box-shadow: none;
+}
+
+/* Hide Dawn's floating labels to instantly clean up the overlap */
+.cbv-gc__recipient-box .field__label {
+  display: none !important;
+}
+
+/* Make placeholders act as the clean labels */
+.cbv-gc__recipient-box .field__input::placeholder,
+.cbv-gc__recipient-box .text-area::placeholder {
+  color: #666;
+  opacity: 1;
+}
+
+.cbv-gc__recipient-box .text-area {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.cbv-gc__recipient-box .form__message {
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+/* --- PRIMARY CTA --- */
+.cbv-gc__submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: var(--color-text-dark);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 22px;
+  font-family: var(--font-cbv-heading);
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+
+.cbv-gc__submit-btn:hover:not(:disabled) {
+  background: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(58, 77, 63, 0.2);
+}
+
+.cbv-gc__submit-btn:disabled {
+  background: #E8E4DD;
+  color: #A39E98;
+  cursor: not-allowed;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 1024px) {
+  .cbv-gc__layout { gap: 40px; }
+  .cbv-gc__title { font-size: 46px; }
+}
+
+@media (max-width: 899px) {
+  .cbv-gc__layout { 
+    grid-template-columns: 1fr; 
+    gap: 30px;
+  }
+  
+  .cbv-gc__media-wrapper {
+    aspect-ratio: 16/11; 
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .cbv-gc__title-wrap {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 16px;
+  }
+
+  .cbv-gc__title { font-size: 36px; }
+  .cbv-gc__price { font-size: 26px; }
 }
