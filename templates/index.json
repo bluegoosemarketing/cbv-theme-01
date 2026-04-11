@@ -9,22 +9,22 @@
  */
 {
   "sections": {
-    "hero_collage_4xyhYD": {
-      "type": "hero-collage",
-      "name": "Hero collage",
+    "hero_custom_builder_ncPJTt": {
+      "type": "hero-custom-builder",
+      "name": "Hero - Custom Builder",
       "settings": {
         "background_image": "shopify://shop_images/Bright-Living-Room_Crisp_v1.webp",
         "main_image": "shopify://shop_images/CBV-Candle-Hero_v2.2.webp",
-        "eyebrow_text": "Hand Poured Just for You",
-        "headline": "Welcome to <em>Original</em>",
-        "subheadline": "Experience our collection of premium, artisan-crafted fragrances designed to bring warmth, light, and beautiful memories into your sanctuary.",
-        "primary_button_label": "Build Candles",
-        "primary_button_link": "shopify://collections/custom-candles",
-        "secondary_button_label": "Signature Lines",
+        "eyebrow_text": "Over 1,000 Fragrances",
+        "headline": "Your Scent. Your Jar. <em>Your Candle.</em>",
+        "subheadline": "Design the ultimate custom candle. Choose from over 1,000 artisan scents, pick your favorite vessel, and select your wax color to craft a masterpiece uniquely yours.",
+        "primary_button_label": "Build a Custom Candle",
+        "primary_button_link": "",
+        "secondary_button_label": "Shop Wax Melts",
         "secondary_button_link": "",
         "callout_label": "FEATURED CANDLE",
         "callout_title": "Butter Pecan Waffle",
-        "callout_link": "shopify://products/butter-pecan-waffle"
+        "callout_link": ""
       }
     },
     "category_wayfinding_FJJVWF": {
@@ -147,7 +147,7 @@
     }
   },
   "order": [
-    "hero_collage_4xyhYD",
+    "hero_custom_builder_ncPJTt",
     "category_wayfinding_FJJVWF",
     "scent_directory_67PWrg"
   ]
