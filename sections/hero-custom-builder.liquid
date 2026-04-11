@@ -1,0 +1,513 @@
+<div id="Section-{{ section.id }}" class="hero-collage-section">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+    #Section-{{ section.id }} {
+      --bg-page: #FDFBFA;
+      --text-main: #332E2A;
+      --text-secondary: #5C534D;
+      --accent-green: #828E7D;
+      --accent-green-hover: #727D6E;
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Jost', sans-serif;
+      --transition: all 0.3s ease;
+      
+      background-color: var(--bg-page);
+      padding: 96px 0;
+      overflow: hidden;
+      font-family: var(--font-body);
+      color: var(--text-main);
+      position: relative; 
+    }
+
+    /* Background Blur Implementation */
+    #Section-{{ section.id }} .hero-bg-wrapper {
+      position: absolute;
+      top: -5%;
+      left: -5%;
+      width: 110%;
+      height: 110%;
+      z-index: 0;
+      overflow: hidden;
+      background-color: var(--bg-page);
+    }
+
+    #Section-{{ section.id }} .hero-bg-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(7px);
+      transform: scale(1.05); 
+    }
+
+    /* Global Wash */
+    #Section-{{ section.id }} .hero-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(253, 251, 250, 0.45); 
+      z-index: 1;
+    }
+
+    #Section-{{ section.id }} .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 32px;
+      position: relative;
+      z-index: 2; 
+    }
+
+    #Section-{{ section.id }} .hero-collage {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    /* Text Container - SCALED UP */
+    #Section-{{ section.id }} .hero-text {
+      position: relative;
+      max-width: 680px; /* Increased from 600px */
+      padding-right: 16px;
+      z-index: 2;
+    }
+
+    /* Targeted radial spotlight */
+    #Section-{{ section.id }} .hero-text::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 45%; 
+      width: 160%;
+      height: 160%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.85) 30%, rgba(255, 255, 255, 0) 70%);
+      z-index: -1;
+      pointer-events: none; 
+    }
+
+    #Section-{{ section.id }} .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      margin-bottom: 12px; 
+    }
+
+    #Section-{{ section.id }} .hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background-color: var(--accent-green);
+    }
+
+    /* Headlines - TIGHTER SPACING, LARGER TEXT */
+    #Section-{{ section.id }} .hero-text h1 {
+      font-family: var(--font-heading) !important;
+      font-size: 84px; /* Increased from 72px */
+      font-weight: 500; 
+      line-height: 1.05; /* Tighter line height for large text */
+      margin-top: 0 !important; /* Forces it tight to the eyebrow */
+      margin-bottom: 24px;
+      color: var(--text-main);
+    }
+
+    #Section-{{ section.id }} .hero-text h1 em {
+      font-style: italic;
+      font-weight: 600;
+      color: var(--accent-green);
+    }
+
+    /* Paragraph - SCALED UP */
+    #Section-{{ section.id }} .hero-text p {
+      font-family: var(--font-body) !important;
+      font-size: 22px; /* Increased from 20px */
+      color: var(--text-main); 
+      margin-top: 0;
+      margin-bottom: 48px;
+      font-weight: 500; 
+      max-width: 95%; /* Adapts better to the new 680px container */
+      line-height: 1.5;
+    }
+
+    #Section-{{ section.id }} .hero-cta-group {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    #Section-{{ section.id }} .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 19px 40px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: var(--transition);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    #Section-{{ section.id }} .hero-btn-primary {
+      background-color: var(--accent-green);
+      color: #FFFFFF;
+      border: 1px solid var(--accent-green);
+      border-radius: 2px;
+    }
+
+    #Section-{{ section.id }} .hero-btn-primary:hover {
+      background-color: var(--accent-green-hover);
+      border-color: var(--accent-green-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(130, 142, 125, 0.2);
+    }
+
+    #Section-{{ section.id }} .hero-btn-secondary {
+      background-color: transparent;
+      color: var(--text-main);
+      border: none;
+      border-bottom: 1px solid var(--text-main);
+      padding: 8px 0;
+    }
+
+    #Section-{{ section.id }} .hero-btn-secondary:hover {
+      color: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
+    #Section-{{ section.id }} .hero-visuals {
+      position: relative;
+      height: 100%;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #Section-{{ section.id }} .img-main {
+      width: 75%;
+      height: 600px;
+      object-fit: cover;
+      border-radius: 2px;
+      border: 12px solid #FFFFFF; 
+      box-shadow: 0 25px 50px rgba(51, 46, 42, 0.12); 
+      position: relative;
+      z-index: 1;
+    }
+
+    /* EDITORIAL PRODUCT CALLOUT CARD */
+    #Section-{{ section.id }} .hero-product-callout {
+      position: absolute;
+      bottom: 40px;
+      left: -32px; 
+      background: #FFFFFF;
+      padding: 18px 24px;
+      border-radius: 2px;
+      box-shadow: 0 15px 35px rgba(51, 46, 42, 0.08);
+      border: 1px solid rgba(51, 46, 42, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-decoration: none;
+      z-index: 3;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #Section-{{ section.id }} .hero-product-callout:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(51, 46, 42, 0.12);
+    }
+
+    #Section-{{ section.id }} .callout-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #Section-{{ section.id }} .callout-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      margin-bottom: 4px;
+    }
+
+    #Section-{{ section.id }} .callout-title {
+      font-family: var(--font-heading);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    #Section-{{ section.id }} .callout-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(51, 46, 42, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-main);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    #Section-{{ section.id }} .callout-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    #Section-{{ section.id }} .hero-product-callout:hover .callout-icon {
+      background-color: var(--accent-green);
+      color: #FFFFFF;
+      border-color: var(--accent-green);
+    }
+
+    /* RESPONSIVE SCALING */
+    @media (max-width: 1100px) {
+      #Section-{{ section.id }} .hero-text h1 {
+        font-size: 64px;
+      }
+      #Section-{{ section.id }} .hero-text p {
+        font-size: 20px;
+      }
+      #Section-{{ section.id }} .img-main {
+        height: 500px;
+        width: 85%;
+      }
+      #Section-{{ section.id }} .hero-product-callout {
+        left: -16px; 
+      }
+    }
+
+    @media (max-width: 768px) {
+      #Section-{{ section.id }} {
+        padding: 48px 0;
+      }
+
+      #Section-{{ section.id }} .hero-collage {
+        display: flex;
+        flex-direction: column;
+        gap: 56px;
+      }
+
+      #Section-{{ section.id }} .hero-text {
+        order: 1;
+        padding-right: 0;
+        text-align: center;
+        margin: 0 auto;
+      }
+
+      #Section-{{ section.id }} .hero-text::before {
+        left: 50%;
+        width: 160vw;
+        height: 140%;
+      }
+
+      #Section-{{ section.id }} .hero-visuals {
+        order: 2;
+        width: 100%;
+        min-height: 450px;
+        margin-bottom: 32px;
+      }
+
+      #Section-{{ section.id }} .img-main {
+        width: 90%;
+        height: 450px;
+        border-width: 8px; 
+      }
+
+      #Section-{{ section.id }} .hero-product-callout {
+        bottom: -24px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 85%;
+        justify-content: space-between;
+      }
+
+      #Section-{{ section.id }} .hero-product-callout:hover {
+        transform: translate(-50%, -4px);
+      }
+
+      #Section-{{ section.id }} .hero-eyebrow {
+        justify-content: center;
+        margin-bottom: 12px; 
+      }
+
+      #Section-{{ section.id }} .hero-eyebrow::after {
+        display: none;
+      }
+
+      #Section-{{ section.id }} .hero-text h1 {
+        font-size: 52px;
+        margin-bottom: 16px;
+      }
+
+      #Section-{{ section.id }} .hero-text p {
+        margin: 0 auto 32px auto;
+        font-size: 18px;
+      }
+
+      #Section-{{ section.id }} .hero-cta-group {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      #Section-{{ section.id }} .hero-btn {
+        width: 100%;
+      }
+
+      #Section-{{ section.id }} .hero-btn-secondary {
+        width: auto;
+        border-bottom: 1px solid var(--text-main);
+      }
+    }
+  </style>
+
+  <div class="hero-bg-wrapper">
+    {% if section.settings.background_image != blank %}
+      {{ section.settings.background_image | image_url: width: 2400 | image_tag: alt: 'Background', loading: 'eager', fetchpriority: 'high' }}
+    {% else %}
+      <div style="width:100%; height:100%; background:var(--bg-page);"></div>
+    {% endif %}
+    <div class="hero-bg-overlay"></div>
+  </div>
+
+  <div class="container">
+    <div class="hero-collage">
+      <div class="hero-visuals">
+        {% if section.settings.main_image != blank %}
+          {{ section.settings.main_image | image_url: width: 1600 | image_tag: class: 'img-main', alt: section.settings.main_image.alt, loading: 'eager', fetchpriority: 'high' }}
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'img-main' }}
+        {% endif %}
+
+        <a href="{{ section.settings.callout_link | default: '#' }}" class="hero-product-callout" aria-label="Shop {{ section.settings.callout_title }}">
+          <div class="callout-content">
+            <span class="callout-label">{{ section.settings.callout_label }}</span>
+            <span class="callout-title">{{ section.settings.callout_title }}</span>
+          </div>
+          <div class="callout-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </div>
+        </a>
+      </div>
+
+      <div class="hero-text">
+        {% if section.settings.eyebrow_text != blank %}
+          <span class="hero-eyebrow">{{ section.settings.eyebrow_text }}</span>
+        {% endif %}
+
+        {% if section.settings.headline != blank %}
+          <h1>{{ section.settings.headline }}</h1>
+        {% endif %}
+
+        {% if section.settings.subheadline != blank %}
+          <p>{{ section.settings.subheadline }}</p>
+        {% endif %}
+
+        <div class="hero-cta-group">
+          {% if section.settings.primary_button_label != blank %}
+            <a href="{{ section.settings.primary_button_link | default: '#' }}" class="hero-btn hero-btn-primary">{{ section.settings.primary_button_label }}</a>
+          {% endif %}
+
+          {% if section.settings.secondary_button_label != blank %}
+            <a href="{{ section.settings.secondary_button_link | default: '#' }}" class="hero-btn hero-btn-secondary">{{ section.settings.secondary_button_label }}</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero - Custom Builder",
+  "tag": "section",
+  "class": "section",
+  "settings":[
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image (Blurred Living Room)"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main product image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow text",
+      "default": "Over 1,000 Fragrances"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Your Scent. Your Jar. <br><em>Your Candle.</em>"
+    },
+    {
+      "type": "textarea",
+      "id": "subheadline",
+      "label": "Subheadline / paragraph",
+      "default": "Design the ultimate custom candle. Choose from over 1,000 artisan scents, pick your favorite vessel, and select your wax color to craft a masterpiece uniquely yours."
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "label": "Primary button label",
+      "default": "Build a Custom Candle"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary button label",
+      "default": "Shop Wax Melts"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "Product Callout Card"
+    },
+    {
+      "type": "text",
+      "id": "callout_label",
+      "label": "Callout Label",
+      "default": "FEATURED CANDLE"
+    },
+    {
+      "type": "text",
+      "id": "callout_title",
+      "label": "Callout Product Title",
+      "default": "Butter Pecan Waffle"
+    },
+    {
+      "type": "url",
+      "id": "callout_link",
+      "label": "Callout Link"
+    }
+  ],
+  "presets":[
+    {
+      "name": "Hero - Custom Builder"
+    }
+  ]
+}
+{% endschema %}
