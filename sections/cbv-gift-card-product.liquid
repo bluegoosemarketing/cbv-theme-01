@@ -1,5 +1,6 @@
 {{ 'section-cbv-gift-card-product.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'cbv-gift-card-product.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'recipient-form.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign product_form_id = 'cbv-gift-card-product-form-' | append: section.id

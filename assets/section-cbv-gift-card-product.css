@@ -51,7 +51,7 @@
   background: var(--color-bg-light);
   border: 1px solid var(--color-border);
   border-radius: 16px;
-  aspect-ratio: 4/5;
+  aspect-ratio: 1 / 1; /* Fits your square image perfectly */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -211,75 +211,98 @@
   margin-bottom: 32px;
 }
 
-/* 1. Fix Checkbox Overlap (Use native styling, hide Dawn SVGs) */
-.cbv-gc__recipient-box .recipient-checkbox {
-  position: static !important;
-  opacity: 1 !important;
-  width: 18px !important;
-  height: 18px !important;
-  margin: 0 10px 0 0 !important;
-  accent-color: var(--color-text-dark);
-  cursor: pointer;
-}
-
-.cbv-gc__recipient-box label.recipient-checkbox-label {
-  display: inline-flex;
-  align-items: center;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  margin: 0;
-}
-
-.cbv-gc__recipient-box label.recipient-checkbox-label svg {
-  display: none !important; /* Hides Dawn's broken double-SVG setup */
-}
-
-/* 2. Fix Input Label Overlap */
-.cbv-gc__recipient-box .recipient-fields {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.cbv-gc__recipient-box .field {
-  position: relative;
-  margin: 0;
-}
-
-.cbv-gc__recipient-box .field__input,
-.cbv-gc__recipient-box .text-area {
-  width: 100%;
-  padding: 14px 16px;
-  border-radius: 6px;
-  border: 1px solid var(--color-border);
-  background: #fff;
-  color: var(--color-text-dark);
-  font-family: var(--font-cbv-body);
-  font-size: 15px;
-  box-shadow: none;
-  margin: 0;
+/* 1. Fix the Checkbox (Force native, hide Dawn's broken SVGs) */
+.cbv-gc__recipient-box recipient-form {
   display: block;
 }
 
-.cbv-gc__recipient-box .field__input:focus,
-.cbv-gc__recipient-box .text-area:focus {
-  border-color: var(--color-text-dark);
-  outline: none;
-  box-shadow: none;
+.cbv-gc__recipient-box input[type="checkbox"] {
+  position: relative !important;
+  width: 18px !important;
+  height: 18px !important;
+  opacity: 1 !important;
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  margin: 0 10px 0 0 !important;
+  cursor: pointer;
+  z-index: 5;
 }
 
-/* Hide Dawn's floating labels to instantly clean up the overlap */
-.cbv-gc__recipient-box .field__label {
+.cbv-gc__recipient-box .recipient-checkbox {
+  display: inline-flex !important;
+  align-items: center;
+  font-family: var(--font-cbv-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+.cbv-gc__recipient-box .recipient-checkbox svg {
+  display: none !important; /* Kill Dawn's SVGs */
+}
+
+/* 2. Fix the Fields (Kill floating labels, make them static above inputs) */
+.cbv-gc__recipient-box .recipient-fields hr {
+  display: none !important; /* Removes the invisible line causing the massive gap */
+}
+
+.cbv-gc__recipient-box .recipient-fields {
+  margin-top: 16px; /* Tightens the spacing below the checkbox */
+}
+
+.cbv-gc__recipient-box .recipient-fields__field {
+  margin-bottom: 16px;
+}
+
+/* Hide Dawn's duplicate "(optional)" text on the email label */
+.cbv-gc__recipient-box .field__label .optional {
   display: none !important;
 }
 
-/* Make placeholders act as the clean labels */
-.cbv-gc__recipient-box .field__input::placeholder,
-.cbv-gc__recipient-box .text-area::placeholder {
-  color: #666;
-  opacity: 1;
+.cbv-gc__recipient-box .field {
+  display: flex !important;
+  flex-direction: column-reverse; /* Puts label above the input cleanly */
+  margin: 0 !important;
+}
+
+.cbv-gc__recipient-box .field:before,
+.cbv-gc__recipient-box .field:after {
+  display: none !important; /* Remove Dawn internal borders */
+}
+
+/* 3. Style the Labels */
+.cbv-gc__recipient-box .field__label {
+  position: static !important;
+  transform: none !important;
+  font-size: 13px !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--color-text-dark);
+  margin-bottom: 8px;
+  pointer-events: auto;
+}
+
+.cbv-gc__recipient-box .field__label .optional {
+  font-weight: 400;
+  color: #888;
+}
+
+/* 4. Style the Inputs */
+.cbv-gc__recipient-box .field__input,
+.cbv-gc__recipient-box .text-area {
+  width: 100%;
+  padding: 14px 16px !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--color-border) !important;
+  background: #fff !important;
+  color: var(--color-text-dark) !important;
+  font-family: var(--font-cbv-body);
+  font-size: 15px !important;
+  box-shadow: none !important;
+  margin: 0 !important;
 }
 
 .cbv-gc__recipient-box .text-area {
@@ -287,9 +310,26 @@
   resize: vertical;
 }
 
-.cbv-gc__recipient-box .form__message {
-  font-size: 13px;
-  margin-top: 8px;
+.cbv-gc__recipient-box .field__input:focus,
+.cbv-gc__recipient-box .text-area:focus {
+  border-color: var(--color-text-dark) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 1px var(--color-text-dark) !important;
+}
+
+/* Hide placeholders to avoid visual clutter since labels are now visible above */
+.cbv-gc__recipient-box .field__input::placeholder,
+.cbv-gc__recipient-box .text-area::placeholder {
+  opacity: 0 !important;
+}
+
+/* 5. Max Character Count */
+.cbv-gc__recipient-box .recipient-form-field-label {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-top: 6px;
+  margin-left: 2px;
 }
 
 /* --- PRIMARY CTA --- */
@@ -336,7 +376,7 @@
   }
   
   .cbv-gc__media-wrapper {
-    aspect-ratio: 16/11; 
+    aspect-ratio: 1 / 1; /* Keep it square on mobile too */
     padding: 20px;
     border-radius: 12px;
   }
