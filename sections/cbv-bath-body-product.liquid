@@ -270,14 +270,16 @@
               assign scent_active = fragrance.is_active.value | default: fragrance.is_active
               assign scent_bath_body = fragrance.bath_and_body.value | default: fragrance.bath_and_body
             -%}
-            {%- if scent_name != blank and scent_active != false and (scent_bath_body == true or scent_bath_body == 'true') -%}
-              {%- unless first_entry -%},{%- endunless -%}
-              {
-                "name": {{ scent_name | json }},
-                "family": {{ scent_family | default: 'Uncategorized' | json }},
-                "handle": {{ fragrance.handle | json }}
-              }
-              {%- assign first_entry = false -%}
+            {%- if scent_name != blank and scent_active != false -%}
+              {%- if scent_bath_body == true or scent_bath_body == 'true' -%}
+                {%- unless first_entry -%},{%- endunless -%}
+                {
+                  "name": {{ scent_name | json }},
+                  "family": {{ scent_family | default: 'Uncategorized' | json }},
+                  "handle": {{ fragrance.handle | json }}
+                }
+                {%- assign first_entry = false -%}
+              {%- endif -%}
             {%- endif -%}
           {%- endfor -%}
         ]
