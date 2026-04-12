@@ -4,7 +4,7 @@
   assign scent_name = metaobject.name.value | default: metaobject.name
   assign scent_family = metaobject.scent_family.value | default: metaobject.scent_family
   assign scent_handle = metaobject.handle
-  assign scent_description = metaobject.description.value | default: metaobject.description | default: metaobject.short_description.value | default: metaobject.short_description
+  assign scent_description = metaobject.hero_description.value | default: metaobject.hero_description | default: metaobject.description.value | default: metaobject.description | default: metaobject.short_description.value | default: metaobject.short_description
   assign scent_notes = metaobject.fragrance_notes.value | default: metaobject.fragrance_notes | default: metaobject.notes.value | default: metaobject.notes
   assign scent_season = metaobject.season.value | default: metaobject.season | default: metaobject.seasonal.value | default: metaobject.seasonal
   assign scent_param_value = scent_name | default: scent_handle | strip | url_encode
