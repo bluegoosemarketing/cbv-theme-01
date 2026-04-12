@@ -8,8 +8,12 @@
   assign secondary_option = product.options_with_values[1]
   assign secondary_option_values = secondary_option.values
   assign has_secondary_option = false
+  assign has_vessel_options = false
   if secondary_option != blank and secondary_option_values.size > 0
     assign has_secondary_option = true
+  endif
+  if vessel_option_values.size > 1
+    assign has_vessel_options = true
   endif
 -%}
 
@@ -90,70 +94,72 @@
           {%- form 'product', product, id: product_form_id, class: 'form cbv-builder__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
             <input type="hidden" name="id" value="{{ current_variant.id }}" data-cbv-variant-id>
 
-            <div class="cbv-builder__group cbv-jar-bar" data-cbv-step="vessel">
-              <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
-                <label class="cbv-builder__label">
-                  <span class="cbv-step-num">1</span>
-                  <span class="cbv-step-title" data-cbv-step-title="Choose Vessel / Format">Choose Vessel / Format</span>
-                </label>
-                <div class="cbv-builder__toggle-icon">
-                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            {%- if has_vessel_options -%}
+              <div class="cbv-builder__group cbv-jar-bar" data-cbv-step="vessel">
+                <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
+                  <label class="cbv-builder__label">
+                    <span class="cbv-step-num">1</span>
+                    <span class="cbv-step-title" data-cbv-step-title="Choose Vessel / Format">Choose Vessel / Format</span>
+                  </label>
+                  <div class="cbv-builder__toggle-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </div>
                 </div>
-              </div>
 
-              <div class="cbv-step-content">
-                <div class="cbv-jar-grid">
-                  {%- for vessel_value in vessel_option_values -%}
-                    {%- assign vessel_variant = blank -%}
-                    {%- for variant in product.variants -%}
-                      {%- if variant.option1 == vessel_value and vessel_variant == blank -%}
-                        {%- assign vessel_variant = variant -%}
+                <div class="cbv-step-content">
+                  <div class="cbv-jar-grid">
+                    {%- for vessel_value in vessel_option_values -%}
+                      {%- assign vessel_variant = blank -%}
+                      {%- for variant in product.variants -%}
+                        {%- if variant.option1 == vessel_value and vessel_variant == blank -%}
+                          {%- assign vessel_variant = variant -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+
+                      {%- if vessel_variant != blank -%}
+                        <label class="cbv-jar-card {% if current_variant.option1 == vessel_value %}is-selected{% endif %}" data-cbv-vessel-card>
+                          <input
+                            type="radio"
+                            name="cbv_vessel_selection"
+                            value="{{ vessel_value | escape }}"
+                            class="visually-hidden"
+                            {% if current_variant.option1 == vessel_value %}checked{% endif %}
+                            data-cbv-vessel-input
+                            data-cbv-vessel-value="{{ vessel_value | escape }}"
+                            data-image-src="{{ vessel_variant.featured_media | default: product.featured_media | image_url: width: 1200 }}"
+                          >
+                          <div class="cbv-jar-image-wrap">
+                            {%- if vessel_variant.featured_media -%}
+                              {{ vessel_variant.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
+                            {%- else -%}
+                              {{ product.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
+                            {%- endif -%}
+                          </div>
+                          <div class="cbv-jar-info">
+                            <span class="cbv-jar-title">{{ vessel_value }}</span>
+                            {% assign price_diff = vessel_variant.price | minus: product.price %}
+                            {% if price_diff > 0 %}
+                              <span class="cbv-jar-upgrade">+{{ price_diff | money }}</span>
+                            {% else %}
+                              <span class="cbv-jar-included">Included</span>
+                            {% endif %}
+                          </div>
+                        </label>
                       {%- endif -%}
                     {%- endfor -%}
+                  </div>
 
-                    {%- if vessel_variant != blank -%}
-                      <label class="cbv-jar-card {% if current_variant.option1 == vessel_value %}is-selected{% endif %}" data-cbv-vessel-card>
-                        <input
-                          type="radio"
-                          name="cbv_vessel_selection"
-                          value="{{ vessel_value | escape }}"
-                          class="visually-hidden"
-                          {% if current_variant.option1 == vessel_value %}checked{% endif %}
-                          data-cbv-vessel-input
-                          data-cbv-vessel-value="{{ vessel_value | escape }}"
-                          data-image-src="{{ vessel_variant.featured_media | default: product.featured_media | image_url: width: 1200 }}"
-                        >
-                        <div class="cbv-jar-image-wrap">
-                          {%- if vessel_variant.featured_media -%}
-                            {{ vessel_variant.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
-                          {%- else -%}
-                            {{ product.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', class: 'cbv-jar-thumb' }}
-                          {%- endif -%}
-                        </div>
-                        <div class="cbv-jar-info">
-                          <span class="cbv-jar-title">{{ vessel_value }}</span>
-                          {% assign price_diff = vessel_variant.price | minus: product.price %}
-                          {% if price_diff > 0 %}
-                            <span class="cbv-jar-upgrade">+{{ price_diff | money }}</span>
-                          {% else %}
-                            <span class="cbv-jar-included">Included</span>
-                          {% endif %}
-                        </div>
-                      </label>
-                    {%- endif -%}
-                  {%- endfor -%}
+                  <button type="button" class="cbv-continue-btn" data-cbv-continue="scent">
+                    Next: Choose Scent &rarr;
+                  </button>
                 </div>
-
-                <button type="button" class="cbv-continue-btn" data-cbv-continue="scent">
-                  Next: Choose Scent &rarr;
-                </button>
               </div>
-            </div>
+            {%- endif -%}
 
-            <div class="cbv-builder__group cbv-scent is-collapsed" data-cbv-step="scent">
+            <div class="cbv-builder__group cbv-scent {% if has_vessel_options %}is-collapsed{% endif %}" data-cbv-step="scent">
               <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
                 <label class="cbv-builder__label">
-                  <span class="cbv-step-num">2</span>
+                  <span class="cbv-step-num">{% if has_vessel_options %}2{% else %}1{% endif %}</span>
                   <span class="cbv-step-title" data-cbv-step-title="Choose Scent">Choose Scent</span>
                 </label>
                 <div class="cbv-builder__toggle-icon">
@@ -198,7 +204,7 @@
               <div class="cbv-builder__group" data-cbv-secondary-group>
                 <div class="cbv-builder__group-header">
                   <label class="cbv-builder__label">
-                    <span class="cbv-step-num">3</span>
+                    <span class="cbv-step-num">{% if has_vessel_options %}3{% else %}2{% endif %}</span>
                     <span class="cbv-step-title">{{ secondary_option.name }}</span>
                   </label>
                 </div>
