@@ -1055,15 +1055,16 @@
                   <li><a href="/products/gift-card" style="margin-top: 12px; display: inline-block; color: var(--cbv-header-accent); font-weight: 500;">Gift Cards &rarr;</a></li>
                 </ul>
               </div>
+              {%- assign shop_feature_title = section.settings.shop_feature_title | default: 'Best Sellers' -%}
               <a class="cbv-featured-card" href="{{ section.settings.shop_feature_link | default: '/collections/best-sellers' }}">
                 {%- if section.settings.shop_feature_image != blank -%}
-                  {{ section.settings.shop_feature_image | image_url: width: 900 | image_tag: class: 'cbv-featured-img', loading: 'lazy', alt: section.settings.shop_feature_title }}
+                  {{ section.settings.shop_feature_image | image_url: width: 900 | image_tag: class: 'cbv-featured-img', loading: 'lazy', alt: shop_feature_title }}
                 {%- else -%}
-                  <img src="https://placehold.co/400x600/FDFBFA/332E2A?text=Best+Sellers" class="cbv-featured-img" alt="Best Sellers" loading="lazy">
+                  <img src="https://placehold.co/400x600/FDFBFA/332E2A?text={{ shop_feature_title | url_encode }}" class="cbv-featured-img" alt="{{ shop_feature_title }}" loading="lazy">
                 {%- endif -%}
                 <div class="cbv-featured-overlay">
                   <span class="cbv-feat-label">{{ section.settings.shop_feature_label }}</span>
-                  <div class="cbv-feat-title">{{ section.settings.shop_feature_title }}</div>
+                  <div class="cbv-feat-title">{{ shop_feature_title }}</div>
                   <span class="cbv-btn-link">{{ section.settings.shop_feature_cta }}</span>
                 </div>
               </a>
