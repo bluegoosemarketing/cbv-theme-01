@@ -1,0 +1,34 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-customer-favorites",
+      "settings": {
+        "color_scheme": "option-1",
+        "eyebrow": "Just For You",
+        "title": "Customer Favorites",
+        "subcopy": "Your saved fragrance loves, curated for a seamless return to the scents that feel most like home.",
+        "library_link": "shopify://pages/scent-library",
+        "empty_title": "Your favorites list is waiting",
+        "empty_copy": "When a fragrance speaks to you, save it to favorites and it will live here for easy rediscovery.",
+        "empty_cta": "Discover fragrances",
+        "logged_out_title": "Sign in to see your saved scents",
+        "logged_out_copy": "Your favorites are tucked safely into your account so your signature scents are always close.",
+        "logged_out_cta": "Sign in",
+        "padding_top": 56,
+        "padding_bottom": 72
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

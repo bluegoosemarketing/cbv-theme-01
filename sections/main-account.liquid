@@ -152,7 +152,9 @@
           {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
         </a>
 
-        <div style="margin-top: 1.2rem;">
+        {%- assign customer_favorites_page = pages['customer-favorites'] -%}
+        <div style="margin-top: 1.2rem; display: flex; flex-direction: column; gap: 0.8rem;">
+          <a href="{{ customer_favorites_page.url | default: '/pages/customer-favorites' }}">View your favorite scents</a>
           <a href="/pages/manage-subscriptions">Manage subscriptions</a>
         </div>
       </div>
