@@ -1,0 +1,211 @@
+{{ 'section-customer-favorites.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="cbv-favorites color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width cbv-favorites__shell">
+    <header class="cbv-favorites__hero">
+      <p class="cbv-favorites__eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1 class="cbv-favorites__title">{{ section.settings.title }}</h1>
+      <p class="cbv-favorites__subcopy">{{ section.settings.subcopy }}</p>
+    </header>
+
+    {%- liquid
+      assign favorites_library_link = section.settings.library_link
+      if favorites_library_link == blank
+        assign favorites_library_link = '/pages/scent-library'
+      endif
+    -%}
+
+    {%- if customer -%}
+      {%- liquid
+        assign favorites_metafield = customer.metafields['app--325160632321'].favorite_scent_handles
+        if favorites_metafield == blank
+          assign favorites_metafield = customer.metafields.custom.favorite_scent_handles
+        endif
+
+        assign favorite_handles = favorites_metafield.value
+        assign favorites_count = favorite_handles.size | default: 0
+      -%}
+
+      {%- if favorites_count > 0 -%}
+        <div class="cbv-favorites__meta">
+          <p>Welcome back, {{ customer.first_name | default: 'there' }}. We saved {{ favorites_count }} favorite{% if favorites_count != 1 %}s{% endif %} for you.</p>
+        </div>
+
+        <div class="cbv-favorites__grid" role="list" aria-label="Saved favorite scents">
+          {%- paginate shop.metaobjects.fragrance.values by 1000 -%}
+            {%- for scent_handle in favorite_handles -%}
+              {%- liquid
+                assign handle = scent_handle | append: '' | strip | handleize
+                assign scent_name = handle | replace: '-', ' ' | capitalize
+                assign scent_family = 'Signature Collection'
+                assign scent_url = favorites_library_link
+                assign has_match = false
+
+                for fragrance in shop.metaobjects.fragrance.values
+                  assign fragrance_handle = fragrance.handle | default: fragrance.system.handle
+                  if fragrance_handle == blank
+                    assign fragrance_handle = fragrance.name.value | default: fragrance.name | handleize
+                  endif
+
+                  if fragrance_handle == handle
+                    assign has_match = true
+                    assign scent_name = fragrance.name.value | default: fragrance.name | default: scent_name
+                    assign scent_family = fragrance.scent_family.value | default: fragrance.scent_family | default: scent_family
+                    assign scent_url = fragrance.url | default: fragrance.system.url | default: scent_url
+                    break
+                  endif
+                endfor
+              -%}
+
+              <article class="cbv-favorites-card" role="listitem">
+                <a href="{{ scent_url }}" class="cbv-favorites-card__link">
+                  <div class="cbv-favorites-card__mark" aria-hidden="true">{{ scent_name | slice: 0 }}</div>
+
+                  <div class="cbv-favorites-card__body">
+                    <p class="cbv-favorites-card__family">{{ scent_family }}</p>
+                    <h2 class="cbv-favorites-card__name">{{ scent_name }}</h2>
+                    <p class="cbv-favorites-card__handle">{{ handle }}</p>
+                    <span class="cbv-favorites-card__cta">
+                      {% if has_match %}
+                        Explore this fragrance
+                      {% else %}
+                        Browse in scent library
+                      {% endif %}
+                    </span>
+                  </div>
+                </a>
+              </article>
+            {%- endfor -%}
+          {%- endpaginate -%}
+        </div>
+      {%- else -%}
+        <div class="cbv-favorites-empty" role="status">
+          <h2>{{ section.settings.empty_title }}</h2>
+          <p>{{ section.settings.empty_copy }}</p>
+          <a class="button" href="{{ favorites_library_link }}">{{ section.settings.empty_cta }}</a>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div class="cbv-favorites-empty" role="status">
+        <h2>{{ section.settings.logged_out_title }}</h2>
+        <p>{{ section.settings.logged_out_copy }}</p>
+        <div class="cbv-favorites-empty__actions">
+          <a class="button" href="{{ routes.account_login_url }}">{{ section.settings.logged_out_cta }}</a>
+          <a class="button button--secondary" href="{{ favorites_library_link }}">Browse scent library</a>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CBV customer favorites",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "option-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Just For You"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Customer Favorites"
+    },
+    {
+      "type": "textarea",
+      "id": "subcopy",
+      "label": "Subcopy",
+      "default": "Your saved fragrance loves, curated for a seamless return to the scents that feel most like home."
+    },
+    {
+      "type": "url",
+      "id": "library_link",
+      "label": "Scent library link"
+    },
+    {
+      "type": "text",
+      "id": "empty_title",
+      "label": "Empty state title",
+      "default": "Your favorites list is waiting"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_copy",
+      "label": "Empty state copy",
+      "default": "When a fragrance speaks to you, save it to favorites and it will live here for easy rediscovery."
+    },
+    {
+      "type": "text",
+      "id": "empty_cta",
+      "label": "Empty state button label",
+      "default": "Discover fragrances"
+    },
+    {
+      "type": "text",
+      "id": "logged_out_title",
+      "label": "Logged-out title",
+      "default": "Sign in to see your saved scents"
+    },
+    {
+      "type": "textarea",
+      "id": "logged_out_copy",
+      "label": "Logged-out copy",
+      "default": "Your favorites are tucked safely into your account so your signature scents are always close."
+    },
+    {
+      "type": "text",
+      "id": "logged_out_cta",
+      "label": "Logged-out button label",
+      "default": "Sign in"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "CBV customer favorites"
+    }
+  ]
+}
+{% endschema %}
