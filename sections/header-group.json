@@ -13,7 +13,23 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "announcement_text": "Free shipping on orders over $75",
+        "custom_candles_link": "",
+        "custom_wax_melts_link": "",
+        "scent_shots_link": "",
+        "shop_feature_image": "shopify://shop_images/cbv-gift-card.webp",
+        "shop_feature_link": "shopify://products/candles-by-victoria-gift-card",
+        "shop_feature_label": "",
+        "shop_feature_title": "Gift Cards",
+        "shop_feature_cta": "Order Now",
+        "scents_az_link": "",
+        "scents_feature_link": "",
+        "scents_feature_label": "Featured scent",
+        "scents_feature_title": "Scent of the month",
+        "scents_feature_cta": "Explore now"
+      }
     }
   },
   "order": [
