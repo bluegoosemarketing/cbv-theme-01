@@ -1040,18 +1040,30 @@
               <div>
                 <span class="cbv-col-title">Custom Creations</span>
                 <ul class="cbv-menu-links">
-                  <li><a href="{{ section.settings.custom_candles_link | default: '/collections/custom-candles' }}" class="cbv-link-highlight">Custom Candles</a></li>
-                  <li><a href="{{ section.settings.custom_wax_melts_link | default: '/collections/melts' }}" class="cbv-link-highlight">Custom Wax Melts</a></li>
-                  <li><a href="/products/scent-shots-1" class="cbv-link-highlight">Scent Shots</a></li>
+                  {% if section.settings.shop_custom_creations_menu != blank %}
+                    {% for link in section.settings.shop_custom_creations_menu.links %}
+                      <li><a href="{{ link.url }}" class="cbv-link-highlight">{{ link.title | escape }}</a></li>
+                    {% endfor %}
+                  {% else %}
+                    <li><a href="{{ section.settings.custom_candles_link | default: '/collections/custom-candles' }}" class="cbv-link-highlight">Custom Candles</a></li>
+                    <li><a href="{{ section.settings.custom_wax_melts_link | default: '/collections/melts' }}" class="cbv-link-highlight">Custom Wax Melts</a></li>
+                    <li><a href="{{ section.settings.scent_shots_link | default: '/products/scent-shots-1' }}" class="cbv-link-highlight">Scent Shots</a></li>
+                  {% endif %}
                 </ul>
               </div>
               <div>
                 <span class="cbv-col-title">Signature Collections</span>
                 <ul class="cbv-menu-links">
-                  <li><a href="/collections/bake-shoppe">Bake Shoppe</a></li>
-                  <li><a href="/collections/cuties">Cuties</a></li>
-                  <li><a href="/collections/sweet-treats">Sweet Treats</a></li>
-                  <li><a href="/collections/giftables">Giftables</a></li>
+                  {% if section.settings.shop_signature_collections_menu != blank %}
+                    {% for link in section.settings.shop_signature_collections_menu.links %}
+                      <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+                    {% endfor %}
+                  {% else %}
+                    <li><a href="/collections/bake-shoppe">Bake Shoppe</a></li>
+                    <li><a href="/collections/cuties">Cuties</a></li>
+                    <li><a href="/collections/sweet-treats">Sweet Treats</a></li>
+                    <li><a href="/collections/giftables">Giftables</a></li>
+                  {% endif %}
                   <li><a href="/products/gift-card" style="margin-top: 12px; display: inline-block; color: var(--cbv-header-accent); font-weight: 500;">Gift Cards &rarr;</a></li>
                 </ul>
               </div>
@@ -1156,17 +1168,29 @@
       </div>
       <div class="cbv-mobile-submenu">
         <span class="cbv-mob-cat-title">Custom Creations</span>
-        <a href="{{ section.settings.custom_candles_link | default: '/collections/custom-candles' }}" class="cbv-mob-link cbv-link-highlight">Custom Candles</a>
-        <a href="{{ section.settings.custom_wax_melts_link | default: '/collections/melts' }}" class="cbv-mob-link cbv-link-highlight">Custom Wax Melts</a>
-        <a href="/products/scent-shots-1" class="cbv-mob-link cbv-link-highlight">Scent Shots</a>
+        {% if section.settings.shop_custom_creations_menu != blank %}
+          {% for link in section.settings.shop_custom_creations_menu.links %}
+            <a href="{{ link.url }}" class="cbv-mob-link cbv-link-highlight">{{ link.title | escape }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="{{ section.settings.custom_candles_link | default: '/collections/custom-candles' }}" class="cbv-mob-link cbv-link-highlight">Custom Candles</a>
+          <a href="{{ section.settings.custom_wax_melts_link | default: '/collections/melts' }}" class="cbv-mob-link cbv-link-highlight">Custom Wax Melts</a>
+          <a href="{{ section.settings.scent_shots_link | default: '/products/scent-shots-1' }}" class="cbv-mob-link cbv-link-highlight">Scent Shots</a>
+        {% endif %}
 
         <div class="cbv-mobile-divider"></div>
 
         <span class="cbv-mob-cat-title">Signature Collections</span>
-        <a href="/collections/bake-shoppe" class="cbv-mob-link-sub">Bake Shoppe</a>
-        <a href="/collections/cuties" class="cbv-mob-link-sub">Cuties</a>
-        <a href="/collections/sweet-treats" class="cbv-mob-link-sub">Sweet Treats</a>
-        <a href="/collections/giftables" class="cbv-mob-link-sub">Giftables</a>
+        {% if section.settings.shop_signature_collections_menu != blank %}
+          {% for link in section.settings.shop_signature_collections_menu.links %}
+            <a href="{{ link.url }}" class="cbv-mob-link-sub">{{ link.title | escape }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="/collections/bake-shoppe" class="cbv-mob-link-sub">Bake Shoppe</a>
+          <a href="/collections/cuties" class="cbv-mob-link-sub">Cuties</a>
+          <a href="/collections/sweet-treats" class="cbv-mob-link-sub">Sweet Treats</a>
+          <a href="/collections/giftables" class="cbv-mob-link-sub">Giftables</a>
+        {% endif %}
         <a href="/products/gift-card" class="cbv-mob-link-sub" style="color: var(--cbv-header-accent); font-weight: 500; margin-top: 5px;">Gift Cards &rarr;</a>
       </div>
     </div>
@@ -1256,6 +1280,16 @@
     {
       "type": "header",
       "content": "Custom creation links"
+    },
+    {
+      "type": "link_list",
+      "id": "shop_custom_creations_menu",
+      "label": "Shop custom creations menu"
+    },
+    {
+      "type": "link_list",
+      "id": "shop_signature_collections_menu",
+      "label": "Shop signature collections menu"
     },
     {
       "type": "url",
