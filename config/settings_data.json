@@ -12,6 +12,7 @@
     "logo": "shopify://shop_images/Logo-Recration_v1.webp",
     "logo_width": 60,
     "logo_width_mobile": 60,
+    "favicon": "shopify://shop_images/CBV-Favicon.png",
     "show_breadcrumb_nav": false,
     "breadcrumbs_style": "background",
     "deactivate_animation": false,
@@ -191,11 +192,6 @@
     },
     "content_for_index": [],
     "blocks": {
-      "3720565183479497137": {
-        "type": "shopify://apps/globo-product-option/blocks/app-embed-block/fdc9fad5-1a0f-4bd4-9c8a-1af6a6eef6b8",
-        "disabled": false,
-        "settings": {}
-      },
       "17151115064775110295": {
         "type": "shopify://apps/recharge-subscriptions/blocks/recharge-theme/371eed76-0b44-4869-9813-730372ea378e",
         "disabled": false,

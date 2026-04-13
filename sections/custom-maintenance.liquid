@@ -1,0 +1,294 @@
+{%- style -%}
+  .custom-maintenance-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center; /* Centered on desktop */
+    justify-content: center;
+    min-height: calc(100vh - 120px); /* Subtracts header height to prevent scroll */
+    width: 100%;
+    background-color: {{ section.settings.bg_color }};
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: {{ section.settings.text_color }};
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  {% if section.settings.bg_image != blank %}
+  .custom-maintenance-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: {{ section.settings.bg_opacity | divided_by: 100.0 }};
+  }
+  {% endif %}
+
+  .custom-maintenance-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 800px;
+    background: {{ section.settings.content_bg_color }};
+    padding: 80px 60px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    box-sizing: border-box;
+  }
+
+  .maintenance-logo {
+    display: block;
+    margin: 0 auto 30px auto;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .maintenance-logo-text {
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin: 0 0 30px 0;
+  }
+
+  .maintenance-subheading {
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700; /* Bolder to stand out more */
+    color: {{ section.settings.text_color }};
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .maintenance-heading {
+    font-family: "Playfair Display", "Times New Roman", Times, serif;
+    font-size: 64px;
+    line-height: 1.15;
+    font-weight: 400;
+    margin: 0 0 25px 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .maintenance-heading em {
+    font-style: italic;
+    color: {{ section.settings.primary_color }};
+  }
+
+  .maintenance-text {
+    font-size: 18px;
+    line-height: 1.7;
+    margin: 0 auto;
+    max-width: 600px;
+    color: {{ section.settings.text_color | color_modify: 'alpha', 0.8 }};
+  }
+  
+  .maintenance-text p {
+    margin: 0;
+  }
+
+  /* --- Tablet Optimization --- */
+  @media screen and (max-width: 768px) {
+    .custom-maintenance-wrapper {
+      min-height: calc(100dvh - 100px);
+      align-items: flex-start; /* Pushes content to the top instead of centering */
+      padding: 40px 20px 60px 20px;
+    }
+
+    .custom-maintenance-content {
+      padding: 40px 30px;
+      max-width: 95%;
+    }
+
+    .maintenance-logo {
+      margin: 0 auto 25px auto;
+    }
+
+    .maintenance-heading {
+      font-size: 46px;
+      margin: 0 0 20px 0;
+    }
+
+    .maintenance-subheading {
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .maintenance-text {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+  }
+  
+  /* --- Mobile Layout (Tightened entirely to kill the empty space) --- */
+  @media screen and (max-width: 480px) {
+    .custom-maintenance-wrapper {
+      padding: 30px 15px 50px 15px; /* Sits closely under the shop header */
+    }
+
+    .custom-maintenance-content {
+      padding: 35px 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06); /* Softer shadow on mobile */
+    }
+    
+    .maintenance-logo {
+      margin: 0 auto 20px auto;
+      max-width: 85%;
+    }
+
+    .maintenance-logo-text {
+      margin: 0 0 15px 0;
+      font-size: 22px;
+    }
+
+    .maintenance-subheading {
+      font-size: 14px; /* Noticeably larger than previous version */
+      margin-bottom: 10px;
+    }
+
+    .maintenance-heading {
+      font-size: 42px;
+      margin: 0 0 15px 0;
+    }
+
+    .maintenance-text {
+      font-size: 15px;
+      line-height: 1.5; 
+    }
+  }
+{%- endstyle -%}
+
+<div class="custom-maintenance-wrapper">
+  {%- if section.settings.bg_image != blank -%}
+    {{ section.settings.bg_image | image_url: width: 2000 | image_tag: class: 'custom-maintenance-bg', loading: 'lazy' }}
+  {%- endif -%}
+
+  <div class="custom-maintenance-content">
+    {%- if section.settings.logo != blank -%}
+      {%- assign logo_width = section.settings.logo_width -%}
+      {%- assign logo_width_2x = logo_width | times: 2 -%}
+      <img src="{{ section.settings.logo | image_url: width: logo_width_2x }}" 
+           alt="{{ shop.name }}" 
+           class="maintenance-logo" 
+           style="width: {{ logo_width }}px;">
+    {%- else -%}
+      <h2 class="maintenance-heading maintenance-logo-text">{{ shop.name }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.subheading != blank -%}
+      <span class="maintenance-subheading">{{ section.settings.subheading }}</span>
+    {%- endif -%}
+
+    {%- if section.settings.title != blank -%}
+      <h1 class="maintenance-heading">{{ section.settings.title }}</h1>
+    {%- endif -%}
+
+    {%- if section.settings.text != blank -%}
+      <div class="maintenance-text">{{ section.settings.text }}</div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Brand Maintenance Page",
+  "settings":[
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 400,
+      "step": 10,
+      "default": 200,
+      "unit": "px",
+      "label": "Logo width"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "bg_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 30,
+      "unit": "%",
+      "label": "Background Image Opacity"
+    },
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Hand poured. Just for you."
+    },
+    {
+      "type": "html",
+      "id": "title",
+      "label": "Heading",
+      "default": "Something new<br><em>is coming.</em>",
+      "info": "Use <em> tags to create the italicized accent text seen in your brand."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Body Text",
+      "default": "<p>We are currently updating our shop to bring you an even better fragrance experience. We will be back shortly.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Brand Colors"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8a9a86",
+      "info": "Set to your brand's Sage Green"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Page Background Color",
+      "default": "#f9f8f4"
+    },
+    {
+      "type": "color",
+      "id": "content_bg_color",
+      "label": "Content Box Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#333333"
+    }
+  ],
+  "presets":[
+    {
+      "name": "Brand Maintenance Page"
+    }
+  ]
+}
+{% endschema %}

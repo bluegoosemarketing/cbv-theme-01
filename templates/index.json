@@ -39,7 +39,7 @@
             "feature_1_text": "Choose your jar",
             "feature_2_text": "Pick a wax color",
             "feature_3_text": "Select your scent",
-            "link_url": ""
+            "link_url": "shopify://collections/custom-candles"
           }
         },
         "category_item_krbpGU": {
@@ -51,7 +51,7 @@
             "feature_1_text": "Choose a shape",
             "feature_2_text": "Select your scent",
             "feature_3_text": "Hand-poured detail",
-            "link_url": ""
+            "link_url": "shopify://collections/melts"
           }
         },
         "category_item_idUgzL": {
@@ -63,7 +63,7 @@
             "feature_1_text": "The Bake Shoppe",
             "feature_2_text": "The Cuties",
             "feature_3_text": "Sweet Treats",
-            "link_url": ""
+            "link_url": "shopify://pages/collections"
           }
         },
         "category_item_JPXmB4": {
@@ -75,7 +75,7 @@
             "feature_1_text": "2oz wax samplers",
             "feature_2_text": "Over 1000 fragrances",
             "feature_3_text": "Build a multi-pack",
-            "link_url": ""
+            "link_url": "shopify://products/scent-shots-1"
           }
         }
       },
