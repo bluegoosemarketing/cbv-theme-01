@@ -19,12 +19,12 @@
             "art_text_color": "#2c2c2c",
             "art_border_color": "#a68a6d",
             "logo_top": "The Signature",
-            "logo_main": "CandleClub",
+            "logo_main": "CBV Scent Club",
             "logo_bottom": "Premium Subscription",
             "bg_color": "#faf9f6",
             "caption": "Elevate Your Routine",
             "heading": "Your signature scents, always in stock.",
-            "text": "<p>The Candles By Victoria Candle Club makes managing your home fragrance entirely effortless. Save on every order, discover new artisan scents, and enjoy premium handcrafted candles delivered exactly on your schedule.</p>",
+            "text": "<p>The Candles By Victoria CBV Scent Club makes managing your home fragrance entirely effortless. Save on every order, discover new artisan scents, and enjoy premium handcrafted candles delivered exactly on your schedule.</p>",
             "button_label": "Shop Subscriptions",
             "button_link": "shopify://collections/candles"
           }
@@ -33,7 +33,7 @@
           "type": "benefits",
           "settings": {
             "caption": "Membership Perks",
-            "title": "Why join the Candle Club.",
+            "title": "Why join the CBV Scent Club.",
             "title_1": "Subscribe & Save",
             "text_1": "<p>Unlock preferred pricing automatically on every recurring delivery of your favorite custom candles and wax melts.</p>",
             "title_2": "Never Run Out",
@@ -96,7 +96,7 @@
         "text_rPA8rt": {
           "type": "text",
           "settings": {
-            "text": "<p>We built the Candle Club for flexibility. Pause, skip a month, swap your scents, or cancel your shipments at any time directly from your customer account in just a few clicks.</p>",
+            "text": "<p>We built the CBV Scent Club for flexibility. Pause, skip a month, swap your scents, or cancel your shipments at any time directly from your customer account in just a few clicks.</p>",
             "text_style": "body"
           }
         }
