@@ -128,8 +128,15 @@
             assign card_title = product.title
             assign card_link = product.url
             assign card_description = product.description | strip_html | truncatewords: section.settings.description_word_limit
+            assign has_builder_tag = false
+            for tag in product.tags
+              if tag | downcase == 'builder'
+                assign has_builder_tag = true
+                break
+              endif
+            endfor
             assign can_quick_add = false
-            if section.settings.enable_quick_add and product.has_only_default_variant and product.available
+            if section.settings.enable_quick_add and product.has_only_default_variant and product.available and has_builder_tag == false
               assign can_quick_add = true
             endif
           -%}
