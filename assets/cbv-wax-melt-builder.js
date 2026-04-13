@@ -180,6 +180,7 @@
     const btnTitleEl = submitBtn?.querySelector('.cbv-btn-title');
     const btnPriceEl = submitBtn?.querySelector('[data-cbv-btn-price]');
     const mainPriceEl = builderEl.querySelector('[data-cbv-price-display]');
+    const defaultCtaLabel = (btnTitleEl?.textContent || '').trim() || 'Add to cart';
 
     const groupHeaders = builderEl.querySelectorAll('[data-cbv-accordion-toggle]');
     const continueBtns = builderEl.querySelectorAll('[data-cbv-continue]');
@@ -218,7 +219,7 @@
       }
 
       if (btnPriceEl) btnPriceEl.textContent = ` - ${formatMoney(variant.price)}`;
-      if (btnTitleEl) btnTitleEl.textContent = variantAvailable ? 'Add Wax Melts' : 'Sold Out';
+      if (btnTitleEl) btnTitleEl.textContent = variantAvailable ? defaultCtaLabel : 'Sold Out';
 
       if (submitBtn) submitBtn.disabled = !isReadyToPurchase();
 
