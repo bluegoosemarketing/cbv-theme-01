@@ -408,7 +408,7 @@
     display: grid;
   }
 
-  .layout-shop { grid-template-columns: 1fr 1fr 340px; gap: 60px; }
+  .layout-shop { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 320px; gap: 40px; }
   .layout-scents { grid-template-columns: 1fr 240px 320px; gap: 50px; }
 
   .cbv-col-title {
@@ -1038,7 +1038,7 @@
           <div class="cbv-mega-menu">
             <div class="cbv-mega-inner layout-shop">
               <div>
-                <span class="cbv-col-title">Custom Creations</span>
+                <span class="cbv-col-title">{{ section.settings.shop_custom_creations_title | default: 'Custom Creations' | escape }}</span>
                 <ul class="cbv-menu-links">
                   {% if section.settings.shop_custom_creations_menu != blank %}
                     {% for link in section.settings.shop_custom_creations_menu.links %}
@@ -1052,7 +1052,7 @@
                 </ul>
               </div>
               <div>
-                <span class="cbv-col-title">Signature Collections</span>
+                <span class="cbv-col-title">{{ section.settings.shop_signature_collections_title | default: 'Signature Collections' | escape }}</span>
                 <ul class="cbv-menu-links">
                   {% if section.settings.shop_signature_collections_menu != blank %}
                     {% for link in section.settings.shop_signature_collections_menu.links %}
@@ -1065,6 +1065,20 @@
                     <li><a href="/collections/giftables">Giftables</a></li>
                   {% endif %}
                   <li><a href="/products/gift-card" style="margin-top: 12px; display: inline-block; color: var(--cbv-header-accent); font-weight: 500;">Gift Cards &rarr;</a></li>
+                </ul>
+              </div>
+              <div>
+                <span class="cbv-col-title">{{ section.settings.shop_third_menu_title | default: 'More to Explore' | escape }}</span>
+                <ul class="cbv-menu-links">
+                  {% if section.settings.shop_third_menu != blank %}
+                    {% for link in section.settings.shop_third_menu.links %}
+                      <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+                    {% endfor %}
+                  {% else %}
+                    <li><a href="/collections/best-sellers">Best Sellers</a></li>
+                    <li><a href="/collections/new-arrivals">New Arrivals</a></li>
+                    <li><a href="/collections/sale">On Sale</a></li>
+                  {% endif %}
                 </ul>
               </div>
               {%- assign shop_feature_title = section.settings.shop_feature_title | default: 'Best Sellers' -%}
@@ -1167,7 +1181,7 @@
         </button>
       </div>
       <div class="cbv-mobile-submenu">
-        <span class="cbv-mob-cat-title">Custom Creations</span>
+        <span class="cbv-mob-cat-title">{{ section.settings.shop_custom_creations_title | default: 'Custom Creations' | escape }}</span>
         {% if section.settings.shop_custom_creations_menu != blank %}
           {% for link in section.settings.shop_custom_creations_menu.links %}
             <a href="{{ link.url }}" class="cbv-mob-link cbv-link-highlight">{{ link.title | escape }}</a>
@@ -1180,7 +1194,7 @@
 
         <div class="cbv-mobile-divider"></div>
 
-        <span class="cbv-mob-cat-title">Signature Collections</span>
+        <span class="cbv-mob-cat-title">{{ section.settings.shop_signature_collections_title | default: 'Signature Collections' | escape }}</span>
         {% if section.settings.shop_signature_collections_menu != blank %}
           {% for link in section.settings.shop_signature_collections_menu.links %}
             <a href="{{ link.url }}" class="cbv-mob-link-sub">{{ link.title | escape }}</a>
@@ -1192,6 +1206,19 @@
           <a href="/collections/giftables" class="cbv-mob-link-sub">Giftables</a>
         {% endif %}
         <a href="/products/gift-card" class="cbv-mob-link-sub" style="color: var(--cbv-header-accent); font-weight: 500; margin-top: 5px;">Gift Cards &rarr;</a>
+
+        <div class="cbv-mobile-divider"></div>
+
+        <span class="cbv-mob-cat-title">{{ section.settings.shop_third_menu_title | default: 'More to Explore' | escape }}</span>
+        {% if section.settings.shop_third_menu != blank %}
+          {% for link in section.settings.shop_third_menu.links %}
+            <a href="{{ link.url }}" class="cbv-mob-link-sub">{{ link.title | escape }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="/collections/best-sellers" class="cbv-mob-link-sub">Best Sellers</a>
+          <a href="/collections/new-arrivals" class="cbv-mob-link-sub">New Arrivals</a>
+          <a href="/collections/sale" class="cbv-mob-link-sub">On Sale</a>
+        {% endif %}
       </div>
     </div>
 
@@ -1287,9 +1314,32 @@
       "label": "Shop custom creations menu"
     },
     {
+      "type": "text",
+      "id": "shop_custom_creations_title",
+      "label": "Shop custom creations title",
+      "default": "Custom Creations"
+    },
+    {
       "type": "link_list",
       "id": "shop_signature_collections_menu",
       "label": "Shop signature collections menu"
+    },
+    {
+      "type": "text",
+      "id": "shop_signature_collections_title",
+      "label": "Shop signature collections title",
+      "default": "Signature Collections"
+    },
+    {
+      "type": "link_list",
+      "id": "shop_third_menu",
+      "label": "Shop third column menu"
+    },
+    {
+      "type": "text",
+      "id": "shop_third_menu_title",
+      "label": "Shop third column title",
+      "default": "More to Explore"
     },
     {
       "type": "url",
