@@ -46,9 +46,9 @@
           "type": "brand_information",
           "settings": {
             "brand_headline": "",
-            "brand_description": "<p>We are the new owners of <em>Candles by Victoria</em>, a name that holds so much love, trust, and warmth thanks to the incredible woman behind it all — Victoria. For 26 years, Victoria has poured her heart into every candle, creating a community that is more than just customers — it’s a family. Victoria formed a community of 58,000 loyal followers, filled thousands and thousands; it’s clear that her passion, integrity, and unmatched quality have left a lasting legacy on people. From our family to yours: thank you for giving us the chance to carry this beautiful flame forward. We can’t wait to walk this new chapter with you, honoring Victoria every step of the way. With warmth and gratitude,<br/>Nikki, Rikki, and Brooke.<br/>Candles By Victoria 1999–2025 — continuing the legacy</p>",
+            "brand_description": "<h2><strong>Join the CBV Family!</strong><br/>Be the first to know about new scents, exclusive drops, and special sales. Plus, get insider access you won’t find anywhere else.✨ </h2><h2><strong>Enter your email below to subscribe to our newsletter.</strong></h2>",
             "brand_image": "shopify://shop_images/plain_candles_by_Victoria-2.svg",
-            "brand_image_width": 80,
+            "brand_image_width": 200,
             "hide_image": false,
             "newsletter_enable": true,
             "show_social": true,

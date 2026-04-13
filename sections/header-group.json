@@ -13,9 +13,12 @@
   "sections": {
     "header": {
       "type": "header",
+      "custom_css": [],
       "settings": {
         "color_scheme": "",
-        "announcement_text": "Free shipping on orders over $75",
+        "announcement_text": "Free shipping on orders over $100",
+        "shop_custom_creations_menu": "",
+        "shop_signature_collections_menu": "",
         "custom_candles_link": "",
         "custom_wax_melts_link": "",
         "scent_shots_link": "",

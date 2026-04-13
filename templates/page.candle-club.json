@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "subscription": {
@@ -6,18 +15,18 @@
         "hero_1": {
           "type": "split_hero",
           "settings": {
-            "art_gradient": "linear-gradient(135deg, #f4f0eb 0%, #e3d7c8 100%)",
+            "art_gradient": "linear-gradient(135deg, rgba(244, 240, 235, 1), rgba(227, 215, 200, 1) 100%)",
             "art_text_color": "#2c2c2c",
             "art_border_color": "#a68a6d",
             "logo_top": "The Signature",
-            "logo_main": "Candle<br>Club",
+            "logo_main": "CandleClub",
             "logo_bottom": "Premium Subscription",
             "bg_color": "#faf9f6",
             "caption": "Elevate Your Routine",
             "heading": "Your signature scents, always in stock.",
-            "text": "<p>The Candles By Victoria Candle Club makes managing your home fragrance entirely effortless. Save on every order, discover new artisan scents, and enjoy premium handcrafted candles delivered exactly on your schedule.<\/p>",
+            "text": "<p>The Candles By Victoria Candle Club makes managing your home fragrance entirely effortless. Save on every order, discover new artisan scents, and enjoy premium handcrafted candles delivered exactly on your schedule.</p>",
             "button_label": "Shop Subscriptions",
-            "button_link": "shopify:\/\/collections\/candles"
+            "button_link": "shopify://collections/candles"
           }
         },
         "benefits_1": {
@@ -26,13 +35,13 @@
             "caption": "Membership Perks",
             "title": "Why join the Candle Club.",
             "title_1": "Subscribe & Save",
-            "text_1": "<p>Unlock preferred pricing automatically on every recurring delivery of your favorite custom candles and wax melts.<\/p>",
+            "text_1": "<p>Unlock preferred pricing automatically on every recurring delivery of your favorite custom candles and wax melts.</p>",
             "title_2": "Never Run Out",
-            "text_2": "<p>Keep your home beautifully stocked. From comforting everyday staples to bold seasonal profiles, you dictate the supply.<\/p>",
+            "text_2": "<p>Keep your home beautifully stocked. From comforting everyday staples to bold seasonal profiles, you dictate the supply.</p>",
             "title_3": "Ultimate Flexibility",
-            "text_3": "<p>Choose a delivery cadence that actually fits your routine. Our subscriptions are designed for real life, not rigid corporate plans.<\/p>",
+            "text_3": "<p>Choose a delivery cadence that actually fits your routine. Our subscriptions are designed for real life, not rigid corporate plans.</p>",
             "title_4": "Endless Discovery",
-            "text_4": "<p>With our massive fragrance library, you can explore new aromas over time, swapping out scents whenever the mood strikes.<\/p>"
+            "text_4": "<p>With our massive fragrance library, you can explore new aromas over time, swapping out scents whenever the mood strikes.</p>"
           }
         },
         "steps_1": {
@@ -41,21 +50,11 @@
             "caption": "How It Works",
             "title": "A seamless, three-step experience.",
             "title_1": "Curate Your Box",
-            "text_1": "<p>Select custom candles, standard pours, or wax melts from the collections you already know and love.<\/p>",
+            "text_1": "<p>Select custom candles, standard pours, or wax melts from the collections you already know and love.</p>",
             "title_2": "Set Your Rhythm",
-            "text_2": "<p>Pick a delivery interval that works perfectly for your home and how frequently you burn your candles.<\/p>",
+            "text_2": "<p>Pick a delivery interval that works perfectly for your home and how frequently you burn your candles.</p>",
             "title_3": "Unbox the Magic",
-            "text_3": "<p>We handcraft your selections to order and ship them so they arrive on your doorstep exactly when you need them.<\/p>"
-          }
-        },
-        "flex_banner_1": {
-          "type": "flexibility_banner",
-          "settings": {
-            "bg_color": "#2c2c2c",
-            "overlay_opacity": 90,
-            "text_color": "#faf9f6",
-            "heading": "Total control. Zero friction.",
-            "text": "<p>We built the Candle Club for flexibility. Pause, skip a month, swap your scents, or cancel your shipments at any time directly from your customer account in just a few clicks.<\/p>"
+            "text_3": "<p>We handcraft your selections to order and ship them so they arrive on your doorstep exactly when you need them.</p>"
           }
         },
         "cta_1": {
@@ -64,17 +63,16 @@
             "caption": "Start Your Subscription",
             "heading": "Bring premium fragrance home, on repeat.",
             "button_1_label": "Explore Candles",
-            "button_1_link": "shopify:\/\/collections\/candles",
+            "button_1_link": "shopify://collections/candles",
             "button_2_label": "Shop Wax Melts",
-            "button_2_link": "shopify:\/\/collections\/wax-melts"
+            "button_2_link": "shopify://collections/wax-melts"
           }
         }
       },
-      "block_order":[
+      "block_order": [
         "hero_1",
         "benefits_1",
         "steps_1",
-        "flex_banner_1",
         "cta_1"
       ],
       "settings": {
@@ -82,9 +80,52 @@
         "text_color": "#2c2c2c",
         "accent_color": "#a68a6d"
       }
+    },
+    "image_with_text_8JyY9a": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_wzfM4F": {
+          "type": "heading",
+          "settings": {
+            "heading": "Total control. Zero friction.",
+            "heading_size": "extra-large",
+            "heading_style": "default",
+            "heading_tag": "h2"
+          }
+        },
+        "text_rPA8rt": {
+          "type": "text",
+          "settings": {
+            "text": "<p>We built the Candle Club for flexibility. Pause, skip a month, swap your scents, or cancel your shipments at any time directly from your customer account in just a few clicks.</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_wzfM4F",
+        "text_rPA8rt"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Candles_By_Victoria_subscription_box_close-up.png",
+        "caption": "",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "full_width": false,
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "left"
+      }
     }
   },
-  "order":[
-    "subscription"
+  "order": [
+    "subscription",
+    "image_with_text_8JyY9a"
   ]
 }

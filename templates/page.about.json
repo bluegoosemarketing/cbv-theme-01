@@ -1,78 +1,92 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "editorial": {
       "type": "about-editorial",
       "blocks": {
-        "hero_1": {
+        "hero_jDGDM7": {
           "type": "hero",
           "settings": {
-            "gradient": "linear-gradient(135deg, #f4f0eb 0%, #e3d7c8 100%)",
+            "gradient": "linear-gradient(135deg, rgba(244, 240, 235, 1), rgba(227, 215, 200, 1) 100%)",
             "text_color": "#2c2c2c",
             "caption": "About Candles By Victoria",
-            "heading": "Handcrafted fragrance for the true enthusiast.",
-            "text": "<p>Candles By Victoria creates premium scented candles and wax melts, defined by an expansive library of scent, bespoke customization, and a deeply personal handcrafted approach.</p>"
-          }
-        },
-        "story_1": {
-          "type": "story",
-          "settings": {
-            "heading": "A Passion for Scent",
-            "text": "<p>What began as a quiet passion for scent blending has blossomed into a destination for those seeking more than mass-produced fragrance. We believe a scent should tell a story, evoke a memory, and transform a room.<\/p><p>Today, we pair artisan craftsmanship with modern convenience, helping you curate a fragrance ritual that feels unmistakably yours.<\/p>",
-            "button_label": "Shop Best Sellers",
-            "button_link": "shopify:\/\/collections\/all"
-          }
-        },
-        "pillars_1": {
-          "type": "pillars",
-          "settings": {
-            "caption": "What Makes CBV Different",
-            "title": "Designed for true candle enthusiasts.",
-            "title_1": "Massive Selection",
-            "text_1": "<p>From comforting gourmands to refined perfumery, our collections are meticulously curated for every mood and season.<\/p>",
-            "title_2": "Bespoke Creations",
-            "text_2": "<p>Take creative control. Our custom builder allows you to tailor a scent profile that reflects your exact desires.<\/p>",
-            "title_3": "Artisan Handcrafted",
-            "text_3": "<p>Poured with intention. Each candle and melt is produced with care, delivering a sensory experience you can see and feel.<\/p>",
-            "title_4": "A Specialty Experience",
-            "text_4": "<p>Built for true fragrance lovers who demand depth, complexity, and a signature touch in their home.<\/p>"
-          }
-        },
-        "banner_1": {
-          "type": "banner",
-          "settings": {
-            "bg_color": "#2c2c2c",
-            "overlay_opacity": 90,
-            "text_color": "#faf9f6",
-            "caption": "The Fragrance Library",
-            "heading": "Explore the Scent Library.",
-            "text": "<p>Hundreds of scent possibilities await. Discover classics, seasonal highlights, and wildly creative blends.<\/p>",
-            "button_label": "Browse Scents",
-            "button_link": "shopify:\/\/pages\/scent-library"
-          }
-        },
-        "quote_1": {
-          "type": "quote",
-          "settings": {
-            "quote": "<p>“We believe home fragrance should be both beautiful and deeply personal. Every scent is poured to help you build rituals you look forward to, every single day.”<\/p>",
-            "author": "The CBV Philosophy"
+            "heading": "More Than Candles — A Legacy Carried Forward.",
+            "text": "<p>A small town Texas business, rooted in tradition, and reimagined with heart.</p>"
           }
         }
       },
-      "block_order":[
-        "hero_1",
-        "story_1",
-        "pillars_1",
-        "banner_1",
-        "quote_1"
+      "block_order": [
+        "hero_jDGDM7"
       ],
       "settings": {
-        "bg_color": "#faf9f6",
+        "bg_color": "#e7e1d7",
         "text_color": "#2c2c2c",
-        "accent_color": "#a68a6d"
+        "accent_color": "#c7d5cb"
+      }
+    },
+    "image_with_text_rzgXmx": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_bRtK34": {
+          "type": "heading",
+          "settings": {
+            "heading": "Our Story",
+            "heading_size": "extra-large",
+            "heading_style": "default",
+            "heading_tag": "h2"
+          }
+        },
+        "text_6X8y3H": {
+          "type": "text",
+          "settings": {
+            "text": "<p>This next chapter of Candles By Victoria is rooted in both legacy and love. We're sisters who share a deep bond and a strong work ethic that has always brought us closer together. We’ve always worked side by side, and are incredibly in tune with each other — in how we work, how we dream, and how we care for the things we build. Candles by Victoria is something we are pouring our whole hearts into, and we are grateful every day for the chance to carry this legacy forward together.</p><p></p><p></p><p></p><p></p><p>For over 26 years, Victoria poured her heart into every candle she created. Through her passion and dedication, she built something truly special — a loyal community of over 58,000 candle lovers who have made CBV much more than just a business. It’s a family.</p><p></p><p>We can assure you, we see that. We feel that. And we deeply respect it!</p><p><br/><strong>Our promise to you is simple:</strong></p><p><strong>* We are keeping the name — Candles by Victoria will live on.<br/>* We are keeping the recipes — every scent, every note, every comforting memory you know and love.<br/>* We may refresh the jars and look over time, but never the heart of what makes these candles special. </strong></p><p></p><p></p><p>We know no one could ever replace Victoria — and that’s not our intention. Our goal is to honor what she built while caring for this community the same way she did: with honesty, dedication, and love for every candle that leaves our door.</p><p>From our family to yours, thank you for welcoming us into this next chapter.</p><p><br/>With warmth and gratitude,</p><p><br/>Nikki & Rikki<br/>Candles By Victoria<br/>1999–Present — Continuing the Legacy</p>",
+            "text_style": "body"
+          }
+        },
+        "button_WPcLXc": {
+          "type": "button",
+          "settings": {
+            "button_label": "",
+            "button_link": "",
+            "open_new_tab_1": false,
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_bRtK34",
+        "text_6X8y3H",
+        "button_WPcLXc"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Rikki_Nikki_9b94a569-6877-4570-8d3b-f3896e73fdbe.png",
+        "caption": "rikki barnes & nikki payne",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "center",
+        "full_width": false,
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "ignore_spacing": false,
+        "margin_spacing": "negative",
+        "margin_top": 0,
+        "mobile_content_alignment": "left"
       }
     }
   },
-  "order":[
-    "editorial"
+  "order": [
+    "editorial",
+    "image_with_text_rzgXmx"
   ]
 }

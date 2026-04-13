@@ -14,10 +14,10 @@
       "name": "Hero - Custom Builder",
       "settings": {
         "background_image": "shopify://shop_images/Bright-Living-Room_Crisp_v1.webp",
-        "main_image": "shopify://shop_images/CBV-Candle-Hero_v2.2.webp",
+        "main_image": "shopify://shop_images/Whimsical_dessert_candle_display_with_greenery.png",
         "eyebrow_text": "Over 1,000 Fragrances",
-        "headline": "Your Scent. Your Jar. <em>Your Candle.</em>",
-        "subheadline": "Make your home feel cozy. Shop our signature pre-made candles and wax melts, or have fun building your own custom candle by picking your favorite scent, jar, and wax color.",
+        "headline": "Hand poured. <em>Just for you. </em>",
+        "subheadline": "Create a one-of-a-kind fragrance experience for your home. Shop our signature candles and wax melts, or have fun customizing your own by choosing your favorite scent, jar, and wax color.",
         "primary_button_label": "Build a Custom Candle",
         "primary_button_link": "shopify://collections/custom-candles",
         "secondary_button_label": "Shop Wax Melts",
@@ -33,7 +33,7 @@
         "category_item_b7b9Wt": {
           "type": "category_item",
           "settings": {
-            "category_image": "shopify://shop_images/ChatGPTImageJan18_2026_03_08_20PM.png",
+            "category_image": "shopify://shop_images/ChatGPT_Image_Mar_30_2026_at_06_07_01_PM.png",
             "eyebrow_text": "Hand-Poured For You",
             "title": "Custom Candles",
             "feature_1_text": "Choose your jar",
@@ -45,7 +45,7 @@
         "category_item_krbpGU": {
           "type": "category_item",
           "settings": {
-            "category_image": "shopify://shop_images/ChatGPT_Image_Jan_18_2026_08_24_51_PM.png",
+            "category_image": "shopify://shop_images/Apr_12_2026_at_04_50_36_PM.png",
             "eyebrow_text": "Flameless Fragrance",
             "title": "Custom Melts",
             "feature_1_text": "Choose a shape",
@@ -57,7 +57,7 @@
         "category_item_idUgzL": {
           "type": "category_item",
           "settings": {
-            "category_image": "shopify://shop_images/CBV-Candle-Hero_v2.2.webp",
+            "category_image": "shopify://shop_images/Whimsical_dessert_candle_display_with_greenery.png",
             "eyebrow_text": "Artisan Designs",
             "title": "Signature Lines",
             "feature_1_text": "The Bake Shoppe",
@@ -69,11 +69,11 @@
         "category_item_JPXmB4": {
           "type": "category_item",
           "settings": {
-            "category_image": "shopify://shop_images/scentshots_06ee7bb0-d57b-41fa-842d-6a303639b28a.jpg",
+            "category_image": "shopify://shop_images/Colorful_wax_melts_in_the_kitchen.png",
             "eyebrow_text": "Find Your Favorite",
             "title": "Scent Shots",
             "feature_1_text": "2oz wax samplers",
-            "feature_2_text": "Over 800 fragrances",
+            "feature_2_text": "Over 1000 fragrances",
             "feature_3_text": "Build a multi-pack",
             "link_url": ""
           }
@@ -87,7 +87,7 @@
       ],
       "name": "Category Wayfinding Grid",
       "settings": {
-        "section_eyebrow": "Curated For Your Home",
+        "section_eyebrow": "Curated Just For You",
         "section_heading": "Shop by <em>Collection</em>"
       }
     },
@@ -135,14 +135,14 @@
       ],
       "name": "Scent Directory",
       "settings": {
-        "left_image": "shopify://shop_images/Scent-Library-Feature.webp",
-        "badge_number": "500+",
+        "left_image": "shopify://shop_images/Serene_bedside_ambiance_with_candlelight.png",
+        "badge_number": "1000+",
         "badge_text": "Unique Scents",
         "eyebrow_text": "Scents for every moment",
         "heading": "Discover <em>Your Scent</em>",
-        "description": "<p>We’ve categorized our massive 800+ master archive into 15 distinct fragrance families. Find your perfect scent profile below.</p>",
+        "description": "<p>We’ve categorized our massive 1000+ master archive into 15 distinct fragrance families. Find your perfect scent profile below.</p>",
         "cta_label": "View All Scents",
-        "cta_link": ""
+        "cta_link": "shopify://pages/scent-library"
       }
     }
   },

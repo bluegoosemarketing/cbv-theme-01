@@ -20,15 +20,28 @@
     "collections_bento_nCnnVp": {
       "type": "collections-bento",
       "blocks": {
+        "collection_card_PfVLpP": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "",
+            "custom_link": "shopify://collections/all",
+            "custom_image": "shopify://shop_images/Candles_soaps_and_fresheners_collection.png",
+            "custom_title": "All Products",
+            "eyebrow_text": "All Collections",
+            "cta_text": "Shop Now",
+            "card_size": "item-standard"
+          }
+        },
         "collection_card_ppGrTF": {
           "type": "collection_card",
           "settings": {
             "collection": "custom-candles",
             "custom_link": "",
+            "custom_image": "shopify://shop_images/ChatGPTImageMar27_2026at12_53_13PM.png",
             "custom_title": "Candles",
             "eyebrow_text": "Build your Own",
             "cta_text": "Shop Now",
-            "card_size": "item-wide"
+            "card_size": "item-standard"
           }
         },
         "collection_card_VgLFpi": {
@@ -47,6 +60,7 @@
           "settings": {
             "collection": "",
             "custom_link": "shopify://products/scent-shots-1",
+            "custom_image": "shopify://shop_images/ChatGPTImageJan18_2026_01_38_10PM.png",
             "custom_title": "Scent Shots",
             "eyebrow_text": "Sample",
             "cta_text": "Shop Now",
@@ -58,6 +72,18 @@
           "settings": {
             "collection": "cuties",
             "custom_link": "",
+            "custom_image": "shopify://shop_images/cutie_group_3.png",
+            "custom_title": "",
+            "eyebrow_text": "Specialty Collection",
+            "cta_text": "Shop Now",
+            "card_size": "item-standard"
+          }
+        },
+        "collection_card_Qg8pLH": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "cbv-body-home",
+            "custom_link": "shopify://collections/cbv-body-home",
             "custom_title": "",
             "eyebrow_text": "Specialty Collection",
             "cta_text": "Shop Now",
@@ -69,6 +95,7 @@
           "settings": {
             "collection": "bake-shoppe",
             "custom_link": "",
+            "custom_image": "shopify://shop_images/ChatGPT_Image_Jan_18_2026_08_54_13_PM.png",
             "custom_title": "",
             "eyebrow_text": "Specialty Collection",
             "cta_text": "Shop Now",
@@ -80,6 +107,7 @@
           "settings": {
             "collection": "giftable-candles",
             "custom_link": "",
+            "custom_image": "shopify://shop_images/creamychocolatelatte_1.png",
             "custom_title": "",
             "eyebrow_text": "Specialty Collection",
             "cta_text": "Shop Now",
@@ -99,10 +127,12 @@
         }
       },
       "block_order": [
+        "collection_card_PfVLpP",
         "collection_card_ppGrTF",
         "collection_card_VgLFpi",
         "collection_card_FKdHFc",
         "collection_card_fJ7zzX",
+        "collection_card_Qg8pLH",
         "collection_card_TFKjB9",
         "collection_card_aRMqe7",
         "collection_card_xic6Yp"
