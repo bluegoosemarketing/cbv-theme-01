@@ -23,7 +23,7 @@
             "description": "A charming accent piece. Small in stature but crafted with premium glass.",
             "wick_count": "1",
             "wood_wick": "No",
-            "builder_link": ""
+            "builder_link": "shopify://products/4oz-mini-jelly-jar"
           }
         },
         "size_9oz": {
@@ -37,7 +37,7 @@
             "description": "Clean, modern lines in a compact form. Perfect for bedside tables.",
             "wick_count": "1",
             "wood_wick": "No",
-            "builder_link": ""
+            "builder_link": "shopify://products/9oz-salsa-jar"
           }
         },
         "size_12oz": {
@@ -142,7 +142,7 @@
       "settings": {
         "eyebrow": "Step 1 · Choose your size",
         "cta_label": "Build this candle →",
-        "default_size_label": "12oz",
+        "default_size_label": "18oz",
         "padding_top": 52,
         "padding_bottom": 72
       }
