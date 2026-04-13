@@ -61,7 +61,32 @@
     if (target) target.textContent = text;
   }
 
+  function relocatePourTicketForMobile(builderEl) {
+    const ticketEl = builderEl.querySelector('.cbv-builder__media [data-cbv-ticket]');
+    const ctaWrap = builderEl.querySelector('.product-form__buttons');
+    if (!ticketEl || !ctaWrap || !ticketEl.parentNode) return;
+
+    const anchor = document.createComment('cbv-ticket-anchor');
+    ticketEl.parentNode.insertBefore(anchor, ticketEl);
+    const mediaQuery = window.matchMedia('(max-width: 989px)');
+
+    const moveTicket = () => {
+      if (mediaQuery.matches) {
+        ctaWrap.parentNode.insertBefore(ticketEl, ctaWrap);
+        ticketEl.classList.add('cbv-pour-ticket--mobile-relocated');
+      } else {
+        anchor.parentNode.insertBefore(ticketEl, anchor);
+        ticketEl.classList.remove('cbv-pour-ticket--mobile-relocated');
+      }
+    };
+
+    moveTicket();
+    mediaQuery.addEventListener('change', moveTicket);
+  }
+
   async function setupBuilder(builderEl) {
+    relocatePourTicketForMobile(builderEl);
+
     const fragranceScript = builderEl.querySelector('[data-cbv-fragrance-data]');
     if (!fragranceScript) return;
 
