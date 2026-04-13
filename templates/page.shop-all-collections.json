@@ -24,7 +24,7 @@
           "type": "collection_card",
           "settings": {
             "collection": "",
-            "custom_link": "shopify://collections/all",
+            "custom_link": "shopify://collections/all-products",
             "custom_image": "shopify://shop_images/Candles_soaps_and_fresheners_collection.png",
             "custom_title": "All Products",
             "eyebrow_text": "All Collections",
