@@ -21,6 +21,13 @@
   endif
   assign sidebar_menu = section.settings.sidebar_menu
   assign current_path = request.path
+  assign template_suffix_normalized = template.suffix | default: '' | downcase | replace: '_', '-'
+  assign hide_intro = false
+  if template_suffix_normalized == 'general-grid' or template_suffix_normalized == 'wax-melts'
+    assign hide_intro = true
+  elsif template_suffix_normalized contains 'bath' and template_suffix_normalized contains 'body'
+    assign hide_intro = true
+  endif
 -%}
 
 <section class="cbv-format-grid section-{{ section.id }}-padding">
@@ -88,11 +95,13 @@
             {%- assign display_title = collection.metafields.theme.display_title | default: collection.title -%}
             {%- assign display_description = collection.metafields.theme.display_description | default: collection.description -%}
             <h1 class="cbv-format-grid__title">{{ display_title | escape }}</h1>
-            {%- if display_description != blank -%}
-              <div class="cbv-format-grid__intro rte">{{ display_description }}</div>
-            {%- elsif section.settings.intro != blank -%}
-              <div class="cbv-format-grid__intro rte">{{ section.settings.intro }}</div>
-            {%- endif -%}
+            {%- unless hide_intro -%}
+              {%- if display_description != blank -%}
+                <div class="cbv-format-grid__intro rte">{{ display_description }}</div>
+              {%- elsif section.settings.intro != blank -%}
+                <div class="cbv-format-grid__intro rte">{{ section.settings.intro }}</div>
+              {%- endif -%}
+            {%- endunless -%}
           </div>
 
           <div class="cbv-format-grid__toolbar">
