@@ -139,7 +139,9 @@
     const resultsEl = builderEl.querySelector('[data-cbv-results]');
     const familyFiltersEl = builderEl.querySelector('[data-cbv-family-filters]');
     const noResultsEl = builderEl.querySelector('[data-cbv-no-results]');
-    const scentProp = builderEl.querySelector('[data-cbv-prop-scent]');
+    const maxScents = Math.max(1, Math.min(2, Number(builderEl.dataset.cbvMaxScents || 1)));
+    const scentProp1 = builderEl.querySelector('[data-cbv-prop-scent-1]');
+    const scentProp2 = builderEl.querySelector('[data-cbv-prop-scent-2]');
     const familyProp = builderEl.querySelector('[data-cbv-prop-family]');
     const selectedScentBanner = builderEl.querySelector('[data-cbv-selected-scent]');
     const wickUpgradeProp = builderEl.querySelector('[data-cbv-prop-wick-upgrade]');
@@ -163,7 +165,7 @@
     const continueBtns = builderEl.querySelectorAll('[data-cbv-continue]');
 
     let selectedFamily = 'All';
-    let selectedScent = null;
+    let selectedScents = [];
 
     let selectedVariant = allVariants.find((variant) => String(variant.id) === variantIdInput?.value) || allVariants[0] || null;
     let selectedJar = selectedVariant?.option1 || jarInputs[0]?.dataset.cbvJarValue || '';
@@ -308,14 +310,16 @@
     function updateTicket() {
       const hasJar = jarInputs.length > 0 ? Boolean(builderEl.querySelector('[data-cbv-jar-input]:checked')) : true;
       const hasWax = Boolean(waxProp.value);
-      const hasScent = Boolean(scentProp.value);
+      const hasScent = selectedScents.length > 0;
 
       if (jarGroup) jarGroup.classList.toggle('is-completed', hasJar);
       if (waxGroup) waxGroup.classList.toggle('is-completed', hasWax);
       if (scentGroup) scentGroup.classList.toggle('is-completed', hasScent);
 
       if (ticketWaxEl) ticketWaxEl.textContent = waxProp.value || 'Make selection';
-      if (ticketScentEl) ticketScentEl.textContent = scentProp.value || 'Make selection';
+      if (ticketScentEl) {
+        ticketScentEl.textContent = selectedScents.length > 0 ? selectedScents.map((scent) => scent.name).join(' + ') : 'Make selection';
+      }
       if (ticketWickEl) ticketWickEl.textContent = selectedWickUpgrade || 'Not selected';
       if (ticketJarEl) ticketJarEl.textContent = selectedJar || 'Not selected';
 
@@ -334,28 +338,51 @@
       if (btnPriceEl) btnPriceEl.textContent = ` - ${formatMoney(basePriceCents)}`;
     }
 
-    function selectScent(scent) {
-      selectedScent = scent;
-      scentInput.value = scent.name;
-      scentProp.value = scent.name;
-      familyProp.value = scent.family || '';
+    function syncScentProperties() {
+      if (scentProp1) scentProp1.value = selectedScents[0]?.name || '';
+      if (scentProp2) scentProp2.value = selectedScents[1]?.name || '';
 
+      const families = [...new Set(selectedScents.map((scent) => scent.family).filter(Boolean))];
+      familyProp.value = families.join(', ');
+    }
+
+    function syncScentUI() {
       if (selectedScentBanner) {
-        selectedScentBanner.textContent = `Selected fragrance: ${scent.name}`;
-        selectedScentBanner.hidden = false;
+        if (selectedScents.length > 0) {
+          selectedScentBanner.textContent = `Selected fragrance${selectedScents.length > 1 ? 's' : ''}: ${selectedScents.map((scent) => scent.name).join(' + ')}`;
+          selectedScentBanner.hidden = false;
+        } else {
+          selectedScentBanner.hidden = true;
+        }
       }
 
-      updateStepHeader(scentGroup, scent.name);
+      const defaultStepTitle = maxScents > 1 ? 'Choose scents' : 'Choose scent';
+      const stepTitle = selectedScents.length > 0 ? selectedScents.map((scent) => scent.name).join(' + ') : defaultStepTitle;
+      updateStepHeader(scentGroup, stepTitle);
+    }
+
+    function selectScent(scent) {
+      const existingIndex = selectedScents.findIndex((item) => normalize(item.name) === normalize(scent.name));
+      if (existingIndex >= 0) {
+        selectedScents.splice(existingIndex, 1);
+      } else if (maxScents === 1) {
+        selectedScents = [scent];
+      } else if (selectedScents.length < maxScents) {
+        selectedScents.push(scent);
+      } else {
+        selectedScents = [...selectedScents.slice(1), scent];
+      }
+
+      syncScentProperties();
+      syncScentUI();
       updateTicket();
       renderResults();
     }
 
     function clearSelectedScent() {
-      selectedScent = null;
-      scentProp.value = '';
-      familyProp.value = '';
-      if (selectedScentBanner) selectedScentBanner.hidden = true;
-      updateStepHeader(scentGroup, 'Choose scent');
+      selectedScents = [];
+      syncScentProperties();
+      syncScentUI();
       updateTicket();
       renderResults();
     }
@@ -380,7 +407,8 @@
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'cbv-scent__result';
-        if (selectedScent && normalize(selectedScent.name) === normalize(scent.name)) {
+        const isSelected = selectedScents.some((item) => normalize(item.name) === normalize(scent.name));
+        if (isSelected) {
           button.classList.add('is-selected');
         }
         button.innerHTML = `<span>${scent.name}</span><span class="cbv-scent__family">${scent.family || 'Uncategorized'}</span>`;
@@ -506,6 +534,8 @@
 
     scentInput.value = '';
     renderResults();
+    syncScentProperties();
+    syncScentUI();
     updateTicket();
     updatePricingUI();
   }
