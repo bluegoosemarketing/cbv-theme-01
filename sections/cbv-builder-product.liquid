@@ -18,7 +18,7 @@
   assign display_title = product.title | replace: ' - ', ' '
 -%}
 
-<section class="cbv-builder color-{{ section.settings.color_scheme }} gradient" data-cbv-builder data-section-id="{{ section.id }}">
+<section class="cbv-builder color-{{ section.settings.color_scheme }} gradient" data-cbv-builder data-section-id="{{ section.id }}" data-cbv-max-scents="{% if section.settings.allow_two_scents %}2{% else %}1{% endif %}">
   <div class="page-width section-{{ section.id }}-padding">
     
     <div class="cbv-builder__grid">
@@ -237,7 +237,7 @@
               <div class="cbv-builder__group-header" data-cbv-accordion-toggle>
                 <label class="cbv-builder__label" for="CBVScent-{{ section.id }}">
                   <span class="cbv-step-num">{% if has_jar_options %}3{% else %}2{% endif %}</span> 
-                  <span class="cbv-step-title" data-cbv-step-title="Choose Scent">Choose Scent</span>
+                  <span class="cbv-step-title" data-cbv-step-title="{% if section.settings.allow_two_scents %}Choose Scents{% else %}Choose Scent{% endif %}">{% if section.settings.allow_two_scents %}Choose Scents{% else %}Choose Scent{% endif %}</span>
                 </label>
                 <div class="cbv-builder__toggle-icon">
                   <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -271,7 +271,8 @@
                   <p class="cbv-scent__empty" data-cbv-no-results hidden>No scents found matching your search.</p>
                 </div>
 
-                <input type="hidden" name="properties[scent_1]" value="" data-cbv-prop-scent>
+                <input type="hidden" name="properties[scent_1]" value="" data-cbv-prop-scent-1>
+                <input type="hidden" name="properties[scent_2]" value="" data-cbv-prop-scent-2>
                 <input type="hidden" name="properties[scent_family]" value="" data-cbv-prop-family>
               </div>
             </div>
@@ -460,6 +461,12 @@
       "id": "feature_image",
       "label": "Footer Feature Image",
       "info": "Appears to the right of the FAQs. Portrait or Square recommended."
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_two_scents",
+      "label": "Allow choosing two scents",
+      "default": false
     },
     {
       "type": "color_scheme",
