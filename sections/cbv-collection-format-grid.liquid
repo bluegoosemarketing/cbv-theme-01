@@ -116,7 +116,11 @@
           </div>
         </div>
 
-        <div class="cbv-format-grid__cards" id="cbv-format-cards" role="list">
+        <div
+          class="cbv-format-grid__cards{% if section.settings.mobile_columns == '2' %} cbv-format-grid__cards--mobile-2{% endif %}"
+          id="cbv-format-cards"
+          role="list"
+        >
       {%- if section.settings.card_source == 'collection_products' -%}
         {%- paginate collection.products by 1000 -%}
         {%- for product in collection.products -%}
@@ -517,6 +521,22 @@
       "max": 40,
       "step": 1,
       "default": 10
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Mobile product columns",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ]
     },
     {
       "type": "range",
