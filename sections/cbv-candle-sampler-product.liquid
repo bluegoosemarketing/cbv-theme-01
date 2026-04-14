@@ -47,13 +47,6 @@
                 <span data-cbv-ticket-progress>Fill all slots</span>
               </div>
             </div>
-            <div class="cbv-ticket-row">
-              <span class="cbv-ticket-label">Wax Color</span>
-              <div class="cbv-ticket-value">
-                <span class="cbv-ticket-swatch" data-cbv-ticket-swatch></span>
-                <span data-cbv-ticket-wax>Make selection</span>
-              </div>
-            </div>
             {%- if has_secondary_option -%}
               <div class="cbv-ticket-row">
                 <span class="cbv-ticket-label">{{ secondary_option.name }}</span>
@@ -171,39 +164,6 @@
                   <div class="cbv-scent-tray__slots" data-cbv-slot-list></div>
                   <p class="cbv-scent-tray__hint" data-cbv-tray-hint>Select exactly the required number of candle scents to continue.</p>
                 </div>
-
-                <div class="cbv-builder__wax-group">
-                  <label class="cbv-builder__label cbv-builder__label--sub">Choose wax color for the next candle</label>
-                  <div class="cbv-builder__wax-options" data-cbv-wax-options>
-                    {%- for wax in shop.metaobjects.wax_color.values -%}
-                      {%- liquid
-                        assign wax_name = wax.name.value | default: wax.name
-                        assign wax_active = wax.is_active.value | default: wax.is_active
-                        assign wax_hex = wax.color.value | default: wax.hex_code.value | default: wax.color_hex.value | default: wax.hex.value | default: '#f5f5f5'
-                      -%}
-
-                      {%- if wax_name != blank and wax_active != false -%}
-                        <label class="cbv-builder__wax-item" title="{{ wax_name | escape }}">
-                          <input
-                            type="radio"
-                            name="cbv_candle_wax_color"
-                            value="{{ wax_name | escape }}"
-                            class="cbv-builder__wax-input"
-                            data-cbv-wax-input
-                            data-hex="{{ wax_hex }}"
-                          >
-                          <span
-                            class="cbv-builder__wax-swatch"
-                            style="--cbv-wax-color: {{ wax_hex }};"
-                          ></span>
-                          <span class="cbv-builder__wax-name visually-hidden">{{ wax_name }}</span>
-                        </label>
-                      {%- endif -%}
-                    {%- endfor -%}
-                  </div>
-                  <p class="cbv-builder__wax-helper" data-cbv-wax-helper>Select a wax color, then add a scent to fill the next slot.</p>
-                </div>
-
 
                 <div data-cbv-scent-picker>
                   <div class="cbv-search-wrapper">

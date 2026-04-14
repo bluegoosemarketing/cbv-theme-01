@@ -131,9 +131,6 @@
     const trayProgressEl = builderEl.querySelector('[data-cbv-tray-progress]');
     const trayHintEl = builderEl.querySelector('[data-cbv-tray-hint]');
     const slotPropertiesEl = builderEl.querySelector('[data-cbv-slot-properties]');
-    const waxInputs = builderEl.querySelectorAll('[data-cbv-wax-input]');
-    const waxHelperEl = builderEl.querySelector('[data-cbv-wax-helper]');
-
     const secondaryInputs = builderEl.querySelectorAll('[data-cbv-secondary-input]');
     const secondaryProp = builderEl.querySelector('[data-cbv-prop-secondary]');
     const packProp = builderEl.querySelector('[data-cbv-prop-pack]');
@@ -141,9 +138,6 @@
     const ticketPackEl = builderEl.querySelector('[data-cbv-ticket-pack]');
     const ticketProgressEl = builderEl.querySelector('[data-cbv-ticket-progress]');
     const ticketSecondaryEl = builderEl.querySelector('[data-cbv-ticket-secondary]');
-    const ticketWaxEl = builderEl.querySelector('[data-cbv-ticket-wax]');
-    const ticketWaxSwatchEl = builderEl.querySelector('[data-cbv-ticket-swatch]');
-
     const validationMessage = builderEl.querySelector('[data-cbv-validation-message]');
     const submitBtn = builderEl.querySelector('[data-cbv-submit]');
     const btnTitleEl = submitBtn?.querySelector('.cbv-btn-title');
@@ -160,8 +154,6 @@
     let selectedPack = selectedVariant?.option1 || packInputs[0]?.value || '';
     let selectedSecondary = selectedVariant?.option2 || secondaryInputs[0]?.value || '';
     let selectedSlots = [];
-    let selectedWax = '';
-    let selectedWaxHex = '';
 
     function requiredSlots() {
       return Math.max(1, readPackSize(selectedPack));
@@ -204,19 +196,13 @@
         scentInput.name = `properties[_Candle_${index + 1}_Scent]`;
         scentInput.value = slot?.scent || '';
         slotPropertiesEl.appendChild(scentInput);
-
-        const waxInput = document.createElement('input');
-        waxInput.type = 'hidden';
-        waxInput.name = `properties[_Candle_${index + 1}_Wax]`;
-        waxInput.value = slot?.wax || '';
-        slotPropertiesEl.appendChild(waxInput);
       });
     }
 
     function isReadyToPurchase() {
       if (!variantAvailable) return false;
       const slotsRequired = requiredSlots();
-      return selectedSlots.filter((slot) => Boolean(slot?.scent) && Boolean(slot?.wax)).length === slotsRequired;
+      return selectedSlots.filter((slot) => Boolean(slot?.scent)).length === slotsRequired;
     }
 
     function updateValidation() {
@@ -224,8 +210,7 @@
       if (submitBtn) submitBtn.disabled = !ready;
 
       const slotsRequired = requiredSlots();
-      const filled = selectedSlots.filter((slot) => Boolean(slot?.scent) && Boolean(slot?.wax)).length;
-      const waxMessage = selectedWax ? `Next candle wax: ${selectedWax}` : 'Select a wax color for the next candle.';
+      const filled = selectedSlots.filter((slot) => Boolean(slot?.scent)).length;
 
       if (validationMessage) {
         validationMessage.textContent = ready
@@ -234,12 +219,6 @@
       }
       if (ticketProgressEl) ticketProgressEl.textContent = `${filled} / ${slotsRequired} scents selected`;
       if (trayHintEl) trayHintEl.textContent = ready ? 'All candle slots filled.' : `Select ${slotsRequired} scents to continue.`;
-      if (ticketWaxEl) ticketWaxEl.textContent = selectedWax || 'Make selection';
-      if (ticketWaxSwatchEl) {
-        ticketWaxSwatchEl.style.setProperty('--cbv-wax-color', selectedWaxHex || 'transparent');
-        ticketWaxSwatchEl.classList.toggle('is-filled', Boolean(selectedWaxHex));
-      }
-      if (waxHelperEl) waxHelperEl.textContent = waxMessage;
     }
 
     function renderTray() {
@@ -247,24 +226,18 @@
       const slotsRequired = requiredSlots();
 
       traySlotsEl.innerHTML = '';
-      trayProgressEl.textContent = `${selectedSlots.filter((slot) => Boolean(slot?.scent) && Boolean(slot?.wax)).length} / ${slotsRequired} filled`;
+      trayProgressEl.textContent = `${selectedSlots.filter((slot) => Boolean(slot?.scent)).length} / ${slotsRequired} filled`;
 
       for (let index = 0; index < slotsRequired; index += 1) {
         const slotSelection = selectedSlots[index];
         const scent = slotSelection?.scent;
-        const wax = slotSelection?.wax;
-        const waxHex = slotSelection?.hex;
         const slot = document.createElement('button');
         slot.type = 'button';
         slot.className = `cbv-scent-slot${scent ? ' is-filled' : ''}`;
         slot.setAttribute('aria-label', scent ? `Remove ${scent}` : `Empty slot ${index + 1}`);
         slot.innerHTML = scent
-          ? `<span class="cbv-scent-slot__name">${scent}</span><span class="cbv-scent-slot__meta">${wax || ''}</span><span class="cbv-scent-slot__remove">×</span>`
+          ? `<span class="cbv-scent-slot__name">${scent}</span><span class="cbv-scent-slot__remove">×</span>`
           : `<span class="cbv-scent-slot__empty">${index + 1}</span>`;
-
-        if (scent && waxHex) {
-          slot.style.borderColor = waxHex;
-        }
 
         if (scent) {
           slot.addEventListener('click', () => {
@@ -314,14 +287,9 @@
     }
 
     function addScentToTray(scentName) {
-      if (!selectedWax) {
-        if (validationMessage) validationMessage.textContent = 'Choose a wax color before adding a candle scent.';
-        return;
-      }
-
       const nextIndex = selectedSlots.findIndex((slot) => !slot?.scent);
       if (nextIndex === -1) return;
-      selectedSlots[nextIndex] = { scent: scentName, wax: selectedWax, hex: selectedWaxHex };
+      selectedSlots[nextIndex] = { scent: scentName };
       updateSlotProperties();
       renderTray();
       updateValidation();
@@ -420,14 +388,6 @@
     });
 
     scentInput?.addEventListener('input', renderResults);
-    waxInputs.forEach((input) => {
-      input.addEventListener('change', () => {
-        if (!input.checked) return;
-        selectedWax = input.value;
-        selectedWaxHex = input.dataset.hex || '';
-        updateValidation();
-      });
-    });
 
     renderFamilyFilters();
     syncPackCards();
