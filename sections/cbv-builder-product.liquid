@@ -133,12 +133,20 @@
                   <div class="cbv-jar-grid">
                     {%- for jar_value in jar_option_values -%}
                       {%- assign jar_variant = blank -%}
+                      {%- assign base_variant = blank -%}
                       {%- for variant in product.variants -%}
-                        {%- if variant.option1 == jar_value and jar_variant == blank -%}
+                        {%- if variant.option1 == jar_value and variant.option2 == current_variant.option2 -%}
                           {%- assign jar_variant = variant -%}
                         {%- endif -%}
-                        {%- if has_wick_upgrade_option and variant.option1 == jar_value and variant.option2 == 'Standard' -%}
+                        {%- if jar_variant == blank and variant.option1 == jar_value -%}
                           {%- assign jar_variant = variant -%}
+                        {%- endif -%}
+
+                        {%- if variant.option1 == current_variant.option1 and variant.option2 == current_variant.option2 -%}
+                          {%- assign base_variant = variant -%}
+                        {%- endif -%}
+                        {%- if base_variant == blank and variant.option1 == current_variant.option1 -%}
+                          {%- assign base_variant = variant -%}
                         {%- endif -%}
                       {%- endfor -%}
 
@@ -165,7 +173,11 @@
                           </div>
                           <div class="cbv-jar-info">
                             <span class="cbv-jar-title">{{ jar_value }}</span>
-                            {% assign price_diff = jar_variant.price | minus: product.price %}
+                            {% assign comparison_price = product.price %}
+                            {% if base_variant != blank %}
+                              {% assign comparison_price = base_variant.price %}
+                            {% endif %}
+                            {% assign price_diff = jar_variant.price | minus: comparison_price %}
                             {% if price_diff > 0 %}
                               <span class="cbv-jar-upgrade">+{{ price_diff | money }}</span>
                             {% else %}
