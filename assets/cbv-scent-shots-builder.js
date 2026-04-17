@@ -217,7 +217,7 @@
       selectedSlots.forEach((scent, index) => {
         const input = document.createElement('input');
         input.type = 'hidden';
-        input.name = `properties[_Scent_${index + 1}]`;
+        input.name = `properties[scent_${index + 1}]`;
         input.value = scent || '';
         slotPropertiesEl.appendChild(input);
       });

@@ -87,7 +87,7 @@
             {%- if has_secondary_option -%}
               <input type="hidden" name="properties[{{ secondary_option.name | prepend: '_' | handleize | replace: '-', '_' }}]" value="{{ current_variant.option2 | default: secondary_option_values.first | escape }}" data-cbv-prop-secondary>
             {%- endif -%}
-            <input type="hidden" name="properties[_Scent_Family]" value="" data-cbv-prop-family>
+            <input type="hidden" name="properties[scent_family]" value="" data-cbv-prop-family>
             <div data-cbv-slot-properties></div>
 
             <div class="cbv-builder__group cbv-jar-bar" data-cbv-step="pack">

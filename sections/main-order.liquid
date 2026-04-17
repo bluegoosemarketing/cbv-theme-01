@@ -97,10 +97,15 @@
                               assign property_label = property.first
                               if property.first == 'wax_color'
                                 assign property_label = 'Wax color'
-                              elsif property.first == 'scent_1'
-                                assign property_label = 'Scent'
                               elsif property.first == 'scent_family'
                                 assign property_label = 'Family'
+                              elsif property.first contains 'scent_'
+                                assign scent_index = property.first | remove: 'scent_'
+                                if scent_index == '1'
+                                  assign property_label = 'Scent'
+                                else
+                                  assign property_label = 'Scent ' | append: scent_index
+                                endif
                               elsif property.first == 'wick_upgrade'
                                 assign property_label = 'Wick Upgrade'
                               endif
