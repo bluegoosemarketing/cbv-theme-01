@@ -219,6 +219,8 @@
                                       assign property_label = 'Wax color'
                                     elsif property.first == 'scent_family'
                                       assign property_label = 'Family'
+                                    elsif property.first == 'scent_selection'
+                                      assign property_label = 'Scents'
                                     elsif property.first contains 'scent_'
                                       assign scent_index = property.first | remove: 'scent_'
                                       if scent_index == '1'

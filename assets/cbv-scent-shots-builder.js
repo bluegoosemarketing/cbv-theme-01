@@ -1,6 +1,7 @@
 (() => {
   const MAX_RESULTS = 300;
   const BULK_MIN_SIZE = 8;
+  const THREE_PACK_SIZE = 3;
 
   const normalize = (value) => (value || '').toString().trim().toLowerCase();
   const normalizeFamily = (value) => (value || '').toString().trim() || 'Uncategorized';
@@ -183,6 +184,10 @@
       return isBulkPack() ? 0 : readPackSize(selectedPack);
     }
 
+    function isThreePack() {
+      return !isBulkPack() && requiredSlots() === THREE_PACK_SIZE;
+    }
+
     function findVariant(pack, secondaryValue) {
       return (
         allVariants.find((variant) => {
@@ -214,6 +219,25 @@
     function updateSlotProperties() {
       if (!slotPropertiesEl) return;
       slotPropertiesEl.innerHTML = '';
+      const selectedValues = selectedSlots.filter(Boolean);
+
+      if (isThreePack()) {
+        const scent = selectedValues[0] || '';
+
+        const scentInput = document.createElement('input');
+        scentInput.type = 'hidden';
+        scentInput.name = 'properties[scent_1]';
+        scentInput.value = scent;
+        slotPropertiesEl.appendChild(scentInput);
+
+        const summaryInput = document.createElement('input');
+        summaryInput.type = 'hidden';
+        summaryInput.name = 'properties[scent_selection]';
+        summaryInput.value = scent;
+        slotPropertiesEl.appendChild(summaryInput);
+        return;
+      }
+
       selectedSlots.forEach((scent, index) => {
         const input = document.createElement('input');
         input.type = 'hidden';
@@ -221,6 +245,12 @@
         input.value = scent || '';
         slotPropertiesEl.appendChild(input);
       });
+
+      const summaryInput = document.createElement('input');
+      summaryInput.type = 'hidden';
+      summaryInput.name = 'properties[scent_selection]';
+      summaryInput.value = selectedValues.join(', ');
+      slotPropertiesEl.appendChild(summaryInput);
     }
 
     function isReadyToPurchase() {
@@ -246,11 +276,18 @@
         if (ticketProgressEl) ticketProgressEl.textContent = hasFamily ? familySelect.value : 'Choose family';
         if (trayHintEl) trayHintEl.textContent = 'Bulk packs use one scent family instead of individual slots.';
       } else {
+        const waitingMessage = isThreePack() ? 'Select one fragrance for your 3-pack.' : 'Fill all slots to continue.';
         if (validationMessage) {
-          validationMessage.textContent = ready ? 'All slots filled — ready to add to cart.' : 'Fill all slots to continue.';
+          validationMessage.textContent = ready ? 'All slots filled — ready to add to cart.' : waitingMessage;
         }
-        if (ticketProgressEl) ticketProgressEl.textContent = `${filled} / ${slotsRequired} scents selected`;
-        if (trayHintEl) trayHintEl.textContent = ready ? 'All slots filled.' : 'Fill all slots to continue.';
+        if (ticketProgressEl) ticketProgressEl.textContent = isThreePack() ? (selectedSlots[0] || 'Choose one fragrance') : `${filled} / ${slotsRequired} scents selected`;
+        if (trayHintEl) {
+          trayHintEl.textContent = ready
+            ? 'All slots filled.'
+            : isThreePack()
+              ? '3-pack requires one fragrance only (3 of the same scent).'
+              : 'Fill all slots to continue.';
+        }
       }
     }
 
@@ -280,10 +317,15 @@
 
         if (scent) {
           slot.addEventListener('click', () => {
-            selectedSlots[index] = '';
+            if (isThreePack()) {
+              selectedSlots = Array(slotsRequired).fill('');
+            } else {
+              selectedSlots[index] = '';
+            }
             updateSlotProperties();
             renderTray();
             updateValidation();
+            renderResults();
           });
         }
 
@@ -329,6 +371,10 @@
           selectedSlots.unshift(pinnedScent);
         }
 
+        if (isThreePack() && selectedSlots[0]) {
+          selectedSlots = Array(slotsRequired).fill(selectedSlots[0]);
+        }
+
         selectedSlots = selectedSlots.slice(0, slotsRequired);
         while (selectedSlots.length < slotsRequired) selectedSlots.push('');
       }
@@ -349,12 +395,23 @@
 
     function addScentToTray(scentName) {
       if (isBulkPack()) return;
+
+      if (isThreePack()) {
+        selectedSlots = Array(requiredSlots()).fill(scentName);
+        updateSlotProperties();
+        renderTray();
+        updateValidation();
+        renderResults();
+        return;
+      }
+
       const nextIndex = selectedSlots.findIndex((slot) => !slot);
       if (nextIndex === -1) return;
       selectedSlots[nextIndex] = scentName;
       updateSlotProperties();
       renderTray();
       updateValidation();
+      renderResults();
     }
 
     function renderResults() {
@@ -373,6 +430,9 @@
 
       visible.forEach((scent) => {
         const alreadyAdded = selectedSlots.some((selected) => normalize(selected) === normalize(scent.name));
+        const selectedThreePackScent = isThreePack() ? selectedSlots.find(Boolean) || '' : '';
+        const isDifferentFromThreePackSelection =
+          Boolean(selectedThreePackScent) && normalize(selectedThreePackScent) !== normalize(scent.name);
         const card = document.createElement('div');
         card.className = 'cbv-scent-shot-result';
         card.innerHTML = `
@@ -381,9 +441,16 @@
             <p class="cbv-scent-shot-result__family">${scent.family}</p>
           </div>
           <div class="cbv-scent-shot-result__actions">
-            <button type="button" class="cbv-scent-shot-result__btn" data-action="add">Add</button>
+            <button
+              type="button"
+              class="cbv-scent-shot-result__btn"
+              data-action="add"
+              ${isDifferentFromThreePackSelection ? 'disabled' : ''}
+            >
+              ${isThreePack() ? (alreadyAdded ? 'Selected' : 'Select fragrance') : 'Add'}
+            </button>
             ${
-              alreadyAdded
+              alreadyAdded && !isThreePack()
                 ? '<button type="button" class="cbv-scent-shot-result__btn is-ghost" data-action="again">+ Add again</button>'
                 : ''
             }
