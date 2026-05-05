@@ -21,7 +21,8 @@
         "recharge_subscriptions_subscription_widget_v2_tirE74"
       ],
       "settings": {
-        "eyebrow": "Build your candle",
+        "eyebrow": "",
+        "allow_two_scents": false,
         "color_scheme": "option-1",
         "padding_top": 32,
         "padding_bottom": 40
