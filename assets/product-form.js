@@ -59,7 +59,9 @@ if (!customElements.get("product-form")) {
               !this.cart ||
               typeof this.cart.renderContents !== "function"
             ) {
-              window.location = window.routes.cart_url;
+              if (!this.error)
+                publish(PUB_SUB_EVENTS.cartUpdate, { source: "product-form" });
+              this.error = false;
               return;
             }
 
