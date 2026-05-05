@@ -2577,3 +2577,11 @@ p.rating-count.caption {
     width: 100%;
   }
 }
+.product-form__buttons .product-form__submit {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-form__buttons .product-form__submit.is-added {
+  transform: scale(1.02);
+  box-shadow: 0 0 0 0.2rem rgba(var(--color-foreground), 0.15);
+}

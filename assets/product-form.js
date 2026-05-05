@@ -19,6 +19,7 @@ if (!customElements.get("product-form")) {
         if (this.submitButton.getAttribute("aria-disabled") === "true") return;
 
         this.handleErrorMessage();
+        this.submitButton.classList.remove("is-added");
 
         this.submitButton.setAttribute("aria-disabled", true);
 
@@ -68,6 +69,9 @@ if (!customElements.get("product-form")) {
             if (!this.error)
               publish(PUB_SUB_EVENTS.cartUpdate, { source: "product-form" });
             this.error = false;
+            this.updateCartIconBubble(response);
+            this.triggerAddedFeedback();
+
             const quickAddModal = this.closest("quick-add-modal");
             if (quickAddModal) {
               document.body.addEventListener(
@@ -102,6 +106,40 @@ if (!customElements.get("product-form")) {
               AOS.init();
             }
           });
+      }
+
+      updateCartIconBubble(parsedState) {
+        const sectionHtml = parsedState?.sections?.["cart-icon-bubble"];
+        const bubbleElement = document.getElementById("cart-icon-bubble");
+
+        if (!sectionHtml || !bubbleElement) return;
+
+        const parsedSection = new DOMParser().parseFromString(
+          sectionHtml,
+          "text/html"
+        );
+        const replacement = parsedSection.querySelector(".shopify-section");
+
+        bubbleElement.innerHTML = replacement
+          ? replacement.innerHTML
+          : parsedSection.body.innerHTML;
+      }
+
+      triggerAddedFeedback() {
+        if (!this.submitButton) return;
+
+        this.submitButton.classList.add("is-added");
+        const label = this.submitButton.querySelector("span");
+
+        if (!label) return;
+
+        const originalLabel = label.textContent;
+        label.textContent = "Added";
+
+        window.setTimeout(() => {
+          this.submitButton.classList.remove("is-added");
+          label.textContent = originalLabel;
+        }, 1200);
       }
 
       getCartComponent() {
@@ -146,7 +184,7 @@ if (!customElements.get("product-form")) {
       }
     }
   );
-  
+
   let removedElements = {
     mobile: [],
     desktop: [],
@@ -226,21 +264,21 @@ class StickyAddToCart extends HTMLElement {
     const soldOutText = addButton.getAttribute("data-sold-out");
 
     const checkVisibility = () => {
-    const formRect = productForm.getBoundingClientRect();
-    const footer = document.querySelector("footer");
-    const footerRect = footer?.getBoundingClientRect();
-  
-    const isOutOfView = formRect.bottom <= 0;
-    const isFooterVisible = footerRect && footerRect.top < window.innerHeight;
-  
-    if (isOutOfView && !isFooterVisible) {
-      this.classList.add("show");
-      document.documentElement.style.paddingBottom = `${this.clientHeight}px`;
-    } else {
-      this.classList.remove("show");
-      document.documentElement.style.paddingBottom = "0";
-    }
-  };
+      const formRect = productForm.getBoundingClientRect();
+      const footer = document.querySelector("footer");
+      const footerRect = footer?.getBoundingClientRect();
+
+      const isOutOfView = formRect.bottom <= 0;
+      const isFooterVisible = footerRect && footerRect.top < window.innerHeight;
+
+      if (isOutOfView && !isFooterVisible) {
+        this.classList.add("show");
+        document.documentElement.style.paddingBottom = `${this.clientHeight}px`;
+      } else {
+        this.classList.remove("show");
+        document.documentElement.style.paddingBottom = "0";
+      }
+    };
 
     checkVisibility();
 
